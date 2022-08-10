@@ -308,7 +308,7 @@ Namespace AutoCAD
         Private Sub ReloadDllsIntoAppDomain(doc As Document)
             Dim assemblyWithIExtensionApp As Assembly = Nothing
             For Each dllPath As String In _dependencyValues.DLLsToReload
-                Dim assemblyBytes As Byte()
+                Dim assemblyBytes As Byte() = Nothing
                 Try
                     assemblyBytes = System.IO.File.ReadAllBytes(dllPath)
                 Catch ex As Exception
