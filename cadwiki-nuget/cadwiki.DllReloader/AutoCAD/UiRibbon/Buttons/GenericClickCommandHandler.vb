@@ -26,7 +26,7 @@ Namespace AutoCAD.UiRibbon.Buttons
                 Dim button As RibbonButton = TryCast(parameter, RibbonButton)
                 Dim netReloader As AutoCADAppDomainDllReloader = Nothing
                 If (doc IsNot Nothing) Then
-                    doc.Editor.WriteMessage(vbLf & "RibbonButton Executing Method.")
+                    doc.Editor.WriteMessage(vbLf & "GenericClickCommandHandler Executing Method.")
                     Dim uiRouter As UiRouter = Nothing
                     Try
                         uiRouter = button.CommandParameter

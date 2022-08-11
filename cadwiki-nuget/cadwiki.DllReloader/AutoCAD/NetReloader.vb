@@ -125,13 +125,13 @@ Namespace AutoCAD
             Return Nothing
         End Function
 
-        Public Sub ReloadDll(doc As Document, dllPath As String)
+        Public Sub ReloadDll(doc As Document, iExtensionAppAssembly As Assembly, dllPath As String)
 
             If (dllPath IsNot Nothing) Then
 
                 Try
                     'Remove all commands
-                    CommandRemover.RemoveAllCommandsFromCurrentlyExecutingAssembly(doc, dllPath)
+                    CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath)
                     'Dim currentAssembly As Assembly = NetUtils.AssemblyUtils.GetCurrentlyExecutingAssembly()
                     'Dim currentTypes As Type() = NetUtils.AssemblyUtils.GetTypesSafely(currentAssembly)
                     ' Create reference to the IExtensionApplication object
