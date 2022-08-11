@@ -1,7 +1,11 @@
+<!--This .targets file is used by the consumer of the cadwiki.DllReloader package-->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
  <ItemGroup>
-  <None Include="$(MSBuildThisFileDirectory)cadwiki.AcRemoveCmdGroup.dll">
+  <!--This item group tells the consumer to go get the cadwiki.AcRemoveCmdGroup.dll from the packages folder-->
+  <None Include="$(SolutionDir)packages\cadwiki.DllReloader.1.0.0\Build\cadwiki.AcRemoveCmdGroup.dll">
+     <!--Link must be set to ensure the file can be copied with the linker-->
      <Link>cadwiki.AcRemoveCmdGroup.dll</Link>
+	 <!--Tells consumer to Copy file to output directory-->
      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
  </ItemGroup>

@@ -21,7 +21,6 @@
   </metadata>
   <files>
     <file src="bin\x64\$configuration$\*.dll" exclude="**cadwiki.AcRemoveCmdGroup.dll" target="lib\net472"/>
-	<file src="bin\x64\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="lib"/>
 	<file src="bin\x64\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="Build"/>
 	<file src="cadwiki.DllReloader.targets" target="Build"/>
   </files>
