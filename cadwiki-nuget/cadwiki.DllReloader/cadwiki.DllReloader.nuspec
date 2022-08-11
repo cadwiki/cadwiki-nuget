@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>cadwiki.DllReloader</id>
+    <version>1.0.0</version>
+    <authors>cadwiki</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
+    <description>Reloads dlls into Autodesk application's current AppDomain</description>
+    <releaseNotes></releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>cadwiki dllreload reload assembly autocad appdomain</tags>
+    <contentFiles>
+        <files include="lib\cadwiki.AcRemoveCmdGroup.dll" buildAction="None" copyToOutput="true" />
+    </contentFiles>
+    <dependencies>
+        <group targetFramework=".NETFramework4.7.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\x64\$configuration$\*.dll" exclude="**cadwiki.AcRemoveCmdGroup.dll" target="lib\net472"/>
+	<file src="bin\x64\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="Build"/>
+	<file src="cadwiki.DllReloader.targets" target="Build"/>
+  </files>
+</package>
