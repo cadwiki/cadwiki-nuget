@@ -1,7 +1,7 @@
 ## Nuget commands
 ### Create new package using relative .nuspec
 ```
-nuget pack cadwiki.DllReloader.dll.nuspec -properties Configuration=Release -properties Platform=x64
+nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform=x64
 ```
 ### Create new package using relative .vbproj
 ```
