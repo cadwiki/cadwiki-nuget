@@ -17,7 +17,7 @@ Namespace AutoCAD
              <MarshalAs(UnmanagedType.LPWStr)> ByVal commandGlobalName As StringBuilder) As Integer
 
         Public Shared Sub RemoveAllCommandsFromiExtensionAppAssembly(doc As Document, iExtensionAppAssembly As Assembly, dllPath As String)
-            Dim currentTypes As Type() = NetUtils.AssemblyUtils.GetTypesSafely(iExtensionAppAssembly)
+            Dim currentTypes As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(iExtensionAppAssembly)
             Dim commandMethodAttributesToMethodInfos As Dictionary(Of CommandMethodAttribute, MethodInfo) =
                 AcadAssemblyUtils.GetCommandMethodDictionarySafely(currentTypes)
             If commandMethodAttributesToMethodInfos.Count = 0 Then

@@ -39,7 +39,7 @@ Namespace AutoCAD.UiRibbon.Buttons
                         Dim asm As Assembly = GetNewestAssembly(AppDomain.CurrentDomain.GetAssemblies(), assemblyName,
                                                                 dllRepo + "\" + assemblyName + ".dll")
                         'Dim asm As System.Reflection.Assembly = If(App.ReloadedAssembly, Assembly.GetExecutingAssembly)
-                        Dim types As Type() = NetUtils.AssemblyUtils.GetTypesSafely(asm)
+                        Dim types As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(asm)
                         Dim type As Type = asm.GetType(uiRouter.FullClassName)
                         Dim methodInfo As MethodInfo = type.GetMethod(uiRouter.MethodName)
                         If methodInfo = Nothing Then

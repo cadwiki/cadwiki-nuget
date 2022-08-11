@@ -7,7 +7,7 @@ Public Class Paths
     Public Shared Function GetAllWildcardFilesInVSubfolder(directoryPath As String, wildCardFileName As String) As List(Of String)
         Dim cadApps As List(Of String) = Directory.GetFiles(directoryPath, wildCardFileName, SearchOption.AllDirectories).
                                                     OrderByDescending(Function(f) New FileInfo(f).LastWriteTime).ToList
-        Dim numRemoved As Integer = cadApps.RemoveAll(AddressOf NetUtils.Strings.NotContainsBackSlashVInSubFolder)
+        Dim numRemoved As Integer = cadApps.RemoveAll(AddressOf cadwiki.NetUtils.Strings.NotContainsBackSlashVInSubFolder)
         Return cadApps
     End Function
 

@@ -98,7 +98,7 @@ Namespace AutoCAD
             If Not String.IsNullOrEmpty(exeDir) Then
                 Dim parentDir As String = IO.Path.GetDirectoryName(exeDir)
                 Dim wildCardFileName As String = "*" + _dependencyValues.IExtensionApplicationClassName + ".dll"
-                Dim cadApps As List(Of String) = NetUtils.Paths.GetAllWildcardFilesInVSubfolder(parentDir, wildCardFileName)
+                Dim cadApps As List(Of String) = cadwiki.NetUtils.Paths.GetAllWildcardFilesInVSubfolder(parentDir, wildCardFileName)
                 filePaths.AddRange(cadApps)
             End If
 
@@ -132,8 +132,8 @@ Namespace AutoCAD
                 Try
                     'Remove all commands
                     CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath)
-                    'Dim currentAssembly As Assembly = NetUtils.AssemblyUtils.GetCurrentlyExecutingAssembly()
-                    'Dim currentTypes As Type() = NetUtils.AssemblyUtils.GetTypesSafely(currentAssembly)
+                    'Dim currentAssembly As Assembly = cadwiki.NetUtils.AssemblyUtils.GetCurrentlyExecutingAssembly()
+                    'Dim currentTypes As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(currentAssembly)
                     ' Create reference to the IExtensionApplication object
                     'Dim currentAppObject As App = CType(AcadAssemblyUtils.GetAppObjectSafely(currentTypes), App)
                     doc.Editor.WriteMessage(vbLf & "Reload count {0}.", _dependencyValues.ReloadCount)
@@ -155,7 +155,7 @@ Namespace AutoCAD
                     Dim originalDirectory As String = _dependencyValues.OriginalAppDirectory
                     doc.Editor.WriteMessage(vbLf & "Original app directory: {0}", originalDirectory)
                     doc.Editor.WriteMessage(vbLf & "Dll reload path: {0}", copiedMainDll)
-                    Dim types As Type() = NetUtils.AssemblyUtils.GetTypesSafely(appAssembly)
+                    Dim types As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(appAssembly)
                     ' Create reference to the IExtensionApplication object
                     'Dim appObject As Object = AcadAssemblyUtils.GetAppObjectSafely(types)
                     doc.Editor.WriteMessage(vbLf & "Dll reload complete.")
@@ -202,7 +202,7 @@ Namespace AutoCAD
             If _dependencyValues.ReloadCount = 0 Then
                 Dim iExtensionAppClassName As String = iExtensionAppAssembly.GetName().Name
                 SetIExtensionApplicationClassName(iExtensionAppClassName)
-                Dim appVersion As Version = NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
+                Dim appVersion As Version = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
                 SetAppVersion(appVersion)
                 SetReloadedAssembly(iExtensionAppAssembly)
                 Dim assemblyPath As String = iExtensionAppAssembly.Location
@@ -217,13 +217,13 @@ Namespace AutoCAD
 
         Private Sub SetReloadedValues(iExtensionAppAssembly As Assembly)
             ReadDependecyValuesFromIni()
-            Dim appVersion As Version = NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
+            Dim appVersion As Version = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
             SetAppVersion(appVersion)
             SetReloadedAssembly(iExtensionAppAssembly)
         End Sub
 
         Private Sub WriteDependecyValuesToIni()
-            Dim objIniFile As New NetUtils.IniFile(_iniPath)
+            Dim objIniFile As New cadwiki.NetUtils.IniFile(_iniPath)
             objIniFile.WriteString(_sectionSettings, _keyProjectName, _dependencyValues.IExtensionApplicationClassName)
             objIniFile.WriteString(_sectionSettings, _keyAppVersion, _dependencyValues.AppVersion.ToString)
             objIniFile.WriteString(_sectionSettings, _keyReloadCount, _dependencyValues.ReloadCount.ToString)
@@ -238,7 +238,7 @@ Namespace AutoCAD
             If Not File.Exists(_iniPath) Then
                 WriteDependecyValuesToIni()
             End If
-            Dim objIniFile As New NetUtils.IniFile(_iniPath)
+            Dim objIniFile As New cadwiki.NetUtils.IniFile(_iniPath)
             Dim stringValue As String
             stringValue = objIniFile.GetString(_sectionSettings, _keyProjectName, _dependencyValues.IExtensionApplicationClassName)
             _dependencyValues.IExtensionApplicationClassName = stringValue
@@ -333,7 +333,7 @@ Namespace AutoCAD
                     doc.Editor.WriteMessage(vbLf + "Exception: " + ex.Message)
                 End Try
             Next
-            Dim currentTypes As Type() = NetUtils.AssemblyUtils.GetTypesSafely(assemblyWithIExtensionApp)
+            Dim currentTypes As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(assemblyWithIExtensionApp)
             ' Create reference to the IExtensionApplication object
             Dim currentAppObject As Object = AcadAssemblyUtils.GetAppObjectSafely(currentTypes)
             'currentAppObject.Initialize()

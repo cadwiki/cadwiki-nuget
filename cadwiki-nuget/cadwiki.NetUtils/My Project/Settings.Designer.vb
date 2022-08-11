@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.NetUtils.My.MySettings
+        Friend ReadOnly Property Settings() As Global.cadwiki.NetUtils.My.MySettings
             Get
-                Return Global.NetUtils.My.MySettings.Default
+                Return Global.cadwiki.NetUtils.My.MySettings.Default
             End Get
         End Property
     End Module
