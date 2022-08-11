@@ -9,8 +9,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("cadwiki.DllReloader")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyDescription("Reloads dlls into AutoCAD's appdomain")>
+<Assembly: AssemblyCompany("cadwiki")>
 <Assembly: AssemblyProduct("cadwiki.DllReloader")>
 <Assembly: AssemblyCopyright("Copyright ©  2022")>
 <Assembly: AssemblyTrademark("")>
