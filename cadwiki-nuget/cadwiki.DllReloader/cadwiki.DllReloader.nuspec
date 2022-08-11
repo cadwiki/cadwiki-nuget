@@ -18,5 +18,6 @@
   </metadata>
   <files>
     <file src="bin\x64\$configuration$\*.dll" exclude="**cadwiki.AcRemoveCmdGroup.dll" target="lib\net472"/>
+	<file src="bin\x64\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="lib"/>
   </files>
 </package>
