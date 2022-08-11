@@ -12,7 +12,7 @@ Imports Autodesk.AutoCAD.Runtime
 Namespace AutoCAD
     Public Class CommandRemover
 
-        Public Declare Auto Function RemoveCommand Lib "AcRemoveCmdGroup.dll" Alias "removeCommand" _
+        Public Declare Auto Function RemoveCommand Lib "cadwiki.AcRemoveCmdGroup.dll" Alias "removeCommand" _
             (<MarshalAs(UnmanagedType.LPWStr)> ByVal groupName As StringBuilder,
              <MarshalAs(UnmanagedType.LPWStr)> ByVal commandGlobalName As StringBuilder) As Integer
 
@@ -42,7 +42,7 @@ Namespace AutoCAD
                 Dim commandGlobalName As New StringBuilder(256)
                 commandGlobalName.Append(commandLineMethodString)
                 Dim dllFolder As String = Path.GetDirectoryName(dllPath)
-                If System.IO.File.Exists(dllFolder + "\" + "AcRemoveCmdGroup.dll") Then
+                If System.IO.File.Exists(dllFolder + "\" + "cadwiki.AcRemoveCmdGroup.dll") Then
                     Dim wasCommandUndefined As Integer = RemoveCommand(groupName, commandGlobalName)
                     If wasCommandUndefined = 0 Then
                         doc.Editor.WriteMessage(vbLf & "Command successfully removed: " + commandGlobalName.ToString)
@@ -50,7 +50,7 @@ Namespace AutoCAD
                         doc.Editor.WriteMessage(vbLf & "Remove command failed: " & commandLineMethodString & ".")
                     End If
                 Else
-                    Throw New System.Exception("AcRemoveCmdGroup.dll not found in assembly folder. Can't unload command group.")
+                    Throw New System.Exception("cadwiki.AcRemoveCmdGroup.dll not found in assembly folder. Can't unload command group.")
                 End If
 
             Next

@@ -9,7 +9,7 @@
     <license type="expression">MIT</license>
     <!-- <icon>icon.png</icon> -->
     <projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>
-    <Description>Reloads dlls into AutoCAD's appdomain</Description>
+    <Description>Reloads dlls into Autodesk application's current AppDomain</Description>
     <releaseNotes></releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>cadwiki dllreload reload assembly autocad appdomain</tags>

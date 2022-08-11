@@ -7,8 +7,8 @@
   <!-- https://www.mode19.net/posts/msbuildbuildroot/ -->
   <Target Name="CopyAcRemoveCmdGroup" AfterTargets="Build">
     <Exec Command="echo The build root is: $(BuildRoot)" />
-    <Exec Command="echo AcRemoveCmdGroup.dll location is: $(BuildRoot)\x64\$(Configuration)\AcRemoveCmdGroup.dll" />
-    <Exec Command="xcopy /S /Q /Y /F $(BuildRoot)\x64\$(Configuration)\AcRemoveCmdGroup.dll $(TargetDir)\" />
+    <Exec Command="echo AcRemoveCmdGroup.dll location is: $(BuildRoot)\cadwiki.AcRemoveCmdGroup\x64\$(Configuration)\cadwiki.AcRemoveCmdGroup.dll" />
+    <Exec Command="xcopy /S /Q /Y /F $(BuildRoot)\x64\$(Configuration)\cadwiki.AcRemoveCmdGroup.dll $(TargetDir)\" />
   </Target>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
