@@ -194,9 +194,9 @@
       <Project>{3c1158da-4a90-4fc1-8ccc-6f1e4787a118}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SharedWpfUi\SharedWpfUi.vbproj">
+    <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.vbproj">
       <Project>{73ccec07-576d-4021-8e78-1494f3a0d885}</Project>
-      <Name>SharedWpfUi</Name>
+      <Name>cadwiki.WpfUi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("SharedWpfUi")>
+<Assembly: AssemblyTitle("cadwiki.WpfUi")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("SharedWpfUi")>
+<Assembly: AssemblyProduct("cadwiki.WpfUi")>
 <Assembly: AssemblyCopyright("Copyright ©  2022")>
 <Assembly: AssemblyTrademark("")>
 

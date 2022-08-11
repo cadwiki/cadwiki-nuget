@@ -102,7 +102,7 @@ Namespace AutoCAD
                 filePaths.AddRange(cadApps)
             End If
 
-            Dim window As SharedWpfUi.WindowGetFilePath = New SharedWpfUi.WindowGetFilePath(filePaths)
+            Dim window As cadwiki.WpfUi.WindowGetFilePath = New cadwiki.WpfUi.WindowGetFilePath(filePaths)
             window.Width = 1200
             window.Height = 300
             window.ShowDialog()
