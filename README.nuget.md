@@ -1,9 +1,8 @@
-#cadwiki.DllReloader nuget package README.md
+# cadwiki.DllReloader nuget package
 This Readme file contains information on the cadwiki.DllReloader package
 
 ## AutoCAD
 The cadwiki.DllReloader.AutoCAD namespace contains everything needed to reload dll's into AutoCAD's current AppDomain
-
 
 ## Nuget commands for building the .nupkg locally
 ### Create new package using relative .nuspec
