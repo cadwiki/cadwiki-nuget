@@ -89,6 +89,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomWindowTemplate.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -105,6 +106,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Utils.vb" />
+    <Compile Include="WindowAutoCADException.xaml.vb">
+      <DependentUpon>WindowAutoCADException.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowCadWiki.xaml.vb">
       <DependentUpon>WindowCadWiki.xaml</DependentUpon>
     </Compile>
@@ -132,6 +136,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WindowAutoCADException.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowCadWiki.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
