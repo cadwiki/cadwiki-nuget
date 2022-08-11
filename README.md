@@ -6,8 +6,14 @@ nuget pack cadwiki.DllReloader.vbproj -IncludeReferencedProjects -properties Con
 
 ### Install local package to another project
 Copy output file path from command above for use later
-Install nuget package in another solution / project with this command 
+Install nuget package in another solution / project with these commands 
 
 ```
 Install-Package $Path\ToNuget\File\.nupkg
+Get-Project -All | Install-Package $Path\ToNuget\File\.nupkg
+```
+
+### Uninstall local package from projects
+```
+Get-Project -All | UnInstall-Package cadwiki.DllReloader
 ```
