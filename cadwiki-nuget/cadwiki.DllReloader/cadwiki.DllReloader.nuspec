@@ -12,6 +12,9 @@
     <releaseNotes></releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>cadwiki dllreload reload assembly autocad appdomain</tags>
+    <contentFiles>
+        <files include="lib\cadwiki.AcRemoveCmdGroup.dll" buildAction="None" copyToOutput="true" />
+    </contentFiles>
     <dependencies>
         <group targetFramework=".NETFramework4.7.2" />
     </dependencies>
@@ -19,5 +22,7 @@
   <files>
     <file src="bin\x64\$configuration$\*.dll" exclude="**cadwiki.AcRemoveCmdGroup.dll" target="lib\net472"/>
 	<file src="bin\x64\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="lib"/>
+	<file src="bin\x64\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="Build"/>
+	<file src="cadwiki.DllReloader.targets" target="Build"/>
   </files>
 </package>
