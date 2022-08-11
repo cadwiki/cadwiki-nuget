@@ -1,0 +1,3 @@
+EXPORTS 
+        removeCommandGroup              PRIVATE
+        removeCommand              PRIVATE
