@@ -93,7 +93,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ObservableTestResults.vb" />
-    <Compile Include="UI\WindowCreator.vb" />
+    <Compile Include="UI\Driver.vb" />
     <Compile Include="Utils.vb" />
     <Compile Include="UI\WindowTestRunner.xaml.vb">
       <DependentUpon>WindowTestRunner.xaml</DependentUpon>
