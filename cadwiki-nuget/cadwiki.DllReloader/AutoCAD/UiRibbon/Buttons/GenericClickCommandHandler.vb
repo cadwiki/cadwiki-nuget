@@ -1,6 +1,6 @@
 ﻿'Option Strict On
-Option Infer Off
-Option Explicit On
+'Option Infer Off
+'Option Explicit On
 
 Imports System.IO
 Imports System.Reflection
@@ -46,6 +46,10 @@ Namespace AutoCAD.UiRibbon.Buttons
                             doc.Editor.WriteMessage(vbLf & "Method not found: " & uiRouter.MethodName)
                             doc.Editor.WriteMessage(vbLf & vbLf)
                         Else
+                            If uiRouter.Parameters.Count = 1 Then
+                                Dim t As Type = uiRouter.Parameters(0)
+                            End If
+
                             Dim o As Object = Activator.CreateInstance(type)
                             methodInfo.Invoke(o, uiRouter.Parameters)
                         End If
