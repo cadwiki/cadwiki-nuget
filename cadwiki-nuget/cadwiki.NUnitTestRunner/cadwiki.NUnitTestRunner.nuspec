@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>cadwiki.NUnitTestRunner</id>
+    <version>1.0.0</version>
+    <authors>cadwiki</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
+    <description>Executes unit tests in a WPF window</description>
+    <releaseNotes></releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>cadwiki Autocad UnitTest RegressionTest IntegrationTest AutomationTest </tags>
+    <dependencies>
+        <group targetFramework=".NETFramework4.7.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\x64\$configuration$\*.dll" target="lib\net472"/>
+  </files>
+</package>
