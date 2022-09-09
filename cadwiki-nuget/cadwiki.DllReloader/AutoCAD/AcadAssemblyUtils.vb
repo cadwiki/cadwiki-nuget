@@ -27,19 +27,21 @@ Namespace AutoCAD
             Return commandMethodAttributesToMethodInfos
         End Function
         Public Shared Function GetAppObjectSafely(types As Type()) As Object
-            For Each type As Type In types
-                Dim interfaceList As List(Of Type) = type.GetInterfaces().ToList()
-                Dim isClassIExtensionApplication As Boolean = False
+            If types IsNot Nothing Then
+                For Each type As Type In types
+                    Dim interfaceList As List(Of Type) = type.GetInterfaces().ToList()
+                    Dim isClassIExtensionApplication As Boolean = False
 
-                If interfaceList.Contains(GetType(IExtensionApplication)) Then
-                    isClassIExtensionApplication = True
-                End If
+                    If interfaceList.Contains(GetType(IExtensionApplication)) Then
+                        isClassIExtensionApplication = True
+                    End If
 
-                If (type.IsClass And isClassIExtensionApplication) Then
-                    Dim appObject As Object = Activator.CreateInstance(type)
-                    Return appObject
-                End If
-            Next
+                    If (type.IsClass And isClassIExtensionApplication) Then
+                        Dim appObject As Object = Activator.CreateInstance(type)
+                        Return appObject
+                    End If
+                Next
+            End If
             Return Nothing
         End Function
 
