@@ -1,7 +1,7 @@
 ﻿Imports System.Reflection
 Imports cadwiki.DllReloader.AutoCAD
 
-<TestClass()> Public Class AutoCADNetReloader
+<TestClass()> Public Class TestAutoCADNetReloader
 
     <TestMethod()> Public Sub Test_Configure_FromAnEmptyIniFile_ShouldReturnNonEmptyString()
         Dim actual As String
