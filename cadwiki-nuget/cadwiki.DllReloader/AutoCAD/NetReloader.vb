@@ -81,7 +81,7 @@ Namespace AutoCAD
             End If
 
             If String.IsNullOrEmpty(GetIExtensionApplicationClassName()) Then
-                'SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
+                SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
             End If
         End Sub
 
