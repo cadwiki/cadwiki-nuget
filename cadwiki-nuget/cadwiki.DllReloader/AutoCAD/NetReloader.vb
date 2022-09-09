@@ -20,6 +20,10 @@ Namespace AutoCAD
             Public Terminated As Boolean = False
         End Class
 
+        Public Sub ClearIni()
+            WriteDependecyValuesToIni(New Dependencies())
+        End Sub
+
         Private _dependencyValues As Dependencies
         Private _iniPath As String = Path.GetTempPath() + "NetReloader.ini"
         Private _tempFolder As String
@@ -77,14 +81,14 @@ Namespace AutoCAD
             End If
 
             If String.IsNullOrEmpty(GetIExtensionApplicationClassName()) Then
-                SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
+                'SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
             End If
         End Sub
 
         Public Sub Terminate()
             _dependencyValues = New Dependencies
             SetTerminated(True)
-            WriteDependecyValuesToIni()
+            WriteDependecyValuesToIni(_dependencyValues)
         End Sub
 
 
@@ -214,7 +218,7 @@ Namespace AutoCAD
                     SetOriginalAppDirectory(System.IO.Path.GetDirectoryName(assemblyPath))
                 End If
                 SetTerminated(False)
-                WriteDependecyValuesToIni()
+                WriteDependecyValuesToIni(_dependencyValues)
             End If
         End Sub
 
@@ -230,21 +234,21 @@ Namespace AutoCAD
             SetReloadedAssembly(iExtensionAppAssembly)
         End Sub
 
-        Private Sub WriteDependecyValuesToIni()
+        Private Sub WriteDependecyValuesToIni(dependencyValues As Dependencies)
             Dim objIniFile As New cadwiki.NetUtils.IniFile(_iniPath)
-            objIniFile.WriteString(_sectionSettings, _keyProjectName, _dependencyValues.IExtensionApplicationClassName)
-            objIniFile.WriteString(_sectionSettings, _keyAppVersion, _dependencyValues.AppVersion.ToString)
-            objIniFile.WriteString(_sectionSettings, _keyReloadCount, _dependencyValues.ReloadCount.ToString)
-            objIniFile.WriteString(_sectionSettings, _keyDllPath, _dependencyValues.DllPath)
-            objIniFile.WriteString(_sectionSettings, _keyOriginalAppDirectory, _dependencyValues.OriginalAppDirectory)
-            Dim DLLsConcat As String = String.Join(",", _dependencyValues.DLLsToReload)
+            objIniFile.WriteString(_sectionSettings, _keyProjectName, dependencyValues.IExtensionApplicationClassName)
+            objIniFile.WriteString(_sectionSettings, _keyAppVersion, dependencyValues.AppVersion.ToString)
+            objIniFile.WriteString(_sectionSettings, _keyReloadCount, dependencyValues.ReloadCount.ToString)
+            objIniFile.WriteString(_sectionSettings, _keyDllPath, dependencyValues.DllPath)
+            objIniFile.WriteString(_sectionSettings, _keyOriginalAppDirectory, dependencyValues.OriginalAppDirectory)
+            Dim DLLsConcat As String = String.Join(",", dependencyValues.DLLsToReload)
             objIniFile.WriteString(_sectionSettings, _keyDLLsToReload, DLLsConcat)
-            objIniFile.WriteString(_sectionSettings, _keyTerminated, _dependencyValues.Terminated.ToString)
+            objIniFile.WriteString(_sectionSettings, _keyTerminated, dependencyValues.Terminated.ToString)
         End Sub
 
         Private Sub ReadDependecyValuesFromIni()
             If Not File.Exists(_iniPath) Then
-                WriteDependecyValuesToIni()
+                WriteDependecyValuesToIni(_dependencyValues)
             End If
             Dim objIniFile As New cadwiki.NetUtils.IniFile(_iniPath)
             Dim stringValue As String
@@ -328,11 +332,11 @@ Namespace AutoCAD
                         'Update Reloader values
                         _dependencyValues.ReloadCount += 1
                         _dependencyValues.Terminated = False
-                        WriteDependecyValuesToIni()
+                        WriteDependecyValuesToIni(_dependencyValues)
                         ' Upon loading the assemblyBytes from the IExtensionApplication class, the App.Initialize() method will be called
                         assemblyWithIExtensionApp = AppDomain.CurrentDomain.Load(assemblyBytes)
                         SetReloadedValues(assemblyWithIExtensionApp)
-                        WriteDependecyValuesToIni()
+                        WriteDependecyValuesToIni(_dependencyValues)
                     Else
                         Dim reloadedAssembly As Assembly = AppDomain.CurrentDomain.Load(assemblyBytes)
                     End If
