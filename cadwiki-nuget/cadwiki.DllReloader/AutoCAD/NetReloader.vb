@@ -75,6 +75,10 @@ Namespace AutoCAD
             Else
                 SetReloadedValues(currentIExtensionAppAssembly)
             End If
+
+            If String.IsNullOrEmpty(GetIExtensionApplicationClassName()) Then
+                SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
+            End If
         End Sub
 
         Public Sub Terminate()
@@ -200,8 +204,7 @@ Namespace AutoCAD
             'ReadDependecyValuesFromIni()
             'Only allow developer to set initial values when ReloadCount is 0
             If _dependencyValues.ReloadCount = 0 Then
-                Dim iExtensionAppClassName As String = iExtensionAppAssembly.GetName().Name
-                SetIExtensionApplicationClassName(iExtensionAppClassName)
+                SetIExtensionApplicationClassNameFromAssembly(iExtensionAppAssembly)
                 Dim appVersion As Version = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
                 SetAppVersion(appVersion)
                 SetReloadedAssembly(iExtensionAppAssembly)
@@ -213,6 +216,11 @@ Namespace AutoCAD
                 SetTerminated(False)
                 WriteDependecyValuesToIni()
             End If
+        End Sub
+
+        Private Sub SetIExtensionApplicationClassNameFromAssembly(iExtensionAppAssembly As Assembly)
+            Dim iExtensionAppClassName As String = iExtensionAppAssembly.GetName().Name
+            SetIExtensionApplicationClassName(iExtensionAppClassName)
         End Sub
 
         Private Sub SetReloadedValues(iExtensionAppAssembly As Assembly)
