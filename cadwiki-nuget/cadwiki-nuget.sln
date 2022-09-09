@@ -16,6 +16,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.WpfUi", "cadwiki.Wp
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.NUnitTestRunner", "cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.vbproj", "{20525DE1-199C-417F-85A1-BDA52F76EDD1}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UnitTests", "UnitTests\UnitTests.vbproj", "{4EA70EF0-2B9C-4F28-A240-169B27F7034B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,14 @@ Global
 		{20525DE1-199C-417F-85A1-BDA52F76EDD1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20525DE1-199C-417F-85A1-BDA52F76EDD1}.Release|x64.ActiveCfg = Release|x64
 		{20525DE1-199C-417F-85A1-BDA52F76EDD1}.Release|x64.Build.0 = Release|x64
+		{4EA70EF0-2B9C-4F28-A240-169B27F7034B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EA70EF0-2B9C-4F28-A240-169B27F7034B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EA70EF0-2B9C-4F28-A240-169B27F7034B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4EA70EF0-2B9C-4F28-A240-169B27F7034B}.Debug|x64.Build.0 = Debug|Any CPU
+		{4EA70EF0-2B9C-4F28-A240-169B27F7034B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EA70EF0-2B9C-4F28-A240-169B27F7034B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EA70EF0-2B9C-4F28-A240-169B27F7034B}.Release|x64.ActiveCfg = Release|Any CPU
+		{4EA70EF0-2B9C-4F28-A240-169B27F7034B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
