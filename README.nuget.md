@@ -40,3 +40,9 @@ Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget
 Get-Project -All | UnInstall-Package cadwiki.NUnitTestRunner
 Get-Project -All | UnInstall-Package cadwiki.DllReloader
 ```
+
+
+### Push nuget package 
+```  
+nuget push ./cadwiki.DllReloader.1.0.1.nupkg apikey -src https://www.nuget.org/  
+```
