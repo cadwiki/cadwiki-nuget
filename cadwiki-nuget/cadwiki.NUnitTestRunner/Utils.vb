@@ -2,6 +2,8 @@
 Option Infer Off
 Option Explicit On
 
+Imports System
+Imports System.Collections.Generic
 Imports System.Reflection
 Imports NUnit.Framework
 

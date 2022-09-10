@@ -1,6 +1,8 @@
 ﻿Option Strict On
 Option Infer Off
 Option Explicit On
+Imports System
+Imports System.Collections.Generic
 
 Namespace Results
     Public Class TestResult
