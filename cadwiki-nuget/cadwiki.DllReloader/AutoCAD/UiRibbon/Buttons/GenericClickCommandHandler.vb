@@ -18,6 +18,9 @@ Namespace AutoCAD.UiRibbon.Buttons
             _doc = doc
         End Sub
 
+        Public Sub New()
+        End Sub
+
         Public Sub ConsoleOut(message As String)
             If (_doc Is Nothing) Then
                 Console.WriteLine(message)
@@ -44,7 +47,7 @@ Namespace AutoCAD.UiRibbon.Buttons
                 Try
                     uiRouter = button.CommandParameter
                     netReloader = uiRouter.NetReloader
-                    Dim assemblyName As String = Split(uiRouter.FullClassName, ".")(0)
+                    Dim assemblyName As String = uiRouter.AssemblyName
                     ConsoleOut("Full class name: " & uiRouter.FullClassName)
                     ConsoleOut("Method name: " & uiRouter.MethodName)
                     Dim dllRepo As String = Path.GetDirectoryName(netReloader.GetDllPath())
@@ -67,8 +70,14 @@ Namespace AutoCAD.UiRibbon.Buttons
 
                 Catch ex As Exception
                     ConsoleOut("Exception: " & ex.Message)
-                    ConsoleOut("Mostly likely caused by incorrect solution name in UiRouter object: " &
-                            netReloader.GetIExtensionApplicationClassName())
+                    If (ex.Message.Equals("The path is not of a legal form.")) Then
+                        ConsoleOut("Mostly likely caused by incorrect method name in UiRouter object.")
+                        ConsoleOut("Double check that the Method name and Full class name above are correct.")
+                    Else
+                        ConsoleOut("Mostly likely caused by incorrect solution name in UiRouter object: " &
+                                netReloader.GetIExtensionApplicationClassName())
+                    End If
+
                     If (uiRouter IsNot Nothing) Then
                         ConsoleOut("UiRouter object: " & uiRouter.FullClassName)
                     End If
