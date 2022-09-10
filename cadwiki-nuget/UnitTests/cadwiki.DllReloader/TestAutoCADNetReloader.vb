@@ -1,4 +1,5 @@
 ﻿Imports System.Reflection
+Imports Autodesk.Windows
 Imports cadwiki.DllReloader.AutoCAD
 Imports cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons
 
@@ -18,15 +19,44 @@ Imports cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons
 
     End Sub
     <TestMethod()> Public Sub Test_GenericCommandHandler_WithNoArguments_ShouldPass()
-        Dim actual As String
-        Dim reloader As AutoCADAppDomainDllReloader = New AutoCADAppDomainDllReloader()
-        Dim uiRouter As UiRouter = New UiRouter(
-                "cadwiki.NetUtils", "GetCurrentlyExecutingAssembly", Nothing,
-                reloader,
-                Assembly.GetExecutingAssembly())
 
-        Dim commandHandler = New GenericClickCommandHandler()
-        commandHandler.Execute(uiRouter)
+        ExecuteRibbonButtonGenericCommandHandler(
+                "cadwiki.NetUtils",
+                "cadwiki.NetUtils.AssemblyUtils",
+                "GetCurrentlyExecutingAssembly",
+                Nothing)
+
     End Sub
 
+    <TestMethod()> Public Sub Test_GenericCommandHandler_WithOneArgument_ShouldPass()
+        Dim appAssembly As Assembly = Assembly.GetExecutingAssembly
+        Dim parameters As Object() = {appAssembly}
+
+        ExecuteRibbonButtonGenericCommandHandler(
+                "cadwiki.NetUtils",
+                "cadwiki.NetUtils.AssemblyUtils",
+                "GetTypesSafely",
+                parameters)
+    End Sub
+
+    Private Shared Sub ExecuteRibbonButtonGenericCommandHandler(
+            assemblyName As String, fullClassName As String,
+            methodName As String, parameters() As Object)
+
+        Dim appAssembly As Assembly = Assembly.GetExecutingAssembly
+        Dim reloader As AutoCADAppDomainDllReloader = New AutoCADAppDomainDllReloader()
+        reloader.ClearIni()
+        reloader.Configure(appAssembly)
+        Dim uiRouter As UiRouter = New UiRouter(
+                assemblyName,
+                fullClassName,
+                methodName,
+                parameters,
+                reloader,
+                Assembly.GetExecutingAssembly())
+        Dim ribbonButton As RibbonButton = New RibbonButton()
+        ribbonButton.CommandParameter = uiRouter
+        ribbonButton.CommandHandler = New GenericClickCommandHandler()
+        ribbonButton.CommandHandler.Execute(ribbonButton)
+    End Sub
 End Class

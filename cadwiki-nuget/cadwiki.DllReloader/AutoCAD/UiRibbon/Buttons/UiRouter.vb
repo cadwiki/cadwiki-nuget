@@ -12,8 +12,9 @@ Namespace AutoCAD.UiRibbon.Buttons
         Public NetReloader As AutoCADAppDomainDllReloader
         Public IExtensionAppAssembly As Assembly
 
-        Public Sub New(fullClassName As String, methodName As String, parameters As Object(),
+        Public Sub New(assemblyName As String, fullClassName As String, methodName As String, parameters As Object(),
                        netReloader As AutoCADAppDomainDllReloader, iExtensionAppAssembly As Assembly)
+            Me.AssemblyName = assemblyName
             Me.FullClassName = fullClassName
             Me.MethodName = methodName
             Me.Parameters = parameters
