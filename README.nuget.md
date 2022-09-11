@@ -49,5 +49,5 @@ Get-Project -All | UnInstall-Package cadwiki.DllReloader
 
 ### Push nuget package 
 ```  
-nuget push ./cadwiki.DllReloader.1.0.1.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.DllReloader.1.0.2.nupkg apikey -src https://www.nuget.org/  
 ```
