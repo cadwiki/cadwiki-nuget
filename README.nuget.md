@@ -19,6 +19,7 @@ nuget spec -Force ./bin/Release/x64/cadwiki.NUnitTestRunner.dll
 ```
 nuget pack cadwiki.NUnitTestRunner.nuspec -properties Configuration=Release -properties Platform=x64
 nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform=x64
+nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform=x64
 ```
 ### Create new package using relative .vbproj
 ```
