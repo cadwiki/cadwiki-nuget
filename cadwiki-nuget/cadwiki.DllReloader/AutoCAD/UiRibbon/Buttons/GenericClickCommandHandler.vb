@@ -64,7 +64,7 @@ Namespace AutoCAD.UiRibbon.Buttons
                         If (uiRouter.Parameters IsNot Nothing) Then
                             methodInfo.Invoke(o, uiRouter.Parameters)
                         Else
-                            Task.Run(Function() methodInfo.Invoke(o, Nothing))
+                            methodInfo.Invoke(o, Nothing)
                         End If
                     End If
 
