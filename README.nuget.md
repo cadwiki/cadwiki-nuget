@@ -8,6 +8,8 @@ The cadwiki.DllReloader.AutoCAD namespace contains everything needed to reload d
 ## Nuget commands for creating new .nuspec file  
 Cd into directory with .csproj or .vbproj  
 ```
+cd cadwiki.NUnitTestRunner
+cd cadwiki.DllReloader
 nuget spec
 nuget spec -Force ./bin/Release/x64/cadwiki.NUnitTestRunner.dll
 ```
@@ -33,6 +35,8 @@ Install-Package $Path\ToNuget\File\.nupkg
 Get-Project -All | Install-Package $Path\ToNuget\File\.nupkg
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.1.0.0.nupkg
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.0.nupkg
+
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.2.nupkg
 ```
 
 ### Uninstall local package from projects
