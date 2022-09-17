@@ -1,0 +1,156 @@
+﻿<Window
+    x:Class="MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Cad Dev Tools"
+    Height="240"
+    MinHeight="240"
+    Width="800"
+    MinWidth="800">
+    <Window.Resources>
+        <SolidColorBrush x:Key="SolidColorBrushLimeGreen" Color="#00FF00" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="75" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1.4*" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <RichTextBox
+            x:Name="RichTextBoxSelectedAutoCAD"
+            Grid.Column="0"
+            Grid.Row="0"
+            >
+            <FlowDocument>
+                <Paragraph>Use this to set the AutoCAD program to Launch</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>
+                            <Bold>The selected program is:</Bold>
+                        </Paragraph>
+                    </ListItem>
+                </List>
+            </FlowDocument>
+        </RichTextBox>
+
+        <Button 
+            x:Name="ButtonSelectAutoCADYear" 
+            Click="ButtonSelectAutoCADYear_Click"
+            Content="Select CAD"
+            Grid.Column="2"
+            Grid.Row="0"
+            HorizontalAlignment="Center"  
+            VerticalAlignment="Center" 
+            Width="75"
+            />
+        
+
+
+        <RichTextBox
+            Grid.Column="0"
+            Grid.Row="1">
+            <FlowDocument>
+                <Paragraph>Use this tool to launch and load the CapApp.dll</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>
+                            Parses the current solution directory for the newest CapAll.dll
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>
+                            Launches AutoCAD
+                        </Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>
+                            Netloads the dll
+                        </Paragraph>
+                    </ListItem>
+                </List>
+            </FlowDocument>
+        </RichTextBox>
+
+        <Button
+            x:Name="ButtonLoadNewest"
+            Content="Newest"
+            ClickMode="Press"
+            Click="ButtonLoadNewest_Click"
+            Grid.Column="3"
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="75" />
+
+        <RichTextBox
+            Grid.Column="0"
+            Grid.Row="2">
+            <FlowDocument>
+                <Paragraph>Use this tool to select a version of the CadApp.dll to load</Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+        <Button
+            x:Name="ButtonSelectLoad"
+            Content="Select"
+            ClickMode="Press"
+            Click="ButtonSelectLoad_Click"
+            Grid.Column="3"
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="75" />
+
+        <Button
+            x:Name="ButtonOk"
+            Content="Ok"
+            Background="{DynamicResource SolidColorBrushLimeGreen}"
+            ClickMode="Press"
+            Click="ButtonOk_Click"
+            Grid.Column="2"
+            Grid.Row="4"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="75" />
+        <StatusBar
+
+            x:Name="StatusBar"
+            Grid.ColumnSpan="3"
+            Grid.Column="0"
+            Grid.Row="5">
+
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0">
+                <TextBlock x:Name="TextBlockStatus" Text="Status:" HorizontalAlignment="Left"
+                           VerticalAlignment="Center" />
+            </StatusBarItem>
+            <Separator Grid.Column="1" />
+            <StatusBarItem Grid.Column="2">
+                <TextBlock x:Name="TextBlockMessage" Text="Information" HorizontalAlignment="Left" />
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+
+</Window>
