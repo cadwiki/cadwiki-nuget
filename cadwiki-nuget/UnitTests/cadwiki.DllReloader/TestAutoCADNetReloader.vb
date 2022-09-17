@@ -11,7 +11,7 @@ Imports cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons
         Dim appAssembly As Assembly = Assembly.GetExecutingAssembly
         Dim reloader As AutoCADAppDomainDllReloader = New AutoCADAppDomainDllReloader()
         reloader.ClearIni()
-        reloader.Configure(appAssembly)
+        reloader.Configure(appAssembly, False)
         actual = reloader.GetIExtensionApplicationClassName()
 
         Assert.AreNotEqual("", actual)
@@ -46,7 +46,7 @@ Imports cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons
         Dim appAssembly As Assembly = Assembly.GetExecutingAssembly
         Dim reloader As AutoCADAppDomainDllReloader = New AutoCADAppDomainDllReloader()
         reloader.ClearIni()
-        reloader.Configure(appAssembly)
+        reloader.Configure(appAssembly, False)
         Dim uiRouter As UiRouter = New UiRouter(
                 assemblyName,
                 fullClassName,
@@ -59,4 +59,21 @@ Imports cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons
         ribbonButton.CommandHandler = New GenericClickCommandHandler()
         ribbonButton.CommandHandler.Execute(ribbonButton)
     End Sub
+
+
+    <TestMethod()> Public Sub Test_Configure_WithTrueLoadFlag_ShouldFindMoreThan0AssembliesAndLoad0Assemblies()
+
+        Dim appAssembly As Assembly = Assembly.GetExecutingAssembly
+        Dim reloader As AutoCADAppDomainDllReloader = New AutoCADAppDomainDllReloader()
+        reloader.ClearIni()
+        reloader.Configure(appAssembly, True)
+
+        Dim dllFound As List(Of String) = reloader.GetDllsToReload()
+        Dim reloadedDlls As List(Of String) = reloader.GetDllsThatWereSuccessfullyReloaded()
+
+        Assert.AreNotEqual(dllFound.Count, 0)
+        Assert.AreEqual(reloadedDlls.Count, 0)
+
+    End Sub
+
 End Class
