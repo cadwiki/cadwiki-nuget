@@ -6,6 +6,7 @@ Imports System.Reflection
 Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.Runtime
 Imports System.IO
+Imports System.Globalization
 
 Namespace AutoCAD
     Public Class AutoCADAppDomainDllReloader
@@ -27,7 +28,8 @@ Namespace AutoCAD
         End Sub
 
         Private _dependencyValues As Dependencies
-        Private _iniPath As String = Path.GetTempPath() + "NetReloader.ini"
+        Private _cadwikiTempFolder As String = Path.GetTempPath() + "cadwiki"
+        Private _iniPath As String = _cadwikiTempFolder + "\\" + "NetReloader.ini"
         Private _tempFolder As String
         Private _sectionSettings As String = "Settings"
         Private _keyProjectName As String = "ProjectName"
@@ -129,11 +131,9 @@ Namespace AutoCAD
                 WriteToDocEditor(String.Format("Reload count {0}.", _dependencyValues.ReloadCount))
                 Dim newCount As Integer = _dependencyValues.ReloadCount + 1
                 Dim dllRepository As String = Path.GetDirectoryName(dllPath)
-                _tempFolder = GetNewTempFolder()
+                Dim now As DateTime = DateTime.Now
+                _tempFolder = GetNewReloadFolder(newCount, now)
                 IO.Directory.CreateDirectory(_tempFolder)
-                Dim reloadFolder As String = _tempFolder + "\" + "Reload-" + newCount.ToString()
-                IO.Directory.CreateDirectory(reloadFolder)
-                _tempFolder = reloadFolder
                 WriteToDocEditor("Created temp folder to copy dlls to for reloading: " + _tempFolder)
                 Dim tempDlls As List(Of String) = CopyAllDllsToTempFolder(dllPath, _tempFolder)
                 Dim tuple As Tuple(Of Assembly, String) = ReloadAll(tempDlls, newCount)
@@ -305,6 +305,7 @@ Namespace AutoCAD
         End Sub
 
         Private Sub WriteDependecyValuesToIni(dependencyValues As Dependencies)
+            CreateCadwikiTempFolderIfNotExists()
             Dim objIniFile As New cadwiki.NetUtils.IniFile(_iniPath)
             objIniFile.WriteString(_sectionSettings, _keyProjectName, dependencyValues.IExtensionApplicationClassName)
             objIniFile.WriteString(_sectionSettings, _keyAppVersion, dependencyValues.AppVersion.ToString)
@@ -314,6 +315,12 @@ Namespace AutoCAD
             Dim DLLsConcat As String = String.Join(",", dependencyValues.DLLsToReload)
             objIniFile.WriteString(_sectionSettings, _keyDLLsToReload, DLLsConcat)
             objIniFile.WriteString(_sectionSettings, _keyTerminated, dependencyValues.Terminated.ToString)
+        End Sub
+
+        Private Sub CreateCadwikiTempFolderIfNotExists()
+            If Not Directory.Exists(_cadwikiTempFolder) Then
+                Directory.CreateDirectory(_cadwikiTempFolder)
+            End If
         End Sub
 
         Private Sub ReadDependecyValuesFromIni()
@@ -457,12 +464,23 @@ Namespace AutoCAD
             'currentAppObject.Initialize()
         End Sub
 
-        Private Shared Function GetNewTempFolder() As String
-            Dim folder As String = Path.Combine(Path.GetTempPath, Path.GetRandomFileName)
-            Do While Directory.Exists(folder) Or File.Exists(folder)
-                folder = Path.Combine(Path.GetTempPath, Path.GetRandomFileName)
+        Private Function GetNewReloadFolder(count As Integer, time As DateTime) As String
+            Dim timeStamp As String = GetTimestampForReloadFolder(time)
+            Dim reloadFolder As String = _cadwikiTempFolder + "\" + timeStamp + "--Reload-" + count.ToString()
+            Dim uniqueFolder As String = reloadFolder
+            Dim int As Integer = 1
+            'While necessary, add "(#) until unique folder is found
+            Do While Directory.Exists(uniqueFolder)
+                uniqueFolder = reloadFolder + "(" + int.ToString + ")"
+                int = int + 1
             Loop
-            Return folder
+            Return uniqueFolder
+        End Function
+
+        Private Function GetTimestampForReloadFolder(time As Date) As String
+            Dim format As String = "yyyyMMdd--HH_mm_ss"
+            Dim timeStamp As String = time.ToString(format)
+            Return timeStamp
         End Function
 
         Private Sub WriteToDocEditor(message As String)
