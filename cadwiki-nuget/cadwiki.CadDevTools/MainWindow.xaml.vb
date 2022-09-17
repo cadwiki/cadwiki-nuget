@@ -1,7 +1,4 @@
-﻿Imports System.IO
-Imports cadwiki.NetUtils
-Imports cadwiki.AutoCAD2021.Interop.Utilities
-
+﻿
 Class MainWindow
     Public Sub New()
         ' This call is required by the designer.
