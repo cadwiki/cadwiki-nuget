@@ -16,8 +16,9 @@ Namespace AutoCAD
             Public DllPath As String = ""
             Public ReloadedAssembly As Assembly = Nothing
             Public OriginalAppDirectory As String = ""
-            Public DLLsToReload As New List(Of String) From {""}
-            Public Terminated As Boolean = False
+            Public DLLsToReload As New List(Of String)
+            Public SuccessfullyReloadedDlls As New List(Of String)
+            Public Terminated As Boolean = True
         End Class
 
         Public Sub ClearIni()
@@ -35,6 +36,8 @@ Namespace AutoCAD
         Private _keyOriginalAppDirectory As String = "OriginalAppDirectory"
         Private _keyDLLsToReload As String = "DLLsToReload"
         Private _keyTerminated As String = "Terminated"
+        Private _document As Document
+
         Public Sub New()
             _dependencyValues = New Dependencies
         End Sub
@@ -67,23 +70,63 @@ Namespace AutoCAD
             Return _dependencyValues.DllPath
         End Function
 
-        Public Sub Configure(currentIExtensionAppAssembly As Assembly)
-            ReadDependecyValuesFromIni()
-            ' If Terminated = True
-            ' And Versions don't match
-            ' this is the first Initalize call from any IExtensionApplication in this AutoCAD session
-            If GetTerminatedFlag() = True Then
-                'Not NetReloader.GetVersion().Equals(iExtensionAppVersion) Then
-                SetReloadCount(0)
-                SetInitialValues(currentIExtensionAppAssembly)
-            Else
-                SetReloadedValues(currentIExtensionAppAssembly)
-            End If
+        Public Function GetDllsToReload() As List(Of String)
+            Return _dependencyValues.DLLsToReload
+        End Function
+        Public Function GetDllsThatWereSuccessfullyReloaded() As List(Of String)
+            Return _dependencyValues.SuccessfullyReloadedDlls
+        End Function
 
-            If String.IsNullOrEmpty(GetIExtensionApplicationClassName()) Then
-                SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
-            End If
+        Public Sub Configure(currentIExtensionAppAssembly As Assembly,
+                             loadAllDllsInAppAssemblyDirectory As Boolean)
+            Try
+                ReadDependecyValuesFromIni()
+                ' If Terminated = True
+                ' And Versions don't match
+                ' this is the first Initalize call from any IExtensionApplication in this AutoCAD session
+                Dim wasLastReloaderStateTerminated As Boolean = GetTerminatedFlag()
+                If wasLastReloaderStateTerminated = True Then
+                    'Not NetReloader.GetVersion().Equals(iExtensionAppVersion) Then
+                    SetReloadCount(0)
+                    SetInitialValues(currentIExtensionAppAssembly)
+                    If loadAllDllsInAppAssemblyDirectory = True Then
+                        Dim dllPath As String = AcadAssemblyUtils.GetFileLocationFromCodeBase(currentIExtensionAppAssembly)
+                        ReloadAllDllsFoundInSameFolder(dllPath)
+                    End If
+                Else
+                    SetReloadedValues(currentIExtensionAppAssembly)
+                End If
+
+                If String.IsNullOrEmpty(GetIExtensionApplicationClassName()) Then
+                    SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
+                End If
+            Catch ex As Exception
+                Dim window As WpfUi.Templates.WindowAutoCADException = New WpfUi.Templates.WindowAutoCADException(ex)
+                window.ShowDialog()
+            End Try
+
         End Sub
+
+        Public Function ReloadAllDllsFoundInSameFolder(dllPath As String) As Tuple(Of Assembly, String)
+            Try
+                WriteToDocEditor(String.Format(vbLf & "Reload count {0}.", _dependencyValues.ReloadCount))
+                Dim newCount As Integer = _dependencyValues.ReloadCount + 1
+                Dim dllRepository As String = Path.GetDirectoryName(dllPath)
+                _tempFolder = GetNewTempFolder()
+                IO.Directory.CreateDirectory(_tempFolder)
+                Dim reloadFolder As String = _tempFolder + "\" + "Reload-" + newCount.ToString()
+                IO.Directory.CreateDirectory(reloadFolder)
+                _tempFolder = reloadFolder
+                Dim tuple As Tuple(Of Assembly, String) = ReloadAll(_tempFolder, dllRepository, newCount)
+                Return tuple
+            Catch ex As Exception
+                Dim window As WpfUi.Templates.WindowAutoCADException = New WpfUi.Templates.WindowAutoCADException(ex)
+                window.ShowDialog()
+                Return Nothing
+            End Try
+
+
+        End Function
 
         Public Sub Terminate()
             _dependencyValues = New Dependencies
@@ -138,21 +181,14 @@ Namespace AutoCAD
             If (dllPath IsNot Nothing) Then
 
                 Try
+                    _document = doc
                     'Remove all commands
                     CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath)
                     'Dim currentAssembly As Assembly = cadwiki.NetUtils.AssemblyUtils.GetCurrentlyExecutingAssembly()
                     'Dim currentTypes As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(currentAssembly)
                     ' Create reference to the IExtensionApplication object
                     'Dim currentAppObject As App = CType(AcadAssemblyUtils.GetAppObjectSafely(currentTypes), App)
-                    doc.Editor.WriteMessage(vbLf & "Reload count {0}.", _dependencyValues.ReloadCount)
-                    Dim newCount As Integer = _dependencyValues.ReloadCount + 1
-                    Dim dllRepository As String = Path.GetDirectoryName(dllPath)
-                    _tempFolder = GetNewTempFolder()
-                    IO.Directory.CreateDirectory(_tempFolder)
-                    Dim reloadFolder As String = _tempFolder + "\" + "Reload-" + newCount.ToString()
-                    IO.Directory.CreateDirectory(reloadFolder)
-                    _tempFolder = reloadFolder
-                    Dim tuple As Tuple(Of Assembly, String) = ReloadAll(doc, _tempFolder, dllRepository, newCount)
+                    Dim tuple As Tuple(Of Assembly, String) = ReloadAllDllsFoundInSameFolder(dllPath)
                     'AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf AssemblyResolve
                     Dim appAssembly As Assembly = tuple.Item1
                     Dim copiedMainDll As String = tuple.Item2
@@ -161,14 +197,14 @@ Namespace AutoCAD
                         _dependencyValues.OriginalAppDirectory = IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly.Location)
                     End If
                     Dim originalDirectory As String = _dependencyValues.OriginalAppDirectory
-                    doc.Editor.WriteMessage(vbLf & "Original app directory: {0}", originalDirectory)
-                    doc.Editor.WriteMessage(vbLf & "Dll reload path: {0}", copiedMainDll)
+                    WriteToDocEditor(String.Format(vbLf & "Original app directory: {0}", originalDirectory))
+                    WriteToDocEditor(String.Format(vbLf & "Dll reload path: {0}", copiedMainDll))
                     Dim types As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(appAssembly)
                     ' Create reference to the IExtensionApplication object
                     'Dim appObject As Object = AcadAssemblyUtils.GetAppObjectSafely(types)
-                    doc.Editor.WriteMessage(vbLf & "Dll reload complete.")
+                    WriteToDocEditor(vbLf & "Dll reload complete.")
                 Catch ex As Exception
-                    doc.Editor.WriteMessage(vbLf & "Exception" + ex.Message)
+                    WriteToDocEditor(vbLf & "Exception" + ex.Message)
                 End Try
             End If
         End Sub
@@ -271,7 +307,7 @@ Namespace AutoCAD
             _dependencyValues.Terminated = CType(stringValue, Boolean)
         End Sub
 
-        Private Function ReloadAll(doc As Document, newTempFolder As String, dllRepository As String, reloadCount As Integer) As Tuple(Of Assembly, String)
+        Private Function ReloadAll(newTempFolder As String, dllRepository As String, reloadCount As Integer) As Tuple(Of Assembly, String)
             Dim assemblies As Assembly() = AppDomain.CurrentDomain.GetAssemblies()
             Dim appAssembly As Assembly = Nothing
             Dim appAssemblyPath As String = ""
@@ -308,24 +344,27 @@ Namespace AutoCAD
             Next
             If String.IsNullOrEmpty(appAssemblyPath) Then
                 Dim errorMessage As String = "Unable to locate the Assembly whose name contains: " + _dependencyValues.IExtensionApplicationClassName
-                doc.Editor.WriteMessage(vbLf & errorMessage)
+                WriteToDocEditor(vbLf & errorMessage)
             Else
                 'Add appAssembly as the last Item of the list, to ensure all other dlls are loaded before
                 _dependencyValues.DLLsToReload.Add(appAssemblyPath)
             End If
-            ReloadDllsIntoAppDomain(doc)
+            'todo - print # of assemblies to reload
+            WriteToDocEditor(Environment.NewLine + "Found " + _dependencyValues.DLLsToReload.Count.ToString +
+                                    "assemblies to reload.")
+            ReloadDllsIntoAppDomain()
             Return New Tuple(Of Assembly, String)(appAssembly, appAssemblyPath)
         End Function
 
-        Private Sub ReloadDllsIntoAppDomain(doc As Document)
+        Private Sub ReloadDllsIntoAppDomain()
             Dim assemblyWithIExtensionApp As Assembly = Nothing
             For Each dllPath As String In _dependencyValues.DLLsToReload
                 Dim assemblyBytes As Byte() = Nothing
                 Try
                     assemblyBytes = System.IO.File.ReadAllBytes(dllPath)
                 Catch ex As Exception
-                    doc.Editor.WriteMessage(vbLf + "Error reading assembly to byte array: " + dllPath)
-                    doc.Editor.WriteMessage(vbLf + "Exception: " + ex.Message)
+                    WriteToDocEditor(vbLf + "Error reading assembly to byte array: " + dllPath)
+                    WriteToDocEditor(vbLf + "Exception: " + ex.Message)
                 End Try
                 Try
                     If dllPath.Contains(_dependencyValues.IExtensionApplicationClassName) Then
@@ -335,14 +374,18 @@ Namespace AutoCAD
                         WriteDependecyValuesToIni(_dependencyValues)
                         ' Upon loading the assemblyBytes from the IExtensionApplication class, the App.Initialize() method will be called
                         assemblyWithIExtensionApp = AppDomain.CurrentDomain.Load(assemblyBytes)
+                        'todo print load success
+                        WriteToDocEditor(Environment.NewLine + "Reloaded iExtensionAppAssembly dll: " + dllPath)
                         SetReloadedValues(assemblyWithIExtensionApp)
                         WriteDependecyValuesToIni(_dependencyValues)
                     Else
                         Dim reloadedAssembly As Assembly = AppDomain.CurrentDomain.Load(assemblyBytes)
+                        'todo print load success
+                        WriteToDocEditor(Environment.NewLine + "Reloaded dll: " + dllPath)
                     End If
                 Catch ex As Exception
-                    doc.Editor.WriteMessage(vbLf + "Error loading assembly: " + dllPath)
-                    doc.Editor.WriteMessage(vbLf + "Exception: " + ex.Message)
+                    WriteToDocEditor(vbLf + "Error loading assembly: " + dllPath)
+                    WriteToDocEditor(vbLf + "Exception: " + ex.Message)
                 End Try
             Next
             Dim currentTypes As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(assemblyWithIExtensionApp)
@@ -359,6 +402,12 @@ Namespace AutoCAD
             Return folder
         End Function
 
+        Private Sub WriteToDocEditor(message As String)
+            If _document IsNot Nothing Then
+                _document.Editor.WriteMessage(vbLf + message)
+                _document.Editor.WriteMessage(vbLf)
+            End If
+        End Sub
     End Class
 
 End Namespace
