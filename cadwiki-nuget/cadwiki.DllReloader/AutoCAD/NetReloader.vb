@@ -18,6 +18,7 @@ Namespace AutoCAD
             Public OriginalAppDirectory As String = ""
             Public DLLsToReload As New List(Of String)
             Public SuccessfullyReloadedDlls As New List(Of String)
+            Public DllsToSkip As New List(Of String) From {"cadwiki.AcRemoveCmdGroup.dll"}
             Public Terminated As Boolean = True
         End Class
 
@@ -76,6 +77,10 @@ Namespace AutoCAD
         Public Function GetDllsThatWereSuccessfullyReloaded() As List(Of String)
             Return _dependencyValues.SuccessfullyReloadedDlls
         End Function
+
+        Public Sub AddDllToSkip(dllName As String)
+            _dependencyValues.DllsToSkip.Add(dllName)
+        End Sub
 
         Public Sub Configure(currentIExtensionAppAssembly As Assembly,
                              loadAllDllsInAppAssemblyDirectory As Boolean)
@@ -312,6 +317,7 @@ Namespace AutoCAD
             Dim appAssembly As Assembly = Nothing
             Dim appAssemblyPath As String = ""
             _dependencyValues.DLLsToReload.Clear()
+            'find newer assemblies than what is in the current app domain
             For Each loadedAssembly As Assembly In assemblies
                 If Not loadedAssembly.IsDynamic Then
                     Dim dllPath As String = loadedAssembly.Location
@@ -342,6 +348,19 @@ Namespace AutoCAD
                     End If
                 End If
             Next
+            'add any assemblies that are not in the app domain at all yet
+            For Each dllFilePath As String In Directory.GetFiles(dllRepository, "*.dll")
+                Dim assembly As Assembly = GetAssemblyByName(Path.GetFileNameWithoutExtension(dllFilePath), assemblies)
+                Dim dllName As String = Path.GetFileName(dllFilePath)
+                'If assembly is nothing, then it wasn't in the app domain
+                If assembly Is Nothing Then
+                    If Not _dependencyValues.DllsToSkip.Contains(dllName) Then
+                        _dependencyValues.DLLsToReload.Add(dllFilePath)
+                    End If
+
+                End If
+            Next
+
             If String.IsNullOrEmpty(appAssemblyPath) Then
                 Dim errorMessage As String = "Unable to locate the Assembly whose name contains: " + _dependencyValues.IExtensionApplicationClassName
                 WriteToDocEditor(vbLf & errorMessage)
@@ -356,6 +375,14 @@ Namespace AutoCAD
             Return New Tuple(Of Assembly, String)(appAssembly, appAssemblyPath)
         End Function
 
+        Private Function GetAssemblyByName(name As String, assemblies As Assembly()) As Assembly
+            For Each assembly As Assembly In assemblies
+                If assembly.GetName().Name.Equals(name) Then
+                    Return assembly
+                End If
+            Next
+            Return Nothing
+        End Function
         Private Sub ReloadDllsIntoAppDomain()
             Dim assemblyWithIExtensionApp As Assembly = Nothing
             For Each dllPath As String In _dependencyValues.DLLsToReload
