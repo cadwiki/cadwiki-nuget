@@ -368,7 +368,6 @@ Namespace AutoCAD
                 'Add appAssembly as the last Item of the list, to ensure all other dlls are loaded before
                 _dependencyValues.DLLsToReload.Add(appAssemblyPath)
             End If
-            'todo - print # of assemblies to reload
             WriteToDocEditor("Found " + _dependencyValues.DLLsToReload.Count.ToString +
                                     "assemblies to reload.")
             ReloadDllsIntoAppDomain()
@@ -401,13 +400,11 @@ Namespace AutoCAD
                         WriteDependecyValuesToIni(_dependencyValues)
                         ' Upon loading the assemblyBytes from the IExtensionApplication class, the App.Initialize() method will be called
                         assemblyWithIExtensionApp = AppDomain.CurrentDomain.Load(assemblyBytes)
-                        'todo print load success
                         WriteToDocEditor("Reloaded iExtensionAppAssembly dll: " + dllPath)
                         SetReloadedValues(assemblyWithIExtensionApp)
                         WriteDependecyValuesToIni(_dependencyValues)
                     Else
                         Dim reloadedAssembly As Assembly = AppDomain.CurrentDomain.Load(assemblyBytes)
-                        'todo print load success
                         WriteToDocEditor("Reloaded dll: " + dllPath)
                     End If
                 Catch ex As Exception
