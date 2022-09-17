@@ -216,8 +216,13 @@ Namespace AutoCAD
                     WriteToDocEditor("---------------------------------------------")
                     WriteToDocEditor("---------------------------------------------")
                     WriteToDocEditor("Dll reload started.")
-                    'Remove all commands
+                    'Remove all commands from iExtensionAppAssembly
                     CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath)
+                    'Remove all commands from all assemblys in AppDomain
+                    For Each assembly As Assembly In AppDomain.CurrentDomain.GetAssemblies()
+                        WriteToDocEditor("Attemping to remove commands from: " + assembly.GetName.Name)
+                        CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, assembly, dllPath)
+                    Next
                     Dim tuple As Tuple(Of Assembly, String) = ReloadAllDllsFoundInSameFolder(dllPath)
                     Dim appAssembly As Assembly = tuple.Item1
                     Dim copiedMainDll As String = tuple.Item2
