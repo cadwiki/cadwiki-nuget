@@ -207,6 +207,9 @@ Namespace AutoCAD
 
                 Try
                     _document = doc
+                    WriteToDocEditor("---------------------------------------------")
+                    WriteToDocEditor("---------------------------------------------")
+                    WriteToDocEditor("Dll reload started.")
                     'Remove all commands
                     CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath)
                     Dim tuple As Tuple(Of Assembly, String) = ReloadAllDllsFoundInSameFolder(dllPath)
@@ -221,6 +224,8 @@ Namespace AutoCAD
                     WriteToDocEditor(String.Format("Dll reload path: {0}", copiedMainDll))
                     Dim types As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(appAssembly)
                     WriteToDocEditor("Dll reload complete.")
+                    WriteToDocEditor("---------------------------------------------")
+                    WriteToDocEditor("---------------------------------------------")
                 Catch ex As Exception
                     WriteToDocEditor("Exception" + ex.Message)
                 End Try
@@ -329,6 +334,11 @@ Namespace AutoCAD
             Dim assemblies As Assembly() = AppDomain.CurrentDomain.GetAssemblies()
             Dim appAssembly As Assembly = Nothing
             Dim appAssemblyPath As String = ""
+            WriteToDocEditor("Looking for dlls to reload.")
+            WriteToDocEditor("Skipping these dlls: ")
+            For Each dllToSkip As String In _dependencyValues.DllsToSkip
+                WriteToDocEditor(dllToSkip)
+            Next
             appAssemblyPath = AddDllsToReloadToList(tempDlls, assemblies, appAssemblyPath)
             If String.IsNullOrEmpty(appAssemblyPath) Then
                 Dim errorMessage As String = "Unable to locate the Assembly whose name contains: " + _dependencyValues.IExtensionApplicationClassName
@@ -338,7 +348,11 @@ Namespace AutoCAD
                 AddDllToReload(appAssemblyPath)
             End If
             WriteToDocEditor("Found " + _dependencyValues.DLLsToReload.Count.ToString +
-                                    " dlls to reload.")
+                                    " dlls that are able to be loaded into the current appdomain.")
+            WriteToDocEditor("These dlls have 1 of 2 qualities listed below:")
+            WriteToDocEditor("#1 They don't exist in the app domain yet.")
+            WriteToDocEditor("or")
+            WriteToDocEditor("#2 Their version number is newer than any assembly with the exact same name in the current app domain.")
             If _dependencyValues.DLLsToReload.Count > 0 Then
                 For Each dllToReload As String In _dependencyValues.DLLsToReload
                     WriteToDocEditor("Dll to reload: " + dllToReload)
