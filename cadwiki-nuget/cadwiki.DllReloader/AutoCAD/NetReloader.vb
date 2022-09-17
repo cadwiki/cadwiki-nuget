@@ -190,12 +190,7 @@ Namespace AutoCAD
                     _document = doc
                     'Remove all commands
                     CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath)
-                    'Dim currentAssembly As Assembly = cadwiki.NetUtils.AssemblyUtils.GetCurrentlyExecutingAssembly()
-                    'Dim currentTypes As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(currentAssembly)
-                    ' Create reference to the IExtensionApplication object
-                    'Dim currentAppObject As App = CType(AcadAssemblyUtils.GetAppObjectSafely(currentTypes), App)
                     Dim tuple As Tuple(Of Assembly, String) = ReloadAllDllsFoundInSameFolder(dllPath)
-                    'AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf AssemblyResolve
                     Dim appAssembly As Assembly = tuple.Item1
                     Dim copiedMainDll As String = tuple.Item2
 
@@ -206,8 +201,6 @@ Namespace AutoCAD
                     WriteToDocEditor(String.Format("Original app directory: {0}", originalDirectory))
                     WriteToDocEditor(String.Format("Dll reload path: {0}", copiedMainDll))
                     Dim types As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(appAssembly)
-                    ' Create reference to the IExtensionApplication object
-                    'Dim appObject As Object = AcadAssemblyUtils.GetAppObjectSafely(types)
                     WriteToDocEditor("Dll reload complete.")
                 Catch ex As Exception
                     WriteToDocEditor("Exception" + ex.Message)
