@@ -82,6 +82,12 @@ Namespace AutoCAD
             _dependencyValues.DllsToSkip.Add(dllName)
         End Sub
 
+        Private Sub AddDllToReload(dllFilePath As String)
+            Dim isThisADllToSkip As Boolean = _dependencyValues.DllsToSkip.Contains(Path.GetFileName(dllFilePath))
+            If Not isThisADllToSkip Then
+                _dependencyValues.DLLsToReload.Add(dllFilePath)
+            End If
+        End Sub
         Public Sub Configure(currentIExtensionAppAssembly As Assembly,
                              loadAllDllsInAppAssemblyDirectory As Boolean)
             Try
@@ -123,8 +129,8 @@ Namespace AutoCAD
                 IO.Directory.CreateDirectory(reloadFolder)
                 _tempFolder = reloadFolder
                 WriteToDocEditor("Created temp folder to copy dlls to for reloading: " + _tempFolder)
-                CopyAllDllsToTempFolder(dllPath, _tempFolder)
-                Dim tuple As Tuple(Of Assembly, String) = ReloadAll(_tempFolder, dllRepository, newCount)
+                Dim tempDlls As List(Of String) = CopyAllDllsToTempFolder(dllPath, _tempFolder)
+                Dim tuple As Tuple(Of Assembly, String) = ReloadAll(tempDlls, newCount)
                 Return tuple
             Catch ex As Exception
                 Dim window As WpfUi.Templates.WindowAutoCADException = New WpfUi.Templates.WindowAutoCADException(ex)
@@ -135,14 +141,17 @@ Namespace AutoCAD
 
         End Function
 
-        Private Sub CopyAllDllsToTempFolder(dllPath As String, tempFolder As String)
+        Private Function CopyAllDllsToTempFolder(dllPath As String, tempFolder As String) As List(Of String)
+            Dim tempDlls As New List(Of String)
             For Each dllFilePath As String In Directory.GetFiles(Path.GetDirectoryName(dllPath), "*.dll")
                 Dim dllName As String = Path.GetFileName(dllFilePath)
                 Dim tempFolderFilePath As String = tempFolder + "\" + dllName
                 IO.File.Copy(dllFilePath, tempFolderFilePath)
                 WriteToDocEditor("Copied: " + tempFolderFilePath)
+                tempDlls.Add(tempFolderFilePath)
             Next
-        End Sub
+            Return tempDlls
+        End Function
 
         Public Sub Terminate()
             _dependencyValues = New Dependencies
@@ -316,60 +325,17 @@ Namespace AutoCAD
             _dependencyValues.Terminated = CType(stringValue, Boolean)
         End Sub
 
-        Private Function ReloadAll(newTempFolder As String, dllRepository As String, reloadCount As Integer) As Tuple(Of Assembly, String)
+        Private Function ReloadAll(tempDlls As List(Of String), reloadCount As Integer) As Tuple(Of Assembly, String)
             Dim assemblies As Assembly() = AppDomain.CurrentDomain.GetAssemblies()
             Dim appAssembly As Assembly = Nothing
             Dim appAssemblyPath As String = ""
-            _dependencyValues.DLLsToReload.Clear()
-            'find newer assemblies than what is in the current app domain
-            For Each loadedAssembly As Assembly In assemblies
-                If Not loadedAssembly.IsDynamic Then
-                    Dim dllPath As String = loadedAssembly.Location
-                    Dim dllName As String = Path.GetFileName(dllPath)
-                    Dim dllToReload As String = dllRepository + "\" + dllName
-                    If File.Exists(dllToReload) Then
-                        Dim copedFileName As String = dllName
-                        Dim codeBaseFolder As String = AcadAssemblyUtils.GetFolderLocationFromCodeBase(loadedAssembly)
-                        Dim tempFolderFilePath As String = newTempFolder + "\" + copedFileName
-                        Dim assemblyName As String = IO.Path.GetFileNameWithoutExtension(dllName)
-                        Dim newestAssemblyWithNameInAppDomain As Assembly = AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.GetNewestAssembly(assemblies, assemblyName, Nothing)
-                        Dim newestVersionInAppDomain As String = AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.GetAssemblyVersionFromFullName(newestAssemblyWithNameInAppDomain.FullName)
-                        Dim copiedFvi As FileVersionInfo = FileVersionInfo.GetVersionInfo(tempFolderFilePath)
-                        Dim copiedVersion As String = copiedFvi.FileVersion
-                        Dim isCopiedDllNewer As Integer = AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.CompareFileVersion(copiedVersion, CStr(newestVersionInAppDomain))
-                        ' For dlls that already exist in the app domain, only reload if the copy has a newer file version
-                        ' which result in a 1 comparision between file versions
-                        If isCopiedDllNewer = 1 Then
-                            ' If dll name contains project name, don't store to list
-                            If dllName.Contains(_dependencyValues.IExtensionApplicationClassName) Then
-                                appAssemblyPath = tempFolderFilePath
-                            Else
-                                'Else store to list
-                                _dependencyValues.DLLsToReload.Add(tempFolderFilePath)
-                            End If
-                        End If
-                    End If
-                End If
-            Next
-            'add any assemblies that are not in the app domain at all yet
-            For Each dllFilePath As String In Directory.GetFiles(dllRepository, "*.dll")
-                Dim assembly As Assembly = GetAssemblyByName(Path.GetFileNameWithoutExtension(dllFilePath), assemblies)
-                Dim dllName As String = Path.GetFileName(dllFilePath)
-                'If assembly is nothing, then it wasn't in the app domain
-                If assembly Is Nothing Then
-                    If Not _dependencyValues.DllsToSkip.Contains(dllName) Then
-                        _dependencyValues.DLLsToReload.Add(dllFilePath)
-                    End If
-
-                End If
-            Next
-
+            appAssemblyPath = AddDllsToReloadToList(tempDlls, assemblies, appAssemblyPath)
             If String.IsNullOrEmpty(appAssemblyPath) Then
                 Dim errorMessage As String = "Unable to locate the Assembly whose name contains: " + _dependencyValues.IExtensionApplicationClassName
                 WriteToDocEditor(errorMessage)
             Else
                 'Add appAssembly as the last Item of the list, to ensure all other dlls are loaded before
-                _dependencyValues.DLLsToReload.Add(appAssemblyPath)
+                AddDllToReload(appAssemblyPath)
             End If
             WriteToDocEditor("Found " + _dependencyValues.DLLsToReload.Count.ToString +
                                     " dlls to reload.")
@@ -380,6 +346,46 @@ Namespace AutoCAD
             End If
             ReloadDllsIntoAppDomain()
             Return New Tuple(Of Assembly, String)(appAssembly, appAssemblyPath)
+        End Function
+
+        Private Function AddDllsToReloadToList(tempDlls As List(Of String), assemblies() As Assembly, appAssemblyPath As String) As String
+            _dependencyValues.DLLsToReload.Clear()
+            For Each tempDll As String In tempDlls
+                If File.Exists(tempDll) Then
+                    Dim dllName As String = IO.Path.GetFileName(tempDll)
+                    Dim assemblyName As String = IO.Path.GetFileNameWithoutExtension(tempDll)
+                    Dim newestAssemblyWithNameInAppDomain As Assembly =
+                        AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.GetNewestAssembly(assemblies, assemblyName, Nothing)
+                    ' If there is not an existing assembly like this in the app domain
+                    ' add to list
+                    If newestAssemblyWithNameInAppDomain Is Nothing Then
+                        AddDllToReload(tempDll)
+                    Else
+                        ' Else do version checks
+                        Dim newestVersionInAppDomain As String =
+                        AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.
+                            GetAssemblyVersionFromFullName(newestAssemblyWithNameInAppDomain.FullName)
+                        Dim copiedFvi As FileVersionInfo = FileVersionInfo.GetVersionInfo(tempDll)
+                        Dim copiedVersion As String = copiedFvi.FileVersion
+                        Dim isCopiedDllNewer As Integer = AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.CompareFileVersion(copiedVersion, CStr(newestVersionInAppDomain))
+                        ' For dlls that already exist in the app domain, only reload if the copy has a newer file version
+                        ' which result in a 1 comparision between file versions
+                        If isCopiedDllNewer = 1 Then
+                            ' If dll name contains project name, don't store to list
+                            If assemblyName.Contains(_dependencyValues.IExtensionApplicationClassName) Then
+                                appAssemblyPath = tempDll
+                            Else
+                                'Else store to list
+                                AddDllToReload(tempDll)
+                            End If
+                        End If
+                    End If
+
+                Else
+                End If
+            Next
+
+            Return appAssemblyPath
         End Function
 
         Private Function GetAssemblyByName(name As String, assemblies As Assembly()) As Assembly
