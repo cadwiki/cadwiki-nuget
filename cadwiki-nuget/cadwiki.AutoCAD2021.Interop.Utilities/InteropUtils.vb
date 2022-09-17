@@ -7,7 +7,7 @@ Imports System.Runtime.InteropServices
 Imports Autodesk.AutoCAD.Interop
 Imports Autodesk.AutoCAD.Interop.Common
 
-Public Class Utils
+Public Class InteropUtils
     Public Declare Auto Function GetWindowThreadProcessId Lib "user32"(ByVal hwnd As IntPtr,
         ByRef lpdwProcessId As IntPtr) As IntPtr
 
