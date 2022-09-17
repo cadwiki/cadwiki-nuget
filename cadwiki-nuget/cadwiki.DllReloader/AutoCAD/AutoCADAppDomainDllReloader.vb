@@ -91,6 +91,9 @@ Namespace AutoCAD
         Public Sub Configure(currentIExtensionAppAssembly As Assembly,
                              loadAllDllsInAppAssemblyDirectory As Boolean)
             Try
+                WriteToDocEditor("---------------------------------------------")
+                WriteToDocEditor("---------------------------------------------")
+                WriteToDocEditor("Configure started.")
                 ReadDependecyValuesFromIni()
                 ' If Terminated = True
                 ' And Versions don't match
@@ -111,6 +114,9 @@ Namespace AutoCAD
                 If String.IsNullOrEmpty(GetIExtensionApplicationClassName()) Then
                     SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
                 End If
+                WriteToDocEditor("Configure complete.")
+                WriteToDocEditor("---------------------------------------------")
+                WriteToDocEditor("---------------------------------------------")
             Catch ex As Exception
                 Dim window As WpfUi.Templates.WindowAutoCADException = New WpfUi.Templates.WindowAutoCADException(ex)
                 window.ShowDialog()
