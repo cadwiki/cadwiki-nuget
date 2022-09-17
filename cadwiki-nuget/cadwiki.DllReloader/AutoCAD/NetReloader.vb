@@ -122,6 +122,7 @@ Namespace AutoCAD
                 Dim reloadFolder As String = _tempFolder + "\" + "Reload-" + newCount.ToString()
                 IO.Directory.CreateDirectory(reloadFolder)
                 _tempFolder = reloadFolder
+                WriteToDocEditor("Created temp folder to copy dll's to for reloading: " + _tempFolder)
                 Dim tuple As Tuple(Of Assembly, String) = ReloadAll(_tempFolder, dllRepository, newCount)
                 Return tuple
             Catch ex As Exception
@@ -369,7 +370,12 @@ Namespace AutoCAD
                 _dependencyValues.DLLsToReload.Add(appAssemblyPath)
             End If
             WriteToDocEditor("Found " + _dependencyValues.DLLsToReload.Count.ToString +
-                                    "assemblies to reload.")
+                                    " dlls to reload.")
+            If _dependencyValues.DLLsToReload.Count > 0 Then
+                For Each dllToReload As String In _dependencyValues.DLLsToReload
+                    WriteToDocEditor("Dll to reload: " + dllToReload)
+                Next
+            End If
             ReloadDllsIntoAppDomain()
             Return New Tuple(Of Assembly, String)(appAssembly, appAssemblyPath)
         End Function
