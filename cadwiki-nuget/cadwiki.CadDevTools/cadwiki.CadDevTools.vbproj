@@ -199,6 +199,10 @@
       <Project>{35f24f06-0f6e-4685-a07a-b53cc12be4f0}</Project>
       <Name>AcadInterop2021</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cadwiki.CadDevTools2\cadwiki.CadDevTools2.vbproj">
+      <Project>{939ad7b0-3396-47bc-82ee-8b087cf164fd}</Project>
+      <Name>cadwiki.CadDevTools2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets" Condition="Exists('..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets')" />
