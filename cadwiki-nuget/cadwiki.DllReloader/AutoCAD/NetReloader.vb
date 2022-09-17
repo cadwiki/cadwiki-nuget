@@ -122,7 +122,7 @@ Namespace AutoCAD
                 Dim reloadFolder As String = _tempFolder + "\" + "Reload-" + newCount.ToString()
                 IO.Directory.CreateDirectory(reloadFolder)
                 _tempFolder = reloadFolder
-                WriteToDocEditor("Created temp folder to copy dll's to for reloading: " + _tempFolder)
+                WriteToDocEditor("Created temp folder to copy dlls to for reloading: " + _tempFolder)
                 Dim tuple As Tuple(Of Assembly, String) = ReloadAll(_tempFolder, dllRepository, newCount)
                 Return tuple
             Catch ex As Exception
