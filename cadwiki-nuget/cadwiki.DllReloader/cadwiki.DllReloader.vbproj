@@ -166,7 +166,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="AutoCAD\UiRibbon\Buttons\DllReloadClickCommandHandler.vb" />
-    <Compile Include="AutoCAD\NetReloader.vb" />
+    <Compile Include="AutoCAD\AutoCADAppDomainDllReloader.vb" />
     <Compile Include="AutoCAD\UiRibbon\Buttons\UiRouter.vb" />
   </ItemGroup>
   <ItemGroup>
