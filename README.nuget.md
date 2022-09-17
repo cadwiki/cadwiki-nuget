@@ -27,6 +27,12 @@ nuget pack cadwiki.NUnitTestRunner.vbproj -IncludeReferencedProjects -properties
 nuget pack cadwiki.DllReloader.vbproj -IncludeReferencedProjects -properties Configuration=Release -properties Platform=x64
 ```
 
+### Uninstall local package from projects
+```
+Get-Project -All | UnInstall-Package cadwiki.NUnitTestRunner
+Get-Project -All | UnInstall-Package cadwiki.DllReloader
+```
+
 ### Install local package to another project
 Copy output .nupkg file path from command above for use later
 Install nuget package in another solution / project with these commands 
@@ -38,13 +44,9 @@ Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.0.nupkg
 
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.2.nupkg
+E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.3.nupkg
 ```
 
-### Uninstall local package from projects
-```
-Get-Project -All | UnInstall-Package cadwiki.NUnitTestRunner
-Get-Project -All | UnInstall-Package cadwiki.DllReloader
-```
 
 
 ### Push nuget package 
