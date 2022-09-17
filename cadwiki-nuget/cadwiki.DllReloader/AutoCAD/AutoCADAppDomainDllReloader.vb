@@ -123,6 +123,7 @@ Namespace AutoCAD
                 IO.Directory.CreateDirectory(reloadFolder)
                 _tempFolder = reloadFolder
                 WriteToDocEditor("Created temp folder to copy dlls to for reloading: " + _tempFolder)
+                CopyAllDllsToTempFolder(dllPath, _tempFolder)
                 Dim tuple As Tuple(Of Assembly, String) = ReloadAll(_tempFolder, dllRepository, newCount)
                 Return tuple
             Catch ex As Exception
@@ -133,6 +134,15 @@ Namespace AutoCAD
 
 
         End Function
+
+        Private Sub CopyAllDllsToTempFolder(dllPath As String, tempFolder As String)
+            For Each dllFilePath As String In Directory.GetFiles(Path.GetDirectoryName(dllPath), "*.dll")
+                Dim dllName As String = Path.GetFileName(dllFilePath)
+                Dim tempFolderFilePath As String = tempFolder + "\" + dllName
+                IO.File.Copy(dllFilePath, tempFolderFilePath)
+                WriteToDocEditor("Copied: " + tempFolderFilePath)
+            Next
+        End Sub
 
         Public Sub Terminate()
             _dependencyValues = New Dependencies
@@ -321,7 +331,6 @@ Namespace AutoCAD
                         Dim copedFileName As String = dllName
                         Dim codeBaseFolder As String = AcadAssemblyUtils.GetFolderLocationFromCodeBase(loadedAssembly)
                         Dim tempFolderFilePath As String = newTempFolder + "\" + copedFileName
-                        IO.File.Copy(dllToReload, tempFolderFilePath)
                         Dim assemblyName As String = IO.Path.GetFileNameWithoutExtension(dllName)
                         Dim newestAssemblyWithNameInAppDomain As Assembly = AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.GetNewestAssembly(assemblies, assemblyName, Nothing)
                         Dim newestVersionInAppDomain As String = AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.GetAssemblyVersionFromFullName(newestAssemblyWithNameInAppDomain.FullName)
