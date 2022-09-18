@@ -15,8 +15,8 @@ Namespace Templates
 
         Public Sub New(ex As Exception)
             InitializeComponent()
-            'TextBoxMessage.Text = ex.Message
-            'TextBoxStackTrace.Text = ex.StackTrace
+            TextBoxMessage.Text = ex.Message
+            TextBoxStackTrace.Text = ex.StackTrace
         End Sub
 
         Private Sub ButtonOk_Click(sender As Object, e As RoutedEventArgs)
