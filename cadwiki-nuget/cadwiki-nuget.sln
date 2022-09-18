@@ -20,9 +20,9 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AutoCAD2021.Interop.Utilities", "cadwiki.AutoCAD2021.Interop.Utilities\cadwiki.AutoCAD2021.Interop.Utilities.vbproj", "{35F24F06-0F6E-4685-A07A-B53CC12BE4F0}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.CadDevTools", "cadwiki.CadDevTools\cadwiki.CadDevTools.vbproj", "{13E57F0E-ECA8-4667-BD80-5A17F91CE5A4}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CadDevToolsDriver", "CadDevToolsDriver\CadDevToolsDriver.vbproj", "{13E57F0E-ECA8-4667-BD80-5A17F91CE5A4}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.CadDevTools2", "cadwiki.CadDevTools2\cadwiki.CadDevTools2.vbproj", "{939AD7B0-3396-47BC-82EE-8B087CF164FD}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.CadDevTools", "cadwiki.CadDevTools\cadwiki.CadDevTools.vbproj", "{939AD7B0-3396-47BC-82EE-8B087CF164FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
