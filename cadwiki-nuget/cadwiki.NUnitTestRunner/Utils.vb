@@ -62,7 +62,6 @@ Public Class Utils
             For Each methodInfo As MethodInfo In methodInfos
                 Dim testAttribute As Object = DoesMethodInfoHaveTestAttribute(methodInfo)
                 If (testAttribute IsNot Nothing) Then
-                    Dim commandMethodAttribute As TestAttribute = CType(testAttribute, TestAttribute)
                     Dim tuple As Tuple(Of Type, MethodInfo) = New Tuple(Of Type, MethodInfo)(type, methodInfo)
                     typeToMethodInfo.Add(tuple)
                 End If
@@ -77,7 +76,7 @@ Public Class Utils
         For Each objectAttribute As Object In objectAttributes
             Dim attributeType As Type = objectAttribute.GetType()
             Dim setupAttribute As Type = GetType(SetUpAttribute)
-            If (attributeType Is setupAttribute) Then
+            If (attributeType.FullName.Equals(setupAttribute.FullName)) Then
                 Return objectAttribute
             End If
         Next
@@ -89,7 +88,7 @@ Public Class Utils
         For Each objectAttribute As Object In objectAttributes
             Dim attributeType As Type = objectAttribute.GetType()
             Dim tearDownAttribute As Type = GetType(TearDownAttribute)
-            If (attributeType Is tearDownAttribute) Then
+            If (attributeType.FullName.Equals(tearDownAttribute.FullName)) Then
                 Return objectAttribute
             End If
         Next
@@ -101,7 +100,7 @@ Public Class Utils
         For Each objectAttribute As Object In objectAttributes
             Dim attributeType As Type = objectAttribute.GetType()
             Dim testAttribute As Type = GetType(TestAttribute)
-            If (attributeType Is testAttribute) Then
+            If (attributeType.FullName.Equals(testAttribute.FullName)) Then
                 Return objectAttribute
             End If
         Next
