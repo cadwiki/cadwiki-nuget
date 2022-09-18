@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>cadwiki.CadDevTools</id>
+	<!-- need to update cadwiki.CadDevTools.targets file when version changes-->
+    <version>1.0.0</version>
+    <authors>cadwiki</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
+    <description>Dev toolset</description>
+    <releaseNotes></releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>cadwiki dllreload reload assembly autocad appdomain</tags>
+    <contentFiles>
+        <files include="lib\cadwiki.AcRemoveCmdGroup.dll" buildAction="None" copyToOutput="true" />
+    </contentFiles>
+    <dependencies>
+        <group targetFramework=".NETFramework4.7.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\$configuration$\*.dll" exclude="**cadwiki.AcRemoveCmdGroup.dll" target="lib\net472"/>
+	<file src="bin\$configuration$\*.pdb" exclude="**cadwiki.AcRemoveCmdGroup.pdb" target="lib\net472"/>
+	<file src="bin\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="Build"/>
+	<file src="cadwiki.CadDevTools.targets" target="Build"/>
+  </files>
+</package>

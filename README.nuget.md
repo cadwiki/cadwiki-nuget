@@ -10,6 +10,7 @@ Cd into directory with .csproj or .vbproj
 ```
 cd cadwiki.NUnitTestRunner
 cd cadwiki.DllReloader
+cd cadwiki.CadDevTools
 nuget spec
 nuget spec -Force ./bin/Release/x64/cadwiki.NUnitTestRunner.dll
 ```
@@ -20,6 +21,7 @@ nuget spec -Force ./bin/Release/x64/cadwiki.NUnitTestRunner.dll
 nuget pack cadwiki.NUnitTestRunner.nuspec -properties Configuration=Release -properties Platform="Any CPU"
 nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform="Any CPU"
 nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+nuget pack cadwiki.CadDevTools.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
 ```
 ### Create new package using relative .vbproj
 ```
@@ -31,7 +33,7 @@ nuget pack cadwiki.DllReloader.vbproj -IncludeReferencedProjects -properties Con
 ```
 Get-Project -All | UnInstall-Package AutoCAD2021.Interop.Base
 Get-Project -All | UnInstall-Package cadwiki.DllReloader
-Get-Project -All | UnInstall-Package cadwiki.DllReloader
+Get-Project -All | UnInstall-Package cadwiki.CadDevTools
 ```
 
 ### Install local package to another project
@@ -46,6 +48,7 @@ Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.0.nupkg
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.2.nupkg
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.3.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools\cadwiki.CadDevTools.1.0.0.nupkg
 ```
 
 
