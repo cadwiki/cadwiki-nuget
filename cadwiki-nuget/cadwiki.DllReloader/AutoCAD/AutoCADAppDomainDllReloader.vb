@@ -19,7 +19,7 @@ Namespace AutoCAD
             Public OriginalAppDirectory As String = ""
             Public DLLsToReload As New List(Of String)
             Public SuccessfullyReloadedDlls As New List(Of String)
-            Public DllsToSkip As New List(Of String) From {"cadwiki.AcRemoveCmdGroup.dll"}
+            Public DllsToSkip As New List(Of String) From {"cadwiki.AcRemoveCmdGroup.dll", "cadwiki.NUnitTestRunner.dll"}
             Public Terminated As Boolean = True
         End Class
 
