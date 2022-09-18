@@ -8,6 +8,7 @@ Imports System.Windows.Media
 Imports cadwiki.NetUtils
 Imports Application = System.Windows.Forms.Application
 Imports cadwiki.NUnitTestRunner.Results
+Imports System.Reflection
 
 Namespace Ui
     Public Class WindowTestRunner
@@ -17,6 +18,14 @@ Namespace Ui
         ReadOnly converter As BrushConverter = New BrushConverter()
         Public ReadOnly Green As Brush = CType(converter.ConvertFromString("#00FF00"), Brush)
         Public ReadOnly Red As Brush = CType(converter.ConvertFromString("#FF0000"), Brush)
+
+        Public Shared Sub LoadXaml(ByVal obj As Object)
+            Dim type As Type = obj.GetType()
+            Dim assemblyName As AssemblyName = type.Assembly.GetName()
+            Dim uristring As String = String.Format("/{0};v{1};component/{2}.xaml", assemblyName.Name, assemblyName.Version, type.Name)
+            Dim uri As Uri = New Uri(uristring, UriKind.Relative)
+            System.Windows.Application.LoadComponent(obj, uri)
+        End Sub
 
 
         Private Sub TestMessages_OnChanged(sender As Object, e As EventArgs) Handles ObservableResults.MessageAdded
@@ -71,16 +80,17 @@ Namespace Ui
         End Function
 
         Public Sub New()
+            LoadXaml(Me)
             InitializeComponent()
             Init()
         End Sub
 
         Public Sub Init()
-
             ConsoleRichTextBox.AppendText(vbLf & "NunitTestRunner started")
         End Sub
 
         Public Sub New(suiteResults As ObservableTestSuiteResults)
+            LoadXaml(Me)
             InitializeComponent()
             Init()
         End Sub
