@@ -369,22 +369,28 @@ Namespace AutoCAD
                 'Add appAssembly as the last Item of the list, to ensure all other dlls are loaded before
                 AddDllToReload(appAssemblyPath)
             End If
-            WriteToDocEditor("Found " + _dependencyValues.DLLsToReload.Count.ToString +
-                                    " dlls that are able to be loaded into the current appdomain.")
-            WriteToDocEditor("These dlls have 1 of 2 qualities listed below:")
-            WriteToDocEditor("#1 They don't exist in the app domain yet.")
-            WriteToDocEditor("or")
-            WriteToDocEditor("#2 Their version number is newer than any assembly with the exact same name in the current app domain.")
-            If _dependencyValues.DLLsToReload.Count > 0 Then
-                For Each dllToReload As String In _dependencyValues.DLLsToReload
-                    WriteToDocEditor("Dll to reload: " + dllToReload)
-                Next
-            End If
+            WriteInfoAboutDllsToReload()
             'Remove all commands that will be reloaded into the app domain
             RemoveAllCommandsFromAnyAssemblyThatWillBeReloaded()
             ReloadDllsIntoAppDomain()
             Return New Tuple(Of Assembly, String)(appAssembly, appAssemblyPath)
         End Function
+
+        Private Sub WriteInfoAboutDllsToReload()
+            WriteToDocEditor("Found " + _dependencyValues.DLLsToReload.Count.ToString +
+                                    " dlls that are able to be loaded into the current appdomain.")
+            If _dependencyValues.DLLsToReload.Count > 0 Then
+                WriteToDocEditor("These dlls have 1 of 2 qualities listed below:")
+                WriteToDocEditor("#1 They don't exist in the app domain yet.")
+                WriteToDocEditor("or")
+                WriteToDocEditor("#2 Their version number is newer than any assembly with the exact same name in the current app domain.")
+                If _dependencyValues.DLLsToReload.Count > 0 Then
+                    For Each dllToReload As String In _dependencyValues.DLLsToReload
+                        WriteToDocEditor("Dll to reload: " + dllToReload)
+                    Next
+                End If
+            End If
+        End Sub
 
         Private Sub RemoveAllCommandsFromAnyAssemblyThatWillBeReloaded()
             Dim assemblies As Assembly() = AppDomain.CurrentDomain.GetAssemblies()
