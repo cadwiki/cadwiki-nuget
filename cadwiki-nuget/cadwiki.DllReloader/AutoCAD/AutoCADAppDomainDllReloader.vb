@@ -29,7 +29,7 @@ Namespace AutoCAD
 
         Private _dependencyValues As Dependencies
         Private _cadwikiTempFolder As String = Path.GetTempPath() + "cadwiki"
-        Private _iniPath As String = _cadwikiTempFolder + "\\" + "NetReloader.ini"
+        Private _iniPath As String = _cadwikiTempFolder + "\" + "NetReloader.ini"
         Private _tempFolder As String
         Private _sectionSettings As String = "Settings"
         Private _keyProjectName As String = "ProjectName"
