@@ -195,7 +195,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CadDevToolsDriver2\CadDevToolsDriver2.vbproj">
+    <ProjectReference Include="..\cadwiki.CadDevTools\cadwiki.CadDevTools.vbproj">
       <Project>{939ad7b0-3396-47bc-82ee-8b087cf164fd}</Project>
       <Name>CadDevToolsDriver2</Name>
     </ProjectReference>
