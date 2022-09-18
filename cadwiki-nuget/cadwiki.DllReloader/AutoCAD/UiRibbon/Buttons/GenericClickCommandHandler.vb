@@ -38,13 +38,12 @@ Namespace AutoCAD.UiRibbon.Buttons
 
 
         Public Sub Execute(parameter As Object) Implements ICommand.Execute
-
-            If TypeOf parameter Is RibbonButton Then
-                Dim button As RibbonButton = TryCast(parameter, RibbonButton)
-                Dim netReloader As AutoCADAppDomainDllReloader = Nothing
-                ConsoleOut("GenericClickCommandHandler Executing Method.")
-                Dim uiRouter As UiRouter = Nothing
-                Try
+            Dim uiRouter As UiRouter = Nothing
+            Dim netReloader As AutoCADAppDomainDllReloader = Nothing
+            Try
+                If TypeOf parameter Is RibbonButton Then
+                    Dim button As RibbonButton = TryCast(parameter, RibbonButton)
+                    ConsoleOut("GenericClickCommandHandler Executing Method.")
                     uiRouter = button.CommandParameter
                     netReloader = uiRouter.NetReloader
                     Dim assemblyName As String = uiRouter.AssemblyName
@@ -67,22 +66,25 @@ Namespace AutoCAD.UiRibbon.Buttons
                             methodInfo.Invoke(o, Nothing)
                         End If
                     End If
+                End If
+            Catch ex As Exception
+                Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
+                        New WpfUi.Templates.WindowAutoCADException(ex)
+                window.ShowDialog()
+                ConsoleOut("Exception: " & ex.Message)
+                If (ex.Message.Equals("The path is not of a legal form.")) Then
+                    ConsoleOut("Mostly likely caused by incorrect method name in UiRouter object.")
+                    ConsoleOut("Double check that the Method name and Full class name above are correct.")
+                Else
+                    ConsoleOut("Mostly likely caused by incorrect solution name in UiRouter object: " &
+                            netReloader.GetIExtensionApplicationClassName())
+                End If
 
-                Catch ex As Exception
-                    ConsoleOut("Exception: " & ex.Message)
-                    If (ex.Message.Equals("The path is not of a legal form.")) Then
-                        ConsoleOut("Mostly likely caused by incorrect method name in UiRouter object.")
-                        ConsoleOut("Double check that the Method name and Full class name above are correct.")
-                    Else
-                        ConsoleOut("Mostly likely caused by incorrect solution name in UiRouter object: " &
-                                netReloader.GetIExtensionApplicationClassName())
-                    End If
+                If (UiRouter IsNot Nothing) Then
+                    ConsoleOut("UiRouter object: " & UiRouter.FullClassName)
+                End If
+            End Try
 
-                    If (uiRouter IsNot Nothing) Then
-                        ConsoleOut("UiRouter object: " & uiRouter.FullClassName)
-                    End If
-                End Try
-            End If
         End Sub
 
         Public Shared Function GetNewestAssembly(assemblies() As Assembly, assemblyName As String, dllLocation As String) _

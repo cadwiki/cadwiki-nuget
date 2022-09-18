@@ -150,6 +150,10 @@
       <Project>{3C1158DA-4A90-4FC1-8CCC-6F1E4787A118}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.vbproj">
+      <Project>{94651d61-ebd0-4d0b-8358-79b14c1805f8}</Project>
+      <Name>cadwiki.WpfUi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

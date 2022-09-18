@@ -2,17 +2,22 @@
 Option Infer Off
 Option Explicit On
 
+Imports System.Windows
 Imports cadwiki.NUnitTestRunner.Results
 Namespace Ui
     Public Class Driver
 
         Private _regressionTestTypes As Type()
-        Private _window As WindowTestRunner
+        Private _window As New WindowTestRunner()
 
         Public Function GetWindow() As WindowTestRunner
             Return _window
         End Function
 
+
+        Public Sub New()
+            _window = New WindowTestRunner()
+        End Sub
 
         Public Sub New(suiteResult As ObservableTestSuiteResults, regressionTestTypes As Type())
             Try
@@ -27,7 +32,9 @@ Namespace Ui
                 _window = New WindowTestRunner(suiteResult)
                 _window.AddResult()
             Catch ex As Exception
-
+                Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
+                    New WpfUi.Templates.WindowAutoCADException(ex)
+                window.ShowDialog()
             End Try
         End Sub
 
