@@ -77,7 +77,7 @@ Public Class Utils
         For Each objectAttribute As Object In objectAttributes
             Dim attributeType As Type = objectAttribute.GetType()
             Dim setupAttribute As Type = GetType(SetUpAttribute)
-            If (attributeType.Equals(setupAttribute)) Then
+            If (attributeType Is setupAttribute) Then
                 Return objectAttribute
             End If
         Next
@@ -89,7 +89,7 @@ Public Class Utils
         For Each objectAttribute As Object In objectAttributes
             Dim attributeType As Type = objectAttribute.GetType()
             Dim tearDownAttribute As Type = GetType(TearDownAttribute)
-            If (attributeType.Equals(tearDownAttribute)) Then
+            If (attributeType Is tearDownAttribute) Then
                 Return objectAttribute
             End If
         Next
@@ -101,7 +101,7 @@ Public Class Utils
         For Each objectAttribute As Object In objectAttributes
             Dim attributeType As Type = objectAttribute.GetType()
             Dim testAttribute As Type = GetType(TestAttribute)
-            If (attributeType.Equals(testAttribute)) Then
+            If (attributeType Is testAttribute) Then
                 Return objectAttribute
             End If
         Next
