@@ -137,9 +137,17 @@
       <Project>{35F24F06-0F6E-4685-A07A-B53CC12BE4F0}</Project>
       <Name>cadwiki.AutoCAD2021.Interop.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.vbproj">
+      <Project>{f63b3063-2044-4f17-ac6c-ff343c56b03d}</Project>
+      <Name>cadwiki.DllReloader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
       <Project>{3C1158DA-4A90-4FC1-8CCC-6F1E4787A118}</Project>
       <Name>cadwiki.NetUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.vbproj">
+      <Project>{20525de1-199c-417f-85a1-bda52f76edd1}</Project>
+      <Name>cadwiki.NUnitTestRunner</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.vbproj">
       <Project>{94651d61-ebd0-4d0b-8358-79b14c1805f8}</Project>

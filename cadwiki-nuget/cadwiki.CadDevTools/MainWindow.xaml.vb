@@ -8,6 +8,8 @@ Class MainWindow
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
+        Dim autocadReloader As New cadwiki.DllReloader.AutoCAD.AutoCADAppDomainDllReloader()
+        autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
         If Not previousAutoCADLocationValue.Equals(noneValue) And File.Exists(previousAutoCADLocationValue) Then
             ButtonLoadNewest.IsEnabled = True
