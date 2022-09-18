@@ -1,8 +1,10 @@
 ﻿Imports System.IO
 Imports cadwiki.NetUtils
-Imports cadwiki.AutoCAD2021.Interop.Utilities
+
 Imports System.Windows
 Imports System.Windows.Documents
+Imports InteropUtils2021 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
+Imports InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 
 Class MainWindow
     Public Sub New()
@@ -145,18 +147,31 @@ Class MainWindow
             TextBlockMessage,
             "Please wait until CAD launches netloads the dll.")
         If acadLocation.Contains("2021") Then
-            Dim interop As InteropUtils = New InteropUtils()
-            Dim isAutoCADRunning As Boolean = interop.IsAutoCADRunning()
+            Dim interop2021 As InteropUtils2021 = New InteropUtils2021()
+            Dim isAutoCADRunning As Boolean = interop2021.IsAutoCADRunning()
             If isAutoCADRunning = False Then
                 System.Windows.Forms.Application.DoEvents()
                 Dim processInfo As ProcessStartInfo = New ProcessStartInfo With {
                     .FileName = acadLocation
                     }
-                interop.StartAutoCADApp(processInfo)
+                interop2021.StartAutoCADApp(processInfo)
             End If
-            interop.ConfigureRunningAutoCADForUsage()
+            interop2021.ConfigureRunningAutoCADForUsage()
             'interop.OpenDrawingTemplate(dwtFilePath, True)
-            interop.NetloadDll(cadAppDll)
+            interop2021.NetloadDll(cadAppDll)
+        ElseIf acadLocation.Contains("2022") Then
+            Dim interop2022 As InteropUtils2022 = New InteropUtils2022()
+            Dim isAutoCADRunning As Boolean = interop2022.IsAutoCADRunning()
+            If isAutoCADRunning = False Then
+                System.Windows.Forms.Application.DoEvents()
+                Dim processInfo As ProcessStartInfo = New ProcessStartInfo With {
+                    .FileName = acadLocation
+                    }
+                interop2022.StartAutoCADApp(processInfo)
+            End If
+            interop2022.ConfigureRunningAutoCADForUsage()
+            'interop.OpenDrawingTemplate(dwtFilePath, True)
+            interop2022.NetloadDll(cadAppDll)
         Else
             cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus,
                 TextBlockMessage,
