@@ -216,6 +216,7 @@ Namespace AutoCAD
                     WriteToDocEditor("---------------------------------------------")
                     WriteToDocEditor("---------------------------------------------")
                     WriteToDocEditor("Dll reload started.")
+                    WriteIniPathToDocEditor()
                     'Remove all commands from iExtensionAppAssembly
                     CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath)
                     'RemoveAllCommandsFromAllAssembliesInAppDomain(doc, dllPath)
@@ -230,6 +231,7 @@ Namespace AutoCAD
                     WriteToDocEditor(String.Format("Original app directory: {0}", originalDirectory))
                     WriteToDocEditor(String.Format("Dll reload path: {0}", copiedMainDll))
                     Dim types As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(appAssembly)
+                    WriteIniPathToDocEditor()
                     WriteToDocEditor("Dll reload complete.")
                     WriteToDocEditor("---------------------------------------------")
                     WriteToDocEditor("---------------------------------------------")
@@ -237,6 +239,10 @@ Namespace AutoCAD
                     WriteToDocEditor("Exception" + ex.Message)
                 End Try
             End If
+        End Sub
+
+        Private Sub WriteIniPathToDocEditor()
+            WriteToDocEditor("Ini settings read from " + _iniPath)
         End Sub
 
         Private Sub RemoveAllCommandsFromAllAssembliesInAppDomain(doc As Document, dllPath As String)
