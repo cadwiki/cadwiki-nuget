@@ -124,14 +124,6 @@
       <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Autodesk.AutoCAD.Interop, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Interop.Base.1.0.0\lib\Autodesk.AutoCAD.Interop.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Autodesk.AutoCAD.Interop.Common, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Interop.Base.1.0.0\lib\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -202,16 +194,16 @@
       <Project>{35f24f06-0f6e-4685-a07a-b53cc12be4f0}</Project>
       <Name>cadwiki.AutoCAD2021.Interop.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\cadwiki.CadDevTools2\cadwiki.CadDevTools2.vbproj">
+    <ProjectReference Include="..\cadwiki.CadDevTools\cadwiki.CadDevTools.vbproj">
       <Project>{939ad7b0-3396-47bc-82ee-8b087cf164fd}</Project>
-      <Name>cadwiki.CadDevTools2</Name>
+      <Name>cadwiki.CadDevTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
       <Project>{3c1158da-4a90-4fc1-8ccc-6f1e4787a118}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.vbproj">
-      <Project>{73ccec07-576d-4021-8e78-1494f3a0d885}</Project>
+      <Project>{94651d61-ebd0-4d0b-8358-79b14c1805f8}</Project>
       <Name>cadwiki.WpfUi</Name>
     </ProjectReference>
   </ItemGroup>
