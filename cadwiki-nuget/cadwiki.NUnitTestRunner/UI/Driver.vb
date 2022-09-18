@@ -15,19 +15,8 @@ Namespace Ui
             Return _window
         End Function
 
-
-        Public Shared Sub LoadXamlForWindowTestRunner()
-            Dim type As Type = GetType(WindowTestRunner)
-            Dim assemblyName As AssemblyName = type.Assembly.GetName()
-            Dim uristring As String = String.Format("/{0};v{1};component/{2}.xaml", assemblyName.Name, assemblyName.Version, type.Name)
-            Dim uri As Uri = New Uri(uristring, UriKind.Relative)
-            System.Windows.Application.LoadComponent(uri)
-        End Sub
-
         Public Sub New()
-            LoadXamlForWindowTestRunner()
             _window = New WindowTestRunner()
-
         End Sub
 
         Public Sub New(suiteResult As ObservableTestSuiteResults, regressionTestTypes As Type())
@@ -40,7 +29,6 @@ Namespace Ui
                     Return
                 End If
                 _regressionTestTypes = regressionTestTypes
-                LoadXamlForWindowTestRunner()
                 _window = New WindowTestRunner(suiteResult)
                 _window.AddResult()
             Catch ex As Exception
@@ -57,7 +45,9 @@ Namespace Ui
                 Engine.RunTestsFromType(_window.ObservableResults, stopWatch, _regressionTestTypes)
                 _window.UpdateResult()
             Catch ex As Exception
-                Console.WriteLine("Exception: " + ex.Message)
+                Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
+                    New WpfUi.Templates.WindowAutoCADException(ex)
+                window.ShowDialog()
             End Try
 
         End Sub
