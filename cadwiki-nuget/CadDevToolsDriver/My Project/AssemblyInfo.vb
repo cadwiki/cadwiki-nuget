@@ -7,10 +7,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("cadwiki.CadDevTools")>
+<Assembly: AssemblyTitle("CadDevToolsDriver")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("cadwiki.CadDevTools")>
+<Assembly: AssemblyProduct("CadDevToolsDriver")>
 <Assembly: AssemblyCopyright("Copyright ©  2022")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>

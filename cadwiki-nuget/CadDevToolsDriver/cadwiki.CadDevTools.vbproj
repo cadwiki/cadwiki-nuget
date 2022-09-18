@@ -6,8 +6,8 @@
     <ProjectGuid>{13E57F0E-ECA8-4667-BD80-5A17F91CE5A4}</ProjectGuid>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>cadwiki.CadDevTools</RootNamespace>
-    <AssemblyName>cadwiki.CadDevTools</AssemblyName>
+    <RootNamespace>CadDevToolsDriver</RootNamespace>
+    <AssemblyName>CadDevToolsDriver</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,7 +32,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>cadwiki.CadDevTools.xml</DocumentationFile>
+    <DocumentationFile>CadDevToolsDriver.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DocumentationFile>cadwiki.CadDevTools.xml</DocumentationFile>
+    <DocumentationFile>CadDevToolsDriver.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -195,9 +195,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.CadDevTools2\cadwiki.CadDevTools2.vbproj">
+    <ProjectReference Include="..\CadDevToolsDriver2\CadDevToolsDriver2.vbproj">
       <Project>{939ad7b0-3396-47bc-82ee-8b087cf164fd}</Project>
-      <Name>cadwiki.CadDevTools2</Name>
+      <Name>CadDevToolsDriver2</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
