@@ -17,14 +17,14 @@ nuget spec -Force ./bin/Release/x64/cadwiki.NUnitTestRunner.dll
 ## Nuget commands for building the .nupkg locally
 ### Create new package using relative .nuspec
 ```
-nuget pack cadwiki.NUnitTestRunner.nuspec -properties Configuration=Release -properties Platform=x64
-nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform=x64
-nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform=x64
+nuget pack cadwiki.NUnitTestRunner.nuspec -properties Configuration=Release -properties Platform="Any CPU"
+nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform="Any CPU"
+nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
 ```
 ### Create new package using relative .vbproj
 ```
-nuget pack cadwiki.NUnitTestRunner.vbproj -IncludeReferencedProjects -properties Configuration=Release -properties Platform=x64
-nuget pack cadwiki.DllReloader.vbproj -IncludeReferencedProjects -properties Configuration=Release -properties Platform=x64
+nuget pack cadwiki.NUnitTestRunner.vbproj -IncludeReferencedProjects -properties Configuration=Release -properties Platform="Any CPU"
+nuget pack cadwiki.DllReloader.vbproj -IncludeReferencedProjects -properties Configuration=Release -properties Platform="Any CPU"
 ```
 
 ### Uninstall local package from projects
