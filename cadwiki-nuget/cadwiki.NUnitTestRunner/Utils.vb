@@ -75,7 +75,9 @@ Public Class Utils
     Private Shared Function DoesMethodInfoHaveSetupAttribute(methodInfo As MethodInfo) As Object
         Dim objectAttributes As Object() = methodInfo.GetCustomAttributes(True)
         For Each objectAttribute As Object In objectAttributes
-            If (objectAttribute.GetType() Is GetType(SetUpAttribute)) Then
+            Dim attributeType As Type = objectAttribute.GetType()
+            Dim setupAttribute As Type = GetType(SetUpAttribute)
+            If (attributeType.Equals(setupAttribute)) Then
                 Return objectAttribute
             End If
         Next
@@ -85,7 +87,9 @@ Public Class Utils
     Private Shared Function DoesMethodInfoHaveTearDownAttribute(methodInfo As MethodInfo) As Object
         Dim objectAttributes As Object() = methodInfo.GetCustomAttributes(True)
         For Each objectAttribute As Object In objectAttributes
-            If (objectAttribute.GetType() Is GetType(TearDownAttribute)) Then
+            Dim attributeType As Type = objectAttribute.GetType()
+            Dim tearDownAttribute As Type = GetType(TearDownAttribute)
+            If (attributeType.Equals(tearDownAttribute)) Then
                 Return objectAttribute
             End If
         Next
@@ -95,7 +99,9 @@ Public Class Utils
     Private Shared Function DoesMethodInfoHaveTestAttribute(methodInfo As MethodInfo) As Object
         Dim objectAttributes As Object() = methodInfo.GetCustomAttributes(True)
         For Each objectAttribute As Object In objectAttributes
-            If (objectAttribute.GetType() Is GetType(TestAttribute)) Then
+            Dim attributeType As Type = objectAttribute.GetType()
+            Dim testAttribute As Type = GetType(TestAttribute)
+            If (attributeType.Equals(testAttribute)) Then
                 Return objectAttribute
             End If
         Next
