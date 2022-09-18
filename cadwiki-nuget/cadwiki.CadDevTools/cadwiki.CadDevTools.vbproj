@@ -137,6 +137,10 @@
       <Project>{35F24F06-0F6E-4685-A07A-B53CC12BE4F0}</Project>
       <Name>cadwiki.AutoCAD2021.Interop.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cadwiki.AutoCAD2022.Interop.Utilities\cadwiki.AutoCAD2022.Interop.Utilities.vbproj">
+      <Project>{901e09f6-393a-4386-94e4-13e52be91fbd}</Project>
+      <Name>cadwiki.AutoCAD2022.Interop.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.vbproj">
       <Project>{f63b3063-2044-4f17-ac6c-ff343c56b03d}</Project>
       <Name>cadwiki.DllReloader</Name>
