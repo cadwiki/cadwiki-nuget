@@ -26,6 +26,10 @@ Partial Class FormTestRunner
         Me.Cancel = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.TreeViewResults = New System.Windows.Forms.TreeView()
+        Me.RichTextBoxConsole = New System.Windows.Forms.RichTextBox()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'ButtonOk
@@ -48,6 +52,7 @@ Partial Class FormTestRunner
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.TreeViewResults)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(580, 155)
@@ -57,12 +62,28 @@ Partial Class FormTestRunner
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.RichTextBoxConsole)
         Me.GroupBox2.Location = New System.Drawing.Point(590, 12)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(580, 155)
         Me.GroupBox2.TabIndex = 3
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "GroupBox2"
+        '
+        'TreeViewResults
+        '
+        Me.TreeViewResults.Location = New System.Drawing.Point(6, 21)
+        Me.TreeViewResults.Name = "TreeViewResults"
+        Me.TreeViewResults.Size = New System.Drawing.Size(566, 128)
+        Me.TreeViewResults.TabIndex = 0
+        '
+        'RichTextBoxConsole
+        '
+        Me.RichTextBoxConsole.Location = New System.Drawing.Point(8, 22)
+        Me.RichTextBoxConsole.Name = "RichTextBoxConsole"
+        Me.RichTextBoxConsole.Size = New System.Drawing.Size(566, 127)
+        Me.RichTextBoxConsole.TabIndex = 0
+        Me.RichTextBoxConsole.Text = ""
         '
         'FormTestRunner
         '
@@ -75,6 +96,8 @@ Partial Class FormTestRunner
         Me.Controls.Add(Me.ButtonOk)
         Me.Name = "FormTestRunner"
         Me.Text = "FormTestRunner"
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -83,4 +106,6 @@ Partial Class FormTestRunner
     Friend WithEvents Cancel As Windows.Forms.Button
     Friend WithEvents GroupBox1 As Windows.Forms.GroupBox
     Friend WithEvents GroupBox2 As Windows.Forms.GroupBox
+    Friend WithEvents TreeViewResults As Windows.Forms.TreeView
+    Friend WithEvents RichTextBoxConsole As Windows.Forms.RichTextBox
 End Class
