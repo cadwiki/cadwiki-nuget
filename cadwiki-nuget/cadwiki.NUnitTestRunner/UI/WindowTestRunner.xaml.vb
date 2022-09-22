@@ -20,7 +20,7 @@ Namespace Ui
             Dim suiteResults As Results.ObservableTestSuiteResults = CType(sender, ObservableTestSuiteResults)
             Dim messages As List(Of String) = suiteResults.Messages
             Dim lastItem As String = messages(messages.Count - 1)
-            ConsoleRichTextBox.AppendText(lastItem)
+            RichTextBoxConsole.AppendText(lastItem)
             Application.DoEvents()
         End Sub
 
@@ -29,7 +29,7 @@ Namespace Ui
             Dim suiteResults As ObservableTestSuiteResults = CType(sender, ObservableTestSuiteResults)
             Dim testResults As List(Of TestResult) = suiteResults.TestResults
             Dim mostRecentlyAddedTestResult As TestResult = testResults(testResults.Count - 1)
-            _commonUiObject.AddTreeViewItemForTestResult(mostRecentlyAddedTestResult, ResultsTree)
+            _commonUiObject.AddTreeViewItemForTestResult(mostRecentlyAddedTestResult, TreeViewResults)
         End Sub
 
 
@@ -40,7 +40,7 @@ Namespace Ui
         End Sub
 
         Public Sub Init()
-            ConsoleRichTextBox.AppendText(vbLf & "NunitTestRunner started")
+            RichTextBoxConsole.AppendText(vbLf & "NunitTestRunner started")
         End Sub
 
         Public Sub New(suiteResults As ObservableTestSuiteResults)
