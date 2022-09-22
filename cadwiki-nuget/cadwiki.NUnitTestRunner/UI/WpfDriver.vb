@@ -2,11 +2,9 @@
 Option Infer Off
 Option Explicit On
 
-Imports System.Reflection
-Imports System.Windows
 Imports cadwiki.NUnitTestRunner.Results
 Namespace Ui
-    Public Class Driver
+    Public Class WpfDriver
 
         Private _regressionTestTypes As Type()
         Private _window As WindowTestRunner = Nothing
@@ -32,7 +30,7 @@ Namespace Ui
                 End If
                 _regressionTestTypes = regressionTestTypes
                 _window = New WindowTestRunner(suiteResult)
-                _commonUiObject.AddResultsToTreeView(suiteResult, _window.ResultsTree)
+                _commonUiObject.WpfAddResultsToTreeView(suiteResult, _window.TreeViewResults)
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                     New WpfUi.Templates.WindowAutoCADException(ex)
@@ -45,7 +43,7 @@ Namespace Ui
                 Dim stopWatch As Stopwatch = New Stopwatch()
                 stopWatch.Start()
                 Engine.RunTestsFromType(_window.ObservableResults, stopWatch, _regressionTestTypes)
-                _commonUiObject.AddResultsToTreeView(_window.ObservableResults, _window.ResultsTree)
+                _commonUiObject.WpfAddResultsToTreeView(_window.ObservableResults, _window.TreeViewResults)
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                     New WpfUi.Templates.WindowAutoCADException(ex)

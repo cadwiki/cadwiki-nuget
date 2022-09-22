@@ -115,7 +115,8 @@
     </Compile>
     <Compile Include="ObservableTestResults.vb" />
     <Compile Include="UI\CommonUiObject.vb" />
-    <Compile Include="UI\Driver.vb" />
+    <Compile Include="UI\WinformsDriver.vb" />
+    <Compile Include="UI\WpfDriver.vb" />
     <Compile Include="UI\FormTestRunner.Designer.vb">
       <DependentUpon>FormTestRunner.vb</DependentUpon>
     </Compile>
