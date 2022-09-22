@@ -12,7 +12,7 @@ Public Class CommonUiObject
 
 
 
-    Public Sub AddWinformsTreeViewItemForTestResult(testResult As TestResult,
+    Public Sub WinFormsAddTreeViewItemForTestResult(testResult As TestResult,
                                                     treeView As Windows.Forms.TreeView)
         treeView.BeginUpdate()
         Dim testNode As TreeNode = treeView.Nodes.Add("testResult.TestName")
@@ -30,7 +30,31 @@ Public Class CommonUiObject
         Application.DoEvents()
     End Sub
 
-    Public Sub AddTreeViewItemForTestResult(testResult As TestResult,
+    Public Sub WinFormsAddResultsToTreeView(observableResults As ObservableTestSuiteResults,
+                                   treeView As Windows.Forms.TreeView)
+        Dim node As TreeNode = WinFormsCreateResultsItem(observableResults)
+        treeView.Nodes.Add(node)
+    End Sub
+
+    Public Sub WinFormsUpdateResultsToTreeView(observableResults As ObservableTestSuiteResults,
+                                      treeView As Windows.Forms.TreeView)
+        Dim node As TreeNode = WinFormsCreateResultsItem(observableResults)
+        treeView.Nodes.Insert(0, node)
+    End Sub
+
+    Private Function WinFormsCreateResultsItem(
+            observableResults As ObservableTestSuiteResults) As TreeNode
+        Dim node As TreeNode = New TreeNode()
+        node.Text = "Test Run Results: " + observableResults.TimeElapsed
+        node.Nodes.Add("Total: " + observableResults.TotalTests.ToString())
+        node.Nodes.Add("Passed: " + observableResults.PassedTests.ToString())
+        node.Nodes.Add("Failed: " + observableResults.FailedTests.ToString())
+        node.Nodes.Add("Time Elapsed: " + observableResults.TimeElapsed)
+        node.Expand()
+        Return node
+    End Function
+
+    Public Sub WpfAddTreeViewItemForTestResult(testResult As TestResult,
                                             treeView As Windows.Controls.TreeView)
         Dim tvi As TreeViewItem = New TreeViewItem()
         tvi.Header = testResult.TestName
