@@ -25,7 +25,7 @@ Namespace Ui
             Dim suiteResults As ObservableTestSuiteResults = CType(sender, ObservableTestSuiteResults)
             Dim testResults As List(Of TestResult) = suiteResults.TestResults
             Dim mostRecentlyAddedTestResult As TestResult = testResults(testResults.Count - 1)
-            _commonUiObject.AddTreeViewItemForTestResult(mostRecentlyAddedTestResult, TreeViewResults)
+            _commonUiObject.WpfAddTreeViewItemForTestResult(mostRecentlyAddedTestResult, TreeViewResults)
         End Sub
 
 
