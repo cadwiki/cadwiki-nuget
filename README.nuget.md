@@ -22,6 +22,7 @@ nuget pack cadwiki.NUnitTestRunner.nuspec -properties Configuration=Release -pro
 nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform="Any CPU"
 nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
 nuget pack cadwiki.CadDevTools.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+nuget pack cadwiki.CadDevTools.nuspec -properties Configuration=Release -properties Platform="Any CPU"
 ```
 ### Create new package using relative .vbproj
 ```
@@ -49,6 +50,7 @@ Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.2.nupkg
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.3.nupkg
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools\cadwiki.CadDevTools.1.0.0.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools\cadwiki.CadDevTools.1.0.1.nupkg
 ```
 
 

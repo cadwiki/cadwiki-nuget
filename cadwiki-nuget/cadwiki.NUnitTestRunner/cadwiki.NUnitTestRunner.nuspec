@@ -2,14 +2,17 @@
 <package >
   <metadata>
     <id>cadwiki.NUnitTestRunner</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <!-- <icon>icon.png</icon> -->
+    <icon>images\500x500-cadwiki-v1.png</icon>
     <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
     <description>Executes unit tests in a WPF window</description>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>
+		Rename Ui.WpfDriver to Ui.WpfUiDriver
+		Add Ui.WinformsDriver
+	</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>cadwiki Autocad UnitTest RegressionTest IntegrationTest AutomationTest </tags>
     <dependencies>
@@ -18,5 +21,6 @@
   </metadata>
   <files>
     <file src="bin\x64\$configuration$\*.dll" target="lib\net472"/>
+	<file src="..\icons\500x500-cadwiki-v1.png" target="images\" />
   </files>
 </package>

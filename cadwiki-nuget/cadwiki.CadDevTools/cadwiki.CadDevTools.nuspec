@@ -3,14 +3,17 @@
   <metadata>
     <id>cadwiki.CadDevTools</id>
 	<!-- need to update cadwiki.CadDevTools.targets file when version changes-->
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <!-- <icon>icon.png</icon> -->
+    <icon>images\500x500-cadwiki-v1.png</icon>
     <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
     <description>Dev toolset</description>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>
+		Update cadwiki.DllReloader to v1.0.3
+		Update cadwiki.NunitTestRunner to v1.0.1
+	</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>cadwiki dllreload reload assembly autocad appdomain</tags>
     <contentFiles>
@@ -25,5 +28,6 @@
 	<file src="bin\$configuration$\*.pdb" exclude="**cadwiki.AcRemoveCmdGroup.pdb" target="lib\net472"/>
 	<file src="bin\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="Build"/>
 	<file src="cadwiki.CadDevTools.targets" target="Build"/>
+	<file src="..\icons\500x500-cadwiki-v1.png" target="images\" />
   </files>
 </package>

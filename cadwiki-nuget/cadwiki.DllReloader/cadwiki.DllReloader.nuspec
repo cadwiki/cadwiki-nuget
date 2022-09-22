@@ -7,10 +7,15 @@
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <!-- <icon>icon.png</icon> -->
+    <icon>images\500x500-cadwiki-v1.png</icon>
     <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
     <description>Reloads dlls into Autodesk application's current AppDomain</description>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>
+		Rename NetReloader to AutoCADAppDomainDllReloader
+		Fix bug where AutoCADAppDomainDllReloader would crash on first run of CAD when .ini was reset to new values.
+		Add option for developer to add dlls to skip reloading in AutoCADAppDomainDllReloader
+		Update all projects for building on AnyCPU
+	</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>cadwiki dllreload reload assembly autocad appdomain</tags>
     <contentFiles>
@@ -25,5 +30,6 @@
 	<file src="bin\$configuration$\*.pdb" exclude="**cadwiki.AcRemoveCmdGroup.pdb" target="lib\net472"/>
 	<file src="bin\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="Build"/>
 	<file src="cadwiki.DllReloader.targets" target="Build"/>
+	<file src="..\icons\500x500-cadwiki-v1.png" target="images\" />
   </files>
 </package>
