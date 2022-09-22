@@ -20,11 +20,13 @@ Namespace AutoCAD
             Dim currentTypes As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(iExtensionAppAssembly)
             Dim commandMethodAttributesToMethodInfos As Dictionary(Of CommandMethodAttribute, MethodInfo) =
                 AcadAssemblyUtils.GetCommandMethodDictionarySafely(currentTypes)
-            If commandMethodAttributesToMethodInfos.Count = 0 Then
-                doc.Editor.WriteMessage(vbLf & "No commands found to remove.")
-            Else
-                doc.Editor.WriteMessage(vbLf & "Removing all commands from current assembly.")
-                RemoveCommands(doc, dllPath, commandMethodAttributesToMethodInfos)
+            If doc IsNot Nothing Then
+                If commandMethodAttributesToMethodInfos.Count = 0 Then
+                    doc.Editor.WriteMessage(vbLf & "No commands found to remove.")
+                Else
+                    doc.Editor.WriteMessage(vbLf & "Removing all commands from current assembly.")
+                    RemoveCommands(doc, dllPath, commandMethodAttributesToMethodInfos)
+                End If
             End If
 
         End Sub
