@@ -5,6 +5,7 @@ Imports NUnit.Framework.Interfaces
 Imports cadwiki.NetUtils
 Imports cadwiki.NUnitTestRunner.Results
 Public Class Engine
+
     Public Shared Sub RunTestsFromType(suiteResult As ObservableTestSuiteResults,
             stopwatch As Stopwatch,
             integrationTestTypes As Type())
