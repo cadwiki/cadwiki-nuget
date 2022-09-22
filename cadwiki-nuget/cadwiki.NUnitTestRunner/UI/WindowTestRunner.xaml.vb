@@ -3,12 +3,8 @@ Option Infer Off
 Option Explicit On
 
 Imports System.Windows
-Imports System.Windows.Controls
-Imports System.Windows.Media
-Imports cadwiki.NetUtils
 Imports Application = System.Windows.Forms.Application
 Imports cadwiki.NUnitTestRunner.Results
-Imports System.Reflection
 
 Namespace Ui
     Public Class WindowTestRunner

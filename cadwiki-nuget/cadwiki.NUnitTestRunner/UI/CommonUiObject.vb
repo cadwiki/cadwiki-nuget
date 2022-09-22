@@ -3,6 +3,7 @@ Imports System.Windows.Controls
 Imports System.Windows.Media
 Imports cadwiki.NetUtils
 Imports cadwiki.NUnitTestRunner.Results
+Imports System.Windows.Forms
 
 Public Class CommonUiObject
     ReadOnly converter As BrushConverter = New BrushConverter()
@@ -11,7 +12,26 @@ Public Class CommonUiObject
 
 
 
-    Public Sub AddTreeViewItemForTestResult(testResult As TestResult, treeView As TreeView)
+    Public Sub AddWinformsTreeViewItemForTestResult(testResult As TestResult,
+                                                    treeView As Windows.Forms.TreeView)
+        treeView.BeginUpdate()
+        Dim testNode As TreeNode = treeView.Nodes.Add("testResult.TestName")
+        If testResult.Passed Then
+            testNode.Nodes.Add("Passed: " + testResult.TestName)
+            testNode.BackColor = System.Drawing.Color.Green
+        Else
+            testNode.Nodes.Add("Failed: " + testResult.TestName)
+            testNode.Nodes.Add("Exception: " + testResult.ExceptionMessage)
+            Dim stackTraceString As String = Lists.StringListToString(testResult.StackTrace, vbLf)
+            testNode.Nodes.Add("Stack trace: " + stackTraceString)
+            testNode.BackColor = System.Drawing.Color.Red
+        End If
+        treeView.EndUpdate()
+        Application.DoEvents()
+    End Sub
+
+    Public Sub AddTreeViewItemForTestResult(testResult As TestResult,
+                                            treeView As Windows.Controls.TreeView)
         Dim tvi As TreeViewItem = New TreeViewItem()
         tvi.Header = testResult.TestName
         If testResult.Passed Then
@@ -29,19 +49,19 @@ Public Class CommonUiObject
         Application.DoEvents()
     End Sub
 
-    Public Sub AddResultsToTreeView(observableResults As ObservableTestSuiteResults,
-                                   treeView As TreeView)
-        Dim tvi As TreeViewItem = CreateResultsItem(observableResults)
+    Public Sub WpfAddResultsToTreeView(observableResults As ObservableTestSuiteResults,
+                                   treeView As Windows.Controls.TreeView)
+        Dim tvi As TreeViewItem = WpfCreateResultsItem(observableResults)
         treeView.Items.Add(tvi)
     End Sub
 
-    Public Sub UpdateResultsToTreeView(observableResults As ObservableTestSuiteResults,
-                                      treeView As TreeView)
-        Dim tvi As TreeViewItem = CreateResultsItem(observableResults)
+    Public Sub WpfUpdateResultsToTreeView(observableResults As ObservableTestSuiteResults,
+                                      treeView As Windows.Controls.TreeView)
+        Dim tvi As TreeViewItem = WpfCreateResultsItem(observableResults)
         treeView.Items.Item(0) = tvi
     End Sub
 
-    Private Function CreateResultsItem(
+    Private Function WpfCreateResultsItem(
             observableResults As ObservableTestSuiteResults) As TreeViewItem
         Dim tvi As TreeViewItem = New TreeViewItem()
         tvi.Header = "Test Run Results: " + observableResults.TimeElapsed
