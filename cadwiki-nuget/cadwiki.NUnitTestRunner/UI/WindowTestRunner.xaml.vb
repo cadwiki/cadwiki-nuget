@@ -14,10 +14,7 @@ Namespace Ui
     Public Class WindowTestRunner
         Public WithEvents ObservableResults As New ObservableTestSuiteResults
 
-
-        ReadOnly converter As BrushConverter = New BrushConverter()
-        Public ReadOnly Green As Brush = CType(converter.ConvertFromString("#00FF00"), Brush)
-        Public ReadOnly Red As Brush = CType(converter.ConvertFromString("#FF0000"), Brush)
+        Private _commonUiObject As New CommonUiObject()
 
         Private Sub TestMessages_OnChanged(sender As Object, e As EventArgs) Handles ObservableResults.MessageAdded
             Dim suiteResults As Results.ObservableTestSuiteResults = CType(sender, ObservableTestSuiteResults)
@@ -31,44 +28,11 @@ Namespace Ui
         Private Sub TestResults_OnChanged(sender As Object, e As EventArgs) Handles ObservableResults.ResultAdded
             Dim suiteResults As ObservableTestSuiteResults = CType(sender, ObservableTestSuiteResults)
             Dim testResults As List(Of TestResult) = suiteResults.TestResults
-            Dim lastItem As TestResult = testResults(testResults.Count - 1)
-            Dim tvi As TreeViewItem = New TreeViewItem()
-            tvi.Header = lastItem.TestName
-            If lastItem.Passed Then
-                tvi.Items.Add("Passed: " + lastItem.TestName)
-                tvi.Background = Green
-            Else
-                tvi.Items.Add("Failed: " + lastItem.TestName)
-                tvi.Background = Red
-                tvi.Items.Add("Exception: " + lastItem.ExceptionMessage)
-                Dim stackTraceString As String = Lists.StringListToString(lastItem.StackTrace, vbLf)
-                tvi.Items.Add("Stack trace: " + stackTraceString)
-            End If
-            ResultsTree.Items.Add(tvi)
-            ResultsTree.Items.Refresh()
-            Application.DoEvents()
+            Dim mostRecentlyAddedTestResult As TestResult = testResults(testResults.Count - 1)
+            _commonUiObject.AddTreeViewItemForTestResult(mostRecentlyAddedTestResult, ResultsTree)
         End Sub
 
-        Public Sub AddResult()
-            Dim tvi As TreeViewItem = CreateResultItem()
-            ResultsTree.Items.Add(tvi)
-        End Sub
 
-        Public Sub UpdateResult()
-            Dim tvi As TreeViewItem = CreateResultItem()
-            ResultsTree.Items.Item(0) = tvi
-        End Sub
-
-        Private Function CreateResultItem() As TreeViewItem
-            Dim tvi As TreeViewItem = New TreeViewItem()
-            tvi.Header = "Test Run Results: " + ObservableResults.TimeElapsed
-            tvi.Items.Add("Total: " + ObservableResults.TotalTests.ToString())
-            tvi.Items.Add("Passed: " + ObservableResults.PassedTests.ToString())
-            tvi.Items.Add("Failed: " + ObservableResults.FailedTests.ToString())
-            tvi.Items.Add("Time Elapsed: " + ObservableResults.TimeElapsed)
-            tvi.IsExpanded = True
-            Return tvi
-        End Function
 
         Public Sub New()
             InitializeComponent()

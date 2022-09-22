@@ -10,6 +10,7 @@ Namespace Ui
 
         Private _regressionTestTypes As Type()
         Private _window As WindowTestRunner = Nothing
+        Private _commonUiObject As New CommonUiObject()
 
         Public Function GetWindow() As WindowTestRunner
             Return _window
@@ -19,7 +20,8 @@ Namespace Ui
             _window = New WindowTestRunner()
         End Sub
 
-        Public Sub New(suiteResult As ObservableTestSuiteResults, regressionTestTypes As Type())
+        Public Sub New(suiteResult As ObservableTestSuiteResults,
+                       regressionTestTypes As Type())
             Try
                 If suiteResult Is Nothing Then
                     suiteResult = New ObservableTestSuiteResults()
@@ -30,7 +32,7 @@ Namespace Ui
                 End If
                 _regressionTestTypes = regressionTestTypes
                 _window = New WindowTestRunner(suiteResult)
-                _window.AddResult()
+                _commonUiObject.AddResultsToTreeView(suiteResult, _window.ResultsTree)
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                     New WpfUi.Templates.WindowAutoCADException(ex)
@@ -43,7 +45,7 @@ Namespace Ui
                 Dim stopWatch As Stopwatch = New Stopwatch()
                 stopWatch.Start()
                 Engine.RunTestsFromType(_window.ObservableResults, stopWatch, _regressionTestTypes)
-                _window.UpdateResult()
+                _commonUiObject.AddResultsToTreeView(_window.ObservableResults, _window.ResultsTree)
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                     New WpfUi.Templates.WindowAutoCADException(ex)
