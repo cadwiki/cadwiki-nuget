@@ -34,6 +34,7 @@ nuget pack cadwiki.DllReloader.vbproj -IncludeReferencedProjects -properties Con
 ### Uninstall local package from projects
 ```
 Get-Project -All | UnInstall-Package AutoCAD2021.Interop.Base
+Get-Project -All | UnInstall-Package cadwiki.NUnitTestRunner
 Get-Project -All | UnInstall-Package cadwiki.DllReloader
 Get-Project -All | UnInstall-Package cadwiki.CadDevTools
 ```

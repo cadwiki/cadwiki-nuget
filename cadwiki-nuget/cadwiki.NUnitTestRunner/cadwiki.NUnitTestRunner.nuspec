@@ -20,7 +20,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\x64\$configuration$\*.dll" target="lib\net472"/>
+    <file src="bin\$configuration$\*.dll" target="lib\net472"/>
 	<file src="..\icons\500x500-cadwiki-v1.png" target="images\" />
   </files>
 </package>
