@@ -23,9 +23,10 @@ Imports cadwiki.NUnitTestRunner
 
         Dim results As New Results.ObservableTestSuiteResults()
         Dim driver As New Ui.WinformsDriver(results, allTypes)
-        Dim form As FormTestRunner = driver.GetForm()
-        form.Show()
+        Dim form As UI.FormTestRunner = driver.GetForm()
+
         driver.ExecuteTests()
+        form.ShowDialog()
     End Sub
 
 End Class

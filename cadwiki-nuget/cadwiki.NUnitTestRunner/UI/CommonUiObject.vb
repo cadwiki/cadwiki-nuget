@@ -39,6 +39,7 @@ Public Class CommonUiObject
     Public Sub WinFormsUpdateResultsToTreeView(observableResults As ObservableTestSuiteResults,
                                       treeView As Windows.Forms.TreeView)
         Dim node As TreeNode = WinFormsCreateResultsItem(observableResults)
+        treeView.Nodes.RemoveAt(0)
         treeView.Nodes.Insert(0, node)
     End Sub
 

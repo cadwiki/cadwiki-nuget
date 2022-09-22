@@ -43,7 +43,7 @@ Namespace Ui
                 Dim stopWatch As Stopwatch = New Stopwatch()
                 stopWatch.Start()
                 Engine.RunTestsFromType(_form.ObservableResults, stopWatch, _regressionTestTypes)
-                _commonUiObject.WinFormsAddResultsToTreeView(_form.ObservableResults, _form.TreeViewResults)
+                _commonUiObject.WinFormsUpdateResultsToTreeView(_form.ObservableResults, _form.TreeViewResults)
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                     New WpfUi.Templates.WindowAutoCADException(ex)
