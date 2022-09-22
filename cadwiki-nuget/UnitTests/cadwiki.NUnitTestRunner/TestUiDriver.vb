@@ -22,9 +22,9 @@ Imports cadwiki.NUnitTestRunner
         Dim allTypes As Type() = {testStringsType}
 
         Dim results As New Results.ObservableTestSuiteResults()
-        Dim driver As New Ui.WpfDriver(results, allTypes)
-        Dim window As Ui.WindowTestRunner = driver.GetWindow()
-        window.Show()
+        Dim driver As New Ui.WinformsDriver(results, allTypes)
+        Dim form As FormTestRunner = driver.GetForm()
+        form.Show()
         driver.ExecuteTests()
     End Sub
 
