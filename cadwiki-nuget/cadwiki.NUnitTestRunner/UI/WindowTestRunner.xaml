@@ -27,11 +27,11 @@
         </Grid.RowDefinitions>
 
         <TreeView
-            x:Name="ResultsTree"
+            x:Name="TreeViewResults"
             Grid.Column="0"
             Grid.Row="0" />
         <RichTextBox
-            x:Name="ConsoleRichTextBox"
+            x:Name="RichTextBoxConsole"
             Grid.Column="1"
             Grid.Row="0" />
 
