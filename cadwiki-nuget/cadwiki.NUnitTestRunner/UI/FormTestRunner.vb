@@ -18,7 +18,7 @@ Public Class FormTestRunner
         Dim suiteResults As ObservableTestSuiteResults = CType(sender, ObservableTestSuiteResults)
         Dim testResults As List(Of TestResult) = suiteResults.TestResults
         Dim mostRecentlyAddedTestResult As TestResult = testResults(testResults.Count - 1)
-        _commonUiObject.AddWinformsTreeViewItemForTestResult(mostRecentlyAddedTestResult, TreeViewResults)
+        _commonUiObject.WinFormsAddTreeViewItemForTestResult(mostRecentlyAddedTestResult, TreeViewResults)
     End Sub
 
 
