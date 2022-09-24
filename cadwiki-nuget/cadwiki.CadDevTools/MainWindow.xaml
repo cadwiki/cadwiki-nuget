@@ -82,7 +82,7 @@
         </TextBox>
 
         <TextBox 
-            x:Name="TextBoxLDllPath" 
+            x:Name="TextBoxDllPath" 
             Text="C:\Temp\MainApp.dll"
             Grid.Column="2"
             Grid.Row="2"
@@ -172,7 +172,8 @@
                 <ItemsPanelTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="20" />
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
@@ -183,8 +184,12 @@
                 <TextBlock x:Name="TextBlockStatus" Text="Status:" HorizontalAlignment="Left"
                            VerticalAlignment="Center" />
             </StatusBarItem>
-            <Separator Grid.Column="1" />
-            <StatusBarItem Grid.Column="2">
+
+            <Separator 
+                Grid.Column="2" 
+            />
+    
+            <StatusBarItem Grid.Column="3">
                 <TextBlock x:Name="TextBlockMessage" Text="Information" HorizontalAlignment="Left" />
             </StatusBarItem>
         </StatusBar>
