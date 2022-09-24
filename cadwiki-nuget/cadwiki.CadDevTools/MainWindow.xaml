@@ -33,6 +33,7 @@
             x:Name="RichTextBoxSelectedAutoCAD"
             Grid.Column="0"
             Grid.Row="0"
+            
             >
             <FlowDocument>
                 <Paragraph>
@@ -50,12 +51,14 @@
             HorizontalAlignment="Center"  
             VerticalAlignment="Center" 
             Width="75"
+
             />
 
         <RichTextBox
             x:Name="RichTextBoxStartupSwitches"
             Grid.Column="0"
             Grid.Row="1"
+            
             >
             <FlowDocument>
                 <Paragraph>Use this to set the startup switches for AutoCAD</Paragraph>
@@ -65,16 +68,21 @@
         <TextBox 
             x:Name="TextBoxStartupSwitches" 
             Text="/p VANILLA"
-            Grid.Column="2"
+            Grid.Column="0"
             Grid.Row="1"
-            HorizontalAlignment="Center"  
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Right"  
             VerticalAlignment="Center" 
+            TextAlignment="Right"
+            Width="500"
+            
             />
         
         <RichTextBox
             x:Name="RichTextBoxDllName"
             Grid.Column="0"
             Grid.Row="2"
+            
             >
             <FlowDocument>
                 <Paragraph>Use this to set the path of {.dll} to netload</Paragraph>
@@ -84,19 +92,25 @@
         <TextBox 
             x:Name="TextBoxDllPath" 
             Text="MainApp.dll"
-            Grid.Column="2"
+            Grid.Column="0"
             Grid.Row="2"
-            HorizontalAlignment="Center"  
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Right"  
             VerticalAlignment="Center" 
+            TextAlignment="Right"
+            Width="500"
+            
             />
 
         <RichTextBox
             x:Name="RichTextBoxFindNewestDll"
             Grid.Column="0"
             Grid.Row="3"
+            
             >
             <FlowDocument>
-                <Paragraph>Use this to find the newest dll, matching the filename above, in any subfolder starting with "_v" of the solution directory</Paragraph>
+                <Paragraph>Use this to find the newest dll, matching the filename above, 
+                    in any subfolder starting with "_v" of the solution directory</Paragraph>
             </FlowDocument>
         </RichTextBox>
         
@@ -116,6 +130,7 @@
             x:Name="RichTextBoxSelectDll"
             Grid.Column="0"
             Grid.Row="4"
+            
             >
             <FlowDocument>
                 <Paragraph>Use this to manually select a dll from the solution directory</Paragraph>
@@ -136,7 +151,9 @@
         
         <RichTextBox
             Grid.Column="0"
-            Grid.Row="5">
+            Grid.Row="5"
+            
+            >
             <FlowDocument>
                 <Paragraph>Use this tool to launch AutoCAD with the information above</Paragraph>
             </FlowDocument>
