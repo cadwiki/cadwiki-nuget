@@ -161,7 +161,7 @@ Class MainWindow
         Dim folder As String = Directory.GetCurrentDirectory
         Dim solutionDir As String = GetSolutionDirectory()
         Dim wildCardFileName As String = "*.dll"
-        Dim dlls As List(Of String) = Paths.GetAllWildcardFilesInVSubfolder(solutionDir, wildCardFileName)
+        Dim dlls As List(Of String) = Paths.GetAllWildcardFilesInAnySubfolder(solutionDir, wildCardFileName)
         Dim window As cadwiki.WpfUi.WindowGetFilePath = New cadwiki.WpfUi.WindowGetFilePath(dlls)
         window.Width = 1200
         window.Height = 300

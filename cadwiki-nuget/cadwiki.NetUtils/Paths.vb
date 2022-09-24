@@ -4,6 +4,13 @@ Option Explicit On
 Imports System.IO
 
 Public Class Paths
+
+    Public Shared Function GetAllWildcardFilesInAnySubfolder(directoryPath As String, wildCardFileName As String) As List(Of String)
+        Dim cadApps As List(Of String) = Directory.GetFiles(directoryPath, wildCardFileName, SearchOption.AllDirectories).
+                                                    OrderByDescending(Function(f) New FileInfo(f).LastWriteTime).ToList
+        Return cadApps
+    End Function
+
     Public Shared Function GetAllWildcardFilesInVSubfolder(directoryPath As String, wildCardFileName As String) As List(Of String)
         Dim cadApps As List(Of String) = Directory.GetFiles(directoryPath, wildCardFileName, SearchOption.AllDirectories).
                                                     OrderByDescending(Function(f) New FileInfo(f).LastWriteTime).ToList
