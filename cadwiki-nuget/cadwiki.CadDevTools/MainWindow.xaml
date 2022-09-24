@@ -6,8 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Cad Dev Tools"
-    Height="200"
-    MinHeight="200"
+    Height="220"
+    MinHeight="220"
     Width="800"
     MinWidth="800">
     <Window.Resources>
@@ -21,6 +21,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
+            <RowDefinition Height="20" />
             <RowDefinition Height="20" />
             <RowDefinition Height="20" />
             <RowDefinition Height="20" />
@@ -89,25 +90,45 @@
             VerticalAlignment="Center" 
             />
 
+        <RichTextBox
+            x:Name="RichTextBoxFindNewestDll"
+            Grid.Column="0"
+            Grid.Row="3"
+            >
+            <FlowDocument>
+                <Paragraph>Use this to find the newest dll, matching the filename above, in any subfolder starting with "_v" of the solution directory</Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        
         <Button
             x:Name="ButtonFindNewestDllByName"
-            Content="Find Newest Dll"
+            Content="Find Newest"
             ClickMode="Press"
             Click="ButtonFindNewestDllByName_Click"
-            Grid.Column="0"
+            Grid.Column="2"
             Grid.Row="3"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Width="150" 
+            Width="75" 
             />
 
+        <RichTextBox
+            x:Name="RichTextBoxSelectDll"
+            Grid.Column="0"
+            Grid.Row="4"
+            >
+            <FlowDocument>
+                <Paragraph>Use this to manually select a dll from the solution directory</Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        
         <Button
             x:Name="ButtonSelectDll"
             Content="Select Dll"
             ClickMode="Press"
             Click="ButtonSelectDll_Click"
-            Grid.Column="0"
-            Grid.Row="3"
+            Grid.Column="2"
+            Grid.Row="4"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Width="150" 
@@ -115,7 +136,7 @@
         
         <RichTextBox
             Grid.Column="0"
-            Grid.Row="4">
+            Grid.Row="5">
             <FlowDocument>
                 <Paragraph>Use this tool to launch AutoCAD with the information above</Paragraph>
             </FlowDocument>
@@ -127,7 +148,7 @@
             ClickMode="Press"
             Click="ButtonLaunch_Click"
             Grid.Column="3"
-            Grid.Row="4"
+            Grid.Row="5"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Width="75" 
@@ -139,7 +160,7 @@
             x:Name="StatusBar"
             Grid.ColumnSpan="3"
             Grid.Column="0"
-            Grid.Row="5">
+            Grid.Row="6">
 
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
