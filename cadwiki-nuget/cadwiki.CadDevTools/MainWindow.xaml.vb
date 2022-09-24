@@ -147,7 +147,7 @@ Class MainWindow
 
         cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
-            "Please wait until CAD launches netloads the dll.")
+            "Please wait until CAD launches netloads the" + cadAppDll + " dll.")
         If acadLocation.Contains("2021") Then
             Dim interop2021 As InteropUtils2021 = New InteropUtils2021()
             Dim isAutoCADRunning As Boolean = interop2021.IsAutoCADRunning()
