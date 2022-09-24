@@ -90,10 +90,8 @@ Class MainWindow
         Dim paragraph1 As New Paragraph()
         paragraph1.Inlines.Add(New Run("Selected program: "))
         paragraph1.Inlines.Add(New Bold(New Run(acadLocation)))
+        paragraph1.Inlines.Add(New Run("You can now use the other buttons."))
         flowDoc.Blocks.Add(paragraph1)
-        Dim paragraph2 As New Paragraph()
-        paragraph2.Inlines.Add(New Run("You can now use the other buttons."))
-        flowDoc.Blocks.Add(paragraph2)
         RichTextBoxSelectedAutoCAD.Document = flowDoc
     End Sub
 
