@@ -7,9 +7,8 @@ Imports System.Windows.Documents
 Imports InteropUtils2021 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Imports InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Imports System.Windows.Media.Imaging
-Imports System.Reflection
-Imports System.Windows.Interop
 Imports System.Drawing
+Imports System.Drawing.Imaging
 
 Class MainWindow
 
@@ -39,37 +38,16 @@ Class MainWindow
         Dim autocadReloader As New cadwiki.DllReloader.AutoCAD.AutoCADAppDomainDllReloader()
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
-
         Dim bitMap As Drawing.Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
-        Dim bitMapImage As BitmapImage = Bitmap2BitmapImage(bitMap)
-        'Me.Icon = bitMapImage
+        Dim bitMapImage As BitmapImage = Bitmaps.BitMapToBitmapImage(bitMap)
+        Me.Icon = bitMapImage
         EnableOrDisableControlsOnStart(previousAutoCADLocationValue)
     End Sub
 
 
 
-    <System.Runtime.InteropServices.DllImport("gdi32.dll")>
-    Private Shared Function DeleteObject(ByVal hObject As IntPtr) As Boolean
-
-    End Function
 
 
-    Public Shared Function Bitmap2BitmapImage(ByVal bitmap As Bitmap) As BitmapImage
-        Dim hBitmap As IntPtr = bitmap.GetHbitmap()
-        Dim retval As BitmapImage
-
-        Try
-            retval = CType(Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                                                                 IntPtr.Zero,
-                                                                 Int32Rect.Empty,
-                                                                 BitmapSizeOptions.FromEmptyOptions()),
-                                                                 BitmapImage)
-        Finally
-            'DeleteObject(hBitmap)
-        End Try
-
-        Return retval
-    End Function
 
     Private Sub EnableOrDisableControlsOnStart(acadLocation As String)
         If Not acadLocation.Equals(noneValue) And File.Exists(acadLocation) Then

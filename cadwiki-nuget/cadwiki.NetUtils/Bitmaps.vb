@@ -1,30 +1,22 @@
 ﻿
 Imports System.Drawing
-Imports System.Windows
-Imports System.Windows.Interop
+Imports System.Drawing.Imaging
+Imports System.IO
 Imports System.Windows.Media.Imaging
 
 Public Class Bitmaps
-    <System.Runtime.InteropServices.DllImport("gdi32.dll")>
-    Private Shared Function DeleteObject(ByVal hObject As IntPtr) As Boolean
 
-    End Function
-
-
-    Public Shared Function Bitmap2BitmapImage(ByVal bitmap As Bitmap) As BitmapImage
-        Dim hBitmap As IntPtr = bitmap.GetHbitmap()
-        Dim retval As BitmapImage
-
-        Try
-            retval = CType(Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                                                                 IntPtr.Zero,
-                                                                 Int32Rect.Empty,
-                                                                 BitmapSizeOptions.FromEmptyOptions()),
-                                                                 BitmapImage)
-        Finally
-            DeleteObject(hBitmap)
-        End Try
-
-        Return retval
+    Public Shared Function BitMapToBitmapImage(ByVal bitmap As Bitmap) As BitmapImage
+        Using memory As MemoryStream = New MemoryStream()
+            bitmap.Save(memory, ImageFormat.Png)
+            memory.Position = 0
+            Dim bitmapImage As BitmapImage = New BitmapImage()
+            bitmapImage.BeginInit()
+            bitmapImage.StreamSource = memory
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad
+            bitmapImage.EndInit()
+            bitmapImage.Freeze()
+            Return bitmapImage
+        End Using
     End Function
 End Class
