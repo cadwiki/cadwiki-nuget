@@ -144,8 +144,8 @@ Class MainWindow
                 System.Windows.Forms.Application.DoEvents()
                 Dim processInfo As ProcessStartInfo = New ProcessStartInfo With {
                     .FileName = acadLocation,
-                    .Arguments = TextBoxLabelStartupSwitches.Text
-                    }
+                    .Arguments = TextBoxStartupSwitches.Text
+                }
 
                 interop2021.StartAutoCADApp(processInfo)
             End If
@@ -159,7 +159,7 @@ Class MainWindow
                 System.Windows.Forms.Application.DoEvents()
                 Dim processInfo As ProcessStartInfo = New ProcessStartInfo With {
                     .FileName = acadLocation,
-                    .Arguments = TextBoxLabelStartupSwitches.Text
+                    .Arguments = TextBoxStartupSwitches.Text
                     }
                 interop2022.StartAutoCADApp(processInfo)
             End If
