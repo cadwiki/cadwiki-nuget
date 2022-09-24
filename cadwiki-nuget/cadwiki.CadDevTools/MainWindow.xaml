@@ -91,7 +91,7 @@
 
         <RichTextBox
             Grid.Column="0"
-            Grid.Row="3">
+            Grid.Row="4">
             <FlowDocument>
                 <Paragraph>Use this tool to launch AutoCAD with the information above</Paragraph>
             </FlowDocument>
@@ -103,7 +103,7 @@
             ClickMode="Press"
             Click="ButtonLaunch_Click"
             Grid.Column="3"
-            Grid.Row="3"
+            Grid.Row="4"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Width="75" 
