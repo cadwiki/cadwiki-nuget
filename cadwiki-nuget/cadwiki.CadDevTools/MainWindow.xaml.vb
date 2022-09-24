@@ -187,6 +187,7 @@ Class MainWindow
                 cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + filePath)
             End If
             cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Selected dll to load: " + filePath)
+            TextBoxDllPath.Text = filePath
         Else
             cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "User closed dll load menu.")
         End If
@@ -197,7 +198,11 @@ Class MainWindow
         Dim mainAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAV(dllName)
         If Not File.Exists(mainAppDll) Then
             cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + mainAppDll)
+        Else
+            cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Selected dll to load: " + mainAppDll)
+            TextBoxDllPath.Text = mainAppDll
         End If
+
     End Sub
 
     Private Function GetNewestDllInSolutionDirectorySubFoldersThatHaveAV(dllName As String) As String
