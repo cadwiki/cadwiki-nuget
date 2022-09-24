@@ -9,7 +9,8 @@
     Height="220"
     MinHeight="220"
     Width="800"
-    MinWidth="800">
+    MinWidth="800"
+    >
     <Window.Resources>
         <SolidColorBrush x:Key="SolidColorBrushLimeGreen" Color="#00FF00" />
     </Window.Resources>
