@@ -5,6 +5,8 @@ Imports System.Windows
 Imports System.Windows.Documents
 Imports InteropUtils2021 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Imports InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
+Imports System.Windows.Media.Imaging
+Imports System.Reflection
 
 Class MainWindow
 
@@ -34,6 +36,15 @@ Class MainWindow
         Dim autocadReloader As New cadwiki.DllReloader.AutoCAD.AutoCADAppDomainDllReloader()
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
+
+        Dim exeDirectory As String = AssemblyUtils.GetFolderLocationFromCodeBase(Assembly.GetExecutingAssembly())
+        Dim exeDirInfo As New DirectoryInfo(exeDirectory)
+        Dim rootDirInfo As DirectoryInfo = exeDirInfo.Parent.Parent.Parent
+        Dim rootFolderPath As String = rootDirInfo.FullName
+        Dim resourceUri As Uri = New Uri(rootFolderPath + "\icons\500x500-cadwiki-v1.png", UriKind.Absolute)
+
+        Dim imageSource As New BitmapImage(resourceUri)
+        Me.Icon = imageSource
         EnableOrDisableControlsOnStart(previousAutoCADLocationValue)
     End Sub
 

@@ -57,23 +57,6 @@ Namespace AutoCAD
             Return Nothing
         End Function
 
-        Public Shared Function GetFolderLocationFromCodeBase(assembly As Assembly) As String
-            Dim fileLocation As String = GetFileLocationFromCodeBase(assembly)
-            If String.IsNullOrEmpty(fileLocation) Then
-                Return Nothing
-            End If
-            Return System.IO.Path.GetDirectoryName(fileLocation)
-        End Function
-
-        Public Shared Function GetFileLocationFromCodeBase(assembly As Assembly) As String
-            Dim location As String = assembly.Location
-            If String.IsNullOrEmpty(location) Then
-                location = assembly.CodeBase
-                location = location.Replace("file:///", "")
-            End If
-            Return location
-        End Function
-
 
 
     End Class

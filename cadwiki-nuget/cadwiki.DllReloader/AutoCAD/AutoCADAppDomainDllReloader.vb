@@ -106,7 +106,7 @@ Namespace AutoCAD
                     SetReloadCount(0)
                     SetInitialValues(currentIExtensionAppAssembly)
                     If loadAllDllsInAppAssemblyDirectory = True Then
-                        Dim dllPath As String = AcadAssemblyUtils.GetFileLocationFromCodeBase(currentIExtensionAppAssembly)
+                        Dim dllPath As String = NetUtils.AssemblyUtils.GetFileLocationFromCodeBase(currentIExtensionAppAssembly)
                         ReloadAllDllsFoundInSameFolder(dllPath)
                     End If
                 Else
