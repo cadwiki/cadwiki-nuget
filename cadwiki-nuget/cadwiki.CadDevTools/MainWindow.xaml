@@ -98,10 +98,10 @@
         </RichTextBox>
 
         <Button
-            x:Name="ButtonSelectLoad"
+            x:Name="ButtonLaunch"
             Content="Launch"
             ClickMode="Press"
-            Click="ButtonSelectLoad_Click"
+            Click="ButtonLaunch_Click"
             Grid.Column="3"
             Grid.Row="3"
             HorizontalAlignment="Center"
