@@ -54,7 +54,7 @@
             />
 
         <TextBox
-            x:Name="LabelStartupSwitches"
+            x:Name="TextBoxLabelStartupSwitches"
             Grid.Column="0"
             Grid.Row="1"
             Text="Startup Switches:"
@@ -78,6 +78,7 @@
             Grid.Column="0"
             Grid.Row="2"
             Text="Dll Path: "
+            IsEnabled="False"
             >
         </TextBox>
 
