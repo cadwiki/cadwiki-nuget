@@ -67,6 +67,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -144,6 +145,10 @@
     <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.vbproj">
       <Project>{f63b3063-2044-4f17-ac6c-ff343c56b03d}</Project>
       <Name>cadwiki.DllReloader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.vbproj">
+      <Project>{80537d89-b441-44dd-ae0a-e4fdb9bb284d}</Project>
+      <Name>cadwiki.FileStore</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
       <Project>{3C1158DA-4A90-4FC1-8CCC-6F1E4787A118}</Project>
