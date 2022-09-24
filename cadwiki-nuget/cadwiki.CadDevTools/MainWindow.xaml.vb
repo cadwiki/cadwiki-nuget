@@ -7,6 +7,13 @@ Imports InteropUtils2021 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Imports InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 
 Class MainWindow
+
+    Public Class Dependencies
+        Private _autoCADExePath As String
+        Private _autoCADStartupSwitches As String
+        Private _dllFilePathToNetload As String
+    End Class
+
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -98,24 +105,15 @@ Class MainWindow
         cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
             "Please wait until CAD launches and netloads the most recently built CadApp.dll in your solution directory.")
-        Dim solutionDir As String = GetSolutionDirectory()
-        Dim wildCardFileName As String = "*MainApp.dll"
-        Dim cadApps As List(Of String) = Paths.GetAllWildcardFilesInVSubfolder(solutionDir, wildCardFileName)
-        Dim cadAppDll As String = cadApps.FirstOrDefault
+        Dim cadAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAV()
+
         If Not File.Exists(cadAppDll) Then
             Throw New Exception("Dll does not exist, try building or rebuilding the CadApp.")
         End If
         NetLoadDll(cadAppDll)
     End Sub
 
-    Private Function GetSolutionDirectory() As String
-        Dim folder As String = Directory.GetCurrentDirectory
-        Dim parent As String = Path.GetDirectoryName(folder)
-        parent = Path.GetDirectoryName(parent)
-        parent = Path.GetDirectoryName(parent)
-        parent = Path.GetDirectoryName(parent)
-        Return parent
-    End Function
+
 
     Private Sub ButtonSelectLoad_Click(sender As Object, e As RoutedEventArgs)
         Forms.Application.DoEvents()
@@ -186,4 +184,21 @@ Class MainWindow
     Private Sub ButtonOk_Click(sender As Object, e As RoutedEventArgs)
         Close()
     End Sub
+
+    Private Function GetNewestDllInSolutionDirectorySubFoldersThatHaveAV() As String
+        Dim solutionDir As String = GetSolutionDirectory()
+        Dim wildCardFileName As String = "*MainApp.dll"
+        Dim cadApps As List(Of String) = Paths.GetAllWildcardFilesInVSubfolder(solutionDir, wildCardFileName)
+        Dim cadAppDll As String = cadApps.FirstOrDefault
+        Return cadAppDll
+    End Function
+
+    Private Function GetSolutionDirectory() As String
+        Dim folder As String = Directory.GetCurrentDirectory
+        Dim parent As String = Path.GetDirectoryName(folder)
+        parent = Path.GetDirectoryName(parent)
+        parent = Path.GetDirectoryName(parent)
+        parent = Path.GetDirectoryName(parent)
+        Return parent
+    End Function
 End Class
