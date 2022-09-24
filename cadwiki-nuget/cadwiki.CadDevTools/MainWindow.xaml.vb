@@ -21,10 +21,10 @@ Class MainWindow
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
         If Not previousAutoCADLocationValue.Equals(noneValue) And File.Exists(previousAutoCADLocationValue) Then
-            ButtonSelectLoad.IsEnabled = True
+            ButtonLaunch.IsEnabled = True
             EditRichTextBoxWithAutoCADLocation()
         Else
-            ButtonSelectLoad.IsEnabled = False
+            ButtonLaunch.IsEnabled = False
         End If
     End Sub
 
@@ -67,7 +67,7 @@ Class MainWindow
         If wasOkClicked Then
             acadLocation = window.SelectedFolder
             If File.Exists(acadLocation) Then
-                ButtonSelectLoad.IsEnabled = True
+                ButtonLaunch.IsEnabled = True
                 EditRichTextBoxWithAutoCADLocation()
                 Dim iniFilePath As String = GetCadDevToolsIniFilePath()
                 Dim objIniFile As New IniFile(iniFilePath)
@@ -96,7 +96,7 @@ Class MainWindow
     End Sub
 
 
-    Private Sub ButtonSelectLoad_Click(sender As Object, e As RoutedEventArgs)
+    Private Sub ButtonLaunch_Click(sender As Object, e As RoutedEventArgs)
         Forms.Application.DoEvents()
         cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
