@@ -143,8 +143,10 @@ Class MainWindow
             If isAutoCADRunning = False Then
                 System.Windows.Forms.Application.DoEvents()
                 Dim processInfo As ProcessStartInfo = New ProcessStartInfo With {
-                    .FileName = acadLocation
+                    .FileName = acadLocation,
+                    .Arguments = TextBoxLabelStartupSwitches.Text
                     }
+
                 interop2021.StartAutoCADApp(processInfo)
             End If
             interop2021.ConfigureRunningAutoCADForUsage()
@@ -156,7 +158,8 @@ Class MainWindow
             If isAutoCADRunning = False Then
                 System.Windows.Forms.Application.DoEvents()
                 Dim processInfo As ProcessStartInfo = New ProcessStartInfo With {
-                    .FileName = acadLocation
+                    .FileName = acadLocation,
+                    .Arguments = TextBoxLabelStartupSwitches.Text
                     }
                 interop2022.StartAutoCADApp(processInfo)
             End If
