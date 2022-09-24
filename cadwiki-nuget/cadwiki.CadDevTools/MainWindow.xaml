@@ -6,8 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Cad Dev Tools"
-    Height="175"
-    MinHeight="175"
+    Height="200"
+    MinHeight="200"
     Width="800"
     MinWidth="800">
     <Window.Resources>
