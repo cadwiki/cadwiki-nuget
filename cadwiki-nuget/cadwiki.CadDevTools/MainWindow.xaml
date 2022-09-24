@@ -15,9 +15,9 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
             <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -31,7 +31,7 @@
 
         <RichTextBox
             x:Name="RichTextBoxSelectedAutoCAD"
-            Grid.Column="0"
+            Grid.Column="2"
             Grid.Row="0"
             
             >
@@ -46,65 +46,54 @@
             x:Name="ButtonSelectAutoCADYear" 
             Click="ButtonSelectAutoCADYear_Click"
             Content="Select CAD"
-            Grid.Column="2"
+            Grid.Column="0"
             Grid.Row="0"
             HorizontalAlignment="Center"  
             VerticalAlignment="Center" 
-            Width="75"
-
+            Width="100"
             />
 
-        <RichTextBox
-            x:Name="RichTextBoxStartupSwitches"
+        <TextBox
+            x:Name="LabelStartupSwitches"
             Grid.Column="0"
             Grid.Row="1"
-            
+            Text="Startup Switches:"
+            VerticalContentAlignment="Top"
+            IsEnabled="False"
             >
-            <FlowDocument>
-                <Paragraph>Use this to set the startup switches for AutoCAD</Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        </TextBox>
 
         <TextBox 
             x:Name="TextBoxStartupSwitches" 
             Text="/p VANILLA"
-            Grid.Column="0"
+            Grid.Column="2"
             Grid.Row="1"
-            Grid.ColumnSpan="3"
-            HorizontalAlignment="Right"  
+            HorizontalAlignment="Left"  
             VerticalAlignment="Center" 
-            TextAlignment="Right"
-            Width="500"
-            
+            TextAlignment="Left"
             />
-        
-        <RichTextBox
-            x:Name="RichTextBoxDllName"
+
+        <TextBox
+            x:Name="TextBoxLabelDllPath"
             Grid.Column="0"
             Grid.Row="2"
-            
+            Text="Dll Path: "
             >
-            <FlowDocument>
-                <Paragraph>Use this to set the path of {.dll} to netload</Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        </TextBox>
 
         <TextBox 
-            x:Name="TextBoxDllPath" 
-            Text="MainApp.dll"
-            Grid.Column="0"
+            x:Name="TextBoxLDllPath" 
+            Text="C:\Temp\MainApp.dll"
+            Grid.Column="2"
             Grid.Row="2"
-            Grid.ColumnSpan="3"
-            HorizontalAlignment="Right"  
+            HorizontalAlignment="Left"  
             VerticalAlignment="Center" 
-            TextAlignment="Right"
-            Width="500"
-            
+            TextAlignment="Left"
             />
 
         <RichTextBox
             x:Name="RichTextBoxFindNewestDll"
-            Grid.Column="0"
+            Grid.Column="2"
             Grid.Row="3"
             
             >
@@ -119,16 +108,16 @@
             Content="Find Newest"
             ClickMode="Press"
             Click="ButtonFindNewestDllByName_Click"
-            Grid.Column="2"
+            Grid.Column="0"
             Grid.Row="3"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
-            Width="75" 
+            Width="100" 
             />
 
         <RichTextBox
             x:Name="RichTextBoxSelectDll"
-            Grid.Column="0"
+            Grid.Column="2"
             Grid.Row="4"
             
             >
@@ -142,15 +131,15 @@
             Content="Select Dll"
             ClickMode="Press"
             Click="ButtonSelectDll_Click"
-            Grid.Column="2"
+            Grid.Column="0"
             Grid.Row="4"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Width="150" 
+            Width="100" 
             />
         
         <RichTextBox
-            Grid.Column="0"
+            Grid.Column="2"
             Grid.Row="5"
             
             >
@@ -164,11 +153,11 @@
             Content="Launch"
             ClickMode="Press"
             Click="ButtonLaunch_Click"
-            Grid.Column="3"
+            Grid.Column="0"
             Grid.Row="5"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Width="75" 
+            Width="100" 
             Background="{DynamicResource SolidColorBrushLimeGreen}"
             />
 
