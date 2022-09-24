@@ -89,6 +89,30 @@
             VerticalAlignment="Center" 
             />
 
+        <Button
+            x:Name="ButtonFindNewestDllByName"
+            Content="Find Newest Dll"
+            ClickMode="Press"
+            Click="ButtonFindNewestDllByName_Click"
+            Grid.Column="0"
+            Grid.Row="3"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Width="150" 
+            />
+
+        <Button
+            x:Name="ButtonSelectDll"
+            Content="Select Dll"
+            ClickMode="Press"
+            Click="ButtonSelectDll_Click"
+            Grid.Column="0"
+            Grid.Row="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="150" 
+            />
+        
         <RichTextBox
             Grid.Column="0"
             Grid.Row="4">
