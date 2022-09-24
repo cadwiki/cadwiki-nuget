@@ -92,7 +92,7 @@ Class MainWindow
                 objIniFile.WriteString("Settings", previousAutoCADLocationKey, acadLocation)
                 cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus,
                     TextBlockMessage,
-                    "File does not exist: " + acadLocation)
+                    "File does exist: " + acadLocation)
             Else
                 cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus,
                     TextBlockMessage,
