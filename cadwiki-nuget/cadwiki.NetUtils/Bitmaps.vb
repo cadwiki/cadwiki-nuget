@@ -16,7 +16,11 @@ Public Class Bitmaps
         Dim retval As BitmapImage
 
         Try
-            retval = CType(Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()), BitmapImage)
+            retval = CType(Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
+                                                                 IntPtr.Zero,
+                                                                 Int32Rect.Empty,
+                                                                 BitmapSizeOptions.FromEmptyOptions()),
+                                                                 BitmapImage)
         Finally
             DeleteObject(hBitmap)
         End Try
