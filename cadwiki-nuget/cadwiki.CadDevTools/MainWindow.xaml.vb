@@ -21,11 +21,9 @@ Class MainWindow
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
         If Not previousAutoCADLocationValue.Equals(noneValue) And File.Exists(previousAutoCADLocationValue) Then
-            ButtonLoadNewest.IsEnabled = True
             ButtonSelectLoad.IsEnabled = True
             EditRichTextBoxWithAutoCADLocation()
         Else
-            ButtonLoadNewest.IsEnabled = False
             ButtonSelectLoad.IsEnabled = False
         End If
     End Sub
@@ -69,7 +67,6 @@ Class MainWindow
         If wasOkClicked Then
             acadLocation = window.SelectedFolder
             If File.Exists(acadLocation) Then
-                ButtonLoadNewest.IsEnabled = True
                 ButtonSelectLoad.IsEnabled = True
                 EditRichTextBoxWithAutoCADLocation()
                 Dim iniFilePath As String = GetCadDevToolsIniFilePath()
@@ -99,20 +96,6 @@ Class MainWindow
         flowDoc.Blocks.Add(paragraph2)
         RichTextBoxSelectedAutoCAD.Document = flowDoc
     End Sub
-
-    Private Sub ButtonLoadNewest_Click(sender As Object, e As RoutedEventArgs)
-        Forms.Application.DoEvents()
-        cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
-            TextBlockMessage,
-            "Please wait until CAD launches and netloads the most recently built CadApp.dll in your solution directory.")
-        Dim cadAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAV()
-
-        If Not File.Exists(cadAppDll) Then
-            Throw New Exception("Dll does not exist, try building or rebuilding the CadApp.")
-        End If
-        NetLoadDll(cadAppDll)
-    End Sub
-
 
 
     Private Sub ButtonSelectLoad_Click(sender As Object, e As RoutedEventArgs)
