@@ -92,9 +92,9 @@ Class MainWindow
     Private Sub EditRichTextBoxWithAutoCADLocation()
         Dim flowDoc As FlowDocument = New FlowDocument()
         Dim paragraph1 As New Paragraph()
-        paragraph1.Inlines.Add(New Run("Selected program: "))
+        paragraph1.Inlines.Add(New Run("Selected program: " + Environment.NewLine))
         paragraph1.Inlines.Add(New Bold(New Run(acadLocation)))
-        paragraph1.Inlines.Add(New Run("You can now use the other buttons."))
+        paragraph1.Inlines.Add(New Run(Environment.NewLine + "You can now use the other buttons."))
         flowDoc.Blocks.Add(paragraph1)
         RichTextBoxSelectedAutoCAD.Document = flowDoc
     End Sub
