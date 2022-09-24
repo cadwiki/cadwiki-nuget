@@ -6,8 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Cad Dev Tools"
-    Height="185"
-    MinHeight="185"
+    Height="175"
+    MinHeight="175"
     Width="800"
     MinWidth="800">
     <Window.Resources>
@@ -21,7 +21,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="20" />
             <RowDefinition Height="20" />
             <RowDefinition Height="20" />
             <RowDefinition Height="20" />
@@ -34,14 +34,9 @@
             Grid.Row="0"
             >
             <FlowDocument>
-                <Paragraph>Use this to set the AutoCAD program to Launch</Paragraph>
-                <List>
-                    <ListItem>
-                        <Paragraph>
-                            <Bold>The selected program is:</Bold>
-                        </Paragraph>
-                    </ListItem>
-                </List>
+                <Paragraph>
+                    Use this to set the AutoCAD program to Launch
+                </Paragraph>
             </FlowDocument>
         </RichTextBox>
 
