@@ -39,13 +39,6 @@ Class MainWindow
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
 
-
-        Dim exeDirectory As String = AssemblyUtils.GetFolderLocationFromCodeBase(Assembly.GetExecutingAssembly())
-        Dim exeDirInfo As New DirectoryInfo(exeDirectory)
-        Dim rootDirInfo As DirectoryInfo = exeDirInfo.Parent.Parent.Parent
-        Dim rootFolderPath As String = rootDirInfo.FullName
-        Dim resourceUri As Uri = New Uri(rootFolderPath + "\icons\500x500-cadwiki-v1.png", UriKind.Absolute)
-
         'Dim bitMap As Drawing.Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
         'Dim bitMapImage As BitmapImage = Bitmaps.Bitmap2BitmapImage(bitMap)
         'Me.Icon = bitMapImage
