@@ -104,22 +104,13 @@ Class MainWindow
         Forms.Application.DoEvents()
         cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
-            "Please wait until CAD launches and netloads your selected dll into AutoCAD.")
-        Dim folder As String = Directory.GetCurrentDirectory
-        Dim solutionDir As String = GetSolutionDirectory()
-        Dim wildCardFileName As String = "*MainApp.dll"
-        Dim cadApps As List(Of String) = Paths.GetAllWildcardFilesInVSubfolder(solutionDir, wildCardFileName)
+            "Please wait until CAD launches and netloads " + TextBoxDllName.Text + " into AutoCAD.")
 
-        Dim window As cadwiki.WpfUi.WindowGetFilePath = New cadwiki.WpfUi.WindowGetFilePath(cadApps)
-        window.Width = 1200
-        window.Height = 300
-        window.ShowDialog()
-        Dim wasOkClicked As Boolean = window.WasOkayClicked
-        If wasOkClicked Then
-            Dim filePath As String = window.SelectedFolder
-            NetLoadDll(filePath)
+        Dim filePath As String = TextBoxDllName.Text
+        If Not File.Exists(filePath) Then
+            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + filePath)
         Else
-            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "User closed dll load menu.")
+            NetLoadDll(filePath)
         End If
     End Sub
 
@@ -166,13 +157,38 @@ Class MainWindow
     End Sub
 
 
-    Private Sub ButtonOk_Click(sender As Object, e As RoutedEventArgs)
-        Close()
+    Private Sub ButtonSelectDll_Click(sender As Object, e As RoutedEventArgs)
+        Dim folder As String = Directory.GetCurrentDirectory
+        Dim solutionDir As String = GetSolutionDirectory()
+        Dim wildCardFileName As String = "*.dll"
+        Dim dlls As List(Of String) = Paths.GetAllWildcardFilesInVSubfolder(solutionDir, wildCardFileName)
+        Dim window As cadwiki.WpfUi.WindowGetFilePath = New cadwiki.WpfUi.WindowGetFilePath(dlls)
+        window.Width = 1200
+        window.Height = 300
+        window.ShowDialog()
+        Dim wasOkClicked As Boolean = window.WasOkayClicked
+        If wasOkClicked Then
+            Dim filePath As String = window.SelectedFolder
+            If Not File.Exists(filePath) Then
+                cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + filePath)
+            End If
+            cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Selected dll to load: " + filePath)
+        Else
+            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "User closed dll load menu.")
+        End If
     End Sub
 
-    Private Function GetNewestDllInSolutionDirectorySubFoldersThatHaveAV() As String
+    Private Sub ButtonFindNewestDll_Click(sender As Object, e As RoutedEventArgs)
+        Dim dllName As String = System.IO.Path.GetFileName(TextBoxDllName.Text)
+        Dim mainAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAV(dllName)
+        If Not File.Exists(mainAppDll) Then
+            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + mainAppDll)
+        End If
+    End Sub
+
+    Private Function GetNewestDllInSolutionDirectorySubFoldersThatHaveAV(dllName As String) As String
         Dim solutionDir As String = GetSolutionDirectory()
-        Dim wildCardFileName As String = "*MainApp.dll"
+        Dim wildCardFileName As String = "*" + dllName
         Dim cadApps As List(Of String) = Paths.GetAllWildcardFilesInVSubfolder(solutionDir, wildCardFileName)
         Dim cadAppDll As String = cadApps.FirstOrDefault
         Return cadAppDll
