@@ -26,6 +26,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.CadDevTools", "cadw
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AutoCAD2022.Interop.Utilities", "cadwiki.AutoCAD2022.Interop.Utilities\cadwiki.AutoCAD2022.Interop.Utilities.vbproj", "{901E09F6-393A-4386-94E4-13E52BE91FBD}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.FileStore", "cadwiki.FileStore\cadwiki.FileStore.vbproj", "{80537D89-B441-44DD-AE0A-E4FDB9BB284D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,14 @@ Global
 		{901E09F6-393A-4386-94E4-13E52BE91FBD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{901E09F6-393A-4386-94E4-13E52BE91FBD}.Release|x64.ActiveCfg = Release|x64
 		{901E09F6-393A-4386-94E4-13E52BE91FBD}.Release|x64.Build.0 = Release|x64
+		{80537D89-B441-44DD-AE0A-E4FDB9BB284D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80537D89-B441-44DD-AE0A-E4FDB9BB284D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80537D89-B441-44DD-AE0A-E4FDB9BB284D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{80537D89-B441-44DD-AE0A-E4FDB9BB284D}.Debug|x64.Build.0 = Debug|Any CPU
+		{80537D89-B441-44DD-AE0A-E4FDB9BB284D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80537D89-B441-44DD-AE0A-E4FDB9BB284D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80537D89-B441-44DD-AE0A-E4FDB9BB284D}.Release|x64.ActiveCfg = Release|Any CPU
+		{80537D89-B441-44DD-AE0A-E4FDB9BB284D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

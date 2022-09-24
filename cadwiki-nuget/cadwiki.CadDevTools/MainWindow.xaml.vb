@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports cadwiki.NetUtils
+Imports cadwiki.FileStore
 
 Imports System.Windows
 Imports System.Windows.Documents
@@ -7,6 +8,7 @@ Imports InteropUtils2021 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Imports InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Imports System.Windows.Media.Imaging
 Imports System.Reflection
+Imports System.Windows.Interop
 
 Class MainWindow
 
@@ -37,16 +39,21 @@ Class MainWindow
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
 
+
         Dim exeDirectory As String = AssemblyUtils.GetFolderLocationFromCodeBase(Assembly.GetExecutingAssembly())
         Dim exeDirInfo As New DirectoryInfo(exeDirectory)
         Dim rootDirInfo As DirectoryInfo = exeDirInfo.Parent.Parent.Parent
         Dim rootFolderPath As String = rootDirInfo.FullName
         Dim resourceUri As Uri = New Uri(rootFolderPath + "\icons\500x500-cadwiki-v1.png", UriKind.Absolute)
 
-        Dim imageSource As New BitmapImage(resourceUri)
-        Me.Icon = imageSource
+        'Dim bitMap As Drawing.Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
+        'Dim bitMapImage As BitmapImage = Bitmaps.Bitmap2BitmapImage(bitMap)
+        'Me.Icon = bitMapImage
         EnableOrDisableControlsOnStart(previousAutoCADLocationValue)
     End Sub
+
+
+
 
     Private Sub EnableOrDisableControlsOnStart(acadLocation As String)
         If Not acadLocation.Equals(noneValue) And File.Exists(acadLocation) Then
