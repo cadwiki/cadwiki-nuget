@@ -20,7 +20,11 @@ Class MainWindow
         Dim autocadReloader As New cadwiki.DllReloader.AutoCAD.AutoCADAppDomainDllReloader()
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
-        If Not previousAutoCADLocationValue.Equals(noneValue) And File.Exists(previousAutoCADLocationValue) Then
+        EnableOrDisableControlsOnStart(previousAutoCADLocationValue)
+    End Sub
+
+    Private Sub EnableOrDisableControlsOnStart(acadLocation As String)
+        If Not acadLocation.Equals(noneValue) And File.Exists(acadLocation) Then
             ButtonLaunch.IsEnabled = True
             EditRichTextBoxWithAutoCADLocation()
         Else
