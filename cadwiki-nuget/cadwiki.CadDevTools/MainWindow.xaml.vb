@@ -9,20 +9,30 @@ Imports InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Class MainWindow
 
     Public Class Dependencies
-        Private _autoCADExePath As String
-        Private _autoCADStartupSwitches As String
-        Private _dllFilePathToNetload As String
+        Public AutoCADExePath As String
+        Public AutoCADStartupSwitches As String
+        Public DllFilePathToNetload As String
     End Class
 
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
+        StandardOnStartOperations()
+        TextBoxStartupSwitches.Text = ""
+    End Sub
+
+    Public Sub New(dependencies As Dependencies)
+        ' This call is required by the designer.
+        InitializeComponent()
+        StandardOnStartOperations()
+        acadLocation = dependencies._
+    End Sub
+
+    Private Sub StandardOnStartOperations()
         Dim autocadReloader As New cadwiki.DllReloader.AutoCAD.AutoCADAppDomainDllReloader()
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
         EnableOrDisableControlsOnStart(previousAutoCADLocationValue)
-        TextBoxStartupSwitches.Text = ""
-
     End Sub
 
     Private Sub EnableOrDisableControlsOnStart(acadLocation As String)
