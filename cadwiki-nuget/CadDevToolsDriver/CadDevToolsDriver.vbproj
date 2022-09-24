@@ -122,15 +122,6 @@
       <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="cadwiki.DllReloader, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\cadwiki.DllReloader.1.0.2\lib\net472\cadwiki.DllReloader.dll</HintPath>
-    </Reference>
-    <Reference Include="cadwiki.NetUtils, Version=1.0.810.19, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\cadwiki.DllReloader.1.0.2\lib\net472\cadwiki.NetUtils.dll</HintPath>
-    </Reference>
-    <Reference Include="cadwiki.WpfUi, Version=1.0.810.19, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\cadwiki.DllReloader.1.0.2\lib\net472\cadwiki.WpfUi.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -218,15 +209,8 @@
   <ItemGroup>
     <ProjectReference Include="..\cadwiki.CadDevTools\cadwiki.CadDevTools.vbproj">
       <Project>{939ad7b0-3396-47bc-82ee-8b087cf164fd}</Project>
-      <Name>CadDevToolsDriver2</Name>
+      <Name>cadwiki.CadDevTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets" Condition="Exists('..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets'))" />
-  </Target>
 </Project>
