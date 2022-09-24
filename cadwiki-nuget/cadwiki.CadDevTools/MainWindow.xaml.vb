@@ -90,16 +90,19 @@ Class MainWindow
                 Dim iniFilePath As String = GetCadDevToolsIniFilePath()
                 Dim objIniFile As New IniFile(iniFilePath)
                 objIniFile.WriteString("Settings", previousAutoCADLocationKey, acadLocation)
+                cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus,
+                    TextBlockMessage,
+                    "File does not exist: " + acadLocation)
             Else
                 cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus,
                     TextBlockMessage,
-                    "Unable to start AutoCAD because file does not exist: " + acadLocation)
+                    "File does not exist: " + acadLocation)
             End If
 
         Else
             cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus,
                 TextBlockMessage,
-                "Unable to start AutoCAD because File selection window was canceled.")
+                "File selection window was canceled.")
         End If
     End Sub
 
