@@ -1,6 +1,5 @@
 ﻿Imports System.IO
 Imports cadwiki.NetUtils
-Imports cadwiki.FileStore
 
 Imports System.Windows
 Imports System.Windows.Documents
@@ -33,7 +32,7 @@ Class MainWindow
     End Sub
 
     Private Sub StandardOnStartOperations()
-        Dim autocadReloader As New cadwiki.DllReloader.AutoCAD.AutoCADAppDomainDllReloader()
+        Dim autocadReloader As New DllReloader.AutoCAD.AutoCADAppDomainDllReloader()
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
         Dim bitMap As Drawing.Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
