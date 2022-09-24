@@ -178,7 +178,7 @@ Class MainWindow
         End If
     End Sub
 
-    Private Sub ButtonFindNewestDll_Click(sender As Object, e As RoutedEventArgs)
+    Private Sub ButtonFindNewestDllByName_Click(sender As Object, e As RoutedEventArgs)
         Dim dllName As String = System.IO.Path.GetFileName(TextBoxDllName.Text)
         Dim mainAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAV(dllName)
         If Not File.Exists(mainAppDll) Then
