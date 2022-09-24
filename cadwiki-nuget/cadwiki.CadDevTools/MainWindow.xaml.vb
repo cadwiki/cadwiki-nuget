@@ -21,6 +21,8 @@ Class MainWindow
         autocadReloader.ClearIni()
         ReadCadDevToolsIniFromTemp()
         EnableOrDisableControlsOnStart(previousAutoCADLocationValue)
+        TextBoxStartupSwitches.Text = ""
+
     End Sub
 
     Private Sub EnableOrDisableControlsOnStart(acadLocation As String)
