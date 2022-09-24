@@ -25,7 +25,9 @@ Class MainWindow
         ' This call is required by the designer.
         InitializeComponent()
         StandardOnStartOperations()
-        acadLocation = dependencies._
+        acadLocation = dependencies.AutoCADExePath
+        TextBoxDllPath.Text = dependencies.DllFilePathToNetload
+        TextBoxStartupSwitches.Text = dependencies.AutoCADStartupSwitches
     End Sub
 
     Private Sub StandardOnStartOperations()
@@ -116,9 +118,9 @@ Class MainWindow
         Forms.Application.DoEvents()
         cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
-            "Please wait until CAD launches and netloads " + TextBoxDllName.Text + " into AutoCAD.")
+            "Please wait until CAD launches and netloads " + TextBoxDllPath.Text + " into AutoCAD.")
 
-        Dim filePath As String = TextBoxDllName.Text
+        Dim filePath As String = TextBoxDllPath.Text
         If Not File.Exists(filePath) Then
             cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + filePath)
         Else
@@ -191,7 +193,7 @@ Class MainWindow
     End Sub
 
     Private Sub ButtonFindNewestDllByName_Click(sender As Object, e As RoutedEventArgs)
-        Dim dllName As String = System.IO.Path.GetFileName(TextBoxDllName.Text)
+        Dim dllName As String = System.IO.Path.GetFileName(TextBoxDllPath.Text)
         Dim mainAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAV(dllName)
         If Not File.Exists(mainAppDll) Then
             cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + mainAppDll)
