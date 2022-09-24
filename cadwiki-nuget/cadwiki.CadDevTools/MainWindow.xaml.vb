@@ -7,8 +7,6 @@ Imports System.Windows.Documents
 Imports InteropUtils2021 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Imports InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils
 Imports System.Windows.Media.Imaging
-Imports System.Drawing
-Imports System.Drawing.Imaging
 
 Class MainWindow
 
@@ -43,10 +41,6 @@ Class MainWindow
         Me.Icon = bitMapImage
         EnableOrDisableControlsOnStart(previousAutoCADLocationValue)
     End Sub
-
-
-
-
 
 
     Private Sub EnableOrDisableControlsOnStart(acadLocation As String)
