@@ -4,7 +4,11 @@ Class MainWindow
         ' This call is required by the designer.
         InitializeComponent()
         Me.Hide()
-        Dim window As Window = New cadwiki.CadDevTools.MainWindow()
+        Dim dependencies As New cadwiki.CadDevTools.MainWindow.Dependencies()
+        dependencies.AutoCADExePath = "C:\Program Files\Autodesk\AutoCAD 2021\acad.exe"
+        dependencies.AutoCADStartupSwitches = "\b VANILLA"
+        dependencies.DllFilePathToNetload = "E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools\bin\Debug\cadwiki.CadDevTools.dll"
+        Dim window As Window = New cadwiki.CadDevTools.MainWindow(dependencies)
         window.Show()
     End Sub
 
