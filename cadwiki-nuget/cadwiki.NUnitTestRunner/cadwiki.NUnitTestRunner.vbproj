@@ -161,6 +161,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.vbproj">
+      <Project>{80537d89-b441-44dd-ae0a-e4fdb9bb284d}</Project>
+      <Name>cadwiki.FileStore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
       <Project>{3C1158DA-4A90-4FC1-8CCC-6F1E4787A118}</Project>
       <Name>cadwiki.NetUtils</Name>

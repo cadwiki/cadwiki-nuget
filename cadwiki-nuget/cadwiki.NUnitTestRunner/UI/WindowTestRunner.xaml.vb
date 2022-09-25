@@ -5,8 +5,11 @@ Option Explicit On
 Imports System.Windows
 Imports Application = System.Windows.Forms.Application
 Imports cadwiki.NUnitTestRunner.Results
+Imports cadwiki.NetUtils
+Imports System.Windows.Media.Imaging
+Imports System.Drawing
 
-Namespace Ui
+Namespace UI
     Public Class WindowTestRunner
         Public WithEvents ObservableResults As New ObservableTestSuiteResults
 
@@ -37,6 +40,9 @@ Namespace Ui
 
         Public Sub Init()
             RichTextBoxConsole.AppendText(vbLf & "NunitTestRunner started")
+            Dim bitMap As Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
+            Dim bitMapImage As BitmapImage = Bitmaps.BitMapToBitmapImage(bitMap)
+            Me.Icon = bitMapImage
         End Sub
 
         Public Sub New(ByRef suiteResults As ObservableTestSuiteResults)
