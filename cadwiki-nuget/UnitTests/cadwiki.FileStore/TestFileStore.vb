@@ -19,8 +19,6 @@ Imports cadwiki.NUnitTestRunner
     End Sub
 
 
-
-
     <TestMethod()> Public Sub Test_Get500x500_cadwikiv1_ShouldReturnIcon()
 
         Dim bitMap As Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
