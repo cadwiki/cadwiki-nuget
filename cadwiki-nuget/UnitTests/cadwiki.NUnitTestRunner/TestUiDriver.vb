@@ -26,7 +26,7 @@ Imports cadwiki.NUnitTestRunner
         Dim form As UI.FormTestRunner = driver.GetForm()
 
         driver.ExecuteTests()
-        form.ShowDialog()
+        form.Show()
     End Sub
 
 
