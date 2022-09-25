@@ -1,8 +1,10 @@
 ﻿Imports System.Reflection
+Imports System.Windows.Forms
 Imports cadwiki.NUnitTestRunner
 
 
 <TestClass()> Public Class TestUiDriver
+
 
     <TestMethod()> Public Sub Test_RunTestsWithWpUi_ShouldPass()
 
@@ -10,10 +12,12 @@ Imports cadwiki.NUnitTestRunner
         Dim allTypes As Type() = {testStringsType}
 
         Dim results As New Results.ObservableTestSuiteResults()
-        Dim driver As New Ui.WpfDriver(results, allTypes)
-        Dim window As Ui.WindowTestRunner = driver.GetWindow()
+        Dim driver As New UI.WpfDriver(results, allTypes)
+        Dim window As UI.WindowTestRunner = driver.GetWindow()
         window.Show()
         driver.ExecuteTests()
+        Threading.Thread.Sleep(3000)
+        window.Close()
     End Sub
 
     <TestMethod()> Public Sub Test_RunTestsWithWinFormsUi_ShouldPass()
@@ -22,11 +26,13 @@ Imports cadwiki.NUnitTestRunner
         Dim allTypes As Type() = {testStringsType}
 
         Dim results As New Results.ObservableTestSuiteResults()
-        Dim driver As New Ui.WinformsDriver(results, allTypes)
+        Dim driver As New UI.WinformsDriver(results, allTypes)
         Dim form As UI.FormTestRunner = driver.GetForm()
 
-        driver.ExecuteTests()
         form.Show()
+        driver.ExecuteTests()
+        Threading.Thread.Sleep(3000)
+        form.Close()
     End Sub
 
 
@@ -35,7 +41,7 @@ Imports cadwiki.NUnitTestRunner
         Dim allTypes As Type() = {testStringsType}
         Dim results As New Results.ObservableTestSuiteResults()
         Dim driver As New UI.WpfDriver(results, allTypes)
-        Dim form As UI.WindowTestRunner = driver.GetWindow()
+        Dim window As UI.WindowTestRunner = driver.GetWindow()
         driver.ExecuteTests()
         Dim jsonString As String = results.ToJson()
         Assert.AreEqual(2, results.TotalTests)
