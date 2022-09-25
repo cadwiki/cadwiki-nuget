@@ -3,6 +3,7 @@ Option Infer Off
 Option Explicit On
 Imports System
 Imports System.Collections.Generic
+Imports Newtonsoft.Json
 
 Namespace Results
     Public Class TestResult
@@ -40,6 +41,12 @@ Namespace Results
             TestResults.Add(newItem)
             RaiseEvent ResultAdded(Me, New EventArgs())
         End Sub
+
+        Public Function ToJson() As String
+            Dim testSuiteResult As String = JsonConvert.SerializeObject(Me)
+            Return testSuiteResult
+        End Function
+
     End Class
 
 End Namespace
