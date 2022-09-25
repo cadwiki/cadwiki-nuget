@@ -44,7 +44,7 @@ Imports cadwiki.NUnitTestRunner
         Assert.AreNotEqual("", jsonString)
     End Sub
 
-    <TestMethod()> Public Sub Test_WinFormsDrive_SuiteResultToJson_ShouldPass()
+    <TestMethod()> Public Sub Test_WinFormsDriver_SuiteResultToJson_ShouldPass()
         Dim testStringsType As Type = GetType(TestStrings)
         Dim allTypes As Type() = {testStringsType}
         Dim results As New Results.ObservableTestSuiteResults()
