@@ -19,4 +19,14 @@ Public Class Bitmaps
             Return bitmapImage
         End Using
     End Function
+
+    Public Shared Function BitmapToIcon(bitMap As Bitmap,
+                                        makeTransparent As Boolean,
+                                        colorToMakeTransparent As Color) As Icon
+        If makeTransparent Then
+            bitMap.MakeTransparent(colorToMakeTransparent)
+        End If
+        Dim iconHandle As IntPtr = bitMap.GetHicon()
+        Return Icon.FromHandle(iconHandle)
+    End Function
 End Class

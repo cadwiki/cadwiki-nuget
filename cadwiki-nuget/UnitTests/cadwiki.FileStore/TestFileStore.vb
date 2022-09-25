@@ -18,4 +18,15 @@ Imports cadwiki.NUnitTestRunner
         Assert.IsNotNull(bitMapImage)
     End Sub
 
+
+
+
+    <TestMethod()> Public Sub Test_Get500x500_cadwikiv1_ShouldReturnIcon()
+
+        Dim bitMap As Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
+        Dim icon As Icon = Bitmaps.BitmapToIcon(bitMap, True, Color.White)
+
+        Assert.IsNotNull(bitMap)
+        Assert.IsNotNull(icon)
+    End Sub
 End Class
