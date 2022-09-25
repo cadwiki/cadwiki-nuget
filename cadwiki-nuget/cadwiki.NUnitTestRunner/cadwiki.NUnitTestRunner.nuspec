@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>cadwiki.NUnitTestRunner</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
     <description>Executes unit tests in a WPF window</description>
     <releaseNotes>
-		Rename Ui.WpfDriver to Ui.WpfUiDriver
-		Add Ui.WinformsDriver
+		Add image to Ui,
+		Add ToJson method on ObservableTestSuiteResults,
 	</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>cadwiki Autocad UnitTest RegressionTest IntegrationTest AutomationTest </tags>
