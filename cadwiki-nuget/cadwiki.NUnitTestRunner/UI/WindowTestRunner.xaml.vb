@@ -39,7 +39,8 @@ Namespace Ui
             RichTextBoxConsole.AppendText(vbLf & "NunitTestRunner started")
         End Sub
 
-        Public Sub New(suiteResults As ObservableTestSuiteResults)
+        Public Sub New(ByRef suiteResults As ObservableTestSuiteResults)
+            ObservableResults = suiteResults
             InitializeComponent()
             Init()
         End Sub

@@ -18,7 +18,7 @@ Namespace Ui
             _window = New WindowTestRunner()
         End Sub
 
-        Public Sub New(suiteResult As ObservableTestSuiteResults,
+        Public Sub New(ByRef suiteResult As ObservableTestSuiteResults,
                        regressionTestTypes As Type())
             Try
                 If suiteResult Is Nothing Then
