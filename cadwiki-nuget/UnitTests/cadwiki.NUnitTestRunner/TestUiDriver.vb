@@ -29,4 +29,22 @@ Imports cadwiki.NUnitTestRunner
         form.ShowDialog()
     End Sub
 
+
+    <TestMethod()> Public Sub Test_ToJson_ShouldPass()
+
+        Dim testStringsType As Type = GetType(TestStrings)
+        Dim allTypes As Type() = {testStringsType}
+
+        Dim results As New Results.ObservableTestSuiteResults()
+        Dim driver As New UI.WinformsDriver(results, allTypes)
+        Dim form As UI.FormTestRunner = driver.GetForm()
+
+
+        driver.ExecuteTests()
+        Dim jsonString As String = results.ToJson()
+        Assert.IsNotNull(jsonString)
+        Assert.AreNotEqual(jsonString, "{}")
+        Assert.AreNotEqual(jsonString, "")
+    End Sub
+
 End Class
