@@ -26,9 +26,20 @@ Class MainWindow
         ' This call is required by the designer.
         InitializeComponent()
         StandardOnStartOperations()
-        acadLocation = dependencies.AutoCADExePath
-        TextBoxDllPath.Text = dependencies.DllFilePathToNetload
-        TextBoxStartupSwitches.Text = dependencies.AutoCADStartupSwitches
+
+        If Not String.IsNullOrEmpty(dependencies.AutoCADExePath) Then
+            acadLocation = dependencies.AutoCADExePath
+        End If
+
+        If Not String.IsNullOrEmpty(dependencies.DllFilePathToNetload) Then
+            TextBoxDllPath.Text = dependencies.DllFilePathToNetload
+        End If
+
+        If Not String.IsNullOrEmpty(dependencies.AutoCADStartupSwitches) Then
+            TextBoxStartupSwitches.Text = dependencies.AutoCADStartupSwitches
+        End If
+
+
     End Sub
 
     Private Sub StandardOnStartOperations()
@@ -184,7 +195,7 @@ Class MainWindow
 
     Private Sub ButtonSelectDll_Click(sender As Object, e As RoutedEventArgs)
         Dim folder As String = Directory.GetCurrentDirectory
-        Dim solutionDir As String = GetSolutionDirectory()
+        Dim solutionDir As String = Paths.TryGetSolutionDirectoryPath()
         Dim wildCardFileName As String = "*.dll"
         Dim dlls As List(Of String) = Paths.GetAllWildcardFilesInAnySubfolder(solutionDir, wildCardFileName)
         Dim window As cadwiki.WpfUi.WindowGetFilePath = New cadwiki.WpfUi.WindowGetFilePath(dlls)
@@ -206,7 +217,7 @@ Class MainWindow
 
     Private Sub ButtonFindNewestDllByName_Click(sender As Object, e As RoutedEventArgs)
         Dim dllName As String = System.IO.Path.GetFileName(TextBoxDllPath.Text)
-        Dim mainAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAV(dllName)
+        Dim mainAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAVInFolderName(dllName)
         If Not File.Exists(mainAppDll) Then
             cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + mainAppDll)
         Else
@@ -216,20 +227,12 @@ Class MainWindow
 
     End Sub
 
-    Private Function GetNewestDllInSolutionDirectorySubFoldersThatHaveAV(dllName As String) As String
-        Dim solutionDir As String = GetSolutionDirectory()
+    Public Function GetNewestDllInSolutionDirectorySubFoldersThatHaveAVInFolderName(dllName As String) As String
+        Dim solutionDir As String = Paths.TryGetSolutionDirectoryPath()
         Dim wildCardFileName As String = "*" + dllName
         Dim cadApps As List(Of String) = Paths.GetAllWildcardFilesInVSubfolder(solutionDir, wildCardFileName)
         Dim cadAppDll As String = cadApps.FirstOrDefault
         Return cadAppDll
     End Function
 
-    Private Function GetSolutionDirectory() As String
-        Dim folder As String = Directory.GetCurrentDirectory
-        Dim parent As String = Path.GetDirectoryName(folder)
-        parent = Path.GetDirectoryName(parent)
-        parent = Path.GetDirectoryName(parent)
-        parent = Path.GetDirectoryName(parent)
-        Return parent
-    End Function
 End Class
