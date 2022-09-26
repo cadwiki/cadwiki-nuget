@@ -1,7 +1,9 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Imaging
+Imports System.IO
 Imports System.Windows.Automation
 Imports System.Windows.Automation.AutomationElement
+Imports cadwiki.NUnitTestRunner.Results
 Imports Microsoft.Test.Input
 
 Namespace TestEvidence
@@ -12,6 +14,7 @@ Namespace TestEvidence
         Private Shared _localFolderCache As String = IO.Path.GetTempPath + "cadwiki.NUnitTestRunner"
         Private Shared _localScreenShotCache As String = _localFolderCache + "\" + "screenshots"
         Private Shared _pdfFileReport As String = "AutomatedTestEvidence.pdf"
+        Private Shared _jsonFileResults As String = "AutomatedTestEvidence.json"
 
         Public Sub New()
             If (Not IO.Directory.Exists(_localFolderCache)) Then
@@ -21,6 +24,25 @@ Namespace TestEvidence
                 IO.Directory.CreateDirectory(_localScreenShotCache)
             End If
         End Sub
+
+        Public Sub CreatePdf(suiteResult As ObservableTestSuiteResults)
+            Dim pdfCreator As New PdfCreator(GetNewPdfReportFilePath())
+            For Each testResult As TestResult In suiteResult.TestResults
+                If testResult.Evidence IsNot Nothing Then
+                    For Each image As Image In testResult.Evidence.Images
+                        pdfCreator.AddImageAsNewPage(image.FilePath)
+                    Next
+                End If
+            Next
+            pdfCreator.Save()
+        End Sub
+
+        Public Function WriteTestSuiteResultsToFile(jsonString As String) As String
+            Dim jsonFilePath As String = _localFolderCache + "\" + _jsonFileResults
+            Dim jsonFile As String = NetUtils.Paths.GetUniqueFilePath(jsonFilePath)
+            File.WriteAllText(jsonFile, jsonString)
+            Return jsonFile
+        End Function
 
         Public Function GetNewPdfReportFilePath() As String
             Dim reportFilePath As String = _localFolderCache + "\" + _pdfFileReport

@@ -44,7 +44,7 @@ Namespace Results
         End Sub
 
         Public Function ToJson() As String
-            Dim testSuiteResult As String = JsonConvert.SerializeObject(Me)
+            Dim testSuiteResult As String = JsonConvert.SerializeObject(Me, Formatting.Indented)
             Return testSuiteResult
         End Function
 
