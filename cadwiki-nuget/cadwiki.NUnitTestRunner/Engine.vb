@@ -81,13 +81,12 @@ Public Class Engine
                 testResult.ExceptionMessage = ex.Message
                 testResult.StackTrace = Exceptions.GetStackTraceLines(ex)
             End Try
-
-            suiteResult.AddResult(testResult)
+            'Get any evidence that was collected during the test
             Dim evidence As Evidence = TestEvidenceCreator.GetEvidenceForCurrentTest()
             If (evidence IsNot Nothing) Then
-                evidence.TestResult = testResult
-                TestEvidenceCreator.SetEvidenceForCurrentTest(evidence)
+                testResult.Evidence = evidence
             End If
+            suiteResult.AddResult(testResult)
 
         Next
         stopwatch.Stop()
@@ -104,6 +103,23 @@ Public Class Engine
         Else
             suiteResult.TimeElapsed = elapsedTime
         End If
+
+        'Output pdf with evidence
+        Dim pdfCreator As New PdfCreator(TestEvidenceCreator.GetNewPdfReportFilePath())
+        For Each testResult As TestResult In suiteResult.TestResults
+            If testResult.Evidence IsNot Nothing Then
+                For Each image As Image In testResult.Evidence.Images
+                    pdfCreator.AddImageAsNewPage(image.FilePath)
+                Next
+            End If
+
+
+        Next
+
+        pdfCreator.Save()
+
+
+
     End Sub
 End Class
 

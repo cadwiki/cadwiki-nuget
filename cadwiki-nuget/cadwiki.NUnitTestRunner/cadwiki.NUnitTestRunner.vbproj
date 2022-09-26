@@ -76,6 +76,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Spire.Pdf, Version=8.9.2.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spire.PDF.8.9.2\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -126,6 +129,7 @@
     </Compile>
     <Compile Include="ObservableTestResults.vb" />
     <Compile Include="TestEvidence\Creator.vb" />
+    <Compile Include="TestEvidence\PdfCreator.vb" />
     <Compile Include="TestEvidence\RECT.vb" />
     <Compile Include="TestEvidence\WinAPI.vb" />
     <Compile Include="UI\CommonUiObject.vb" />

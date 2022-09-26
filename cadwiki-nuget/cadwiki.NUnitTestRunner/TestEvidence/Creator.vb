@@ -11,10 +11,8 @@ Namespace TestEvidence
         Public Title As String
     End Class
     Public Class Evidence
-        Public TestResult As TestResult
+
         Public Images As New List(Of Image)
-
-
 
         Public Sub TakeJpegScreenshot(windowIntPtr As IntPtr, title As String)
             Dim creator As New TestEvidenceCreator()
@@ -38,6 +36,7 @@ Namespace TestEvidence
         Private Shared _evidenceForCurrentlyExecutingTest As Evidence
         Private Shared _localFolderCache As String = IO.Path.GetTempPath + "cadwiki.NUnitTestRunner"
         Private Shared _localScreenShotCache As String = _localFolderCache + "\" + "screenshots"
+        Private Shared _pdfFileReport As String = "AutomatedTestEvidence.pdf"
 
         Public Sub New()
             If (Not IO.Directory.Exists(_localFolderCache)) Then
@@ -47,6 +46,13 @@ Namespace TestEvidence
                 IO.Directory.CreateDirectory(_localScreenShotCache)
             End If
         End Sub
+
+        Public Function GetNewPdfReportFilePath() As String
+            Dim reportFilePath As String = _localFolderCache + "\" + _pdfFileReport
+            reportFilePath = NetUtils.Paths.GetUniqueFilePath(reportFilePath)
+            Return reportFilePath
+        End Function
+
         Public Function GetFolderCache() As String
             Return _localFolderCache
         End Function
