@@ -14,9 +14,15 @@ Namespace TestEvidence
         Public TestResult As TestResult
         Public Images As New List(Of Image)
 
-        Public Sub TakeScreenshot(windowIntPtr As IntPtr, screenshotPath As String, title As String)
-            Dim format As ImageFormat = ImageFormat.Jpeg
+
+
+        Public Sub TakeJpegScreenshot(windowIntPtr As IntPtr, title As String)
             Dim creator As New TestEvidenceCreator()
+            Dim fileName As String = title + ".jpg"
+            fileName = NetUtils.Paths.ReplaceAllillegalCharsForWindowsOSInFileName(fileName, "-")
+            Dim screenshotPath As String = creator.GetFolderCache + "\" + fileName
+            screenshotPath = NetUtils.Paths.GetUniqueFilePath(screenshotPath)
+            Dim format As ImageFormat = ImageFormat.Jpeg
             TestEvidenceCreator.PrintWindowToImage(windowIntPtr, screenshotPath, format)
             Dim image As New Image()
             image.Title = title
@@ -30,8 +36,16 @@ Namespace TestEvidence
     Public Class TestEvidenceCreator
 
         Private Shared _evidenceForCurrentlyExecutingTest As Evidence
+        Private Shared _localFolderCache As String = IO.Path.GetTempPath + "cadwiki.NUnitTestRunner"
 
-
+        Public Sub New()
+            If (Not IO.Directory.Exists(_localFolderCache)) Then
+                IO.Directory.CreateDirectory(_localFolderCache)
+            End If
+        End Sub
+        Public Function GetFolderCache() As String
+            Return _localFolderCache
+        End Function
 
         Public Function SetEvidenceForCurrentTest(testEvidence As Evidence)
             _evidenceForCurrentlyExecutingTest = testEvidence
