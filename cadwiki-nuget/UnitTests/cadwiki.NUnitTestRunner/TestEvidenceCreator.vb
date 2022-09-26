@@ -3,7 +3,7 @@ Imports System.Reflection
 Imports System.Windows.Forms
 Imports cadwiki.NUnitTestRunner
 Imports cadwiki.NUnitTestRunner.TestEvidence
-Imports cadwiki.NUnitTestRunner.TestEvidence.Creator
+Imports cadwiki.NUnitTestRunner.TestEvidence.TestEvidenceCreator
 
 <TestClass()> Public Class TestEvidenceCreator
 
@@ -19,17 +19,15 @@ Imports cadwiki.NUnitTestRunner.TestEvidence.Creator
         window.Show()
         driver.ExecuteTests()
 
-        Dim testEvidenceCreator As New Creator()
-
+        Dim testEvidenceCreator As New TestEvidence.TestEvidenceCreator()
         Dim windowIntPtr As IntPtr = testEvidenceCreator.ProcessesGetHandleFromUiTitle("N Unit Test Runner")
-        Dim controlName = "ButtonOk"
         Dim screenshotPath = "C:\Temp\test.jpg"
         If (IO.File.Exists(screenshotPath)) Then
             IO.File.Delete(screenshotPath)
         End If
-        Dim format As ImageFormat = ImageFormat.Jpeg
 
-        PrintWindowToImage(windowIntPtr, screenshotPath, format)
+        Dim evidence As New Evidence()
+        evidence.TakeScreenshot(windowIntPtr, screenshotPath, "Title")
 
         window.Close()
 

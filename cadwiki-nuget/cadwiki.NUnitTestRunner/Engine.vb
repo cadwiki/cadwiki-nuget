@@ -4,7 +4,11 @@ Imports NUnit.Framework
 Imports NUnit.Framework.Interfaces
 Imports cadwiki.NetUtils
 Imports cadwiki.NUnitTestRunner.Results
+Imports cadwiki.NUnitTestRunner.TestEvidence
+
 Public Class Engine
+
+    Public Shared TestEvidenceCreator As New TestEvidence.TestEvidenceCreator()
 
     Public Shared Sub RunTestsFromType(suiteResult As ObservableTestSuiteResults,
             stopwatch As Stopwatch,
@@ -79,7 +83,11 @@ Public Class Engine
             End Try
 
             suiteResult.AddResult(testResult)
-
+            Dim evidence As Evidence = TestEvidenceCreator.GetEvidenceForCurrentTest()
+            If (evidence IsNot Nothing) Then
+                evidence.TestResult = testResult
+                TestEvidenceCreator.SetEvidenceForCurrentTest(evidence)
+            End If
 
         Next
         stopwatch.Stop()
