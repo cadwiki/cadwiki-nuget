@@ -105,21 +105,13 @@ Public Class Engine
         End If
 
         'Output pdf with evidence
-        Dim pdfCreator As New PdfCreator(TestEvidenceCreator.GetNewPdfReportFilePath())
-        For Each testResult As TestResult In suiteResult.TestResults
-            If testResult.Evidence IsNot Nothing Then
-                For Each image As Image In testResult.Evidence.Images
-                    pdfCreator.AddImageAsNewPage(image.FilePath)
-                Next
-            End If
+        TestEvidenceCreator.CreatePdf(suiteResult)
 
-
-        Next
-
-        pdfCreator.Save()
-
-
+        Dim jsonString As String = suiteResult.ToJson()
+        TestEvidenceCreator.WriteTestSuiteResultsToFile(jsonString)
 
     End Sub
+
+
 End Class
 
