@@ -2,10 +2,44 @@
 Imports System.Drawing.Imaging
 Imports System.Windows.Automation
 Imports System.Windows.Automation.AutomationElement
+Imports cadwiki.NUnitTestRunner.Results
 Imports Microsoft.Test.Input
 
 Namespace TestEvidence
-    Public Class Creator
+    Public Class Image
+        Public FilePath As String
+        Public Title As String
+    End Class
+    Public Class Evidence
+        Public TestResult As TestResult
+        Public Images As New List(Of Image)
+
+        Public Sub TakeScreenshot(windowIntPtr As IntPtr, screenshotPath As String, title As String)
+            Dim format As ImageFormat = ImageFormat.Jpeg
+            Dim creator As New TestEvidenceCreator()
+            TestEvidenceCreator.PrintWindowToImage(windowIntPtr, screenshotPath, format)
+            Dim image As New Image()
+            image.Title = title
+            image.FilePath = screenshotPath
+            Me.Images.Add(image)
+            creator.SetEvidenceForCurrentTest(Me)
+        End Sub
+
+    End Class
+
+    Public Class TestEvidenceCreator
+
+        Private Shared _evidenceForCurrentlyExecutingTest As Evidence
+
+
+
+        Public Function SetEvidenceForCurrentTest(testEvidence As Evidence)
+            _evidenceForCurrentlyExecutingTest = testEvidence
+        End Function
+
+        Public Function GetEvidenceForCurrentTest() As Evidence
+            Return _evidenceForCurrentlyExecutingTest
+        End Function
 
         Public Function ProcessesGetHandleFromUiTitle(ByVal wName As String) As IntPtr
             Dim hWnd As IntPtr = IntPtr.Zero
