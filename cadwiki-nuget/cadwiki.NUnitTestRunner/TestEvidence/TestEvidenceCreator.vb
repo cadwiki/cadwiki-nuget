@@ -2,7 +2,6 @@
 Imports System.Drawing.Imaging
 Imports System.Windows.Automation
 Imports System.Windows.Automation.AutomationElement
-Imports cadwiki.NUnitTestRunner.Results
 Imports Microsoft.Test.Input
 
 Namespace TestEvidence
