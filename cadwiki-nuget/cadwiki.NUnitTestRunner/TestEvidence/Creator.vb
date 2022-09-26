@@ -1,39 +1,11 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Imaging
-Imports System.Runtime.InteropServices
 Imports System.Windows.Automation
 Imports System.Windows.Automation.AutomationElement
 Imports Microsoft.Test.Input
 
 Namespace TestEvidence
     Public Class Creator
-
-
-        <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)>
-        Private Shared Function GetWindowRect(ByVal hWnd As IntPtr, <Out> ByRef lpRect As RECT) As Boolean
-        End Function
-
-        <DllImport("user32.dll")>
-        Private Shared Function PrintWindow(ByVal hWnd As IntPtr, ByVal hdcBlt As IntPtr, ByVal nFlags As Integer) As Boolean
-        End Function
-
-
-        Public Shared Sub PrintWindowToImage(ByVal windowIntPtr As IntPtr, ByVal screenshotPath As String, ByVal format As ImageFormat)
-            Dim screenshot As Bitmap = PrintWindow(windowIntPtr)
-            screenshot.Save(screenshotPath, format)
-        End Sub
-
-        Public Shared Function PrintWindow(ByVal hwnd As IntPtr) As Bitmap
-            Dim rc As RECT
-            GetWindowRect(hwnd, rc)
-            Dim bmp As Bitmap = New Bitmap(rc.Width, rc.Height, PixelFormat.Format32bppArgb)
-            Dim gfxBmp As Graphics = Graphics.FromImage(bmp)
-            Dim hdcBitmap As IntPtr = gfxBmp.GetHdc()
-            PrintWindow(hwnd, hdcBitmap, 0)
-            gfxBmp.ReleaseHdc(hdcBitmap)
-            gfxBmp.Dispose()
-            Return bmp
-        End Function
 
         Public Function ProcessesGetHandleFromUiTitle(ByVal wName As String) As IntPtr
             Dim hWnd As IntPtr = IntPtr.Zero
@@ -48,6 +20,11 @@ Namespace TestEvidence
             Return hWnd
         End Function
 
+        Public Shared Sub PrintWindowToImage(ByVal windowIntPtr As IntPtr, ByVal screenshotPath As String, ByVal format As ImageFormat)
+            Dim screenshot As Bitmap = PrintWindowWithWinAPI(windowIntPtr)
+            screenshot.Save(screenshotPath, format)
+        End Sub
+
 
         Public Function MicrosoftTestClickUiControl(windowIntPtr As IntPtr, controlName As String) As Boolean
 
@@ -60,6 +37,22 @@ Namespace TestEvidence
 
             Return MicrosoftTestClickPoint(clickableSystemDrawingPoint)
         End Function
+
+
+
+        Private Shared Function PrintWindowWithWinAPI(ByVal hwnd As IntPtr) As Bitmap
+            Dim rc As RECT
+            WinAPI.GetWindowRect(hwnd, rc)
+            Dim bmp As Bitmap = New Bitmap(rc.Width, rc.Height, PixelFormat.Format32bppArgb)
+            Dim gfxBmp As Graphics = Graphics.FromImage(bmp)
+            Dim hdcBitmap As IntPtr = gfxBmp.GetHdc()
+            WinAPI.PrintWindow(hwnd, hdcBitmap, 0)
+            gfxBmp.ReleaseHdc(hdcBitmap)
+            gfxBmp.Dispose()
+            Return bmp
+        End Function
+
+
 
         Private Function GetElementByControlName(ByVal windowIntPtr As IntPtr, ByVal controlNameToFind As String) As AutomationElement
             Dim root = AutomationElement.FromHandle(windowIntPtr)

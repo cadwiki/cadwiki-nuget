@@ -126,6 +126,8 @@
     </Compile>
     <Compile Include="ObservableTestResults.vb" />
     <Compile Include="TestEvidence\Creator.vb" />
+    <Compile Include="TestEvidence\RECT.vb" />
+    <Compile Include="TestEvidence\WinAPI.vb" />
     <Compile Include="UI\CommonUiObject.vb" />
     <Compile Include="UI\WinformsDriver.vb" />
     <Compile Include="UI\WpfDriver.vb" />
