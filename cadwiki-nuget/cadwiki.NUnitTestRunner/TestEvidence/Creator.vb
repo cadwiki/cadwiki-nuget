@@ -20,7 +20,7 @@ Namespace TestEvidence
             Dim creator As New TestEvidenceCreator()
             Dim fileName As String = title + ".jpg"
             fileName = NetUtils.Paths.ReplaceAllillegalCharsForWindowsOSInFileName(fileName, "-")
-            Dim screenshotPath As String = creator.GetFolderCache + "\" + fileName
+            Dim screenshotPath As String = creator.GetScreenshotCache() + "\" + fileName
             screenshotPath = NetUtils.Paths.GetUniqueFilePath(screenshotPath)
             Dim format As ImageFormat = ImageFormat.Jpeg
             TestEvidenceCreator.PrintWindowToImage(windowIntPtr, screenshotPath, format)
@@ -37,14 +37,22 @@ Namespace TestEvidence
 
         Private Shared _evidenceForCurrentlyExecutingTest As Evidence
         Private Shared _localFolderCache As String = IO.Path.GetTempPath + "cadwiki.NUnitTestRunner"
+        Private Shared _localScreenShotCache As String = _localFolderCache + "\" + "screenshots"
 
         Public Sub New()
             If (Not IO.Directory.Exists(_localFolderCache)) Then
                 IO.Directory.CreateDirectory(_localFolderCache)
             End If
+            If (Not IO.Directory.Exists(_localScreenShotCache)) Then
+                IO.Directory.CreateDirectory(_localScreenShotCache)
+            End If
         End Sub
         Public Function GetFolderCache() As String
             Return _localFolderCache
+        End Function
+
+        Public Function GetScreenshotCache() As String
+            Return _localScreenShotCache
         End Function
 
         Public Function SetEvidenceForCurrentTest(testEvidence As Evidence)
