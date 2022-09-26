@@ -11,6 +11,7 @@ Namespace Results
         Public Passed As Boolean
         Public ExceptionMessage As String
         Public StackTrace As List(Of String)
+        Public Evidence As TestEvidence.Evidence
     End Class
 
     Public Class ObservableTestSuiteResults
