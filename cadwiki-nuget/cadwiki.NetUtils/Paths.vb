@@ -37,4 +37,30 @@ Public Class Paths
         Return directoryInfo.FullName
     End Function
 
+    Public Shared Function ReplaceAllillegalCharsForWindowsOSInFileName(fileName As String, newChar As String) As String
+        fileName.Replace("<", newChar)
+        fileName.Replace(">", newChar)
+        fileName.Replace(":", newChar)
+        fileName.Replace("""", newChar)
+        fileName.Replace("/", newChar)
+        fileName.Replace("\\", newChar)
+        fileName.Replace("|", newChar)
+        fileName.Replace("?", newChar)
+        fileName.Replace("*", newChar)
+        Return fileName
+    End Function
+
+    Public Shared Function GetUniqueFilePath(filePath As String) As String
+        Dim doesFileExist As Boolean = File.Exists(filePath)
+        If doesFileExist Then
+            Dim time As DateTime = DateTime.Now()
+            Dim format As String = "yyyy__MM__dd____HH_mm_ss"
+            Dim timeStamp As String = DateTime.Now.ToString(format)
+            Dim fileDirectory As String = Path.GetDirectoryName(filePath)
+            Dim fileNameNoExt As String = Path.GetFileNameWithoutExtension(filePath)
+            Dim fileExt As String = Path.GetExtension(filePath)
+            filePath = fileDirectory + "\" + fileNameNoExt + "__" + timeStamp + fileExt
+        End If
+        Return filePath
+    End Function
 End Class

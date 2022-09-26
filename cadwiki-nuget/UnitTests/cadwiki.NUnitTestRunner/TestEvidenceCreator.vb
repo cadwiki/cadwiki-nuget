@@ -21,17 +21,13 @@ Imports cadwiki.NUnitTestRunner.TestEvidence.TestEvidenceCreator
 
         Dim testEvidenceCreator As New TestEvidence.TestEvidenceCreator()
         Dim windowIntPtr As IntPtr = testEvidenceCreator.ProcessesGetHandleFromUiTitle("N Unit Test Runner")
-        Dim screenshotPath = "C:\Temp\test.jpg"
-        If (IO.File.Exists(screenshotPath)) Then
-            IO.File.Delete(screenshotPath)
-        End If
 
         Dim evidence As New Evidence()
-        evidence.TakeScreenshot(windowIntPtr, screenshotPath, "Title")
+        evidence.TakeJpegScreenshot(windowIntPtr, "Title")
 
         window.Close()
 
-        Assert.IsTrue(IO.File.Exists(screenshotPath), "Failed to create screenshot")
+        Assert.IsTrue(IO.File.Exists(evidence.Images.FirstOrDefault.FilePath), "Failed to create screenshot")
     End Sub
 
 
