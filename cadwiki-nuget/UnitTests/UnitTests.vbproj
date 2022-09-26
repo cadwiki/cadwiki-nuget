@@ -163,6 +163,7 @@
     <Compile Include="cadwiki.DllReloader\TestAutoCADNetReloader.vb" />
     <Compile Include="cadwiki.DllReloader\TestAcadAssemblyUtils.vb" />
     <Compile Include="cadwiki.FileStore\TestFileStore.vb" />
+    <Compile Include="cadwiki.NUnitTestRunner\TestEvidenceCreator.vb" />
     <Compile Include="cadwiki.NUnitTestRunner\TestStrings.vb" />
     <Compile Include="cadwiki.NUnitTestRunner\TestUiDriver.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
