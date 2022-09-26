@@ -47,16 +47,16 @@ Install nuget package in another solution / project with these commands
 Install-Package $Path\ToNuget\File\.nupkg
 Get-Project -All | Install-Package $Path\ToNuget\File\.nupkg
 Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\AutoCAD2021.Interop.Base\AutoCAD2021.Interop.Base.1.0.0.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.1.0.3.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.3.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools\cadwiki.CadDevTools.1.0.2.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.1.0.4.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.4.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools\cadwiki.CadDevTools.1.0.4.nupkg
 ```
 
 
 
 ### Push nuget package 
 ```  
-nuget push ./cadwiki.NUnitTestRunner.1.0.3.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.DllReloader.1.0.3.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.CadDevTools.1.0.2.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.NUnitTestRunner.1.0.4.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.DllReloader.1.0.4.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.CadDevTools.1.0.4.nupkg apikey -src https://www.nuget.org/  
 ```
