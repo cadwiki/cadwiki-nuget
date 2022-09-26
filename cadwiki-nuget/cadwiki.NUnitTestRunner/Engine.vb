@@ -36,6 +36,8 @@ Public Class Engine
 
         For Each item As Tuple(Of Type, MethodInfo) In tuples
             Dim testResult As New TestResult
+            'Clear current evidence
+            TestEvidenceCreator.SetEvidenceForCurrentTest(New Evidence)
             Dim type As Type = item.Item1
             Dim mi As MethodInfo = item.Item2
             Dim methodName As String = mi.Name
