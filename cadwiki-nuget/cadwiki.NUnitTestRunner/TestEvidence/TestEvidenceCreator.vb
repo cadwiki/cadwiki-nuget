@@ -25,7 +25,7 @@ Namespace TestEvidence
             End If
         End Sub
 
-        Public Sub CreatePdf(suiteResult As ObservableTestSuiteResults)
+        Public Function CreatePdf(suiteResult As ObservableTestSuiteResults) As String
             Dim pdfCreator As New PdfCreator(GetNewPdfReportFilePath())
             For Each testResult As TestResult In suiteResult.TestResults
                 If testResult.Evidence IsNot Nothing Then
@@ -35,7 +35,8 @@ Namespace TestEvidence
                 End If
             Next
             pdfCreator.Save()
-        End Sub
+            Return pdfCreator.PdfFilePath
+        End Function
 
         Public Function WriteTestSuiteResultsToFile(jsonString As String) As String
             Dim jsonFilePath As String = _localFolderCache + "\" + _jsonFileResults
