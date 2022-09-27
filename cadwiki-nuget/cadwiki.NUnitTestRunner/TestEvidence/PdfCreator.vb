@@ -1,5 +1,6 @@
 ﻿
 Imports System.Drawing
+Imports cadwiki.NUnitTestRunner.Results
 Imports PdfSharp.Drawing
 Imports PdfSharp.Pdf
 
@@ -21,7 +22,7 @@ Public Class PdfCreator
 
     End Sub
 
-    Public Sub AddTitlePage()
+    Public Sub AddTitlePage(suiteResult As ObservableTestSuiteResults)
         Dim page As PdfPage = PdfDoc.Pages.Add()
 
         ' Get an XGraphics object for drawing
@@ -35,6 +36,41 @@ Public Class PdfCreator
                        XBrushes.Black,
                        New XRect(0, 0, page.Width, page.Height),
                        XStringFormats.TopCenter)
+
+        Dim str As String = "Summary:"
+        gfx.DrawString(str,
+               font,
+               XBrushes.Black,
+               New XRect(0, 200, page.Width, page.Height),
+               XStringFormats.TopCenter)
+
+        str = "Elapsed time: " + suiteResult.TimeElapsed.ToString()
+        gfx.DrawString(str,
+               font,
+               XBrushes.Black,
+               New XRect(0, 250, page.Width, page.Height),
+               XStringFormats.TopCenter)
+
+        str = "Total tests: " + suiteResult.TotalTests.ToString()
+        gfx.DrawString(str,
+               font,
+               XBrushes.Black,
+               New XRect(0, 300, page.Width, page.Height),
+               XStringFormats.TopCenter)
+
+        str = "Passed tests: " + suiteResult.PassedTests.ToString()
+        gfx.DrawString(str,
+               font,
+               XBrushes.Black,
+               New XRect(0, 350, page.Width, page.Height),
+               XStringFormats.TopCenter)
+
+        str = "Failed tests: " + suiteResult.FailedTests.ToString()
+        gfx.DrawString(str,
+               font,
+               XBrushes.Black,
+               New XRect(0, 400, page.Width, page.Height),
+               XStringFormats.TopCenter)
 
     End Sub
     Public Sub AddImageAsNewPage(imageFilePath As String)
