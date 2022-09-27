@@ -27,7 +27,7 @@ Public Class PdfCreator
         ' Get an XGraphics object for drawing
         Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
         ' Create a font
-        Dim font As XFont = New XFont("Verdana", 20, XFontStyle.BoldItalic)
+        Dim font As XFont = New XFont("Arial", 20, XFontStyle.BoldItalic)
 
         ' Draw the text
         gfx.DrawString("AutomatedTestEvidence.pdf",
@@ -54,6 +54,7 @@ Public Class PdfCreator
             Dim newHeight As Integer = CInt(height / widthFitRate)
             Dim size As New Size(newWidth, newHeight)
             Dim scaledImage As Bitmap = New Bitmap(image, size)
+            imageFilePath = imageFilePath + "-(scaled)"
             scaledImage.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Jpeg)
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
             DrawImage(gfx, imageFilePath, 50, 50, newWidth, newHeight)
