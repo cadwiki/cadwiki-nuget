@@ -1,9 +1,7 @@
 ﻿
 Imports System.Drawing
-
-Imports Spire.Pdf
-Imports Spire.Pdf.Graphics
-
+Imports PdfSharp.Drawing
+Imports PdfSharp.Pdf
 
 Public Class PdfCreator
     Public PdfFilePath As String
@@ -17,40 +15,63 @@ Public Class PdfCreator
 
     Public Sub Save()
         'Save to file
-        PdfDoc.SaveToFile(PdfFilePath)
+        If PdfDoc.PageCount > 0 Then
+            PdfDoc.Save(PdfFilePath)
+        End If
+
     End Sub
 
+    Public Sub AddTitlePage()
+        Dim page As PdfPage = PdfDoc.Pages.Add()
 
+        ' Get an XGraphics object for drawing
+        Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
+        ' Create a font
+        Dim font As XFont = New XFont("Verdana", 20, XFontStyle.BoldItalic)
+
+        ' Draw the text
+        gfx.DrawString("AutomatedTestEvidence.pdf",
+                       font,
+                       XBrushes.Black,
+                       New XRect(0, 0, page.Width, page.Height),
+                       XStringFormats.TopCenter)
+
+    End Sub
     Public Sub AddImageAsNewPage(imageFilePath As String)
-        'Set the margins
-        PdfDoc.PageSettings.SetMargins(20)
         'Add a page
-        Dim page As PdfPageBase = PdfDoc.Pages.Add()
+        Dim page As PdfPage = PdfDoc.Pages.Add()
         'Load an image
         Dim image As Image = Image.FromFile(imageFilePath)
         'Get the image width and height
         Dim width As Single = image.PhysicalDimension.Width
         Dim height As Single = image.PhysicalDimension.Height
         'Declare a PdfImage variable
-        Dim pdfImage As PdfImage
-        'If the image width is larger than page width
-        If width > page.Canvas.ClientSize.Width Then
+        ' Get an XGraphics object for drawing
+        If width > page.Width Then
             'Resize the image to make it to fit to the page width
-            Dim widthFitRate As Single = width / page.Canvas.ClientSize.Width
-            Dim num1 As Integer = CInt(width / widthFitRate)
-            Dim num2 As Integer = CInt(height / widthFitRate)
-            Dim size As New Size(num1, num2)
+            Dim widthFitRate As Single = width / CType(page.Width, Single)
+            Dim newWidth As Integer = CInt(width / widthFitRate)
+            Dim newHeight As Integer = CInt(height / widthFitRate)
+            Dim size As New Size(newWidth, newHeight)
             Dim scaledImage As Bitmap = New Bitmap(image, size)
-            'Load the scaled image to the PdfImage object
-            pdfImage = PdfImage.FromImage(scaledImage)
+            scaledImage.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Jpeg)
+            Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
+            DrawImage(gfx, imageFilePath, 50, 50, newWidth, newHeight)
         Else
-            'Load the original image to the PdfImage object
-            pdfImage = PdfImage.FromImage(image)
-
+            Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
+            DrawImage(gfx, imageFilePath, 50, 50, width, height)
         End If
-        'Draw image at (0, 0)
-        page.Canvas.DrawImage(pdfImage, 0, 0, pdfImage.Width, pdfImage.Height)
-        PdfDoc.SaveToFile(PdfFilePath)
+
+        PdfDoc.Save(PdfFilePath)
     End Sub
+
+
+    Private Sub DrawImage(ByVal gfx As XGraphics, ByVal jpegSamplePath As String,
+                          ByVal x As Integer, ByVal y As Integer,
+                          ByVal width As Integer, ByVal height As Integer)
+        Dim image As XImage = XImage.FromFile(jpegSamplePath)
+        gfx.DrawImage(image, x, y, width, height)
+    End Sub
+
 
 End Class

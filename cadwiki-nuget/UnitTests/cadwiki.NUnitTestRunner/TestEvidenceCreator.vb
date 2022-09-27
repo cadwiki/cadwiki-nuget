@@ -49,6 +49,7 @@ Imports cadwiki.NUnitTestRunner.TestEvidence.TestEvidenceCreator
 
         Dim evidence As New Evidence()
         evidence.TakeJpegScreenshot(windowIntPtr, "Title")
+        'add evidence to the first test
         results.TestResults(0).Evidence = evidence
 
         Dim filePath As String = evidence.Images(0).FilePath

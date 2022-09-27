@@ -27,6 +27,7 @@ Namespace TestEvidence
 
         Public Function CreatePdf(suiteResult As ObservableTestSuiteResults) As String
             Dim pdfCreator As New PdfCreator(GetNewPdfReportFilePath())
+            pdfCreator.AddTitlePage()
             For Each testResult As TestResult In suiteResult.TestResults
                 If testResult.Evidence IsNot Nothing Then
                     For Each image As Image In testResult.Evidence.Images
