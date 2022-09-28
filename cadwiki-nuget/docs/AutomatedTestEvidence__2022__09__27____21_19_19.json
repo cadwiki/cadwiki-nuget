@@ -1,0 +1,32 @@
+{
+  "TimeElapsed": "00:00:00.04",
+  "TotalTests": 2,
+  "PassedTests": 1,
+  "FailedTests": 1,
+  "Messages": [
+    "\nRunning test method: Test_DoStringsMatch_ShouldPass",
+    "\nRunning test method: Test_DoStringsMatch_ShouldFail"
+  ],
+  "TestResults": [
+    {
+      "TestName": "Test_DoStringsMatch_ShouldPass",
+      "Passed": true,
+      "ExceptionMessage": null,
+      "StackTrace": null,
+      "Evidence": null
+    },
+    {
+      "TestName": "Test_DoStringsMatch_ShouldFail",
+      "Passed": false,
+      "ExceptionMessage": "Multiple failures or warnings in test:\r\n  1)   Input strings don't match\r\n  String lengths are both 5. Strings differ at index 0.\r\n  Expected: \"Hello\"\r\n  But was:  \"World\"\r\n  -----------^\r\n\r\n  2)   Input strings don't match\r\n  String lengths are both 5. Strings differ at index 0.\r\n  Expected: \"Hello\"\r\n  But was:  \"World\"\r\n  -----------^\r\n\r\n  3)   Input strings don't match\r\n  String lengths are both 5. Strings differ at index 0.\r\n  Expected: \"Hello\"\r\n  But was:  \"World\"\r\n  -----------^\r\n\r\n  4)   Input strings don't match\r\n  String lengths are both 5. Strings differ at index 0.\r\n  Expected: \"Hello\"\r\n  But was:  \"World\"\r\n  -----------^\r\n\r\n  5)   Input strings don't match\r\n  String lengths are both 5. Strings differ at index 0.\r\n  Expected: \"Hello\"\r\n  But was:  \"World\"\r\n  -----------^\r\n\r\n  6)   Input strings don't match\r\n  String lengths are both 5. Strings differ at index 0.\r\n  Expected: \"Hello\"\r\n  But was:  \"World\"\r\n  -----------^\r\n\r\n",
+      "StackTrace": [
+        "   at NUnit.Framework.Assert.ReportFailure(String message)",
+        "   at NUnit.Framework.Assert.ReportFailure(ConstraintResult result, String message, Object[] args)",
+        "   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args)",
+        "   at NUnit.Framework.Assert.AreEqual(Object expected, Object actual, String message, Object[] args)",
+        "   at UnitTests.TestStrings.Test_DoStringsMatch_ShouldFail() in E:\\GitHub\\cadwiki\\cadwiki-nuget\\cadwiki-nuget\\UnitTests\\cadwiki.NUnitTestRunner\\TestStrings.vb:line 17"
+      ],
+      "Evidence": null
+    }
+  ]
+}
