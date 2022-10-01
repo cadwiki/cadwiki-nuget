@@ -25,8 +25,8 @@
             Me.ButtonOk = New System.Windows.Forms.Button()
             Me.Cancel = New System.Windows.Forms.Button()
             Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-            Me.GroupBox2 = New System.Windows.Forms.GroupBox()
             Me.TreeViewResults = New System.Windows.Forms.TreeView()
+            Me.GroupBox2 = New System.Windows.Forms.GroupBox()
             Me.RichTextBoxConsole = New System.Windows.Forms.RichTextBox()
             Me.GroupBox1.SuspendLayout()
             Me.GroupBox2.SuspendLayout()
@@ -34,7 +34,7 @@
             '
             'ButtonOk
             '
-            Me.ButtonOk.Location = New System.Drawing.Point(215, 173)
+            Me.ButtonOk.Location = New System.Drawing.Point(848, 173)
             Me.ButtonOk.Name = "ButtonOk"
             Me.ButtonOk.Size = New System.Drawing.Size(75, 23)
             Me.ButtonOk.TabIndex = 0
@@ -43,7 +43,7 @@
             '
             'Cancel
             '
-            Me.Cancel.Location = New System.Drawing.Point(824, 173)
+            Me.Cancel.Location = New System.Drawing.Point(218, 173)
             Me.Cancel.Name = "Cancel"
             Me.Cancel.Size = New System.Drawing.Size(75, 23)
             Me.Cancel.TabIndex = 1
@@ -60,6 +60,13 @@
             Me.GroupBox1.TabStop = False
             Me.GroupBox1.Text = "GroupBox1"
             '
+            'TreeViewResults
+            '
+            Me.TreeViewResults.Location = New System.Drawing.Point(6, 21)
+            Me.TreeViewResults.Name = "TreeViewResults"
+            Me.TreeViewResults.Size = New System.Drawing.Size(566, 128)
+            Me.TreeViewResults.TabIndex = 0
+            '
             'GroupBox2
             '
             Me.GroupBox2.Controls.Add(Me.RichTextBoxConsole)
@@ -69,13 +76,6 @@
             Me.GroupBox2.TabIndex = 3
             Me.GroupBox2.TabStop = False
             Me.GroupBox2.Text = "GroupBox2"
-            '
-            'TreeViewResults
-            '
-            Me.TreeViewResults.Location = New System.Drawing.Point(6, 21)
-            Me.TreeViewResults.Name = "TreeViewResults"
-            Me.TreeViewResults.Size = New System.Drawing.Size(566, 128)
-            Me.TreeViewResults.TabIndex = 0
             '
             'RichTextBoxConsole
             '
