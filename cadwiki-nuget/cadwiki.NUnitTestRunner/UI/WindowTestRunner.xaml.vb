@@ -8,6 +8,7 @@ Imports cadwiki.NUnitTestRunner.Results
 Imports cadwiki.NetUtils
 Imports System.Windows.Media.Imaging
 Imports System.Drawing
+Imports cadwiki.NUnitTestRunner.TestEvidence
 
 Namespace UI
     Public Class WindowTestRunner
@@ -56,7 +57,9 @@ Namespace UI
         End Sub
 
         Private Sub ButtonTestEvidence_Click(sender As Object, e As RoutedEventArgs)
-            Close()
+            Dim creator As New TestEvidenceCreator()
+            Dim foldername As String = creator.GetFolderCache()
+
         End Sub
 
         Private Sub ButtonCancel_Click(sender As Object, e As RoutedEventArgs)
