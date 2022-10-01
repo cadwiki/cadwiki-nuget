@@ -55,6 +55,10 @@ Namespace UI
             Close()
         End Sub
 
+        Private Sub ButtonTestEvidence_Click(sender As Object, e As RoutedEventArgs)
+            Close()
+        End Sub
+
         Private Sub ButtonCancel_Click(sender As Object, e As RoutedEventArgs)
             Close()
         End Sub
