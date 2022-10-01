@@ -28,6 +28,7 @@
             Me.TreeViewResults = New System.Windows.Forms.TreeView()
             Me.GroupBox2 = New System.Windows.Forms.GroupBox()
             Me.RichTextBoxConsole = New System.Windows.Forms.RichTextBox()
+            Me.ButtonOpenTestEvidenceFolder = New System.Windows.Forms.Button()
             Me.GroupBox1.SuspendLayout()
             Me.GroupBox2.SuspendLayout()
             Me.SuspendLayout()
@@ -85,11 +86,21 @@
             Me.RichTextBoxConsole.TabIndex = 0
             Me.RichTextBoxConsole.Text = ""
             '
+            'ButtonOpenTestEvidenceFolder
+            '
+            Me.ButtonOpenTestEvidenceFolder.Location = New System.Drawing.Point(958, 173)
+            Me.ButtonOpenTestEvidenceFolder.Name = "ButtonOpenTestEvidenceFolder"
+            Me.ButtonOpenTestEvidenceFolder.Size = New System.Drawing.Size(75, 23)
+            Me.ButtonOpenTestEvidenceFolder.TabIndex = 4
+            Me.ButtonOpenTestEvidenceFolder.Text = "Evidence"
+            Me.ButtonOpenTestEvidenceFolder.UseVisualStyleBackColor = True
+            '
             'FormTestRunner
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(1182, 203)
+            Me.Controls.Add(Me.ButtonOpenTestEvidenceFolder)
             Me.Controls.Add(Me.GroupBox2)
             Me.Controls.Add(Me.GroupBox1)
             Me.Controls.Add(Me.Cancel)
@@ -108,6 +119,7 @@
         Friend WithEvents GroupBox2 As Windows.Forms.GroupBox
         Friend WithEvents TreeViewResults As Windows.Forms.TreeView
         Friend WithEvents RichTextBoxConsole As Windows.Forms.RichTextBox
+        Friend WithEvents ButtonOpenTestEvidenceFolder As Windows.Forms.Button
     End Class
 End Namespace
 
