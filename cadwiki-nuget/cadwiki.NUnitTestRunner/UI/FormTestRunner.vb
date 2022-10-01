@@ -2,6 +2,7 @@
 Imports System.Windows.Media.Imaging
 Imports cadwiki.NetUtils
 Imports cadwiki.NUnitTestRunner.Results
+Imports cadwiki.NUnitTestRunner.TestEvidence
 Imports Application = System.Windows.Forms.Application
 
 Namespace UI
@@ -52,6 +53,11 @@ Namespace UI
 
         Private Sub Cancel_Click(sender As Object, e As EventArgs) Handles Cancel.Click
             Me.Close()
+        End Sub
+
+        Private Sub ButtonOpenTestEvidenceFolder_Click(sender As Object, e As EventArgs) Handles ButtonOpenTestEvidenceFolder.Click
+            Dim creator As New TestEvidenceCreator()
+            Dim foldername As String = creator.GetFolderCache()
         End Sub
     End Class
 
