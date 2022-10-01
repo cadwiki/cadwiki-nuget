@@ -51,5 +51,11 @@
                 Grid.Column="1"
                 Grid.Row="2"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" />
+        <Button x:Name="ButtonTestEvidence"
+                Content="Evidence"
+                ClickMode="Press" Click="ButtonTestEvidence_Click"
+                Grid.Column="1"
+                Grid.Row="2"
+                HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" />
     </Grid>
 </Window>
