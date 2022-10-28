@@ -24,15 +24,14 @@ Public Class Form1
         Dim root As String = Paths.TryGetSolutionDirectoryPath(dllFolder)
         Dim folders As String() = System.IO.Directory.GetDirectories(root, "*", System.IO.SearchOption.AllDirectories)
         Dim projectsToUpdate As New List(Of String) From {
-            "My Project",
-            "CadDevToolsDriver",
-            "cadwiki.AdminUtils",
-            "cadwiki.CadDevTools",
-            "cadwiki.DllReloader",
-            "cadwiki.FileStore",
-            "cadwiki.NetUtils",
-            "cadwiki.NUnitTestRunner",
-            "cadwiki.WpfUi"
+            "*CadDevToolsDriver*",
+            "*cadwiki.AdminUtils*",
+            "*cadwiki.CadDevTools*",
+            "*cadwiki.DllReloader*",
+            "*cadwiki.FileStore*",
+            "*cadwiki.NetUtils*",
+            "*cadwiki.NUnitTestRunner*",
+            "*cadwiki.WpfUi*"
         }
         Dim wildCardPatterns As New List(Of String) From {
             "*AssemblyInfo.vb",
@@ -41,7 +40,15 @@ Public Class Form1
         }
         For Each folder In folders
             Dim folderName As String = Path.GetFileName(folder)
-            If (projectsToUpdate.Contains(folderName)) Then
+            Dim isThisAProjectToUpdate As Boolean = False
+            For Each project In projectsToUpdate
+                If StringContains(project, folder) Then
+                    isThisAProjectToUpdate = True
+                    Exit For
+                End If
+            Next
+
+            If (isThisAProjectToUpdate) Then
                 For Each fileName In Directory.GetFiles(folder)
                     For Each wildCardPattern In wildCardPatterns
                         If StringContains(wildCardPattern, fileName) Then
