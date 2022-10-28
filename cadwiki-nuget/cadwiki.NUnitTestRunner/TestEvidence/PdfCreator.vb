@@ -93,10 +93,10 @@ Public Class PdfCreator
             imageFilePath = imageFilePath + "-(scaled)"
             scaledImage.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Jpeg)
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
-            DrawImage(gfx, imageFilePath, 0, 50, newWidth, newHeight)
+            DrawImage(gfx, imageFilePath, 0, 150, newWidth, newHeight)
         Else
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
-            DrawImage(gfx, imageFilePath, 0, 50, width, height)
+            DrawImage(gfx, imageFilePath, 0, 150, width, height)
         End If
 
         PdfDoc.Save(PdfFilePath)
