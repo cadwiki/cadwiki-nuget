@@ -119,5 +119,11 @@
     </None>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
+      <Project>{3c1158da-4a90-4fc1-8ccc-6f1e4787a118}</Project>
+      <Name>cadwiki.NetUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
