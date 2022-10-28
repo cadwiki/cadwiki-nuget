@@ -25,8 +25,11 @@ Public Class Form1
         Dim repoFolder As String = New DirectoryInfo(root).Parent.FullName
         Dim folders As List(Of String) =
             System.IO.Directory.GetDirectories(repoFolder, "*", System.IO.SearchOption.AllDirectories).ToList()
+        folders.Reverse()
         folders.Add(repoFolder)
+        folders.Reverse()
         Dim projectsToUpdate As New List(Of String) From {
+            "*cadwiki-nuget",
             "*CadDevToolsDriver*",
             "*cadwiki.AdminUtils*",
             "*cadwiki.CadDevTools*",
