@@ -8,15 +8,20 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim asm As Assembly = Assembly.GetExecutingAssembly()
         Dim assemblyName = asm.GetName()
-        Dim version = assemblyName.Version.ToString()
-        LabelCurrentVersion.Text = version
+        Dim version As Version = assemblyName.Version
+        Dim versionString As String = version.ToString()
+        LabelCurrentVersion.Text = versionString
+        Dim newVersion As Version = version
+        newVersion = newVersion.IncrementRevision
+        TextBoxNewVersion.Text = newVersion.ToString()
 
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim asm As Assembly = Assembly.GetExecutingAssembly()
         Dim dllPath As String = asm.Location
-        Dim root As String = Paths.TryGetSolutionDirectoryPath(dllPath)
+        Dim dllFolder As String = Path.GetDirectoryName(dllPath)
+        Dim root As String = Paths.TryGetSolutionDirectoryPath(dllFolder)
         Dim folders As String() = System.IO.Directory.GetDirectories(root)
         Dim projectsToUpdate As New List(Of String) From {
             "CadDevToolsDriver",
@@ -29,12 +34,12 @@ Public Class Form1
             "cadwiki.WpfUi"
         }
         Dim wildCardPatterns As New List(Of String) From {
-            "AssemblyInfo.vb",
-            ".nuspec",
-            ".targets"
+            "*AssemblyInfo.vb",
+            "*.nuspec",
+            "*.targets"
         }
         For Each folder In folders
-            Dim folderName As String = Path.GetDirectoryName(folder)
+            Dim folderName As String = Path.GetFileName(folder)
             If (projectsToUpdate.Contains(folderName)) Then
                 For Each fileName In Directory.GetFiles(folder)
                     For Each wildCardPattern In wildCardPatterns

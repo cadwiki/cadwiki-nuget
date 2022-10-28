@@ -99,6 +99,7 @@
     </Compile>
     <Compile Include="Paths.vb" />
     <Compile Include="Strings.vb" />
+    <Compile Include="VersionExtension.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
