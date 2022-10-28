@@ -23,8 +23,9 @@ Public Class Form1
         Dim dllFolder As String = Path.GetDirectoryName(dllPath)
         Dim root As String = Paths.TryGetSolutionDirectoryPath(dllFolder)
         Dim repoFolder As String = New DirectoryInfo(root).Parent.FullName
-        Dim folders As String() = System.IO.Directory.GetDirectories(repoFolder, "*", System.IO.SearchOption.AllDirectories)
-        folders.Append(repoFolder)
+        Dim folders As List(Of String) =
+            System.IO.Directory.GetDirectories(repoFolder, "*", System.IO.SearchOption.AllDirectories).ToList()
+        folders.Add(repoFolder)
         Dim projectsToUpdate As New List(Of String) From {
             "*CadDevToolsDriver*",
             "*cadwiki.AdminUtils*",
