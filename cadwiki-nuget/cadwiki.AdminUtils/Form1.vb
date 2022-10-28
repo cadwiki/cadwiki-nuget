@@ -54,7 +54,7 @@ Public Class Form1
         Dim lines As List(Of String) = IO.File.ReadAllLines(fileName).ToList
         For index As Integer = 0 To lines.Count - 1
             If lines(index).Contains(oldText) Then
-                lines(index) = lines(index).Replace(oldText, newText);
+                lines(index) = lines(index).Replace(oldText, newText)
             End If
         Next
         IO.File.WriteAllLines(fileName, lines.ToArray)
