@@ -22,6 +22,7 @@ Public Class Form1
         Dim dllPath As String = asm.Location
         Dim dllFolder As String = Path.GetDirectoryName(dllPath)
         Dim root As String = Paths.TryGetSolutionDirectoryPath(dllFolder)
+        Dim repoFolder As String = New DirectoryInfo(root).Parent.Parent.FullName
         Dim folders As String() = System.IO.Directory.GetDirectories(root, "*", System.IO.SearchOption.AllDirectories)
         Dim projectsToUpdate As New List(Of String) From {
             "*CadDevToolsDriver*",
@@ -34,6 +35,7 @@ Public Class Form1
             "*cadwiki.WpfUi*"
         }
         Dim wildCardPatterns As New List(Of String) From {
+            "*README.nuget.md",
             "*AssemblyInfo.vb",
             "*.nuspec",
             "*.targets"
