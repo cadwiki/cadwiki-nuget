@@ -15,24 +15,6 @@ Public Class Engine
             integrationTestTypes As Type())
         Dim tuples As List(Of Tuple(Of Type, MethodInfo)) = Utils.GetTestMethodDictionarySafely(integrationTestTypes)
 
-        Dim setupTuple As Tuple(Of Type, MethodInfo) = Utils.GetSetupMethod(integrationTestTypes)
-        Dim setupObject As Object = Nothing
-        Dim setupMethodInfo As MethodInfo = Nothing
-        If setupTuple IsNot Nothing Then
-            Dim setupType As Type = setupTuple.Item1
-            setupObject = Activator.CreateInstance(setupType)
-            setupMethodInfo = setupTuple.Item2
-        End If
-
-        Dim tearDownTuple As Tuple(Of Type, MethodInfo) = Utils.GetTearDownMethod(integrationTestTypes)
-        Dim tearDownObject As Object = Nothing
-        Dim tearDownMethodInfo As MethodInfo = Nothing
-        If tearDownTuple IsNot Nothing Then
-            Dim tearDownType As Type = tearDownTuple.Item1
-            tearDownObject = Activator.CreateInstance(tearDownType)
-            tearDownMethodInfo = tearDownTuple.Item2
-        End If
-
 
         For Each item As Tuple(Of Type, MethodInfo) In tuples
             Dim testResult As New TestResult
@@ -41,6 +23,25 @@ Public Class Engine
             Dim type As Type = item.Item1
             Dim mi As MethodInfo = item.Item2
             Dim methodName As String = mi.Name
+
+            Dim setupTuple As Tuple(Of Type, MethodInfo) = Utils.GetSetupMethod({type})
+            Dim setupObject As Object = Nothing
+            Dim setupMethodInfo As MethodInfo = Nothing
+            If setupTuple IsNot Nothing Then
+                Dim setupType As Type = setupTuple.Item1
+                setupObject = Activator.CreateInstance(setupType)
+                setupMethodInfo = setupTuple.Item2
+            End If
+
+            Dim tearDownTuple As Tuple(Of Type, MethodInfo) = Utils.GetTearDownMethod({type})
+            Dim tearDownObject As Object = Nothing
+            Dim tearDownMethodInfo As MethodInfo = Nothing
+            If tearDownTuple IsNot Nothing Then
+                Dim tearDownType As Type = tearDownTuple.Item1
+                tearDownObject = Activator.CreateInstance(tearDownType)
+                tearDownMethodInfo = tearDownTuple.Item2
+            End If
+
             Try
                 suiteResult.AddMessage(vbLf & "Running test method: " + mi.Name)
                 Dim o As Object
