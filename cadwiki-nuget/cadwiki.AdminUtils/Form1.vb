@@ -12,7 +12,7 @@ Public Class Form1
         Dim versionString As String = version.ToString()
         LabelCurrentVersion.Text = versionString
         Dim newVersion As Version = version
-        newVersion = newVersion.IncrementRevision
+        newVersion = newVersion.IncrementBuild
         TextBoxNewVersion.Text = newVersion.ToString()
 
     End Sub
