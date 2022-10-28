@@ -18,12 +18,12 @@ nuget spec -Force ./bin/Release/x64/cadwiki.NUnitTestRunner.dll
 ## Nuget commands for building the .nupkg locally
 ### Create new package using relative .nuspec
 ```
-nuget pack cadwiki.NUnitTestRunner.nuspec -properties Configuration=Release -properties Platform="Any CPU"
-nuget pack cadwiki.NUnitTestRunner.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
-nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform="Any CPU"
-nuget pack cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
-nuget pack cadwiki.CadDevTools.nuspec -properties Configuration=Release -properties Platform="Any CPU"
-nuget pack cadwiki.CadDevTools.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties Configuration=Release -properties Platform="Any CPU"
+nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform="Any CPU"
+nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties Configuration=Release -properties Platform="Any CPU"
+nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
 ```
 ### Create new package using relative .vbproj
 ```
