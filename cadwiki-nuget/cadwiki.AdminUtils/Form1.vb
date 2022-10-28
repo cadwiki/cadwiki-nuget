@@ -19,9 +19,14 @@ Public Class Form1
         Dim root As String = Paths.TryGetSolutionDirectoryPath(dllPath)
         Dim folders As String() = System.IO.Directory.GetDirectories(root)
         Dim projectsToUpdate As New List(Of String) From {
+            "CadDevToolsDriver",
+            "cadwiki.AdminUtils",
             "cadwiki.CadDevTools",
             "cadwiki.DllReloader",
-            "cadwiki.NUnitTestRunner"
+            "cadwiki.FileStore",
+            "cadwiki.NetUtils",
+            "cadwiki.NUnitTestRunner",
+            "cadwiki.WpfUi"
         }
         Dim wildCardPatterns As New List(Of String) From {
             "AssemblyInfo.vb",
