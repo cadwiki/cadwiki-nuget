@@ -141,18 +141,18 @@ Class MainWindow
 
         Dim filePath As String = TextBoxDllPath.Text
         If Not File.Exists(filePath) Then
-            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + filePath)
+            LaunchAutocad()
         Else
-            NetLoadDll(filePath)
+            LaunchAutocad()
+            NetloadDll(filePath)
         End If
     End Sub
 
-
-    Private Sub NetLoadDll(cadAppDll As String)
+    Private Sub LaunchAutocad()
 
         cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
-            "Please wait until CAD launches netloads the" + cadAppDll + " dll.")
+            "Please wait until CAD launches.")
         If acadLocation.Contains("2021") Then
             Dim interop2021 As InteropUtils2021 = New InteropUtils2021()
             Dim isAutoCADRunning As Boolean = interop2021.IsAutoCADRunning()
@@ -167,7 +167,6 @@ Class MainWindow
             End If
             interop2021.ConfigureRunningAutoCADForUsage()
             'interop.OpenDrawingTemplate(dwtFilePath, True)
-            interop2021.NetloadDll(cadAppDll)
         ElseIf acadLocation.Contains("2022") Then
             Dim interop2022 As InteropUtils2022 = New InteropUtils2022()
             Dim isAutoCADRunning As Boolean = interop2022.IsAutoCADRunning()
@@ -181,17 +180,37 @@ Class MainWindow
             End If
             interop2022.ConfigureRunningAutoCADForUsage()
             'interop.OpenDrawingTemplate(dwtFilePath, True)
-            interop2022.NetloadDll(cadAppDll)
         Else
             cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus,
                 TextBlockMessage,
                 "Invalid AutoCAD location: " + acadLocation)
         End If
 
-        cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Dll netload complete: " + cadAppDll)
+        cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Autocad Launch complete.")
         Forms.Application.DoEvents()
     End Sub
 
+    Private Sub NetloadDll(cadAppDll As String)
+        cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
+            TextBlockMessage,
+            "Please wait until CAD launches netloads the" + cadAppDll + " dll.")
+        If acadLocation.Contains("2021") Then
+            Dim interop2021 As InteropUtils2021 = New InteropUtils2021()
+            Dim isAutoCADRunning As Boolean = interop2021.IsAutoCADRunning()
+            If isAutoCADRunning = False Then
+            End If
+            interop2021.NetloadDll(cadAppDll)
+        ElseIf acadLocation.Contains("2022") Then
+            Dim interop2022 As InteropUtils2022 = New InteropUtils2022()
+            Dim isAutoCADRunning As Boolean = interop2022.IsAutoCADRunning()
+            If isAutoCADRunning = False Then
+            End If
+            interop2022.NetloadDll(cadAppDll)
+        End If
+
+        cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Dll netload complete: " + cadAppDll)
+        Forms.Application.DoEvents()
+    End Sub
 
     Private Sub ButtonSelectDll_Click(sender As Object, e As RoutedEventArgs)
         Dim folder As String = Directory.GetCurrentDirectory
