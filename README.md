@@ -1,2 +1,2 @@
-# cadwiki.DllReloader  
-Tools for reloading Dll's into Autodesk software products
+# cadwiki-nuget README
+Tools for increasing productivity during Autodesk addin developement
