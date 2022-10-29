@@ -131,10 +131,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ObservableTestResults.vb" />
-    <Compile Include="TestEvidence\TestEvidenceCreator.vb" />
+    <Compile Include="Creators\TestEvidenceCreator.vb" />
     <Compile Include="TestEvidence\Evidence.vb" />
     <Compile Include="TestEvidence\Image.vb" />
-    <Compile Include="TestEvidence\PdfCreator.vb" />
+    <Compile Include="Creators\PdfCreator.vb" />
     <Compile Include="TestEvidence\RECT.vb" />
     <Compile Include="TestEvidence\WinAPI.vb" />
     <Compile Include="UI\CommonUiObject.vb" />
