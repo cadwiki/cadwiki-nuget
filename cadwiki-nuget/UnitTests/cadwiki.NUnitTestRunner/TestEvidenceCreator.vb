@@ -19,12 +19,12 @@ Imports cadwiki.NUnitTestRunner.TestEvidence.TestEvidenceCreator
         window.Show()
         driver.ExecuteTests()
 
-        Dim testEvidenceCreator As New TestEvidence.TestEvidenceCreator()
+        Dim testEvidenceCreator As New Creators.TestEvidenceCreator()
         Dim windowIntPtr As IntPtr = testEvidenceCreator.ProcessesGetHandleFromUiTitle("N Unit Test Runner")
 
         Dim evidence As New Evidence()
-        evidence.TakeJpegScreenshot(windowIntPtr, "Title")
-
+        testEvidenceCreator.TakeJpegScreenshot(windowIntPtr, "Title")
+        evidence = testEvidenceCreator.GetEvidenceForCurrentTest()
         window.Close()
 
         Assert.IsTrue(IO.File.Exists(evidence.Images.FirstOrDefault.FilePath), "Failed to create screenshot")
@@ -42,14 +42,15 @@ Imports cadwiki.NUnitTestRunner.TestEvidence.TestEvidenceCreator
         window.Show()
         driver.ExecuteTests()
 
-        Dim testEvidenceCreator As New TestEvidence.TestEvidenceCreator()
+        Dim testEvidenceCreator As New Creators.TestEvidenceCreator()
 
 
         Dim windowIntPtr As IntPtr = testEvidenceCreator.ProcessesGetHandleFromUiTitle("N Unit Test Runner")
 
         Dim evidence As New Evidence()
-        evidence.TakeJpegScreenshot(windowIntPtr, "Title")
+        testEvidenceCreator.TakeJpegScreenshot(windowIntPtr, "Title")
         'add evidence to the first test
+        evidence = testEvidenceCreator.GetEvidenceForCurrentTest()
         results.TestResults(0).Evidence = evidence
 
         Dim filePath As String = evidence.Images(0).FilePath

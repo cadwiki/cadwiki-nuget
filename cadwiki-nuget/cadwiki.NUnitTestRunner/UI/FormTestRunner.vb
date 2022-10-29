@@ -56,7 +56,7 @@ Namespace UI
         End Sub
 
         Private Sub ButtonOpenTestEvidenceFolder_Click(sender As Object, e As EventArgs) Handles ButtonOpenTestEvidenceFolder.Click
-            Dim creator As New TestEvidenceCreator()
+            Dim creator As New Creators.TestEvidenceCreator()
             Dim foldername As String = creator.GetFolderCache()
             Process.Start(foldername)
         End Sub
