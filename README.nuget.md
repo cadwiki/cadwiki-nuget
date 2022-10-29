@@ -47,9 +47,9 @@ Install nuget package in another solution / project with these commands
 Install-Package $Path\ToNuget\File\.nupkg
 Get-Project -All | Install-Package $Path\ToNuget\File\.nupkg
 Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\AutoCAD2021.Interop.Base\AutoCAD2021.Interop.Base.1.0.0.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.1.0.5.0.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader\cadwiki.DllReloader.1.0.5.0.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools\cadwiki.CadDevTools.1.0.5.0.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner.1.0.5.0.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader.1.0.5.0.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools.1.0.5.0.nupkg
 ```
 
 
