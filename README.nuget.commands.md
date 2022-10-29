@@ -1,9 +1,5 @@
-# cadwiki.DllReloader nuget package
-This Readme file contains information on the cadwiki.DllReloader package
-
-## AutoCAD
-The cadwiki.DllReloader.AutoCAD namespace contains everything needed to reload dll's into AutoCAD's current AppDomain
-
+# cadwiki Nuget commands  
+This readme contains all the commands used for creating and pushing nuget packages  
 
 ## Nuget commands for creating new .nuspec file  
 Cd into directory with .csproj or .vbproj  
