@@ -30,6 +30,13 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.FileStore", "cadwik
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AdminUtils", "cadwiki.AdminUtils\cadwiki.AdminUtils.vbproj", "{C549D301-6772-43DC-8DE1-F2BBB17C4FD7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C75B0FA-9CC9-475B-884D-6717FC72EFE4}"
+	ProjectSection(SolutionItems) = preProject
+		cadwiki.CadDevTools.dgml = cadwiki.CadDevTools.dgml
+		cadwiki.DllReloader.dgml = cadwiki.DllReloader.dgml
+		cadwiki.NUnitTestRunner.dgml = cadwiki.NUnitTestRunner.dgml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
