@@ -44,6 +44,7 @@ Public Class Form1
             "*cadwiki.WpfUi*"
         }
         Dim wildCardPatterns As New List(Of String) From {
+             "*apikeys.txt",
             "*README.nuget.md",
             "*AssemblyInfo.vb",
             "*.nuspec",
