@@ -13,6 +13,10 @@ Public Class Form1
         LabelCurrentVersion.Text = versionString
         Dim newVersion As Version = version
         newVersion = newVersion.IncrementBuild
+        Dim time As DateTime = DateTime.Now
+        Dim format As String = "HHmm"
+        Dim timeStamp As String = time.ToString(format)
+        newVersion = newVersion.SetVersion(newVersion.Major, newVersion.Minor, newVersion.Build, CInt(timeStamp))
         TextBoxNewVersion.Text = newVersion.ToString()
 
     End Sub
