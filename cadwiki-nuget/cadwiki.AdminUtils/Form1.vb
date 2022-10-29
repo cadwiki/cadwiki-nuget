@@ -45,7 +45,7 @@ Public Class Form1
         }
         Dim wildCardPatterns As New List(Of String) From {
              "*apikeys.txt",
-            "*README.nuget.md",
+            "*README.nuget.commands.md",
             "*AssemblyInfo.vb",
             "*.nuspec",
             "*.targets"
