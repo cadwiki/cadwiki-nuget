@@ -34,9 +34,10 @@ nuget pack cadwiki.DllReloader.vbproj -IncludeReferencedProjects -properties Con
 ### Uninstall local package from projects
 ```
 Get-Project -All | UnInstall-Package AutoCAD2021.Interop.Base
+Only need to uninstall dev tools
+Get-Project -All | UnInstall-Package cadwiki.CadDevTools
 Get-Project -All | UnInstall-Package cadwiki.NUnitTestRunner
 Get-Project -All | UnInstall-Package cadwiki.DllReloader
-Get-Project -All | UnInstall-Package cadwiki.CadDevTools
 ```
 
 ### Install local package to another project
@@ -47,9 +48,10 @@ Install nuget package in another solution / project with these commands
 Install-Package $Path\ToNuget\File\.nupkg
 Get-Project -All | Install-Package $Path\ToNuget\File\.nupkg
 Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\AutoCAD2021.Interop.Base\AutoCAD2021.Interop.Base.1.0.0.nupkg
+Only need to install dev tools
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools.1.0.6.1821.nupkg
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner.1.0.6.1821.nupkg
 Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader.1.0.6.1821.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools.1.0.6.1821.nupkg
 ```
 
 
