@@ -1,9 +1,5 @@
-﻿Imports System.Drawing.Imaging
-Imports System.Reflection
-Imports System.Windows.Forms
-Imports cadwiki.NUnitTestRunner
+﻿Imports cadwiki.NUnitTestRunner
 Imports cadwiki.NUnitTestRunner.TestEvidence
-Imports cadwiki.NUnitTestRunner.TestEvidence.TestEvidenceCreator
 
 <TestClass()> Public Class TestEvidenceCreator
 
