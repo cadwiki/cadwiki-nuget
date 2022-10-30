@@ -51,6 +51,13 @@ NUnit test runner that accepts a type array and executes tests and collects test
 ![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)  
 <object data="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="100%></object>    
 <embed src="/cadwiki-nuget/docs/cadwiki.CadDevTools.pdf" type="application/pdf">  
+<h1 align="center">HTML Test</h1>
+<p align="center">
+  <a href="https://www.npmjs.com/package/ng2-pdf-viewer">
+    <img src="https://img.shields.io/npm/dm/ng2-pdf-viewer.svg?style=flat" alt="downloads">
+  </a>
+</p>
+
 ### cadwiki.WpfUi  
 Collection of Windows Presentation Foundation User Interface's.
 
