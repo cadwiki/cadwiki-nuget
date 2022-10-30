@@ -8,7 +8,7 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
 
 Public Class Engine
 
-    Public Shared TestEvidenceCreator As New TestEvidence.TestEvidenceCreator()
+    Public Shared TestEvidenceCreator As New Creators.TestEvidenceCreator()
 
     Public Shared Sub RunTestsFromType(suiteResult As ObservableTestSuiteResults,
             stopwatch As Stopwatch,

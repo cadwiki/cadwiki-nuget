@@ -4,9 +4,11 @@ Imports System.IO
 Imports System.Windows.Automation
 Imports System.Windows.Automation.AutomationElement
 Imports cadwiki.NUnitTestRunner.Results
+Imports cadwiki.NUnitTestRunner.TestEvidence
 Imports Microsoft.Test.Input
+Imports Image = cadwiki.NUnitTestRunner.TestEvidence.Image
 
-Namespace TestEvidence
+Namespace Creators
 
     Public Class TestEvidenceCreator
 
@@ -60,9 +62,9 @@ Namespace TestEvidence
             Return _localScreenShotCache
         End Function
 
-        Public Function SetEvidenceForCurrentTest(testEvidence As Evidence)
+        Public Sub SetEvidenceForCurrentTest(testEvidence As Evidence)
             _evidenceForCurrentlyExecutingTest = testEvidence
-        End Function
+        End Sub
 
         Public Function GetEvidenceForCurrentTest() As Evidence
             Return _evidenceForCurrentlyExecutingTest
@@ -99,7 +101,19 @@ Namespace TestEvidence
             Return MicrosoftTestClickPoint(clickableSystemDrawingPoint)
         End Function
 
-
+        Public Sub TakeJpegScreenshot(windowIntPtr As IntPtr, title As String)
+            Dim fileName As String = title + ".jpg"
+            fileName = NetUtils.Paths.ReplaceAllillegalCharsForWindowsOSInFileName(fileName, "-")
+            Dim screenshotPath As String = GetScreenshotCache() + "\" + fileName
+            screenshotPath = NetUtils.Paths.GetUniqueFilePath(screenshotPath)
+            Dim format As ImageFormat = ImageFormat.Jpeg
+            TestEvidenceCreator.PrintWindowToImage(windowIntPtr, screenshotPath, format)
+            Dim image As New Image()
+            image.Title = title
+            image.FilePath = screenshotPath
+            _evidenceForCurrentlyExecutingTest.Images.Add(image)
+            Me.SetEvidenceForCurrentTest(_evidenceForCurrentlyExecutingTest)
+        End Sub
 
         Private Shared Function PrintWindowWithWinAPI(ByVal hwnd As IntPtr) As Bitmap
             Dim rc As RECT

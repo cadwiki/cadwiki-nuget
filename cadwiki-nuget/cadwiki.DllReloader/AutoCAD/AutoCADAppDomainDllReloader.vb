@@ -404,7 +404,7 @@ Namespace AutoCAD
                 Dim dllName As String = IO.Path.GetFileName(dllFilePath)
                 Dim assemblyName As String = IO.Path.GetFileNameWithoutExtension(dllName)
                 Dim newestAssemblyWithNameInAppDomain As Assembly =
-                        AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.GetNewestAssembly(assemblies, assemblyName, Nothing)
+                        AcadAssemblyUtils.GetNewestAssembly(assemblies, assemblyName, Nothing)
                 'Remove any commands that need to be overwritten latter
                 If Not newestAssemblyWithNameInAppDomain Is Nothing Then
                     CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(_document, newestAssemblyWithNameInAppDomain, _dependencyValues.OriginalAppDirectory)
@@ -420,7 +420,7 @@ Namespace AutoCAD
                     Dim dllName As String = IO.Path.GetFileName(tempDll)
                     Dim assemblyName As String = IO.Path.GetFileNameWithoutExtension(tempDll)
                     Dim newestAssemblyWithNameInAppDomain As Assembly =
-                        AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.GetNewestAssembly(assemblies, assemblyName, Nothing)
+                        AcadAssemblyUtils.GetNewestAssembly(assemblies, assemblyName, Nothing)
                     ' If there is not an existing assembly like this in the app domain
                     ' add to list
                     If newestAssemblyWithNameInAppDomain Is Nothing Then
@@ -428,11 +428,10 @@ Namespace AutoCAD
                     Else
                         ' Else do version checks
                         Dim newestVersionInAppDomain As String =
-                        AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.
-                            GetAssemblyVersionFromFullName(newestAssemblyWithNameInAppDomain.FullName)
+                        AcadAssemblyUtils.GetAssemblyVersionFromFullName(newestAssemblyWithNameInAppDomain.FullName)
                         Dim copiedFvi As FileVersionInfo = FileVersionInfo.GetVersionInfo(tempDll)
                         Dim copiedVersion As String = copiedFvi.FileVersion
-                        Dim isCopiedDllNewer As Integer = AutoCAD.UiRibbon.Buttons.GenericClickCommandHandler.CompareFileVersion(copiedVersion, CStr(newestVersionInAppDomain))
+                        Dim isCopiedDllNewer As Integer = AcadAssemblyUtils.CompareFileVersion(copiedVersion, CStr(newestVersionInAppDomain))
                         ' For dlls that already exist in the app domain, only reload if the copy has a newer file version
                         ' which result in a 1 comparision between file versions
                         If isCopiedDllNewer = 1 Then

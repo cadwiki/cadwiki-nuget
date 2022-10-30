@@ -95,7 +95,7 @@ Class MainWindow
     Private acadLocation As String = ""
 
     Private Sub ButtonSelectAutoCADYear_Click(sender As Object, e As Windows.RoutedEventArgs)
-        Dim window As cadwiki.WpfUi.WindowGetFilePath = New cadwiki.WpfUi.WindowGetFilePath(acadLocations)
+        Dim window As WpfUi.WindowGetFilePath = New WpfUi.WindowGetFilePath(acadLocations)
         window.ShowDialog()
         Dim wasOkClicked As Boolean = window.WasOkayClicked
         If wasOkClicked Then
@@ -106,17 +106,17 @@ Class MainWindow
                 Dim iniFilePath As String = GetCadDevToolsIniFilePath()
                 Dim objIniFile As New IniFile(iniFilePath)
                 objIniFile.WriteString("Settings", previousAutoCADLocationKey, acadLocation)
-                cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus,
+                WpfUi.Utils.SetSuccessStatus(TextBlockStatus,
                     TextBlockMessage,
                     "File does exist: " + acadLocation)
             Else
-                cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus,
+                WpfUi.Utils.SetErrorStatus(TextBlockStatus,
                     TextBlockMessage,
                     "File does not exist: " + acadLocation)
             End If
 
         Else
-            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus,
+            WpfUi.Utils.SetErrorStatus(TextBlockStatus,
                 TextBlockMessage,
                 "File selection window was canceled.")
         End If
@@ -135,7 +135,7 @@ Class MainWindow
 
     Private Sub ButtonLaunch_Click(sender As Object, e As RoutedEventArgs)
         Forms.Application.DoEvents()
-        cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
+        WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
             "Please wait until CAD launches and netloads " + TextBoxDllPath.Text + " into AutoCAD.")
 
@@ -150,7 +150,7 @@ Class MainWindow
 
     Private Sub LaunchAutocad()
 
-        cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
+        WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
             "Please wait until CAD launches.")
         If acadLocation.Contains("2021") Then
@@ -181,17 +181,17 @@ Class MainWindow
             interop2022.ConfigureRunningAutoCADForUsage()
             'interop.OpenDrawingTemplate(dwtFilePath, True)
         Else
-            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus,
+            WpfUi.Utils.SetErrorStatus(TextBlockStatus,
                 TextBlockMessage,
                 "Invalid AutoCAD location: " + acadLocation)
         End If
 
-        cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Autocad Launch complete.")
+        WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Autocad Launch complete.")
         Forms.Application.DoEvents()
     End Sub
 
     Private Sub NetloadDll(cadAppDll As String)
-        cadwiki.WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
+        WpfUi.Utils.SetProcessingStatus(TextBlockStatus,
             TextBlockMessage,
             "Please wait until CAD launches netloads the" + cadAppDll + " dll.")
         If acadLocation.Contains("2021") Then
@@ -208,7 +208,7 @@ Class MainWindow
             interop2022.NetloadDll(cadAppDll)
         End If
 
-        cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Dll netload complete: " + cadAppDll)
+        WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Dll netload complete: " + cadAppDll)
         Forms.Application.DoEvents()
     End Sub
 
@@ -217,7 +217,7 @@ Class MainWindow
         Dim solutionDir As String = Paths.TryGetSolutionDirectoryPath()
         Dim wildCardFileName As String = "*.dll"
         Dim dlls As List(Of String) = Paths.GetAllWildcardFilesInAnySubfolder(solutionDir, wildCardFileName)
-        Dim window As cadwiki.WpfUi.WindowGetFilePath = New cadwiki.WpfUi.WindowGetFilePath(dlls)
+        Dim window As WpfUi.WindowGetFilePath = New WpfUi.WindowGetFilePath(dlls)
         window.Width = 1200
         window.Height = 300
         window.ShowDialog()
@@ -225,12 +225,12 @@ Class MainWindow
         If wasOkClicked Then
             Dim filePath As String = window.SelectedFolder
             If Not File.Exists(filePath) Then
-                cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + filePath)
+                WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + filePath)
             End If
-            cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Selected dll to load: " + filePath)
+            WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Selected dll to load: " + filePath)
             TextBoxDllPath.Text = filePath
         Else
-            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "User closed dll load menu.")
+            WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "User closed dll load menu.")
         End If
     End Sub
 
@@ -238,9 +238,9 @@ Class MainWindow
         Dim dllName As String = System.IO.Path.GetFileName(TextBoxDllPath.Text)
         Dim mainAppDll As String = GetNewestDllInSolutionDirectorySubFoldersThatHaveAVInFolderName(dllName)
         If Not File.Exists(mainAppDll) Then
-            cadwiki.WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + mainAppDll)
+            WpfUi.Utils.SetErrorStatus(TextBlockStatus, TextBlockMessage, "Dll does not exist: " + mainAppDll)
         Else
-            cadwiki.WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Selected dll to load: " + mainAppDll)
+            WpfUi.Utils.SetSuccessStatus(TextBlockStatus, TextBlockMessage, "Selected dll to load: " + mainAppDll)
             TextBoxDllPath.Text = mainAppDll
         End If
 
