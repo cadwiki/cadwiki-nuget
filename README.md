@@ -48,12 +48,12 @@ Static utility methods.
 NUnit test runner that accepts a type array and executes tests and collects test evidence.  
 <p>
 	<a href="https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json">
-	https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json
+	AutomatedTestEvidence.json
 	</a>
 </p>
 <p>
 	<a href="https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf">
-	https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf
+	AutomatedTestEvidence.pdf
 	</a>
 </p>
 
