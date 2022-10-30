@@ -1,6 +1,8 @@
 # cadwiki-nuget README  
 Tools for increasing productivity during Autodesk addin developement  
 
+![NotFound](./cadwiki-nuget/icons/500x500-cadwiki-v1.png)  
+
 ## Table of Contents  
 [docs](https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs)  
 [CadDevTools Readme](https://github.com/cadwiki/cadwiki-nuget/blob/main/README.nuget.cadwiki.CadDevTools.md)  
