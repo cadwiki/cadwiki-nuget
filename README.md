@@ -11,15 +11,28 @@ Tools for increasing productivity during Autodesk addin developement
 ## Solution overview
 This solution splits the logic into 12 projects that each handle a single responsiblity:  
 
-CadDevToolsDriver  
-cadwiki.AcRemoveCmdGroup  
-cadwiki.AdminUtils  
-cadwiki.AutoCAD2021.Interop.Utilities  
-cadwiki.AutoCAD2022.Interop.Utilities  
-cadwiki.CadDevTools  
-cadwiki.DllReloader  
-cadwiki.FileStore  
-cadwiki.NetUtils  
-cadwiki.NUnitTestRunner  
-cadwiki.WpfUi  
-UnitTests  
+## Project details  
+
+### CadDevToolsDriver  
+
+### cadwiki.AcRemoveCmdGroup  
+
+### cadwiki.AdminUtils  
+
+### cadwiki.AutoCAD2021.Interop.Utilities  
+
+### cadwiki.AutoCAD2022.Interop.Utilities  
+
+### cadwiki.CadDevTools  
+
+### cadwiki.DllReloader  
+
+### cadwiki.FileStore  
+
+### cadwiki.NetUtils  
+
+### cadwiki.NUnitTestRunner  
+
+### cadwiki.WpfUi  
+
+### UnitTests  
