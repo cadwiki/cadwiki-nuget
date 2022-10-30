@@ -50,15 +50,12 @@ NUnit test runner that accepts a type array and executes tests and collects test
 ![NotFound](./cadwiki-nuget/docs/cadwiki.CadDevTools.pdf)  
 ![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)  
 <object data="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="100%></object>    
-<embed src="./cadwiki-nuget/docs/cadwiki.CadDevTools.pdf" type="application/pdf">  
-<h1 align="center">HTML Test</h1>
-<p align="center">
-  <iframe src="https://docs.google.com/gview?url=https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>
-  <embed src="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" width="800px" height="2100px" />
-  <a href="https://www.npmjs.com/package/ng2-pdf-viewer">
-    <img src="./cadwiki-nuget/docs/cadwiki.CadDevTools.pdf" alt="downloads">
-  </a>
-</p>
+
+<object data="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
 
 ### cadwiki.WpfUi  
 Collection of Windows Presentation Foundation User Interface's.
