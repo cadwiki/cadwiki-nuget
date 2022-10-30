@@ -46,17 +46,16 @@ Static utility methods.
 
 ### cadwiki.NUnitTestRunner  
 NUnit test runner that accepts a type array and executes tests and collects test evidence.  
-![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)    
-![NotFound](./cadwiki-nuget/docs/cadwiki.CadDevTools.pdf)  
-![NotFound](https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)  
-
-<object data="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="100%></object>    
-
-<object data="https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json" type="application/pdf" width="700px" height="700px">
-    <embed src="https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json">Download PDF</a>.</p>
-    </embed>
-</object>
+<p>
+	<a href="https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json">
+	https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json
+	</a>
+</p>
+<p>
+	<a href="https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf">
+	https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf
+	</a>
+</p>
 
 ### cadwiki.WpfUi  
 Collection of Windows Presentation Foundation User Interface's.
