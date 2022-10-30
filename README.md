@@ -49,9 +49,8 @@ NUnit test runner that accepts a type array and executes tests and collects test
 ![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)    
 ![NotFound](./cadwiki-nuget/docs/cadwiki.CadDevTools.pdf)  
 ![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)  
-<object data="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="100%>
-</object>  
-
+<object data="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="100%></object>    
+<embed src="/cadwiki-nuget/docs/cadwiki.CadDevTools.pdf" type="application/pdf">  
 ### cadwiki.WpfUi  
 Collection of Windows Presentation Foundation User Interface's.
 
