@@ -1,7 +1,7 @@
 # cadwiki-nuget README  
 Tools for increasing productivity during Autodesk addin developement  
 
-![NotFound](./cadwiki-nuget/icons/500x500-cadwiki-v1.png)  
+
 
 ## Table of Contents  
 [docs](https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs)  
@@ -9,6 +9,7 @@ Tools for increasing productivity during Autodesk addin developement
 [DllReloader Readme](https://github.com/cadwiki/cadwiki-nuget/blob/main/README.nuget.cadwiki.DllReloader.md)  
 [NUnitTestRunner Readme](https://github.com/cadwiki/cadwiki-nuget/blob/main/README.nuget.cadwiki.NUnitTestRunner.md)  
 
+![NotFound](./cadwiki-nuget/icons/500x500-cadwiki-v1.png)  
 
 ## Solution overview
 This solution splits the logic into 12 projects that each handle a single responsiblity:  
@@ -46,8 +47,9 @@ Static utility methods.
 ### cadwiki.NUnitTestRunner  
 NUnit test runner that accepts a type array and executes tests and collects test evidence.
 <iframe src="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf"></iframe>   
-![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)   
-
+![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)    
+![NotFound](./cadwiki-nuget/docs/cadwiki.CadDevTools.pdf)  
+![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)  
 ### cadwiki.WpfUi  
 Collection of Windows Presentation Foundation User Interface's.
 
