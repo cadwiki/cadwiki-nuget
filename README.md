@@ -51,9 +51,9 @@ NUnit test runner that accepts a type array and executes tests and collects test
 ![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)  
 <object data="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="100%></object>    
 
-<object data="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="700px" height="700px">
-    <embed src="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+<object data="https://github.com/cadwiki/cadwiki-nuget/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://github.com/cadwiki/cadwiki-nuget/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/cadwiki/cadwiki-nuget/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf">Download PDF</a>.</p>
     </embed>
 </object>
 
