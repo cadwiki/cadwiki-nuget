@@ -45,11 +45,11 @@ Resource files that are used by the other projects
 Static utility methods.
 
 ### cadwiki.NUnitTestRunner  
-NUnit test runner that accepts a type array and executes tests and collects test evidence.
-<iframe src="https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.pdf"></iframe>   
+NUnit test runner that accepts a type array and executes tests and collects test evidence.  
 ![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)    
 ![NotFound](./cadwiki-nuget/docs/cadwiki.CadDevTools.pdf)  
 ![NotFound](./cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json)  
+
 ### cadwiki.WpfUi  
 Collection of Windows Presentation Foundation User Interface's.
 
