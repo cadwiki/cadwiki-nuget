@@ -91,7 +91,8 @@ Namespace Creators
                 Dim newHeight As Integer = CInt(height / widthFitRate)
                 Dim size As New Size(newWidth, newHeight)
                 Dim scaledImage As Bitmap = New Bitmap(image, size)
-                imageFilePath = imageFilePath + "-(scaled)"
+                Dim ext As String = System.IO.Path.GetExtension(imageFilePath)
+                imageFilePath.Replace(ext, "-(scaled)" + ext)
                 scaledImage.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Jpeg)
                 Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
                 DrawImage(gfx, imageFilePath, 0, 150, newWidth, newHeight)
