@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>cadwiki.NUnitTestRunner</id>
-    <version>1.0.8.1611</version>
+    <version>1.0.9.1651</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
