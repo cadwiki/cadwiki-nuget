@@ -19,6 +19,9 @@ Namespace Creators
         Private Shared _jsonFileResults As String = "AutomatedTestEvidence.json"
 
         Public Sub New()
+            If (_evidenceForCurrentlyExecutingTest Is Nothing) Then
+                _evidenceForCurrentlyExecutingTest = New Evidence()
+            End If
             If (Not IO.Directory.Exists(_localFolderCache)) Then
                 IO.Directory.CreateDirectory(_localFolderCache)
             End If
