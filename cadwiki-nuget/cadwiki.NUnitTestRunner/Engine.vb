@@ -5,12 +5,13 @@ Imports NUnit.Framework.Interfaces
 Imports cadwiki.NetUtils
 Imports cadwiki.NUnitTestRunner.Results
 Imports cadwiki.NUnitTestRunner.TestEvidence
+Imports System.Runtime.CompilerServices
 
 Public Class Engine
 
     Public Shared TestEvidenceCreator As New Creators.TestEvidenceCreator()
 
-    Public Shared Sub RunTestsFromType(suiteResult As ObservableTestSuiteResults,
+    Public Shared Async Sub RunTestsFromType(suiteResult As ObservableTestSuiteResults,
             stopwatch As Stopwatch,
             integrationTestTypes As Type())
         Dim tuples As List(Of Tuple(Of Type, MethodInfo)) = Utils.GetTestMethodDictionarySafely(integrationTestTypes)
@@ -49,7 +50,16 @@ Public Class Engine
                 If setupMethodInfo IsNot Nothing And setupObject IsNot Nothing Then
                     setupMethodInfo.Invoke(setupObject, Nothing)
                 End If
-                mi.Invoke(o, Nothing)
+
+                Dim isAwaitable As Boolean = mi.ReturnType.GetMethod(NameOf(Task.GetAwaiter)) IsNot Nothing
+                Dim result As Object = Nothing
+
+                If isAwaitable Then
+                    result = Await mi.Invoke(o, Nothing)
+                Else
+                    mi.Invoke(o, Nothing)
+                End If
+
                 testResult.TestName = mi.Name
                 testResult.Passed = True
                 If tearDownMethodInfo IsNot Nothing And tearDownObject IsNot Nothing Then
@@ -115,6 +125,7 @@ Public Class Engine
         TestEvidenceCreator.WriteTestSuiteResultsToFile(jsonString)
 
     End Sub
+
 
 
 End Class
