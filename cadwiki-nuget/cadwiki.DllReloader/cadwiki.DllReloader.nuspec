@@ -3,7 +3,7 @@
   <metadata>
     <id>cadwiki.DllReloader</id>
 	<!-- need to update cadwiki.DllReloader.targets file when version changes-->
-    <version>1.0.7.1649</version>
+    <version>1.0.8.1611</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
