@@ -1,9 +1,10 @@
 # cadwiki-nuget README  
-Tools for increasing productivity during Autodesk addin developement  
+Tools for increasing productivity during Autodesk addin developement.  
 
 
 
 ## Table of Contents  
+[https://github.com/cadwiki/cadwiki-nuget-examples](https://github.com/cadwiki/cadwiki-nuget-examples)  
 [docs](https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs)  
 [CadDevTools Readme](https://github.com/cadwiki/cadwiki-nuget/blob/main/README.nuget.cadwiki.CadDevTools.md)  
 [DllReloader Readme](https://github.com/cadwiki/cadwiki-nuget/blob/main/README.nuget.cadwiki.DllReloader.md)  
@@ -15,6 +16,7 @@ Tools for increasing productivity during Autodesk addin developement
 This solution splits the logic into 12 projects that each handle a single responsiblity:  
 
 ## Project details  
+Description of each project.  
 
 ### CadDevToolsDriver  
 Project used for developer testing of the CadDevTools project.  
