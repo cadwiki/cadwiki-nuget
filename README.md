@@ -14,7 +14,6 @@ Tools for increasing productivity during Autodesk addin developement.
 This solution splits the logic into 12 projects that each handle a single responsiblity:  
 
 ## Project details  
-Description of each project.  
 
 ### CadDevToolsDriver  
 Project used for developer testing of the CadDevTools project.  
