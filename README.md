@@ -3,12 +3,10 @@ Tools for increasing productivity during Autodesk addin developement.
 
 
 
-## Table of Contents  
+## Links  
+[https://www.cadwiki.net](https://www.cadwiki.net)
 [https://github.com/cadwiki/cadwiki-nuget-examples](https://github.com/cadwiki/cadwiki-nuget-examples)  
 [docs](https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs)  
-[CadDevTools Readme](https://github.com/cadwiki/cadwiki-nuget/blob/main/README.nuget.cadwiki.CadDevTools.md)  
-[DllReloader Readme](https://github.com/cadwiki/cadwiki-nuget/blob/main/README.nuget.cadwiki.DllReloader.md)  
-[NUnitTestRunner Readme](https://github.com/cadwiki/cadwiki-nuget/blob/main/README.nuget.cadwiki.NUnitTestRunner.md)  
 
 ![NotFound](./cadwiki-nuget/icons/500x500-cadwiki-v1.png)  
 
@@ -34,11 +32,14 @@ Utilities for launching and controlling AutoCAD 2021.
 Utilities for launching and controlling AutoCAD 2022.   
 
 ### cadwiki.CadDevTools  
-Single project that references all the other projects.  
+CadDevTools is a set of user interfaces and Interop utilities for launching AutoCAD directly from visual studio.   
 This is the main project that a CAD developer would need to leverage to get value from the other projects.  
+This toolset lets a developer drive AutoCAD from an IDE and netload dll's automatically. 
 
 ### cadwiki.DllReloader  
-Reloads dll's into Autodesk products Application Domain.
+The DllReloader package let's developers reload the same dll multiple times into AutoCAD, as long as 1 criteria is met:
+1.  The dll to be reloaded has a newer AssemblyVersion than any dll with the same name currently in AutoCAD's appdomain  
+
 
 ### cadwiki.FileStore  
 Resource files that are used by the other projects
@@ -47,7 +48,8 @@ Resource files that are used by the other projects
 Static utility methods.
 
 ### cadwiki.NUnitTestRunner  
-NUnit test runner that accepts a type array and executes tests and collects test evidence.  
+NUnit test runner has ExecuteTestsAsync method that accepts a type array and executes tests and collects test evidence.  
+The project has Engine, TestEvidenceCreator and screenshot functionality to capture test evidence automatically.  
 <p>
 	<a href="https://raw.githubusercontent.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/AutomatedTestEvidence__2022__09__27____21_19_19.json">
 	AutomatedTestEvidence.json
