@@ -13,7 +13,7 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
         Dim driver As New UI.WpfDriver(results, allTypes)
         Dim window As UI.WindowTestRunner = driver.GetWindow()
         window.Show()
-        driver.ExecuteTests()
+        driver.ExecuteTestsAsync()
 
         Dim testEvidenceCreator As New Creators.TestEvidenceCreator()
         Dim windowIntPtr As IntPtr = testEvidenceCreator.ProcessesGetHandleFromUiTitle("N Unit Test Runner")
@@ -36,7 +36,7 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
         Dim driver As New UI.WpfDriver(results, allTypes)
         Dim window As UI.WindowTestRunner = driver.GetWindow()
         window.Show()
-        driver.ExecuteTests()
+        driver.ExecuteTestsAsync()
 
         Dim testEvidenceCreator As New Creators.TestEvidenceCreator()
 

@@ -38,11 +38,11 @@ Namespace Ui
             End Try
         End Sub
 
-        Public Sub ExecuteTests()
+        Public Async Sub ExecuteTestsAsync()
             Try
                 Dim stopWatch As Stopwatch = New Stopwatch()
                 stopWatch.Start()
-                Engine.RunTestsFromType(_form.ObservableResults, stopWatch, _regressionTestTypes)
+                Await Engine.RunTestsFromType(_form.ObservableResults, stopWatch, _regressionTestTypes)
                 _commonUiObject.WinFormsUpdateResultsToTreeView(_form.ObservableResults, _form.TreeViewResults)
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =

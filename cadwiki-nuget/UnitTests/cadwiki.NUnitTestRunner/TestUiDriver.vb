@@ -15,7 +15,7 @@ Imports cadwiki.NUnitTestRunner
         Dim driver As New UI.WpfDriver(results, allTypes)
         Dim window As UI.WindowTestRunner = driver.GetWindow()
         window.Show()
-        driver.ExecuteTests()
+        driver.ExecuteTestsAsync()
         Threading.Thread.Sleep(3000)
         window.Close()
     End Sub
@@ -42,7 +42,7 @@ Imports cadwiki.NUnitTestRunner
         Dim results As New Results.ObservableTestSuiteResults()
         Dim driver As New UI.WpfDriver(results, allTypes)
         Dim window As UI.WindowTestRunner = driver.GetWindow()
-        driver.ExecuteTests()
+        driver.ExecuteTestsAsync()
         Dim jsonString As String = results.ToJson()
         Assert.AreEqual(2, results.TotalTests)
         Assert.IsNotNull(jsonString)
