@@ -1,12 +1,12 @@
 # cadwiki-nuget README  
 Tools for increasing productivity during Autodesk addin developement.  
 
-
-
-## Links  
+## Blog  
 [https://www.cadwiki.net](https://www.cadwiki.net)  
+
+## GitHub Links  
 [https://github.com/cadwiki/cadwiki-nuget-examples](https://github.com/cadwiki/cadwiki-nuget-examples)  
-[docs](https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs)  
+[https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs](https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs)  
 
 ![NotFound](./cadwiki-nuget/icons/500x500-cadwiki-v1.png)  
 
