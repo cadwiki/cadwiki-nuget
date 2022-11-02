@@ -38,7 +38,7 @@ Namespace Ui
             End Try
         End Sub
 
-        Public Async Sub ExecuteTestsAsync()
+        Public Async Function ExecuteTestsAsync() As Task
             Try
                 Dim stopWatch As Stopwatch = New Stopwatch()
                 stopWatch.Start()
@@ -50,6 +50,6 @@ Namespace Ui
                 window.ShowDialog()
             End Try
 
-        End Sub
+        End Function
     End Class
 End Namespace
