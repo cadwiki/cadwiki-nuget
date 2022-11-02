@@ -11,12 +11,36 @@ Public Class Engine
 
     Public Shared TestEvidenceCreator As New Creators.TestEvidenceCreator()
 
-    Public Shared Async Sub RunTestsFromType(suiteResult As ObservableTestSuiteResults,
+    Public Shared Async Function RunTestsFromType(suiteResult As ObservableTestSuiteResults,
             stopwatch As Stopwatch,
-            integrationTestTypes As Type())
+            integrationTestTypes As Type()) As Task
         Dim tuples As List(Of Tuple(Of Type, MethodInfo)) = Utils.GetTestMethodDictionarySafely(integrationTestTypes)
 
+        Await RunTests(suiteResult, tuples)
+        stopwatch.Stop()
+        TestEvidenceCreator.SetEvidenceForCurrentTest(Nothing)
 
+        Dim ts As TimeSpan = stopwatch.Elapsed
+        Dim elapsedTime As String = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours,
+                ts.Minutes,
+                ts.Seconds,
+                ts.Milliseconds / 10)
+        If ts.TotalMinutes > 5 Then
+            suiteResult.TimeElapsed = "Consider removing tests to reduce elapsed time to below 5 minutes " +
+                    elapsedTime
+        Else
+            suiteResult.TimeElapsed = elapsedTime
+        End If
+
+        'Output pdf with evidence
+        TestEvidenceCreator.CreatePdf(suiteResult)
+
+        Dim jsonString As String = suiteResult.ToJson()
+        TestEvidenceCreator.WriteTestSuiteResultsToFile(jsonString)
+    End Function
+
+    Private Shared Async Function RunTests(suiteResult As ObservableTestSuiteResults, tuples As List(Of Tuple(Of Type, MethodInfo))) As Task
         For Each item As Tuple(Of Type, MethodInfo) In tuples
             Dim testResult As New TestResult
             'Clear current evidence
@@ -56,6 +80,7 @@ Public Class Engine
 
                 If isAwaitable Then
                     result = Await mi.Invoke(o, Nothing)
+                    Dim test As String = ""
                 Else
                     mi.Invoke(o, Nothing)
                 End If
@@ -102,31 +127,6 @@ Public Class Engine
             suiteResult.AddResult(testResult)
 
         Next
-        stopwatch.Stop()
-        TestEvidenceCreator.SetEvidenceForCurrentTest(Nothing)
-
-        Dim ts As TimeSpan = stopwatch.Elapsed
-        Dim elapsedTime As String = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours,
-                ts.Minutes,
-                ts.Seconds,
-                ts.Milliseconds / 10)
-        If ts.TotalMinutes > 5 Then
-            suiteResult.TimeElapsed = "Consider removing tests to reduce elapsed time to below 5 minutes " +
-                    elapsedTime
-        Else
-            suiteResult.TimeElapsed = elapsedTime
-        End If
-
-        'Output pdf with evidence
-        TestEvidenceCreator.CreatePdf(suiteResult)
-
-        Dim jsonString As String = suiteResult.ToJson()
-        TestEvidenceCreator.WriteTestSuiteResultsToFile(jsonString)
-
-    End Sub
-
-
-
+    End Function
 End Class
 
