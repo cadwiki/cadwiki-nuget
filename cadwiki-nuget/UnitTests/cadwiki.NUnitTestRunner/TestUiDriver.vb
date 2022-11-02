@@ -30,7 +30,7 @@ Imports cadwiki.NUnitTestRunner
         Dim form As UI.FormTestRunner = driver.GetForm()
 
         form.Show()
-        driver.ExecuteTests()
+        driver.ExecuteTestsAsync()
         Threading.Thread.Sleep(3000)
         form.Close()
     End Sub
@@ -56,7 +56,7 @@ Imports cadwiki.NUnitTestRunner
         Dim results As New Results.ObservableTestSuiteResults()
         Dim driver As New UI.WinformsDriver(results, allTypes)
         Dim form As UI.FormTestRunner = driver.GetForm()
-        driver.ExecuteTests()
+        driver.ExecuteTestsAsync()
         Dim jsonString As String = results.ToJson()
         Assert.AreEqual(2, results.TotalTests)
         Assert.IsNotNull(jsonString)
