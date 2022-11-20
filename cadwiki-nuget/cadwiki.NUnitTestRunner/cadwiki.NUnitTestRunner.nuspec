@@ -10,7 +10,6 @@
     <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
     <description>Executes unit tests in a WPF window</description>
     <releaseNotes>
-		Add TestEvidence
 	</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>cadwiki Autocad UnitTest RegressionTest IntegrationTest AutomationTest </tags>

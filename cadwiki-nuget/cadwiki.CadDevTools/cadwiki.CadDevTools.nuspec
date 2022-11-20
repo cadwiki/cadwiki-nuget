@@ -11,8 +11,6 @@
     <projectUrl>https://github.com/cadwiki/cadwiki-nuget</projectUrl>
     <description>Dev toolset</description>
     <releaseNotes>
-		Add image to Ui,
-		Refactor MainWindow to use AutoCAD startup switches when starting program
 	</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>cadwiki dllreload reload assembly autocad appdomain</tags>
