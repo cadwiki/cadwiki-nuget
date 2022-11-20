@@ -70,7 +70,7 @@ Namespace AutoCAD.UiRibbon.Buttons
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                         New WpfUi.Templates.WindowAutoCADException(ex)
-                window.ShowDialog()
+                window.Show()
                 ConsoleOut("Exception: " & ex.Message)
                 If (ex.Message.Equals("The path is not of a legal form.")) Then
                     ConsoleOut("Mostly likely caused by incorrect method name in UiRouter object.")
