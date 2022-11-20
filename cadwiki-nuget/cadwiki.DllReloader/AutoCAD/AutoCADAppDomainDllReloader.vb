@@ -121,7 +121,7 @@ Namespace AutoCAD
                 WriteToDocEditor("---------------------------------------------")
             Catch ex As Exception
                 Dim window As WpfUi.Templates.WindowAutoCADException = New WpfUi.Templates.WindowAutoCADException(ex)
-                window.ShowDialog()
+                window.Show()
             End Try
 
         End Sub
@@ -140,7 +140,7 @@ Namespace AutoCAD
                 Return tuple
             Catch ex As Exception
                 Dim window As WpfUi.Templates.WindowAutoCADException = New WpfUi.Templates.WindowAutoCADException(ex)
-                window.ShowDialog()
+                window.Show()
                 Return Nothing
             End Try
 

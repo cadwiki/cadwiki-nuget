@@ -34,7 +34,7 @@ Namespace Ui
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                     New WpfUi.Templates.WindowAutoCADException(ex)
-                window.ShowDialog()
+                window.Show()
             End Try
         End Sub
 
@@ -47,7 +47,7 @@ Namespace Ui
             Catch ex As Exception
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                     New WpfUi.Templates.WindowAutoCADException(ex)
-                window.ShowDialog()
+                window.Show()
             End Try
 
         End Function
