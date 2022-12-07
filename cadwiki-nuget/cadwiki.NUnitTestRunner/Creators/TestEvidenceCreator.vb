@@ -92,9 +92,13 @@ Namespace Creators
         End Sub
 
 
-        Public Function MicrosoftTestClickUiControl(windowIntPtr As IntPtr, controlName As String) As Boolean
+        Public Function MicrosoftTestClickUiControl(windowIntPtr As IntPtr, automationId As String) As Boolean
+            Return MicrosoftTestClickUiControlByAutomationId(windowIntPtr, automationId)
+        End Function
 
-            Dim element As AutomationElement = GetElementByControlName(windowIntPtr, controlName)
+        Public Function MicrosoftTestClickUiControlByAutomationId(windowIntPtr As IntPtr, automationId As String) As Boolean
+
+            Dim element As AutomationElement = GetElementByAutomationId(windowIntPtr, automationId)
             If (element Is Nothing) Then
                 Return False
             End If
@@ -132,17 +136,16 @@ Namespace Creators
 
 
 
-        Private Function GetElementByControlName(ByVal windowIntPtr As IntPtr, ByVal controlNameToFind As String) As AutomationElement
+        Private Function GetElementByAutomationId(ByVal windowIntPtr As IntPtr, ByVal automationIdToFind As String) As AutomationElement
             Dim root = AutomationElement.FromHandle(windowIntPtr)
             Dim elementCollection As AutomationElementCollection = root.FindAll(TreeScope.Subtree, System.Windows.Automation.Condition.TrueCondition)
 
             For Each element As AutomationElement In elementCollection
                 Dim current As AutomationElementInformation = element.Current
                 Dim controlType As ControlType = current.ControlType
-                Dim controlText As String = current.Name
-                Dim controlName As String = current.AutomationId
-
-                If controlName.Equals(controlNameToFind) Then
+                Dim name As String = current.Name
+                Dim automationId As String = current.AutomationId
+                If automationId.Equals(automationIdToFind) Then
                     Return element
                 End If
             Next
@@ -150,6 +153,22 @@ Namespace Creators
             Return Nothing
         End Function
 
+        Private Function GetElementByControlName(ByVal windowIntPtr As IntPtr, ByVal controlNameToFind As String) As AutomationElement
+            Dim root = AutomationElement.FromHandle(windowIntPtr)
+            Dim elementCollection As AutomationElementCollection = root.FindAll(TreeScope.Subtree, System.Windows.Automation.Condition.TrueCondition)
+
+            For Each element As AutomationElement In elementCollection
+                Dim current As AutomationElementInformation = element.Current
+                Dim controlType As ControlType = current.ControlType
+                Dim name As String = current.Name
+                Dim automationId As String = current.AutomationId
+                If name.Equals(controlNameToFind) Then
+                    Return element
+                End If
+            Next
+
+            Return Nothing
+        End Function
 
         Private Function GetClickableSystemDrawingPointFromElement(ByVal element As AutomationElement) As System.Drawing.Point
             Dim windowsPoint As System.Windows.Point = element.GetClickablePoint()
