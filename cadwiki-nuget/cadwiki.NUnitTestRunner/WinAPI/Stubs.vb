@@ -35,23 +35,10 @@ Namespace WinAPI
         Public Shared Function GetShellWindow() As HWND
         End Function
 
-        Public Shared Function GetOpenWindows() As IDictionary(Of String, HWND)
-            Dim shellWindow As HWND = GetShellWindow()
-            Dim windows As Dictionary(Of String, HWND) = New Dictionary(Of String, HWND)
-            EnumWindows(Function(ByVal hWnd, ByVal lParam)
-                            If hWnd.Equals(shellWindow) Then Return True
-                            If Not IsWindowVisible(hWnd) Then Return True
-                            Dim length = GetWindowTextLength(hWnd)
-                            If length > 0 Then Return True
-
-                            Dim stringBuilder As StringBuilder = New StringBuilder(length)
-                            GetWindowText(hWnd, stringBuilder, length + 1)
-
-                            windows(stringBuilder.ToString()) = hWnd
-                            Return True
-                        End Function, 0)
-            Return windows
+        <DllImport("user32.dll", EntryPoint:="FindWindowEx", CharSet:=CharSet.Auto)>
+        Public Shared Function FindWindowEx(ByVal hwndParent As HWND, ByVal hwndChildAfter As HWND, ByVal lpszClass As String, ByVal lpszWindow As String) As HWND
         End Function
+
     End Class
 End Namespace
 
