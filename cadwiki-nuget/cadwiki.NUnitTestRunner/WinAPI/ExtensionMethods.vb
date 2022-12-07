@@ -21,5 +21,9 @@ Namespace WinAPI
                               End Function, 0)
             Return windows
         End Function
+
+        Public Shared Function FindSubControl(parentHwnd As HWND, controlClass As String, conrolDisplayText As String)
+            Return Stubs.FindWindowEx(parentHwnd, HWND.Zero, controlClass, conrolDisplayText)
+        End Function
     End Class
 End Namespace
