@@ -135,8 +135,9 @@
     <Compile Include="TestEvidence\Evidence.vb" />
     <Compile Include="TestEvidence\Image.vb" />
     <Compile Include="Creators\PdfCreator.vb" />
-    <Compile Include="TestEvidence\RECT.vb" />
-    <Compile Include="TestEvidence\WinAPI.vb" />
+    <Compile Include="WinAPI\RECT.vb" />
+    <Compile Include="WinAPI\WinAPI.vb" />
+    <Compile Include="WinAPI\WinAPIDelegates.vb" />
     <Compile Include="UI\CommonUiObject.vb" />
     <Compile Include="UI\WinformsDriver.vb" />
     <Compile Include="UI\WpfDriver.vb" />
