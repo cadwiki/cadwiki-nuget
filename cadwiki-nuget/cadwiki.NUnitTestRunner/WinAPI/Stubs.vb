@@ -2,8 +2,8 @@
 Imports System.Text
 Imports HWND = System.IntPtr
 
-Namespace TestEvidence
-    Public Class WinAPI
+Namespace WinAPI
+    Public Class Stubs
         <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)>
         Public Shared Function GetWindowRect(ByVal hWnd As IntPtr, <Out> ByRef lpRect As RECT) As Boolean
         End Function
@@ -15,7 +15,7 @@ Namespace TestEvidence
 
 
         <DllImport("user32.dll")>
-        Public Shared Function EnumWindows(ByVal enumFunc As WinAPIDelegates.EnumWindowsProc, ByVal lParam As Integer) As Boolean
+        Public Shared Function EnumWindows(ByVal enumFunc As Delegates.EnumWindowsProc, ByVal lParam As Integer) As Boolean
         End Function
 
         <DllImport("user32.dll")>

@@ -119,12 +119,12 @@ Namespace Creators
         End Sub
 
         Private Shared Function PrintWindowWithWinAPI(ByVal hwnd As IntPtr) As Bitmap
-            Dim rc As RECT
-            WinAPI.GetWindowRect(hwnd, rc)
+            Dim rc As WinAPI.RECT
+            WinAPI.Stubs.GetWindowRect(hwnd, rc)
             Dim bmp As Bitmap = New Bitmap(rc.Width, rc.Height, PixelFormat.Format32bppArgb)
             Dim gfxBmp As Graphics = Graphics.FromImage(bmp)
             Dim hdcBitmap As IntPtr = gfxBmp.GetHdc()
-            WinAPI.PrintWindow(hwnd, hdcBitmap, 0)
+            WinAPI.Stubs.PrintWindow(hwnd, hdcBitmap, 0)
             gfxBmp.ReleaseHdc(hdcBitmap)
             gfxBmp.Dispose()
             Return bmp
