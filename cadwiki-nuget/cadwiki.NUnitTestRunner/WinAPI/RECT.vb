@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Runtime.InteropServices
 
-Namespace TestEvidence
+Namespace WinAPI
 
     <StructLayout(LayoutKind.Sequential)>
     Public Structure RECT
