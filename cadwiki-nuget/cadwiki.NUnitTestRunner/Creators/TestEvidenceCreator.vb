@@ -73,12 +73,12 @@ Namespace Creators
             Return _evidenceForCurrentlyExecutingTest
         End Function
 
-        Public Function ProcessesGetHandleFromUiTitle(ByVal wName As String) As IntPtr
+        Public Function ProcessesGetHandleFromUiTitle(ByVal windowTitle As String) As IntPtr
             Dim hWnd As IntPtr = IntPtr.Zero
 
             For Each pList As Process In Process.GetProcesses()
 
-                If pList.MainWindowTitle.Contains(wName) Then
+                If pList.MainWindowTitle.Contains(windowTitle) Then
                     hWnd = pList.MainWindowHandle
                 End If
             Next
@@ -99,6 +99,18 @@ Namespace Creators
         Public Function MicrosoftTestClickUiControlByAutomationId(windowIntPtr As IntPtr, automationId As String) As Boolean
 
             Dim element As AutomationElement = GetElementByAutomationId(windowIntPtr, automationId)
+            If (element Is Nothing) Then
+                Return False
+            End If
+            Dim clickableSystemDrawingPoint As System.Drawing.Point =
+                GetClickableSystemDrawingPointFromElement(element)
+
+            Return MicrosoftTestClickPoint(clickableSystemDrawingPoint)
+        End Function
+
+        Public Function MicrosoftTestClickUiControlByName(windowIntPtr As IntPtr, name As String) As Boolean
+
+            Dim element As AutomationElement = GetElementByControlName(windowIntPtr, name)
             If (element Is Nothing) Then
                 Return False
             End If
