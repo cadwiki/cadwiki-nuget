@@ -39,6 +39,10 @@ Namespace WinAPI
         Public Shared Function FindWindowEx(ByVal hwndParent As HWND, ByVal hwndChildAfter As HWND, ByVal lpszClass As String, ByVal lpszWindow As String) As HWND
         End Function
 
+        <DllImport("user32.dll")>
+        Public Shared Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Integer, ByVal lParam As IntPtr) As Integer
+        End Function
+
     End Class
 End Namespace
 

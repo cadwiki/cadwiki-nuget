@@ -1,7 +1,8 @@
 ﻿Imports cadwiki.NUnitTestRunner
+Imports cadwiki.NUnitTestRunner.Creators
 Imports cadwiki.NUnitTestRunner.TestEvidence
 
-<TestClass()> Public Class TestEvidenceCreator
+<TestClass()> Public Class TestsForEvidenceCreator
 
 
     <TestMethod()> Public Sub Test_PrintWindow_ShouldCreateJpeg()
@@ -15,7 +16,7 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
         window.Show()
         driver.ExecuteTestsAsync()
 
-        Dim testEvidenceCreator As New Creators.TestEvidenceCreator()
+        Dim testEvidenceCreator As New TestEvidenceCreator()
         Dim windowIntPtr As IntPtr = testEvidenceCreator.ProcessesGetHandleFromUiTitle("N Unit Test Runner")
 
         Dim evidence As New Evidence()
