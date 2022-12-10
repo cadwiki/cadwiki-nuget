@@ -153,9 +153,11 @@ Namespace Creators
                 Dim scaledImage As Bitmap = New Bitmap(image, size)
                 Dim ext As String = System.IO.Path.GetExtension(imageFilePath)
                 imageFilePath = imageFilePath.Replace(ext, "-(scaled)" + ext)
+                imageFilePath = NetUtils.Paths.GetUniqueFilePath(imageFilePath)
                 scaledImage.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Jpeg)
                 DrawImage(gfx, imageFilePath, 0, 150, newWidth, newHeight)
             Else
+                imageFilePath = NetUtils.Paths.GetUniqueFilePath(imageFilePath)
                 DrawImage(gfx, imageFilePath, 0, 150, width, height)
             End If
 
@@ -165,8 +167,6 @@ Namespace Creators
                        XBrushes.Black,
                        New XRect(0, 0, page.Width, page.Height),
                        XStringFormats.TopCenter)
-
-            PdfDoc.Save(PdfFilePath)
         End Sub
 
 
