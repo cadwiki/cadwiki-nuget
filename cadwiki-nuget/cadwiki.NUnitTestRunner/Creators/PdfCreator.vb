@@ -9,6 +9,10 @@ Namespace Creators
         Public PdfFilePath As String
         Public PdfDoc As PdfDocument
 
+        Private Shared _bigFont As XFont = New XFont("Arial", 20, XFontStyle.Regular)
+        Private Shared _smallFont As XFont = New XFont("Arial", 8, XFontStyle.Regular)
+
+
         Public Sub New(filePath As String)
             PdfFilePath = filePath
             'Create a PdfDocument object
@@ -28,47 +32,45 @@ Namespace Creators
 
             ' Get an XGraphics object for drawing
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
-            ' Create a font
-            Dim font As XFont = New XFont("Arial", 20, XFontStyle.BoldItalic)
 
             ' Draw the text
             gfx.DrawString("AutomatedTestEvidence.pdf",
-                       font,
+                       _bigFont,
                        XBrushes.Black,
                        New XRect(0, 0, page.Width, page.Height),
                        XStringFormats.TopCenter)
 
             Dim str As String = "Summary:"
             gfx.DrawString(str,
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 200, page.Width, page.Height),
                XStringFormats.TopCenter)
 
             str = "Elapsed time: " + suiteResult.TimeElapsed.ToString()
             gfx.DrawString(str,
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 250, page.Width, page.Height),
                XStringFormats.TopCenter)
 
             str = "Total tests: " + suiteResult.TotalTests.ToString()
             gfx.DrawString(str,
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 300, page.Width, page.Height),
                XStringFormats.TopCenter)
 
             str = "Passed tests: " + suiteResult.PassedTests.ToString()
             gfx.DrawString(str,
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 350, page.Width, page.Height),
                XStringFormats.TopCenter)
 
             str = "Failed tests: " + suiteResult.FailedTests.ToString()
             gfx.DrawString(str,
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 400, page.Width, page.Height),
                XStringFormats.TopCenter)
@@ -91,36 +93,34 @@ Namespace Creators
 
             ' Get an XGraphics object for drawing
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
-            ' Create a font
-            Dim font As XFont = New XFont("Arial", 20, XFontStyle.BoldItalic)
 
             ' Draw the text
             gfx.DrawString("TestName: " + testResult.TestName,
-                       font,
+                       _smallFont,
                        XBrushes.Black,
                        New XRect(0, 0, page.Width, page.Height),
                        XStringFormats.TopCenter)
 
             gfx.DrawString("Passed: " + testResult.Passed.ToString(),
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 200, page.Width, page.Height),
                XStringFormats.TopCenter)
 
             gfx.DrawString("Exception Message: " + testResult.ExceptionMessage,
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 250, page.Width, page.Height),
                XStringFormats.TopCenter)
 
             gfx.DrawString("Stack Trace: " + testResult.ExceptionMessage,
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 300, page.Width, page.Height),
                XStringFormats.TopCenter)
 
             gfx.DrawString("Image Count: " + testResult.Evidence.Images.Count.ToString(),
-               font,
+               _bigFont,
                XBrushes.Black,
                New XRect(0, 350, page.Width, page.Height),
                XStringFormats.TopCenter)
@@ -132,10 +132,6 @@ Namespace Creators
 
             ' Get an XGraphics object for drawing
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
-            ' Create a font
-
-            Dim font As XFont = New XFont("Arial", 8, XFontStyle.BoldItalic)
-
 
             'Load an image
             Dim image As Image = Image.FromFile(imageFilePath)
@@ -163,7 +159,7 @@ Namespace Creators
 
             ' Draw the text for the image name above the image in top center of page
             gfx.DrawString(imageFilePath,
-                       font,
+                       _bigFont,
                        XBrushes.Black,
                        New XRect(0, 0, page.Width, page.Height),
                        XStringFormats.TopCenter)
