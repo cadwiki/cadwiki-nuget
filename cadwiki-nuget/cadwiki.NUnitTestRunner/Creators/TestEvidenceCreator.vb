@@ -34,11 +34,7 @@ Namespace Creators
             Dim pdfCreator As New PdfCreator(GetNewPdfReportFilePath())
             pdfCreator.AddTitlePage(suiteResult)
             For Each testResult As TestResult In suiteResult.TestResults
-                If testResult.Evidence IsNot Nothing Then
-                    For Each image As Image In testResult.Evidence.Images
-                        pdfCreator.AddImageAsNewPage(image.FilePath)
-                    Next
-                End If
+                pdfCreator.AddTestPage(testResult)
             Next
             pdfCreator.Save()
             Return pdfCreator.PdfFilePath
