@@ -98,26 +98,41 @@ Public Class Engine
                 If (TypeOf ex.InnerException Is SuccessException) Then
                     testResult.TestName = mi.Name
                     testResult.Passed = True
-                    testResult.ExceptionMessage = ex.Message
+                    testResult.ExceptionMessage = ex.Message + " InnerMessage:" + ex.InnerException.Message
                 ElseIf (TypeOf ex.InnerException Is AssertionException) Then
                     Dim ae As AssertionException = CType(ex.InnerException, AssertionException)
                     Dim result As ResultState = ae.ResultState
                     testResult.TestName = mi.Name
                     testResult.Passed = False
-                    testResult.ExceptionMessage = ae.Message
-                    testResult.StackTrace = Exceptions.GetStackTraceLines(ae)
+                    testResult.ExceptionMessage = ex.Message + " InnerMessage:" + ex.InnerException.Message
+                    Dim stackTrace As List(Of String) = Exceptions.GetStackTraceLines(ex)
+                    stackTrace.Add("InnerException:")
+                    stackTrace.AddRange(Exceptions.GetStackTraceLines(ae))
+                    testResult.StackTrace = stackTrace
                 Else
                     testResult.TestName = mi.Name
                     testResult.Passed = False
-                    testResult.ExceptionMessage = ex.InnerException.Message
-                    testResult.StackTrace = Exceptions.GetStackTraceLines(ex.InnerException)
+                    testResult.ExceptionMessage = ex.Message + " InnerMessage:" + ex.InnerException.Message
+                    Dim stackTrace As List(Of String) = Exceptions.GetStackTraceLines(ex)
+                    stackTrace.Add("InnerException:")
+                    stackTrace.AddRange(Exceptions.GetStackTraceLines(ex.InnerException))
+                    testResult.StackTrace = stackTrace
                 End If
 
             Catch ex As Exception
                 testResult.TestName = mi.Name
                 testResult.Passed = False
-                testResult.ExceptionMessage = ex.Message
-                testResult.StackTrace = Exceptions.GetStackTraceLines(ex)
+                If (ex.InnerException IsNot Nothing) Then
+                    testResult.ExceptionMessage = ex.Message + " InnerMessage:" + ex.InnerException.Message
+                    Dim stackTrace As List(Of String) = Exceptions.GetStackTraceLines(ex)
+                    stackTrace.Add("InnerException:")
+                    stackTrace.AddRange(Exceptions.GetStackTraceLines(ex.InnerException))
+                    testResult.StackTrace = stackTrace
+                Else
+                    testResult.ExceptionMessage = ex.Message
+                    testResult.StackTrace = Exceptions.GetStackTraceLines(ex)
+                End If
+
             End Try
             'Get any evidence that was collected during the test
             Dim evidence As Evidence = TestEvidenceCreator.GetEvidenceForCurrentTest()
