@@ -101,7 +101,7 @@ Namespace Creators
                        New XRect(0, 0, page.Width, page.Height),
                        XStringFormats.TopCenter)
 
-            gfx.DrawString("Passed: " + testResult.Passed,
+            gfx.DrawString("Passed: " + testResult.Passed.ToString(),
                font,
                XBrushes.Black,
                New XRect(0, 200, page.Width, page.Height),
@@ -134,7 +134,7 @@ Namespace Creators
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
             ' Create a font
 
-            Dim font As XFont = New XFont("Arial", 20, XFontStyle.BoldItalic)
+            Dim font As XFont = New XFont("Arial", 8, XFontStyle.BoldItalic)
 
 
             'Load an image
