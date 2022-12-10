@@ -13,6 +13,7 @@ Imports cadwiki.NUnitTestRunner.Creators
         Dim allTypes As Type() = {testStringsType}
 
         Dim results As New Results.ObservableTestSuiteResults()
+        results.TestSuiteName = "Test_RunTestsWithWpUi_ShouldPass"
         Dim driver As New UI.WpfDriver(results, allTypes)
         Dim window As UI.WindowTestRunner = driver.GetWindow()
         window.Show()
@@ -27,6 +28,7 @@ Imports cadwiki.NUnitTestRunner.Creators
         Dim allTypes As Type() = {testStringsType}
 
         Dim results As New Results.ObservableTestSuiteResults()
+        results.TestSuiteName = "Test_RunTestsWithWinFormsUi_ShouldPass"
         Dim driver As New UI.WinformsDriver(results, allTypes)
         Dim form As UI.FormTestRunner = driver.GetForm()
 
@@ -41,6 +43,7 @@ Imports cadwiki.NUnitTestRunner.Creators
         Dim testStringsType As Type = GetType(TestStrings)
         Dim allTypes As Type() = {testStringsType}
         Dim results As New Results.ObservableTestSuiteResults()
+        results.TestSuiteName = "Test_WpfDriver_SuiteResultToJson_ShouldPass"
         Dim driver As New UI.WpfDriver(results, allTypes)
         Dim window As UI.WindowTestRunner = driver.GetWindow()
         driver.ExecuteTestsAsync()
@@ -55,6 +58,7 @@ Imports cadwiki.NUnitTestRunner.Creators
         Dim testStringsType As Type = GetType(TestStrings)
         Dim allTypes As Type() = {testStringsType}
         Dim results As New Results.ObservableTestSuiteResults()
+        results.TestSuiteName = "Test_WinFormsDriver_SuiteResultToJson_ShouldPass"
         Dim driver As New UI.WinformsDriver(results, allTypes)
         Dim form As UI.FormTestRunner = driver.GetForm()
         driver.ExecuteTestsAsync()
@@ -69,6 +73,7 @@ Imports cadwiki.NUnitTestRunner.Creators
         Dim testStringsType As Type = GetType(TestStrings)
         Dim allTypes As Type() = {testStringsType}
         Dim results As New Results.ObservableTestSuiteResults()
+        results.TestSuiteName = "Test_WinFormsDriver_ClickEvidenceButton_GetOpenWindowFileExporer_ShouldPass"
         Dim driver As New UI.WinformsDriver(results, allTypes)
         Dim form As UI.FormTestRunner = driver.GetForm()
         form.Show()

@@ -37,7 +37,7 @@ Public Class Engine
         TestEvidenceCreator.CreatePdf(suiteResult)
 
         Dim jsonString As String = suiteResult.ToJson()
-        TestEvidenceCreator.WriteTestSuiteResultsToFile(jsonString)
+        TestEvidenceCreator.WriteTestSuiteResultsToFile(suiteResult, jsonString)
     End Function
 
     Private Shared Async Function RunTests(suiteResult As ObservableTestSuiteResults, tuples As List(Of Tuple(Of Type, MethodInfo))) As Task

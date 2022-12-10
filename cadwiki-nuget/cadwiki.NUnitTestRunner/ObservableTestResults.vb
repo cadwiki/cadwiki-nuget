@@ -21,6 +21,7 @@ Namespace Results
         Public FailedTests As Integer
         Public Messages As New List(Of String)
         Public TestResults As New List(Of TestResult)
+        Public TestSuiteName As String
 
         Public Event MessageAdded(sender As Object, e As EventArgs)
 

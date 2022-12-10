@@ -31,7 +31,7 @@ Namespace Creators
         End Sub
 
         Public Function CreatePdf(suiteResult As ObservableTestSuiteResults) As String
-            Dim pdfCreator As New PdfCreator(GetNewPdfReportFilePath())
+            Dim pdfCreator As New PdfCreator(GetNewPdfReportFilePath(suiteResult))
             pdfCreator.AddTitlePage(suiteResult)
             For Each testResult As TestResult In suiteResult.TestResults
                 pdfCreator.AddTestPage(testResult)
@@ -40,15 +40,25 @@ Namespace Creators
             Return pdfCreator.PdfFilePath
         End Function
 
-        Public Function WriteTestSuiteResultsToFile(jsonString As String) As String
-            Dim jsonFilePath As String = _localFolderCache + "\" + _jsonFileResults
+        Public Function WriteTestSuiteResultsToFile(suiteResult As ObservableTestSuiteResults, jsonString As String) As String
+            Dim jsonFilePath As String
+            If (Not String.IsNullOrEmpty(suiteResult.TestSuiteName)) Then
+                jsonFilePath = _localFolderCache + "\" + suiteResult.TestSuiteName + "-" + _jsonFileResults
+            Else
+                jsonFilePath = _localFolderCache + "\" + _pdfFileReport
+            End If
             Dim jsonFile As String = NetUtils.Paths.GetUniqueFilePath(jsonFilePath)
             File.WriteAllText(jsonFile, jsonString)
             Return jsonFile
         End Function
 
-        Public Function GetNewPdfReportFilePath() As String
-            Dim reportFilePath As String = _localFolderCache + "\" + _pdfFileReport
+        Public Function GetNewPdfReportFilePath(suiteResult As ObservableTestSuiteResults) As String
+            Dim reportFilePath As String
+            If (Not String.IsNullOrEmpty(suiteResult.TestSuiteName)) Then
+                reportFilePath = _localFolderCache + "\" + suiteResult.TestSuiteName + "-" + _pdfFileReport
+            Else
+                reportFilePath = _localFolderCache + "\" + _pdfFileReport
+            End If
             reportFilePath = NetUtils.Paths.GetUniqueFilePath(reportFilePath)
             Return reportFilePath
         End Function
