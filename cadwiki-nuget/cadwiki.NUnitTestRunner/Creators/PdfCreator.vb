@@ -159,7 +159,7 @@ Namespace Creators
 
             ' Draw the text for the image name above the image in top center of page
             gfx.DrawString(imageFilePath,
-                       _bigFont,
+                       _smallFont,
                        XBrushes.Black,
                        New XRect(0, 0, page.Width, page.Height),
                        XStringFormats.TopCenter)
