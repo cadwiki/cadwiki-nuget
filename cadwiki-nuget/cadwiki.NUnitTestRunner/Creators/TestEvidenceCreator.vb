@@ -120,6 +120,12 @@ Namespace Creators
             Return MicrosoftTestClickPoint(clickableSystemDrawingPoint)
         End Function
 
+        Public Function GetControlCollection(windowIntPtr As IntPtr) As AutomationElementCollection
+            Dim root = AutomationElement.FromHandle(windowIntPtr)
+            Dim elementCollection As AutomationElementCollection = root.FindAll(TreeScope.Subtree, System.Windows.Automation.Condition.TrueCondition)
+            Return elementCollection
+        End Function
+
         Public Sub TakeJpegScreenshot(windowIntPtr As IntPtr, title As String)
             Dim fileName As String = title + ".jpg"
             fileName = NetUtils.Paths.ReplaceAllillegalCharsForWindowsOSInFileName(fileName, "-")
