@@ -45,7 +45,7 @@ Namespace Creators
             If (Not String.IsNullOrEmpty(suiteResult.TestSuiteName)) Then
                 jsonFilePath = _localFolderCache + "\" + suiteResult.TestSuiteName + "-" + _jsonFileResults
             Else
-                jsonFilePath = _localFolderCache + "\" + _pdfFileReport
+                jsonFilePath = _localFolderCache + "\" + _jsonFileResults
             End If
             Dim jsonFile As String = NetUtils.Paths.GetUniqueFilePath(jsonFilePath)
             File.WriteAllText(jsonFile, jsonString)
