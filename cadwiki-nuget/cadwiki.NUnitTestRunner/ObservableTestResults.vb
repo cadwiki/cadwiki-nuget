@@ -15,13 +15,13 @@ Namespace Results
     End Class
 
     Public Class ObservableTestSuiteResults
-        Public TimeElapsed As String
+        Public TimeElapsed As String = ""
         Public TotalTests As Integer
         Public PassedTests As Integer
         Public FailedTests As Integer
         Public Messages As New List(Of String)
         Public TestResults As New List(Of TestResult)
-        Public TestSuiteName As String
+        Public TestSuiteName As String = ""
 
         Public Event MessageAdded(sender As Object, e As EventArgs)
 
