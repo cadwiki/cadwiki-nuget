@@ -3,6 +3,7 @@ Option Infer Off
 Option Explicit On
 Imports System
 Imports System.Collections.Generic
+Imports cadwiki.NUnitTestRunner.TestEvidence
 Imports Newtonsoft.Json
 
 Namespace Results
@@ -21,6 +22,11 @@ Namespace Results
             strList.Add("StackTrace: ")
             For Each trace As String In StackTrace
                 strList.Add(trace)
+            Next
+            strList.Add("Evidence")
+            strList.Add("Images: ")
+            For Each image As Image In Evidence.Images
+                strList.Add(image.FilePath)
             Next
             Return strList
         End Function
@@ -60,6 +66,28 @@ Namespace Results
         Public Function ToJson() As String
             Dim testSuiteResult As String = JsonConvert.SerializeObject(Me, Formatting.Indented)
             Return testSuiteResult
+        End Function
+
+        Public Function ToStringList() As List(Of String)
+            Dim strList As New List(Of String)
+            strList.Add(TestSuiteName)
+            strList.Add("Summary")
+            strList.Add("Elapsed Time: " + TimeElapsed)
+            strList.Add(String.Format("Total Tests:    {0}    {1}%",
+                        TotalTests.ToString(),
+                        (TotalTests / TotalTests * 100.0).ToString
+                        ))
+            strList.Add(String.Format("Passed Tests:    {0}/{1}    {2}%",
+                        PassedTests.ToString(),
+                        TotalTests.ToString(),
+                        (PassedTests / TotalTests * 100.0).ToString
+                        ))
+            strList.Add(String.Format("Failed Tests:    {0}/{1}    {2}%",
+                        FailedTests.ToString(),
+                        TotalTests.ToString(),
+                        (FailedTests / TotalTests * 100.0).ToString
+                        ))
+            Return strList
         End Function
 
     End Class

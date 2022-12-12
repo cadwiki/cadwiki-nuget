@@ -90,7 +90,7 @@
             '
             Me.ButtonOpenTestEvidenceFolder.Location = New System.Drawing.Point(958, 173)
             Me.ButtonOpenTestEvidenceFolder.Name = "ButtonOpenTestEvidenceFolder"
-            Me.ButtonOpenTestEvidenceFolder.Size = New System.Drawing.Size(75, 23)
+            Me.ButtonOpenTestEvidenceFolder.Size = New System.Drawing.Size(80, 23)
             Me.ButtonOpenTestEvidenceFolder.TabIndex = 4
             Me.ButtonOpenTestEvidenceFolder.Text = "Evidence"
             Me.ButtonOpenTestEvidenceFolder.UseVisualStyleBackColor = True

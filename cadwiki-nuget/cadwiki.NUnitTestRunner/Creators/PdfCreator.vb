@@ -34,47 +34,18 @@ Namespace Creators
             ' Get an XGraphics object for drawing
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
 
-            ' Draw the text
-            gfx.DrawString("AutomatedTestEvidence.pdf",
-                       _bigFont,
-                       XBrushes.Black,
-                       New XRect(0, 0, page.Width, page.Height),
-                       XStringFormats.TopCenter)
+            Dim area As XRect = New XRect(0, 400, page.Width, page.Height)
+            Dim startPoint As XPoint = New XPoint(page.Width.Point / 2.0, 100)
+            Dim strList As List(Of String) = suiteResult.ToStringList()
+            DrawStringListInsideArea(gfx,
+                                    _bigFont,
+                                    _bigFont.Height / 2.0,
+                                    area,
+                                    startPoint,
+                                    strList,
+                                    XBrushes.Black,
+                                    XStringFormats.TopCenter)
 
-            Dim str As String = "Summary:"
-            gfx.DrawString(str,
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 200, page.Width, page.Height),
-               XStringFormats.TopCenter)
-
-            str = "Elapsed time: " + suiteResult.TimeElapsed.ToString()
-            gfx.DrawString(str,
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 250, page.Width, page.Height),
-               XStringFormats.TopCenter)
-
-            str = "Total tests: " + suiteResult.TotalTests.ToString()
-            gfx.DrawString(str,
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 300, page.Width, page.Height),
-               XStringFormats.TopCenter)
-
-            str = "Passed tests: " + suiteResult.PassedTests.ToString()
-            gfx.DrawString(str,
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 350, page.Width, page.Height),
-               XStringFormats.TopCenter)
-
-            str = "Failed tests: " + suiteResult.FailedTests.ToString()
-            gfx.DrawString(str,
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 400, page.Width, page.Height),
-               XStringFormats.TopCenter)
 
         End Sub
 
@@ -96,28 +67,31 @@ Namespace Creators
             ' Get an XGraphics object for drawing
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
 
-            Dim area As XRect = New XRect(0, 200, page.Width, page.Height)
+            Dim area As XRect = New XRect(10, 200, page.Width, page.Height)
             Dim strList As List(Of String) = testResult.ToStringList()
-            'inputString.Replace(Environment.Indent, Environment.NewLine)
-
-            GetFittedStringToDraw(gfx,
-                                                      _smallFont,
-                                                      _smallFont.Height / 2.0,
-                                                        area,
-                                                      strList,
-                                                      XBrushes.Black)
+            Dim startPoint As XPoint = area.TopLeft
+            DrawStringListInsideArea(gfx,
+                                    _smallFont,
+                                    _smallFont.Height / 2.0,
+                                    area,
+                                    startPoint,
+                                    strList,
+                                    XBrushes.Black,
+                                    XStringFormats.TopLeft)
 
         End Sub
 
-        Private Shared Sub GetFittedStringToDraw(ByVal gfx As XGraphics,
+        Private Shared Sub DrawStringListInsideArea(ByVal gfx As XGraphics,
                                                        ByVal font As XFont,
                                                        ByVal lineSpacing As Double,
                                                        ByVal rect As XRect,
+                                                       ByVal startPoint As XPoint,
                                                        ByVal strList As List(Of String),
-                                                       ByVal brush As XBrush
+                                                       ByVal brush As XBrush,
+                                                       ByVal format As XStringFormat
                                                      )
             Dim stringMeasurement As XSize
-            Dim point As XPoint = rect.TopLeft
+            Dim point As XPoint = startPoint
             Dim i As Integer = 0
             Dim character As String = ""
             Dim currentLine As String = ""
@@ -128,7 +102,7 @@ Namespace Creators
                     character = input(i)
                     stringMeasurement = gfx.MeasureString(currentLine + character, font)
                     If (stringMeasurement.Width > rect.Width) Then
-                        gfx.DrawString(currentLine, font, brush, point)
+                        gfx.DrawString(currentLine, font, brush, point, format)
                         point.Y = point.Y + font.Height + lineSpacing
                         currentLine = ""
                     End If
@@ -136,7 +110,7 @@ Namespace Creators
                     i = i + 1
                 End While
                 If Not String.IsNullOrEmpty(currentLine) Then
-                    gfx.DrawString(currentLine, font, brush, point)
+                    gfx.DrawString(currentLine, font, brush, point, format)
                     point.Y = point.Y + font.Height + lineSpacing
                     currentLine = ""
                 End If
