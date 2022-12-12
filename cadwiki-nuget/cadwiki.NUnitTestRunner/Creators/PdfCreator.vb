@@ -132,12 +132,14 @@ Namespace Creators
 
             ' Get an XGraphics object for drawing
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
-
+            Dim imageStartYLocation As Double = 150
+            Dim imageCaptionBuffer As Double = 10
             'Load an image
             Dim image As Image = Image.FromFile(imageFilePath)
             'Get the image width and height
             Dim width As Single = image.PhysicalDimension.Width
             Dim height As Single = image.PhysicalDimension.Height
+            Dim imageCaptionYLocation As Single = imageStartYLocation + height + imageCaptionBuffer
             'Declare a PdfImage variable
             ' Get an XGraphics object for drawing
             If width > page.Width Then
@@ -151,16 +153,17 @@ Namespace Creators
                 imageFilePath = imageFilePath.Replace(ext, "-(scaled)" + ext)
                 imageFilePath = NetUtils.Paths.GetUniqueFilePath(imageFilePath)
                 scaledImage.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Jpeg)
-                DrawImage(gfx, imageFilePath, 0, 150, newWidth, newHeight)
+                DrawImage(gfx, imageFilePath, 0, imageStartYLocation, newWidth, newHeight)
+                imageCaptionYLocation = imageStartYLocation + newHeight + imageCaptionBuffer
             Else
-                DrawImage(gfx, imageFilePath, 0, 150, width, height)
+                DrawImage(gfx, imageFilePath, 0, imageStartYLocation, width, height)
             End If
 
-            ' Draw the text for the image name above the image in top center of page
+            ' Draw the text for the image caption below the image by 10 units
             gfx.DrawString(imageFilePath,
                        _smallFont,
                        XBrushes.Black,
-                       New XRect(0, 0, page.Width, page.Height),
+                       New XRect(0, imageCaptionYLocation, page.Width, page.Height),
                        XStringFormats.TopCenter)
         End Sub
 
