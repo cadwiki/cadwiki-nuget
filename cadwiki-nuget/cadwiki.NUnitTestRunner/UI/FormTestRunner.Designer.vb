@@ -59,7 +59,7 @@
             Me.GroupBox1.Size = New System.Drawing.Size(580, 155)
             Me.GroupBox1.TabIndex = 2
             Me.GroupBox1.TabStop = False
-            Me.GroupBox1.Text = "GroupBox1"
+            Me.GroupBox1.Text = "TestResults"
             '
             'TreeViewResults
             '
@@ -76,7 +76,7 @@
             Me.GroupBox2.Size = New System.Drawing.Size(580, 155)
             Me.GroupBox2.TabIndex = 3
             Me.GroupBox2.TabStop = False
-            Me.GroupBox2.Text = "GroupBox2"
+            Me.GroupBox2.Text = "Log"
             '
             'RichTextBoxConsole
             '
