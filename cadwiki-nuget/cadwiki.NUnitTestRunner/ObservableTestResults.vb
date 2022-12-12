@@ -7,11 +7,24 @@ Imports Newtonsoft.Json
 
 Namespace Results
     Public Class TestResult
-        Public TestName As String
+        Public TestName As String = ""
         Public Passed As Boolean
-        Public ExceptionMessage As String
-        Public StackTrace As List(Of String)
-        Public Evidence As TestEvidence.Evidence
+        Public ExceptionMessage As String = ""
+        Public StackTrace As New List(Of String)
+        Public Evidence As New TestEvidence.Evidence
+
+        Public Function ToStringList() As List(Of String)
+            Dim strList As New List(Of String)
+            strList.Add("TestName: " + TestName)
+            strList.Add("Passed: " + Passed.ToString())
+            strList.Add("ExceptionMessage: " + ExceptionMessage)
+            strList.Add("StackTrace: ")
+            For Each trace As String In StackTrace
+                strList.Add(trace)
+            Next
+            Return strList
+        End Function
+
     End Class
 
     Public Class ObservableTestSuiteResults

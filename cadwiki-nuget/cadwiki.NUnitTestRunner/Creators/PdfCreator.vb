@@ -2,6 +2,7 @@
 Imports System.Drawing
 Imports cadwiki.NUnitTestRunner.Results
 Imports PdfSharp.Drawing
+Imports PdfSharp.Drawing.Layout
 Imports PdfSharp.Pdf
 
 Namespace Creators
@@ -79,8 +80,8 @@ Namespace Creators
 
 
         Friend Sub AddTestPage(testResult As TestResult)
+            AddTestTitlePage(testResult)
             If testResult.Evidence IsNot Nothing Then
-                AddTestTitlePage(testResult)
                 For Each image As TestEvidence.Image In testResult.Evidence.Images
                     AddImageAsNewPage(image.FilePath)
                 Next
@@ -91,39 +92,57 @@ Namespace Creators
         Public Sub AddTestTitlePage(testResult As TestResult)
             Dim page As PdfPage = PdfDoc.Pages.Add()
 
+
             ' Get an XGraphics object for drawing
             Dim gfx As XGraphics = XGraphics.FromPdfPage(page)
 
-            ' Draw the text
-            gfx.DrawString("TestName: " + testResult.TestName,
-                       _smallFont,
-                       XBrushes.Black,
-                       New XRect(0, 0, page.Width, page.Height),
-                       XStringFormats.TopCenter)
+            Dim area As XRect = New XRect(0, 200, page.Width, page.Height)
+            Dim strList As List(Of String) = testResult.ToStringList()
+            'inputString.Replace(Environment.Indent, Environment.NewLine)
 
-            gfx.DrawString("Passed: " + testResult.Passed.ToString(),
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 200, page.Width, page.Height),
-               XStringFormats.TopCenter)
+            GetFittedStringToDraw(gfx,
+                                                      _smallFont,
+                                                      _smallFont.Height / 2.0,
+                                                        area,
+                                                      strList,
+                                                      XBrushes.Black)
 
-            gfx.DrawString("Exception Message: " + testResult.ExceptionMessage,
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 250, page.Width, page.Height),
-               XStringFormats.TopCenter)
+        End Sub
 
-            gfx.DrawString("Stack Trace: " + testResult.ExceptionMessage,
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 300, page.Width, page.Height),
-               XStringFormats.TopCenter)
-
-            gfx.DrawString("Image Count: " + testResult.Evidence.Images.Count.ToString(),
-               _bigFont,
-               XBrushes.Black,
-               New XRect(0, 350, page.Width, page.Height),
-               XStringFormats.TopCenter)
+        Private Shared Sub GetFittedStringToDraw(ByVal gfx As XGraphics,
+                                                       ByVal font As XFont,
+                                                       ByVal lineSpacing As Double,
+                                                       ByVal rect As XRect,
+                                                       ByVal strList As List(Of String),
+                                                       ByVal brush As XBrush
+                                                     )
+            Dim stringMeasurement As XSize
+            Dim point As XPoint = rect.TopLeft
+            Dim i As Integer = 0
+            Dim character As String = ""
+            Dim currentLine As String = ""
+            For Each input As String In strList
+                currentLine = ""
+                i = 0
+                While (i < input.Length)
+                    character = input(i)
+                    stringMeasurement = gfx.MeasureString(currentLine + character, font)
+                    If (stringMeasurement.Width > rect.Width) Then
+                        gfx.DrawString(currentLine, font, brush, point)
+                        point.Y = point.Y + font.Height + lineSpacing
+                        currentLine = ""
+                    End If
+                    currentLine = currentLine + character
+                    i = i + 1
+                End While
+                If Not String.IsNullOrEmpty(currentLine) Then
+                    gfx.DrawString(currentLine, font, brush, point)
+                    point.Y = point.Y + font.Height + lineSpacing
+                    currentLine = ""
+                End If
+                point.Y = point.Y + font.Height + lineSpacing
+                currentLine = ""
+            Next
         End Sub
 
         Public Sub AddImageAsNewPage(imageFilePath As String)

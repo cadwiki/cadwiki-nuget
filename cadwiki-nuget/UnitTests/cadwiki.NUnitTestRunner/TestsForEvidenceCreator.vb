@@ -69,5 +69,4 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
         Assert.IsTrue(IO.File.Exists(pdf), "Failed to create pdf")
     End Sub
 
-
 End Class
