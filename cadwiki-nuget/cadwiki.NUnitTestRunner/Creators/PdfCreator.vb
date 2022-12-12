@@ -153,7 +153,6 @@ Namespace Creators
                 scaledImage.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Jpeg)
                 DrawImage(gfx, imageFilePath, 0, 150, newWidth, newHeight)
             Else
-                imageFilePath = NetUtils.Paths.GetUniqueFilePath(imageFilePath)
                 DrawImage(gfx, imageFilePath, 0, 150, width, height)
             End If
 
