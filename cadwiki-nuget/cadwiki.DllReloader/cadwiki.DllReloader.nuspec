@@ -19,6 +19,8 @@
     </contentFiles>
     <dependencies>
         <group targetFramework=".NETFramework4.7.2" />
+        <dependency id="AutoCAD2021.Base" version="1.0.0" />
+        <dependency id="AutoCAD2021.Interop.Base" version="1.0.0" />
     </dependencies>
   </metadata>
   <files>

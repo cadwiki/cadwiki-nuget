@@ -15,6 +15,10 @@
     <tags>cadwiki Autocad UnitTest RegressionTest IntegrationTest AutomationTest </tags>
     <dependencies>
         <group targetFramework=".NETFramework4.7.2" />
+        <dependency id="Microsoft.TestApi" version="0.6.0.0"/>
+        <dependency id="Newtonsoft.Json" version="13.0.1"/>
+        <dependency id="NUnit" version="3.13.3"/>
+        <dependency id="PDFsharp" version="1.50.5147"/>
     </dependencies>
   </metadata>
   <files>
