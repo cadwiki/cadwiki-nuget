@@ -134,6 +134,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AutoCAD2021.Base.Utilities.vbproj">
+      <Project>{e9fa234c-898a-410d-b3e3-d45824ec6742}</Project>
+      <Name>cadwiki.AutoCAD2021.Base.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cadwiki.AutoCAD2021.Interop.Utilities\cadwiki.AutoCAD2021.Interop.Utilities.vbproj">
       <Project>{35F24F06-0F6E-4685-A07A-B53CC12BE4F0}</Project>
       <Name>cadwiki.AutoCAD2021.Interop.Utilities</Name>

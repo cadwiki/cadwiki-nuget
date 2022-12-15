@@ -63,4 +63,10 @@ Public Class Paths
         End If
         Return filePath
     End Function
+
+    Public Shared Function GetTempFile(baseFileName As String) As String
+        Dim tempFolder As String = Path.GetTempPath()
+        Dim tempFile As String = tempFolder + baseFileName
+        Return GetUniqueFilePath(tempFile)
+    End Function
 End Class
