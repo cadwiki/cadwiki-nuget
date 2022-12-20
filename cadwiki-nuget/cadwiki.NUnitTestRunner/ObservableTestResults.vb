@@ -73,16 +73,16 @@ Namespace Results
             strList.Add(TestSuiteName)
             strList.Add("Summary")
             strList.Add("Elapsed Time: " + TimeElapsed)
-            strList.Add(String.Format("Total Tests:    {0}    {1}%",
+            strList.Add(String.Format("{0}      Total Tests:     {1}%",
                         TotalTests.ToString(),
                         (TotalTests / TotalTests * 100.0).ToString
                         ))
-            strList.Add(String.Format("Passed Tests:    {0}/{1}    {2}%",
+            strList.Add(String.Format("{0}/{1}  Passed Tests:    {2}%",
                         PassedTests.ToString(),
                         TotalTests.ToString(),
                         (PassedTests / TotalTests * 100.0).ToString
                         ))
-            strList.Add(String.Format("Failed Tests:    {0}/{1}    {2}%",
+            strList.Add(String.Format("{0}/{1}  Failed Tests:    {2}%",
                         FailedTests.ToString(),
                         TotalTests.ToString(),
                         (FailedTests / TotalTests * 100.0).ToString
