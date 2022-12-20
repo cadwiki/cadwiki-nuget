@@ -75,17 +75,17 @@ Namespace Results
             strList.Add("Elapsed Time: " + TimeElapsed)
             strList.Add(String.Format("{0}      Total Tests:     {1}%",
                         TotalTests.ToString(),
-                        (TotalTests / TotalTests * 100.0).ToString
+                        (TotalTests / TotalTests * 100.0).ToString("0.##")
                         ))
             strList.Add(String.Format("{0}/{1}  Passed Tests:    {2}%",
                         PassedTests.ToString(),
                         TotalTests.ToString(),
-                        (PassedTests / TotalTests * 100.0).ToString
+                        (PassedTests / TotalTests * 100.0).ToString("0.##")
                         ))
             strList.Add(String.Format("{0}/{1}  Failed Tests:    {2}%",
                         FailedTests.ToString(),
                         TotalTests.ToString(),
-                        (FailedTests / TotalTests * 100.0).ToString
+                        (FailedTests / TotalTests * 100.0).ToString("0.##")
                         ))
             Return strList
         End Function
