@@ -18,15 +18,16 @@
         <files include="lib\cadwiki.AcRemoveCmdGroup.dll" buildAction="None" copyToOutput="true" />
     </contentFiles>
     <dependencies>
-        <group targetFramework=".NETFramework4.7.2" />
-        <dependency id="AutoCAD2021.Base" version="1.0.0" />
-        <dependency id="AutoCAD2021.Interop.Base" version="1.0.0" />
-        <dependency id="AutoCAD2022.Base" version="1.0.0" />
-        <dependency id="AutoCAD2022.Interop.Base" version="1.0.0" />
-        <dependency id="Microsoft.TestApi" version="0.6.0.0"/>
-        <dependency id="Newtonsoft.Json" version="13.0.1"/>
-        <dependency id="NUnit" version="3.13.3"/>
-        <dependency id="PDFsharp" version="1.50.5147"/>
+        <group targetFramework=".NETFramework4.7.2">
+			<dependency id="AutoCAD2021.Base" version="1.0.0" />
+			<dependency id="AutoCAD2021.Interop.Base" version="1.0.0" />
+			<dependency id="AutoCAD2022.Base" version="1.0.0" />
+			<dependency id="AutoCAD2022.Interop.Base" version="1.0.0" />
+			<dependency id="Microsoft.TestApi" version="0.6.0.0"/>
+			<dependency id="Newtonsoft.Json" version="13.0.1"/>
+			<dependency id="NUnit" version="3.13.3"/>
+			<dependency id="PDFsharp" version="1.50.5147"/>
+		</group>
     </dependencies>
   </metadata>
   <files>
