@@ -49,6 +49,16 @@ Namespace Results
             RaiseEvent MessageAdded(Me, New EventArgs())
         End Sub
 
+        Public Sub SetImagePathsToRelative(reportFolder As String)
+            For Each tr As TestResult In TestResults
+                For Each img As Image In tr.Evidence.Images
+                    If (Not String.IsNullOrEmpty(img.FilePath)) Then
+                        Dim relativePath As String = img.FilePath.Replace(reportFolder, "./")
+                        img.RelativeFilePath = relativePath
+                    End If
+                Next
+            Next
+        End Sub
 
         Public Event ResultAdded(sender As Object, e As EventArgs)
 

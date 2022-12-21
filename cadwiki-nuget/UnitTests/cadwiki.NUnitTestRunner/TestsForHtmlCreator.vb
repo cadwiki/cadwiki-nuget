@@ -33,10 +33,12 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
 
         Dim bitMap As Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
         Dim bitMapImage As BitmapImage = Bitmaps.BitMapToBitmapImage(bitMap)
-        Dim imageFile As String = System.IO.Path.GetDirectoryName(htmlReportFilePath) + "test.bmp"
+        Dim reportFolder As String = System.IO.Path.GetDirectoryName(htmlReportFilePath)
+        Dim imageFile As String = reportFolder + "\" + "test.bmp"
         bitMap.Save(imageFile)
-        model.BannerImagePath = imageFile
+        model.BannerImagePath = "./test.bmp"
 
+        testSuiteResults.SetImagePathsToRelative(reportFolder)
         htmlCreator.ParameterizeReportTemplate(model)
 
 
