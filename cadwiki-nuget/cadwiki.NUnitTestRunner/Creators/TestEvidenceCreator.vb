@@ -17,6 +17,7 @@ Namespace Creators
         Private Shared _localScreenShotCache As String = _localFolderCache + "\" + "screenshots"
         Private Shared _pdfFileReport As String = "AutomatedTestEvidence.pdf"
         Private Shared _jsonFileResults As String = "AutomatedTestEvidence.json"
+        Private Shared _htmlFileReport As String = "AutomatedTestEvidence.html"
 
         Public Sub New()
             If (_evidenceForCurrentlyExecutingTest Is Nothing) Then
@@ -33,7 +34,7 @@ Namespace Creators
         Public Function CreatePdf(suiteResult As ObservableTestSuiteResults) As String
             Dim pdfCreator As New PdfCreator(GetNewPdfReportFilePath(suiteResult))
             pdfCreator.AddTitlePage(suiteResult)
-            For Each testResult As TestResult In suiteResult.TestResults
+            For Each testResult As Results.TestResult In suiteResult.TestResults
                 pdfCreator.AddTestPage(testResult)
             Next
             pdfCreator.Save()
@@ -58,6 +59,17 @@ Namespace Creators
                 reportFilePath = _localFolderCache + "\" + suiteResult.TestSuiteName + "-" + _pdfFileReport
             Else
                 reportFilePath = _localFolderCache + "\" + _pdfFileReport
+            End If
+            reportFilePath = NetUtils.Paths.GetUniqueFilePath(reportFilePath)
+            Return reportFilePath
+        End Function
+
+        Public Function GetNewHtmlReportFilePath(suiteResult As ObservableTestSuiteResults) As String
+            Dim reportFilePath As String
+            If (Not String.IsNullOrEmpty(suiteResult.TestSuiteName)) Then
+                reportFilePath = _localFolderCache + "\" + suiteResult.TestSuiteName + "-" + _htmlFileReport
+            Else
+                reportFilePath = _localFolderCache + "\" + _htmlFileReport
             End If
             reportFilePath = NetUtils.Paths.GetUniqueFilePath(reportFilePath)
             Return reportFilePath

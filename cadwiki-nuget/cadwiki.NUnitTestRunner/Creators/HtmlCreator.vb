@@ -1,16 +1,33 @@
 ﻿Imports System.IO
 Imports System.Reflection
+Imports cadwiki.NUnitTestRunner.Results
 Imports HandlebarsDotNet
 
 Public Class HtmlCreator
-    Public Sub ParameterizeReportTemplate()
+
+    Private _testSuiteReportTemplateToObject As HandlebarsDotNet.HandlebarsTemplate(Of Object, Object)
+    Private _parametizedReport As String
+    Public Sub New()
         Dim assembly As Assembly = System.Reflection.Assembly.GetExecutingAssembly()
-        Dim templateString As String = NetUtils.AssemblyUtils.ReadEmbeddedResourceToString(assembly, "HtmlTemplateTestSuiteReport.cshtml")
-        If (templateString IsNot Nothing) Then
-            Dim template As HandlebarsDotNet.HandlebarsTemplate(Of Object, Object) = Handlebars.Compile(templateString)
-            Dim reportModel As New HtmlModelTestSuiteReport
-            reportModel.BannerImagePath = "test"
-            Dim result As Object = template(reportModel)
-        End If
+        CompileAllTemplates(assembly)
     End Sub
+
+    Private Sub CompileAllTemplates(assembly As Assembly)
+        Dim testSuiteReportTemplate As String = NetUtils.AssemblyUtils.ReadEmbeddedResourceToString(assembly, "TestSuiteReport.html")
+        _testSuiteReportTemplateToObject = Handlebars.Compile(testSuiteReportTemplate)
+    End Sub
+
+    Public Function ParameterizeReportTemplate(model As HTML_Models.TestSuiteReport) As String
+        If (_testSuiteReportTemplateToObject IsNot Nothing) Then
+            _parametizedReport = _testSuiteReportTemplateToObject(model)
+            Return _parametizedReport
+        End If
+        Return Nothing
+    End Function
+
+    Public Sub SaveReportToFile(filePath As String)
+        filePath = NetUtils.Paths.GetUniqueFilePath(filePath)
+        File.WriteAllText(filePath, _parametizedReport)
+    End Sub
+
 End Class

@@ -42,7 +42,7 @@ Public Class Engine
 
     Private Shared Async Function RunTests(suiteResult As ObservableTestSuiteResults, tuples As List(Of Tuple(Of Type, MethodInfo))) As Task
         For Each item As Tuple(Of Type, MethodInfo) In tuples
-            Dim testResult As New TestResult
+            Dim testResult As New Results.TestResult
             'Clear current evidence
             TestEvidenceCreator.SetEvidenceForCurrentTest(Nothing)
             Dim type As Type = item.Item1
@@ -131,7 +131,7 @@ Public Class Engine
         Next
     End Function
 
-    Private Shared Sub AddFullExceptionToTestResult(testResult As TestResult, ex As TargetInvocationException)
+    Private Shared Sub AddFullExceptionToTestResult(testResult As Results.TestResult, ex As TargetInvocationException)
         testResult.ExceptionMessage = ex.Message + " InnerMessage:" + ex.InnerException.Message
         Dim stackTrace As List(Of String) = Exceptions.GetStackTraceLines(ex)
         stackTrace.Add("InnerException:")

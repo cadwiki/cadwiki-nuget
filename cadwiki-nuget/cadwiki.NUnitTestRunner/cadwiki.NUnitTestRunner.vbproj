@@ -123,9 +123,7 @@
   <ItemGroup>
     <Compile Include="Creators\HtmlCreator.vb" />
     <Compile Include="Engine.vb" />
-    <Compile Include="Models\HtmlModelTestResult.vb" />
-    <Compile Include="Models\HtmlModelTestEvidenceTable.vb" />
-    <Compile Include="Models\HtmlModelTestSuiteReport.vb" />
+    <Compile Include="HTML_Models\TestSuiteReport.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -177,9 +175,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\HtmlTemplateTestResult.cshtml" />
-    <EmbeddedResource Include="Templates\HtmlTemplateTestSuiteReport.cshtml" />
-    <EmbeddedResource Include="Templates\HtmlTemplateTestSuiteResult.cshtml" />
+    <EmbeddedResource Include="HTML_Templates\TestSuiteReport.html" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
