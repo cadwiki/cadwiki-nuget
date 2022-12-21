@@ -39,7 +39,7 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
     End Sub
 
 
-    <TestMethod()> Public Sub Test_CreatePdf_ShouldCreatePdf()
+    <TestMethod()> Public Sub Test_CreatePdfWithScreenshots_ShouldCreatePdf()
 
         Dim testStringsType As Type = GetType(TestStrings)
         Dim allTypes As Type() = {testStringsType}
