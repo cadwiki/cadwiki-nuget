@@ -27,8 +27,8 @@ Namespace UI
 
         Private Sub TestResults_OnChanged(sender As Object, e As EventArgs) Handles ObservableResults.ResultAdded
             Dim suiteResults As ObservableTestSuiteResults = CType(sender, ObservableTestSuiteResults)
-            Dim testResults As List(Of TestResult) = suiteResults.TestResults
-            Dim mostRecentlyAddedTestResult As TestResult = testResults(testResults.Count - 1)
+            Dim testResults As List(Of Results.TestResult) = suiteResults.TestResults
+            Dim mostRecentlyAddedTestResult As Results.TestResult = testResults(testResults.Count - 1)
             _commonUiObject.WpfAddTreeViewItemForTestResult(mostRecentlyAddedTestResult, TreeViewResults)
         End Sub
 

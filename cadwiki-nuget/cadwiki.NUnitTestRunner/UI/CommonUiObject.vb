@@ -12,7 +12,7 @@ Public Class CommonUiObject
 
 
 
-    Public Sub WinFormsAddTreeViewItemForTestResult(testResult As TestResult,
+    Public Sub WinFormsAddTreeViewItemForTestResult(testResult As Results.TestResult,
                                                     treeView As Windows.Forms.TreeView)
         treeView.BeginUpdate()
         Dim testNode As TreeNode = treeView.Nodes.Add("testResult.TestName")
@@ -55,7 +55,7 @@ Public Class CommonUiObject
         Return node
     End Function
 
-    Public Sub WpfAddTreeViewItemForTestResult(testResult As TestResult,
+    Public Sub WpfAddTreeViewItemForTestResult(testResult As Results.TestResult,
                                             treeView As Windows.Controls.TreeView)
         Dim tvi As TreeViewItem = New TreeViewItem()
         tvi.Header = testResult.TestName
