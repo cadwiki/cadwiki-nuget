@@ -53,7 +53,8 @@ Namespace Results
             For Each tr As TestResult In TestResults
                 For Each img As Image In tr.Evidence.Images
                     If (Not String.IsNullOrEmpty(img.FilePath)) Then
-                        Dim relativePath As String = img.FilePath.Replace(reportFolder, "./")
+                        Dim relativePath As String = img.FilePath.Replace(reportFolder, ".")
+                        relativePath = relativePath.Replace("\", "/")
                         img.RelativeFilePath = relativePath
                     End If
                 Next
