@@ -41,6 +41,17 @@ Namespace Creators
             Return pdfCreator.PdfFilePath
         End Function
 
+        Public Sub CreateHtmlReport(suiteResult As ObservableTestSuiteResults)
+            Dim htmlCreator As New HtmlCreator()
+            Dim htmlReportFilePath As String = GetNewHtmlReportFilePath(suiteResult)
+            Dim reportFolder As String = Path.GetDirectoryName(htmlReportFilePath)
+
+            Dim model As New HTML_Models.TestSuiteReport(suiteResult)
+            model.TestSuiteResults.SetImagePathsToRelative(reportFolder)
+            htmlCreator.ParameterizeReportTemplate(model)
+            htmlCreator.SaveReportToFile(htmlReportFilePath)
+        End Sub
+
         Public Function WriteTestSuiteResultsToFile(suiteResult As ObservableTestSuiteResults, jsonString As String) As String
             Dim jsonFilePath As String
             If (Not String.IsNullOrEmpty(suiteResult.TestSuiteName)) Then
