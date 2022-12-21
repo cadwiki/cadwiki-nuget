@@ -1,6 +1,7 @@
 ﻿Option Strict On
 Option Infer Off
 Option Explicit On
+Imports System.IO
 Imports System.Reflection
 
 Public Class AssemblyUtils
@@ -51,5 +52,29 @@ Public Class AssemblyUtils
         End If
         Return location
     End Function
+
+    Public Shared Function ReadEmbeddedResourceToString(assembly As Assembly, searchPattern As String) As String
+        Dim reader As StreamReader = NetUtils.AssemblyUtils.GetStreamReaderFromEmbeddedResource(assembly, searchPattern)
+        If (reader IsNot Nothing) Then
+            Dim templateString As String = reader.ReadToEnd()
+            Return templateString
+        End If
+        Return Nothing
+    End Function
+
+    Public Shared Function GetStreamReaderFromEmbeddedResource(assembly As Assembly, searchPattern As String) As StreamReader
+        Dim resourceName As String = assembly.GetManifestResourceNames().FirstOrDefault(
+                Function(x) x.Contains(searchPattern)
+            )
+        If (resourceName IsNot Nothing) Then
+            Dim stream As Stream = assembly.GetManifestResourceStream(resourceName)
+            If (stream IsNot Nothing) Then
+                Dim reader As StreamReader = New StreamReader(stream, Text.Encoding.Default)
+                Return reader
+            End If
+        End If
+        Return Nothing
+    End Function
+
 
 End Class
