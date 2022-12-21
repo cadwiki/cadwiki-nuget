@@ -169,6 +169,7 @@
     <Compile Include="cadwiki.DllReloader\TestAutoCADNetReloader.vb" />
     <Compile Include="cadwiki.DllReloader\TestAcadAssemblyUtils.vb" />
     <Compile Include="cadwiki.FileStore\TestFileStore.vb" />
+    <Compile Include="cadwiki.NUnitTestRunner\TestsForHtmlCreator.vb" />
     <Compile Include="cadwiki.NUnitTestRunner\TestsForPdfCreator.vb" />
     <Compile Include="cadwiki.NUnitTestRunner\TestsForEvidenceCreator.vb" />
     <Compile Include="cadwiki.NUnitTestRunner\TestStrings.vb" />
