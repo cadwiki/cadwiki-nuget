@@ -16,20 +16,15 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
         Dim allTypes As Type() = {testStringsType}
 
         Dim testSuiteResults As New Results.ObservableTestSuiteResults()
-        testSuiteResults.TestSuiteName = "Test_CreateReport_ShouldPass"
+        testSuiteResults.TestSuiteName = "cadwiki Automation Tests"
         Dim driver As New UI.WpfDriver(testSuiteResults, allTypes)
         driver.ExecuteTestsAsync()
 
-        Dim testEvidence As New TestEvidenceCreator
-        Dim htmlReportFilePath As String = testEvidence.GetNewHtmlReportFilePath(testSuiteResults)
+        Dim testEvidenceCreator As New TestEvidenceCreator
 
-        testSuiteResults.TestSuiteName = "cadwiki Automation Tests"
-
+        Dim htmlReportFilePath As String = testEvidenceCreator.GetNewHtmlReportFilePath(testSuiteResults)
         Dim htmlCreator As New HtmlCreator
-        Dim model As New HTML_Models.TestSuiteReport()
-        model.GradeHighlight = "HighlightTest"
-        model.TestSuiteResults = testSuiteResults
-        model.Title = "cadwiki test suite"
+        Dim model As New HTML_Models.TestSuiteReport(testSuiteResults)
 
         Dim bitMap As Bitmap = FileStore.My.Resources.ResourceIcons._500x500_cadwiki_v1
         Dim bitMapImage As BitmapImage = Bitmaps.BitMapToBitmapImage(bitMap)

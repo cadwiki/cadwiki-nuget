@@ -38,6 +38,7 @@ Public Class Engine
 
         Dim jsonString As String = suiteResult.ToJson()
         TestEvidenceCreator.WriteTestSuiteResultsToFile(suiteResult, jsonString)
+        TestEvidenceCreator.CreateHtmlReport(suiteResult)
     End Function
 
     Private Shared Async Function RunTests(suiteResult As ObservableTestSuiteResults, tuples As List(Of Tuple(Of Type, MethodInfo))) As Task

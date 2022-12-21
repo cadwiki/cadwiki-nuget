@@ -64,6 +64,7 @@ Imports cadwiki.NUnitTestRunner.TestEvidence
 
         Dim filePath As String = evidence.Images(0).FilePath
         Dim pdf As String = testEvidenceCreator.CreatePdf(results)
+        testEvidenceCreator.CreateHtmlReport(results)
         window.Close()
 
         Assert.IsTrue(IO.File.Exists(pdf), "Failed to create pdf")
