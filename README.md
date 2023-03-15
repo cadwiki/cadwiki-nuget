@@ -9,6 +9,9 @@ Tools for increasing productivity during Autodesk addin developement.
 [https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs](https://github.com/cadwiki/cadwiki-nuget/tree/main/cadwiki-nuget/docs)  
 
 ![NotFound](./cadwiki-nuget/icons/500x500-cadwiki-v1.png)  
+## Docs links  
+[Automated Test Html Report sample](https://github.com/cadwiki/cadwiki-nuget/blob/main/cadwiki-nuget/docs/Test_CreatePdf_ShouldCreatePdf-AutomatedTestEvidence__2023__03__14____22_02_49.html)  
+
 
 ## Solution overview
 This solution splits the logic into 12 projects that each handle a single responsiblity:  
