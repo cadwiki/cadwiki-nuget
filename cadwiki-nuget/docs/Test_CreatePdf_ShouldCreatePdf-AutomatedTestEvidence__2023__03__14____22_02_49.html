@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Test_CreatePdf_ShouldCreatePdf</title>
+	<style type="text/css">
+
+		/*  Global variables defined in root */
+        :root {
+            --cadwiki-White: #ffffff;
+            --cadwiki-DarkPurple: #6D42D1;
+            --cadwiki-LightPurple: #A690DD;
+        }
+
+		body {
+			background: #f1f1f1;
+			color: #000;
+			font: 100%/1.4 ADSK-Default, Verdana, Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		h1, h2, h3, h4, h5, h6, p {
+			margin-bottom: 0;
+			margin-top: 0; /* removing the top margin gets around an issue where margins can escape from their containing div. The remaining bottom margin will hold it away from any elements that follow. */
+			padding-left: 0; /* adding the padding to the sides of the elements within the divs, instead of the divs themselves, gets rid of any box model math. A nested div with side padding can also be used as an alternate method. */
+			padding-right: 0;
+		}
+
+		h1, h3 {
+			color: white;
+		}
+
+		h1 {
+			font-family: "Artifakt Legend", Arial, sans-serif;
+			font-size: 1.0em;
+			margin: 0px;
+		}
+
+		a img { /* this selector removes the default blue border displayed in some browsers around an image when it is surrounded by a link */
+			border: none;
+		}
+
+		/* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
+
+		a:link {
+			color: #414958;
+		}
+
+		a:visited {
+			color: #4E5869;
+		}
+
+		a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
+			text-decoration: none;
+		}
+
+		/* ~~ this container surrounds all other divs giving them their percentage-based width ~~ */
+
+		.container {
+			background: #f1f1f1;
+			margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout. It is not needed if you set the .container's width to 100%. */
+			max-width: 1260px; /* a max-width may be desirable to keep this layout from getting too wide on a large monitor. This keeps line length more readable. IE6 does not respect this declaration. */
+			min-width: 780px; /* a min-width may be desirable to keep this layout from getting too narrow. This keeps line length more readable in the side columns. IE6 does not respect this declaration. */
+			width: 100%;
+		}
+
+		/* ~~the header is not given a width. It will extend the full width of your layout. It contains an image placeholder that should be replaced with your own linked logo~~ */
+
+        .header {
+            align-items: center;
+            background-color: var(--cadwiki-LightPurple);
+            border-bottom: 1px black;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            padding: 15px;
+        }
+
+		.resultData {
+			align-items: center;
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-start;
+		}
+
+		.tabBar {
+			align-items: center;
+			display: flex;
+			flex-direction: row;
+			margin: 0 25px;
+		}
+
+        .tabItem {
+            background: #f9f9f9;
+            color: var(--cadwiki-DarkPurple);
+            font-family: "Artifakt Element", Arial, sans-serif;
+            margin-right: 15px;
+            padding: 15px;
+        }
+
+		.portalStandardText {
+			font-family: "Artifakt Element", Arial, sans-serif;
+			font-weight: lighter;
+		}
+
+		.portalHeadlineText {
+			font-family: "Artifakt Element", Arial, sans-serif;
+			font-weight: bold;
+		}
+
+		.portal {
+			background: white;
+			margin: 0 25px 25px 25px;
+			padding: 15px;
+		}
+
+		.treeElement {
+			margin-left: 25px;
+			margin-top: 15px;
+		}
+
+		.passRate {
+			font-family: "Artifakt Legend", Arial, sans-serif;
+			font-size: 4.5em;
+			font-weight: bold;
+		}
+
+		.structureHeading {
+			display: flex;
+		}
+
+		.structureHeadingText {
+			flex-grow: 1;
+		}
+
+		.overallShown {
+			display: grid;
+			grid-template-rows: auto auto auto;
+			margin: 0 25px;
+		}
+
+		.testResult {
+			border: 1px black solid;
+			margin-left: 25px;
+			margin-top: 15px;
+			padding: 15px;
+		}
+
+		.imageCenter {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			width: 80%;
+		}
+
+		.textCenter {
+			margin: auto;
+		}
+
+	</style>
+</head>
+
+<body>
+
+
+	<! -- Container -->
+
+
+	<div class="container">
+
+
+		<div class="header">
+			<img src="" class="imageCenter" />
+		</div>
+
+		<div class="header">
+			<span class="passRate textCenter">
+				<h1>Test_CreatePdf_ShouldCreatePdf</h1>
+			</span>
+		</div>
+
+		<! -- Tab Summary Header -->
+		<div class="tabBar" style="margin-top: 15px">
+			<div class="tabItemActive">Test_CreatePdf_ShouldCreatePdf</div>
+		</div>
+		<! -- End Tab Summary Header -->
+
+		<! -- Tab Summary -->
+		<div class="portal">
+			<div class="resultData">
+				<div class="overallShown">
+					<span class="passRate " style="text-align: center">50.00%</span>
+				</div>
+				<div style="display: grid; grid-column-gap: 15px; grid-template-columns: auto auto; margin-left: 15px">
+					<span class="portalHeadlineText" style="margin-bottom: 15px">Total Tests</span><span class="portalStandardText">2</span>
+					<span class="portalHeadlineText" style="margin-bottom: 15px">Passed Tests</span><span class="portalStandardText">1/2</span>
+					<span class="portalHeadlineText" style="margin-bottom: 15px">Failed Tests</span><span class="portalStandardText">1/2</span>
+					<span class="portalHeadlineText" style="margin-bottom: 15px">Date</span><span class="portalStandardText">3/14/2023 10:02:49 PM -07:00</span>
+				</div>
+			</div>
+		</div>
+		<! -- End Tab Summary -->
+
+
+
+		<! -- Detailed Breakdown -->
+		<div class="portal" style="margin-top: 15px">
+			<div>
+				<div class="structureHeading">
+					<div class="portalHeadlineText structureHeadingText">Test Suite Summary:</div>
+				</div>
+				<div class="portalStandardText">Detailed breakdown of test execution.</div>
+
+
+				<! -- TestSuiteResult Tree-->
+				<div class="treeElement">
+
+					<! -- inject list of test results -->
+                    <div class="testResult">
+                        <div>
+                            <div class="structureHeading">
+                                <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Test Name: Test_DoStringsMatch_ShouldPass</div>
+
+                            </div>
+                        </div>
+
+                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Passed: True</div>
+                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Exception: </div>
+                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Stack Trace: </div>
+							<img src="./screenshots/Title.jpg" class="imageCenter" />
+							<div class="structureHeadingText" style="margin-left: 6px; text-align: Center;">./screenshots/Title.jpg</div>
+
+                    </div>
+                    <div class="testResult">
+                        <div>
+                            <div class="structureHeading">
+                                <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Test Name: Test_DoStringsMatch_ShouldFail</div>
+
+                            </div>
+                        </div>
+
+                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Passed: False</div>
+                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Exception:   Input strings don't match
+  String lengths are both 5. Strings differ at index 0.
+  Expected: &quot;Hello&quot;
+  But was:  &quot;World&quot;
+  -----------^
+</div>
+                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Stack Trace:    at NUnit.Framework.Assert.ReportFailure(String message),   at NUnit.Framework.Assert.ReportFailure(ConstraintResult result, String message, Object[] args),   at NUnit.Framework.Assert.That[TActual](TActual actual, IResolveConstraint expression, String message, Object[] args),   at NUnit.Framework.Assert.AreEqual(Object expected, Object actual, String message, Object[] args),   at UnitTests.TestStrings.Test_DoStringsMatch_ShouldFail() in E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\UnitTests\cadwiki.NUnitTestRunner\TestStrings.vb:line 17</div>
+
+                    </div>
+					<! -- TestSuiteResult Tree -->
+
+
+				</div>
+			</div>
+			<! -- End Detailed Breakdown -->
+
+
+		</div>
+		<! -- End Container -->
+
+
+	</div>
+
+
+</body>
+</html>
