@@ -128,6 +128,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCAD\AcadAssemblyUtils.vb" />
+    <Compile Include="AutoCAD\UiRibbon\Buttons\Creator.vb" />
     <Compile Include="AutoCAD\UiRibbon\Buttons\GenericClickCommandHandler.vb" />
     <Compile Include="AutoCAD\CommandRemover.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
