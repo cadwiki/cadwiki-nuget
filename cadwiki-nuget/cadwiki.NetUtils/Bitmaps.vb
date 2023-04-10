@@ -2,7 +2,11 @@
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
+Imports System.Windows.Media
 Imports System.Windows.Media.Imaging
+Imports Color = System.Drawing.Color
+Imports PixelFormat = System.Drawing.Imaging.PixelFormat
+
 
 Public Class Bitmaps
 
@@ -28,5 +32,26 @@ Public Class Bitmaps
         End If
         Dim iconHandle As IntPtr = bitMap.GetHicon()
         Return Icon.FromHandle(iconHandle)
+    End Function
+
+    Public Shared Function CreateBitmapSourceFromBitmap(ByVal bitmap As Bitmap) As BitmapSource
+        Dim rect As Rectangle = New Rectangle(0, 0, bitmap.Width, bitmap.Height)
+
+        Dim bitmapData As BitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb)
+
+        Try
+            Dim size As Integer = rect.Width * rect.Height * 4
+
+            Return BitmapSource.Create(bitmap.Width,
+                                       bitmap.Height, bitmap.HorizontalResolution,
+                                       bitmap.VerticalResolution,
+                                       PixelFormats.Bgra32,
+                                       Nothing,
+                                       bitmapData.Scan0,
+                                       size,
+                                       bitmapData.Stride)
+        Finally
+            bitmap.UnlockBits(bitmapData)
+        End Try
     End Function
 End Class
