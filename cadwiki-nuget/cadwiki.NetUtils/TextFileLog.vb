@@ -3,6 +3,10 @@ Public Class TextFileLog
 
     Private _logFilePath As String = ""
 
+    Public Sub New()
+        _logFilePath = System.IO.Path.GetTempFileName()
+    End Sub
+
     Public Sub New(ByVal filePath As String)
         Dim dir As String = Path.GetDirectoryName(filePath)
         Dim fileName As String = Path.GetFileNameWithoutExtension(filePath)

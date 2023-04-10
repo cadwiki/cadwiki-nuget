@@ -169,6 +169,7 @@
     <Compile Include="cadwiki.DllReloader\TestAutoCADNetReloader.vb" />
     <Compile Include="cadwiki.DllReloader\TestAcadAssemblyUtils.vb" />
     <Compile Include="cadwiki.FileStore\TestFileStore.vb" />
+    <Compile Include="cadwiki.NetUtils\TestTextFileLog.vb" />
     <Compile Include="cadwiki.NUnitTestRunner\TestsForHtmlCreator.vb" />
     <Compile Include="cadwiki.NUnitTestRunner\TestsForPdfCreator.vb" />
     <Compile Include="cadwiki.NUnitTestRunner\TestsForEvidenceCreator.vb" />
@@ -228,9 +229,7 @@
       <Name>cadwiki.NUnitTestRunner</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="cadwiki.NetUtils\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
