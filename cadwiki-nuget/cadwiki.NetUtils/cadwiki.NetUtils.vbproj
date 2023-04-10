@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="AssemblyUtils.vb" />
     <Compile Include="Bitmaps.vb" />
+    <Compile Include="TextFileLog.vb" />
     <Compile Include="Enums.vb" />
     <Compile Include="Exceptions.vb" />
     <Compile Include="IniFile.vb" />
