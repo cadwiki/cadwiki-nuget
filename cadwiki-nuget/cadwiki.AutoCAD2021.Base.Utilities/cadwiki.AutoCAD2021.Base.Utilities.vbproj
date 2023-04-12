@@ -96,6 +96,8 @@
       <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -134,6 +136,7 @@
     <Compile Include="NodeGraph\Edge.vb" />
     <Compile Include="NodeGraph\Node.vb" />
     <Compile Include="NodeGraph\NodeGraph.vb" />
+    <Compile Include="Shared\ExceptionHandler.vb" />
     <Compile Include="Shared\Blocks.vb" />
     <Compile Include="Shared\Commands.vb" />
     <Compile Include="Shared\Draw.vb" />
@@ -153,6 +156,7 @@
     <Compile Include="Shared\XData.vb" />
     <Compile Include="Shared\Zoom.vb" />
     <Compile Include="Workflows\BreakSs.vb" />
+    <Compile Include="Workflows\NunitTestRunner.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -174,6 +178,11 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.vbproj">
+      <Project>{20525DE1-199C-417F-85A1-BDA52F76EDD1}</Project>
+      <Name>cadwiki.NUnitTestRunner</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
