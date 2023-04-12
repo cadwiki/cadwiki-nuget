@@ -16,31 +16,24 @@ Public Class App
     'start here 2 - IExtensionApplication.Initialize
     'once the AcadAppDomainDllReloader is configured with the current Assembly, it will be able to route Ui clicks
     'to the correct method
-    Public Sub Initialize()
-        ' This Event Handler allows the IExtensionApplication to Resolve any Assemblies
-        ' The AssemblyResolve method finds the correct assembly in the AppDomain when there are multiple assemblies
-        ' with the same name and differing version number
+    Public Sub Initialize() Implements IExtensionApplication.Initialize
+        'This Event Handler allows the IExtensionApplication to Resolve any Assemblies
+        'The AssemblyResolve method finds the correct assembly in the AppDomain when there are multiple assemblies
+        'with the same name and differing version number
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf AutoCADAppDomainDllReloader.AssemblyResolve
-        Dim iExtensionAppAssembly = Assembly.GetExecutingAssembly()
-        Dim iExtensionAppVersion = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
+        Dim iExtensionAppAssembly As Assembly = Assembly.GetExecutingAssembly
+        Dim iExtensionAppVersion As Version = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
         AcadAppDomainDllReloader.Configure(iExtensionAppAssembly, True)
-        Dim doc = Core.Application.DocumentManager.MdiActiveDocument
-        doc.Editor.WriteMessage(vbLf & "App " & iExtensionAppVersion.ToString().ToString().ToString() & " initialized...")
+        Dim doc As Document = Application.DocumentManager.MdiActiveDocument
+        doc.Editor.WriteMessage(vbLf & "App " & iExtensionAppVersion.ToString & " initialized...")
         doc.Editor.WriteMessage(vbLf)
     End Sub
 
 
     'start here 3 - IExtensionApplication.Terminate
     'add a call to terminate the AcadAppDomainDllReloader
-    Public Sub Terminate()
+    Public Sub Terminate() Implements IExtensionApplication.Terminate
         Call AcadAppDomainDllReloader.Terminate()
     End Sub
 
-    Private Sub IExtensionApplication_Initialize() Implements IExtensionApplication.Initialize
-        Throw New NotImplementedException()
-    End Sub
-
-    Private Sub IExtensionApplication_Terminate() Implements IExtensionApplication.Terminate
-        Throw New NotImplementedException()
-    End Sub
 End Class
