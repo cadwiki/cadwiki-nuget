@@ -27,6 +27,15 @@ Public Class App
         Dim doc As Document = Application.DocumentManager.MdiActiveDocument
         doc.Editor.WriteMessage(vbLf & "App " & iExtensionAppVersion.ToString & " initialized...")
         doc.Editor.WriteMessage(vbLf)
+
+
+        Dim allRegressionTests As Type = GetType(Tests.RegressionTests)
+        'Dim allIntegrationTests As Type = GetType(MainApp.IntegrationTests.Tests)
+        Dim allTestTypes As Type() = {allRegressionTests}
+
+        Dim testRunner As Workflows.NunitTestRunner = New Workflows.NunitTestRunner()
+        testRunner.Run(allTestTypes)
+
     End Sub
 
 
