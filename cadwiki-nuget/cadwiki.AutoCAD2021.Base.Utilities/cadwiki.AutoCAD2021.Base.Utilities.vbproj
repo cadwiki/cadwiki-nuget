@@ -131,6 +131,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="NodeGraph\Edge.vb" />
+    <Compile Include="NodeGraph\Node.vb" />
+    <Compile Include="NodeGraph\NodeGraph.vb" />
     <Compile Include="Shared\Blocks.vb" />
     <Compile Include="Shared\Commands.vb" />
     <Compile Include="Shared\Draw.vb" />
@@ -149,6 +152,7 @@
     <Compile Include="Shared\UserInput.vb" />
     <Compile Include="Shared\XData.vb" />
     <Compile Include="Shared\Zoom.vb" />
+    <Compile Include="Workflows\BreakSs.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -170,5 +174,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
