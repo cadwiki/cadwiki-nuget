@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9FB70236-96F3-48AF-A09F-C00B9ED19037}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>cadwiki.AutoCAD2021.Base.Utilities.Tests</RootNamespace>
-    <AssemblyName>cadwiki.AutoCAD2021.Base.Utilities.Tests</AssemblyName>
+    <RootNamespace>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin</RootNamespace>
+    <AssemblyName>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -19,7 +19,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.Tests.xml</DocumentationFile>
+    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -28,7 +28,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.Tests.xml</DocumentationFile>
+    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -108,6 +108,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
