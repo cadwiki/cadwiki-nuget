@@ -7,6 +7,7 @@ Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.Runtime
 Imports System.IO
 Imports System.Globalization
+Imports Autodesk.AutoCAD.EditorInput
 
 Namespace AutoCAD
     Public Class AutoCADAppDomainDllReloader
@@ -458,6 +459,11 @@ Namespace AutoCAD
                     If newestAssemblyWithNameInAppDomain Is Nothing Then
                         AddDllToReload(tempDll)
                     Else
+                        'skip all cadwiki dlls
+                        If dllName.Contains("cadwiki.") Then
+                            Log("Skipped cadwiki dll")
+                            Continue For
+                        End If
                         ' Else do version checks
                         Dim newestVersionInAppDomain As String =
                         AcadAssemblyUtils.GetAssemblyVersionFromFullName(newestAssemblyWithNameInAppDomain.FullName)
@@ -469,11 +475,15 @@ Namespace AutoCAD
                         If isCopiedDllNewer = 1 Then
                             ' If dll name contains project name, don't store to list
                             If assemblyName.Contains(_dependencyValues.IExtensionApplicationClassName) Then
+                                Log("Skipped iExtension app dll")
                                 appAssemblyPath = tempDll
                             Else
+                                Log(dllName + " added to list. App domain version:" + newestVersionInAppDomain + ", copied version:" + copiedVersion)
                                 'Else store to list
                                 AddDllToReload(tempDll)
                             End If
+                        Else
+                            Log("Skipped copied dll whose version was not newer. " + dllName + ". App domain version:" + newestVersionInAppDomain + ", copied version:" + copiedVersion)
                         End If
                     End If
 
@@ -578,6 +588,38 @@ Namespace AutoCAD
             End If
         End Sub
 
+        Public Sub LogException(ex As Exception)
+            Dim mode As AutoCADAppDomainDllReloader.LogMode = GetLogMode()
+            Select Case mode.Equals(AutoCADAppDomainDllReloader.LogMode.Off)
+                Case mode.Equals(AutoCADAppDomainDllReloader.LogMode.Text)
+                    LogExceptionToTextFile(ex)
+                Case mode.Equals(AutoCADAppDomainDllReloader.LogMode.AcadDocEditor)
+                    LogExceptionToTextFile(ex)
+                    LogExceptionToEditor(ex)
+            End Select
+        End Sub
+
+        Private Sub LogExceptionToTextFile(ex As Exception)
+            If (_textFileLog Is Nothing) Then
+                _textFileLog = New NetUtils.TextFileLog()
+                _textFileLog.Exception(ex)
+            Else
+                _textFileLog.Exception(ex)
+            End If
+        End Sub
+
+        Private Sub LogExceptionToEditor(ex As Exception)
+            If (_document Is Nothing) Then
+                _document = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument
+            End If
+
+            Dim ed As Editor = _document.Editor
+            Dim list As List(Of String) = NetUtils.Exceptions.GetPrettyStringList(ex)
+            For Each str As String In list
+                ed.WriteMessage(Environment.NewLine.ToString() & str)
+            Next
+
+        End Sub
 
     End Class
 
