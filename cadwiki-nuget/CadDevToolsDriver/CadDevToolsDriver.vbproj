@@ -207,10 +207,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities.TestPlugin\cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.vbproj">
-      <Project>{9fb70236-96f3-48af-a09f-c00b9ed19037}</Project>
-      <Name>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\cadwiki.CadDevTools\cadwiki.CadDevTools.vbproj">
       <Project>{939ad7b0-3396-47bc-82ee-8b087cf164fd}</Project>
       <Name>cadwiki.CadDevTools</Name>

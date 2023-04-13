@@ -17,6 +17,8 @@ Public Class App
     'once the AcadAppDomainDllReloader is configured with the current Assembly, it will be able to route Ui clicks
     'to the correct method
     Public Sub Initialize() Implements IExtensionApplication.Initialize
+        Dim doc As Document = Application.DocumentManager.MdiActiveDocument
+        doc.Editor.WriteMessage(vbLf & "App initialize called...")
         'This Event Handler allows the IExtensionApplication to Resolve any Assemblies
         'The AssemblyResolve method finds the correct assembly in the AppDomain when there are multiple assemblies
         'with the same name and differing version number
@@ -24,7 +26,6 @@ Public Class App
         Dim iExtensionAppAssembly As Assembly = Assembly.GetExecutingAssembly
         Dim iExtensionAppVersion As Version = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
         AcadAppDomainDllReloader.Configure(iExtensionAppAssembly, True)
-        Dim doc As Document = Application.DocumentManager.MdiActiveDocument
         doc.Editor.WriteMessage(vbLf & "App " & iExtensionAppVersion.ToString & " initialized...")
         doc.Editor.WriteMessage(vbLf)
 
