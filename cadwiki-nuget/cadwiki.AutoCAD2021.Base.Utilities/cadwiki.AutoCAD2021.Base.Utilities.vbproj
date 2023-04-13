@@ -43,6 +43,25 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AcCoreMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcCoreMgd.dll</HintPath>
@@ -96,6 +115,8 @@
       <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -131,6 +152,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="NodeGraph\Edge.vb" />
+    <Compile Include="NodeGraph\Node.vb" />
+    <Compile Include="NodeGraph\NodeGraph.vb" />
+    <Compile Include="Shared\ExceptionHandler.vb" />
     <Compile Include="Shared\Blocks.vb" />
     <Compile Include="Shared\Commands.vb" />
     <Compile Include="Shared\Draw.vb" />
@@ -149,6 +174,8 @@
     <Compile Include="Shared\UserInput.vb" />
     <Compile Include="Shared\XData.vb" />
     <Compile Include="Shared\Zoom.vb" />
+    <Compile Include="Workflows\BreakSs.vb" />
+    <Compile Include="Workflows\NunitTestRunner.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -169,6 +196,12 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.vbproj">
+      <Project>{20525DE1-199C-417F-85A1-BDA52F76EDD1}</Project>
+      <Name>cadwiki.NUnitTestRunner</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

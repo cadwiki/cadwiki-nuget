@@ -1,38 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C549D301-6772-43DC-8DE1-F2BBB17C4FD7}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <StartupObject>cadwiki.AdminUtils.My.MyApplication</StartupObject>
-    <RootNamespace>cadwiki.AdminUtils</RootNamespace>
-    <AssemblyName>cadwiki.AdminUtils</AssemblyName>
+    <ProjectGuid>{9FB70236-96F3-48AF-A09F-C00B9ED19037}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin</RootNamespace>
+    <AssemblyName>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>WindowsForms</MyType>
+    <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>cadwiki.AdminUtils.xml</DocumentationFile>
+    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>cadwiki.AdminUtils.xml</DocumentationFile>
+    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -52,28 +51,65 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>cadwiki.AdminUtils.xml</DocumentationFile>
+    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DocumentationFile>cadwiki.AdminUtils.xml</DocumentationFile>
+    <DocumentationFile>cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AcCoreMgd">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcCoreMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="AcCui">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcCui.dll</HintPath>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcDbMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="acdbmgdbrep">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\acdbmgdbrep.dll</HintPath>
+    </Reference>
+    <Reference Include="AcDx">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcDx.dll</HintPath>
+    </Reference>
+    <Reference Include="AcMgd">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="AcMr">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcMr.dll</HintPath>
+    </Reference>
+    <Reference Include="AcSeamless">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcSeamless.dll</HintPath>
+    </Reference>
+    <Reference Include="AcTcMgd">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcTcMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="AcWindows">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcWindows.dll</HintPath>
+    </Reference>
+    <Reference Include="AdUIMgd">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AdUIMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="AdUiPalettes">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AdUiPalettes.dll</HintPath>
+    </Reference>
+    <Reference Include="AdWindows">
+      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AdWindows.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.13.3.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.13.3\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -86,25 +122,19 @@
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Data" />
-    <Import Include="System.Drawing" />
     <Import Include="System.Diagnostics" />
-    <Import Include="System.Windows.Forms" />
     <Import Include="System.Linq" />
     <Import Include="System.Xml.Linq" />
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="App.vb" />
+    <Compile Include="RegressionTests\BFSTests.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -118,9 +148,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -138,13 +165,28 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AutoCAD2021.Base.Utilities.vbproj">
+      <Project>{e9fa234c-898a-410d-b3e3-d45824ec6742}</Project>
+      <Name>cadwiki.AutoCAD2021.Base.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.vbproj">
+      <Project>{F63B3063-2044-4F17-AC6C-FF343C56B03D}</Project>
+      <Name>cadwiki.DllReloader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
       <Project>{3c1158da-4a90-4fc1-8ccc-6f1e4787a118}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.13.3\build\NUnit.props'))" />
+  </Target>
 </Project>

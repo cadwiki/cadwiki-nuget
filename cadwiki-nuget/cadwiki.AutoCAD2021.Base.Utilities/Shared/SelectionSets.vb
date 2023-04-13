@@ -156,5 +156,21 @@ Public Class SelectionSets
         End Using
         Return Nothing
     End Function
+
+    Public Shared Function GetEntityList(doc As Document, ss As SelectionSet) As List(Of Entity)
+        Dim entities As New List(Of Entity)
+        Dim db As Database = doc.Database
+        Using lock As DocumentLock = doc.LockDocument()
+            Using t As Transaction = db.TransactionManager.StartTransaction()
+                Dim currentSpace As BlockTableRecord = CType(t.GetObject(db.CurrentSpaceId, OpenMode.ForWrite),
+                    BlockTableRecord)
+                For Each objId As ObjectId In ss.GetObjectIds
+                    Dim entity As Entity = CType(t.GetObject(objId, OpenMode.ForWrite), Entity)
+                    entities.Add(entity)
+                Next
+            End Using
+        End Using
+        Return entities
+    End Function
 End Class
 

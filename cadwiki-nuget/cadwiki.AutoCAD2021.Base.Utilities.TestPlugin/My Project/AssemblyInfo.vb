@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -8,17 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("cadwiki.AdminUtils")>
+<Assembly: AssemblyTitle("cadwiki.AutoCAD2021.Base.Utilities.Tests")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("cadwiki.AdminUtils")>
-<Assembly: AssemblyCopyright("Copyright ©  2022")>
+<Assembly: AssemblyProduct("cadwiki.AutoCAD2021.Base.Utilities.Tests")>
+<Assembly: AssemblyCopyright("Copyright ©  2023")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("eff3187d-f373-404a-9fff-294e80df68cc")>
+<Assembly: Guid("9c16bc9d-4dd1-492e-8e98-1a4884db45c5")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.1.2.2158")>
-<Assembly: AssemblyFileVersion("1.1.2.2158")>
+<Assembly: AssemblyVersion("1.0.0.0")>
+<Assembly: AssemblyFileVersion("1.0.0.0")>
