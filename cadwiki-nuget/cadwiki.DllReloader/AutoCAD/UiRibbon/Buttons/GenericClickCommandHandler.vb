@@ -34,12 +34,14 @@ Namespace AutoCAD.UiRibbon.Buttons
                     Dim assemblyName As String = uiRouter.AssemblyName
 
                     If (uiRouter.FullClassName Is Nothing) Then
-                        Throw New Exception("FullClassName was null.")
+                        netReloader.Log("Full class name was null. Make sure you're Ribbon button full class name is correct.")
+                        Return
                     End If
                     netReloader.Log("Full class name: " & uiRouter.FullClassName)
 
                     If (uiRouter.MethodName Is Nothing) Then
-                        Throw New Exception("MethodName was null.")
+                        netReloader.Log("MethodName was null. Make sure you're Ribbon button full class name is correct.")
+                        Return
                     End If
                     netReloader.Log("Method name: " & uiRouter.MethodName)
 
