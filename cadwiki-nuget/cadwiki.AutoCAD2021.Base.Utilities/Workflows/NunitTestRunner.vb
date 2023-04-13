@@ -20,7 +20,7 @@ Namespace Workflows
                 Core.Application.ShowModelessWindow(window)
                 Await driver.ExecuteTestsAsync()
             Catch ex As Exception
-                ExceptionHandler.Handle(ex)
+                ExceptionHandler.WriteToEditor(ex)
             End Try
         End Function
     End Class

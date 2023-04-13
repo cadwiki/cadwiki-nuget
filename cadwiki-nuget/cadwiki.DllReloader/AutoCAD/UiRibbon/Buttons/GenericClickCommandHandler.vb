@@ -24,13 +24,25 @@ Namespace AutoCAD.UiRibbon.Buttons
 
         Public Sub Execute(parameter As Object) Implements ICommand.Execute
             Dim uiRouter As UiRouter = Nothing
-            Dim netReloader As AutoCADAppDomainDllReloader = Nothing
+            Dim netReloader As AutoCADAppDomainDllReloader = New AutoCADAppDomainDllReloader()
+            netReloader.Log("GenericClickCommandHandler Executing Method.")
             Try
+                If parameter Is Nothing Then
+                    netReloader.Log("Parameter was null.")
+                    Return
+                End If
+
                 If TypeOf parameter Is RibbonButton Then
+
                     Dim button As RibbonButton = TryCast(parameter, RibbonButton)
-                    netReloader.Log("GenericClickCommandHandler Executing Method.")
+                    If button Is Nothing Then
+                        netReloader.Log("Button was null.")
+                        Return
+                    End If
+
                     uiRouter = button.CommandParameter
                     netReloader = uiRouter.NetReloader
+
                     Dim assemblyName As String = uiRouter.AssemblyName
 
                     If (uiRouter.FullClassName Is Nothing) Then
@@ -67,14 +79,20 @@ Namespace AutoCAD.UiRibbon.Buttons
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                         New WpfUi.Templates.WindowAutoCADException(ex)
                 window.Show()
-                netReloader.Log("Exception: " & ex.Message)
-                If (ex.Message.Equals("The path is not of a legal form.")) Then
-                    netReloader.Log("Mostly likely caused by incorrect method name in UiRouter object.")
-                    netReloader.Log("Double check that the Method name and Full class name above are correct.")
+
+                If ex.Message IsNot Nothing Then
+                    netReloader.Log("Exception: " & ex.Message)
+                    If (ex.Message.Equals("The path is not of a legal form.")) Then
+                        netReloader.Log("Mostly likely caused by incorrect method name in UiRouter object.")
+                        netReloader.Log("Double check that the Method name and Full class name above are correct.")
+                    Else
+                        netReloader.Log("Mostly likely caused by incorrect solution name in UiRouter object: " &
+                                netReloader.GetIExtensionApplicationClassName())
+                    End If
                 Else
-                    netReloader.Log("Mostly likely caused by incorrect solution name in UiRouter object: " &
-                            netReloader.GetIExtensionApplicationClassName())
+
                 End If
+
 
                 If (uiRouter IsNot Nothing) Then
                     netReloader.Log("UiRouter object: " & uiRouter.FullClassName)
