@@ -12,22 +12,7 @@ Namespace AutoCAD.UiRibbon.Buttons
     Public Class GenericClickCommandHandler
         Implements ICommand
 
-        Private _doc As Document = Nothing
-
-        Public Sub New(doc As Document)
-            _doc = doc
-        End Sub
-
         Public Sub New()
-        End Sub
-
-        Public Sub ConsoleOut(message As String)
-            If (_doc Is Nothing) Then
-                Console.WriteLine(message)
-            Else
-                _doc.Editor.WriteMessage(vbLf & message)
-                _doc.Editor.WriteMessage(vbLf)
-            End If
         End Sub
 
         Public Function CanExecute(parameter As Object) As Boolean Implements ICommand.CanExecute
@@ -43,21 +28,30 @@ Namespace AutoCAD.UiRibbon.Buttons
             Try
                 If TypeOf parameter Is RibbonButton Then
                     Dim button As RibbonButton = TryCast(parameter, RibbonButton)
-                    ConsoleOut("GenericClickCommandHandler Executing Method.")
+                    netReloader.Log("GenericClickCommandHandler Executing Method.")
                     uiRouter = button.CommandParameter
                     netReloader = uiRouter.NetReloader
                     Dim assemblyName As String = uiRouter.AssemblyName
-                    ConsoleOut("Full class name: " & uiRouter.FullClassName)
-                    ConsoleOut("Method name: " & uiRouter.MethodName)
+
+                    If (uiRouter.FullClassName Is Nothing) Then
+                        Throw New Exception("FullClassName was null.")
+                    End If
+                    netReloader.Log("Full class name: " & uiRouter.FullClassName)
+
+                    If (uiRouter.MethodName Is Nothing) Then
+                        Throw New Exception("MethodName was null.")
+                    End If
+                    netReloader.Log("Method name: " & uiRouter.MethodName)
+
                     Dim dllRepo As String = Path.GetDirectoryName(netReloader.GetDllPath())
                     Dim asm As Assembly = AcadAssemblyUtils.GetNewestAssembly(AppDomain.CurrentDomain.GetAssemblies(), assemblyName,
-                                                                dllRepo + "\" + assemblyName + ".dll")
+                                                            dllRepo + "\" + assemblyName + ".dll")
                     'Dim asm As System.Reflection.Assembly = If(App.ReloadedAssembly, Assembly.GetExecutingAssembly)
                     Dim types As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(asm)
                     Dim type As Type = asm.GetType(uiRouter.FullClassName)
                     Dim methodInfo As MethodInfo = type.GetMethod(uiRouter.MethodName)
                     If methodInfo = Nothing Then
-                        ConsoleOut("Method not found: " & uiRouter.MethodName)
+                        netReloader.Log("Method not found: " & uiRouter.MethodName)
                     Else
                         Dim o As Object = Activator.CreateInstance(type)
                         If (uiRouter.Parameters IsNot Nothing) Then
@@ -71,17 +65,17 @@ Namespace AutoCAD.UiRibbon.Buttons
                 Dim window As cadwiki.WpfUi.Templates.WindowAutoCADException =
                         New WpfUi.Templates.WindowAutoCADException(ex)
                 window.Show()
-                ConsoleOut("Exception: " & ex.Message)
+                netReloader.Log("Exception: " & ex.Message)
                 If (ex.Message.Equals("The path is not of a legal form.")) Then
-                    ConsoleOut("Mostly likely caused by incorrect method name in UiRouter object.")
-                    ConsoleOut("Double check that the Method name and Full class name above are correct.")
+                    netReloader.Log("Mostly likely caused by incorrect method name in UiRouter object.")
+                    netReloader.Log("Double check that the Method name and Full class name above are correct.")
                 Else
-                    ConsoleOut("Mostly likely caused by incorrect solution name in UiRouter object: " &
+                    netReloader.Log("Mostly likely caused by incorrect solution name in UiRouter object: " &
                             netReloader.GetIExtensionApplicationClassName())
                 End If
 
-                If (UiRouter IsNot Nothing) Then
-                    ConsoleOut("UiRouter object: " & UiRouter.FullClassName)
+                If (uiRouter IsNot Nothing) Then
+                    netReloader.Log("UiRouter object: " & uiRouter.FullClassName)
                 End If
             End Try
 

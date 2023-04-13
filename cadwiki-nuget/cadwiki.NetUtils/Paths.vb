@@ -5,6 +5,12 @@ Imports System.IO
 
 Public Class Paths
 
+    Public Shared Function GetNewestDllInAnySubfolderOfSolutionDirectory(solutionDir As String, wildCardFileName As String) As String
+        Dim dlls As List(Of String) = Paths.GetAllWildcardFilesInAnySubfolder(solutionDir, wildCardFileName)
+        Dim dll As String = dlls.FirstOrDefault
+        Return dll
+    End Function
+
     Public Shared Function GetNewestDllInVsubfoldersOfSolutionDirectory(solutionDir As String, wildCardFileName As String) As String
         Dim dlls As List(Of String) = Paths.GetAllWildcardFilesInVSubfolder(solutionDir, wildCardFileName)
         Dim dll As String = dlls.FirstOrDefault
