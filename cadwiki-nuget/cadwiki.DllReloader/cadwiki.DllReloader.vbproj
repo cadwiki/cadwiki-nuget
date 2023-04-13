@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCAD\AcadAssemblyUtils.vb" />
+    <Compile Include="AutoCAD\PathUtils.vb" />
     <Compile Include="AutoCAD\UiRibbon\Buttons\Creator.vb" />
     <Compile Include="AutoCAD\UiRibbon\Buttons\GenericClickCommandHandler.vb" />
     <Compile Include="AutoCAD\CommandRemover.vb" />

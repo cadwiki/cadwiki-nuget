@@ -10,6 +10,12 @@ Imports System.Globalization
 
 Namespace AutoCAD
     Public Class AutoCADAppDomainDllReloader
+        Public Enum LogMode
+            Off
+            Text
+            AcadDocEditor
+        End Enum
+
         Public Class Dependencies
             Public IExtensionApplicationClassName As String = ""
             Public AppVersion As Version = Version.Parse("1.0.0.0")
@@ -19,8 +25,24 @@ Namespace AutoCAD
             Public OriginalAppDirectory As String = ""
             Public DLLsToReload As New List(Of String)
             Public SuccessfullyReloadedDlls As New List(Of String)
-            Public DllsToSkip As New List(Of String) From {"cadwiki.AcRemoveCmdGroup.dll", "cadwiki.NUnitTestRunner.dll"}
+            Public DllsToSkip As New List(Of String) From {
+                "cadwiki.AcRemoveCmdGroup.dll",
+                "AcCoreMgd.dll",
+                "AcCui.dll",
+                "AcDbMgd.dll",
+                "acdbmgdbrep.dll",
+                "AcDx.dll",
+                "AcMgd.dll",
+                "AcMr.dll",
+                "AcSeamless.dll",
+                "AcTcMgd.dll",
+                "AcWindows.dll",
+                "AdUIMgd.dll",
+                "AdUiPalettes.dll",
+                "AdWindows.dll"
+            }
             Public Terminated As Boolean = True
+            Public LogMode As LogMode = LogMode.AcadDocEditor
         End Class
 
         Public Sub ClearIni()
@@ -28,8 +50,8 @@ Namespace AutoCAD
         End Sub
 
         Private _dependencyValues As Dependencies
-        Private _cadwikiTempFolder As String = Path.GetTempPath() + "cadwiki"
-        Private _iniPath As String = _cadwikiTempFolder + "\" + "NetReloader.ini"
+        Private _cadwikiTempFolder As String = PathUtils.GetAutoCADAppDomainDllReloaderTempFolder()
+        Private _iniPath As String = _cadwikiTempFolder + "\" + "AutoCADAppDomainDllReloader.ini"
         Private _tempFolder As String
         Private _sectionSettings As String = "Settings"
         Private _keyProjectName As String = "ProjectName"
@@ -39,7 +61,10 @@ Namespace AutoCAD
         Private _keyOriginalAppDirectory As String = "OriginalAppDirectory"
         Private _keyDLLsToReload As String = "DLLsToReload"
         Private _keyTerminated As String = "Terminated"
+        Private _keyLogMode As String = "LogMode"
+
         Private _document As Document
+        Private _textFileLog As New NetUtils.TextFileLog(PathUtils.GetAutoCADAppDomainDllReloaderTempFolderLogFilePath())
 
         Public Sub New()
             _dependencyValues = New Dependencies
@@ -80,6 +105,10 @@ Namespace AutoCAD
             Return _dependencyValues.SuccessfullyReloadedDlls
         End Function
 
+        Public Function GetLogMode() As LogMode
+            Return _dependencyValues.LogMode
+        End Function
+
         Public Sub AddDllToSkip(dllName As String)
             _dependencyValues.DllsToSkip.Add(dllName)
         End Sub
@@ -93,9 +122,9 @@ Namespace AutoCAD
         Public Sub Configure(currentIExtensionAppAssembly As Assembly,
                              loadAllDllsInAppAssemblyDirectory As Boolean)
             Try
-                WriteToDocEditor("---------------------------------------------")
-                WriteToDocEditor("---------------------------------------------")
-                WriteToDocEditor("Configure started.")
+                Log("---------------------------------------------")
+                Log("---------------------------------------------")
+                Log("Configure started.")
                 ReadDependecyValuesFromIni()
                 ' If Terminated = True
                 ' And Versions don't match
@@ -116,9 +145,9 @@ Namespace AutoCAD
                 If String.IsNullOrEmpty(GetIExtensionApplicationClassName()) Then
                     SetIExtensionApplicationClassNameFromAssembly(currentIExtensionAppAssembly)
                 End If
-                WriteToDocEditor("Configure complete.")
-                WriteToDocEditor("---------------------------------------------")
-                WriteToDocEditor("---------------------------------------------")
+                Log("Configure complete.")
+                Log("---------------------------------------------")
+                Log("---------------------------------------------")
             Catch ex As Exception
                 Dim window As WpfUi.Templates.WindowAutoCADException = New WpfUi.Templates.WindowAutoCADException(ex)
                 window.Show()
@@ -128,13 +157,13 @@ Namespace AutoCAD
 
         Public Function ReloadAllDllsFoundInSameFolder(dllPath As String) As Tuple(Of Assembly, String)
             Try
-                WriteToDocEditor(String.Format("Reload count {0}.", _dependencyValues.ReloadCount))
+                Log(String.Format("Reload count {0}.", _dependencyValues.ReloadCount))
                 Dim newCount As Integer = _dependencyValues.ReloadCount + 1
                 Dim dllRepository As String = Path.GetDirectoryName(dllPath)
                 Dim now As DateTime = DateTime.Now
                 _tempFolder = GetNewReloadFolder(newCount, now)
                 IO.Directory.CreateDirectory(_tempFolder)
-                WriteToDocEditor("Created temp folder to copy dlls to for reloading: " + _tempFolder)
+                Log("Created temp folder to copy dlls to for reloading: " + _tempFolder)
                 Dim tempDlls As List(Of String) = CopyAllDllsToTempFolder(dllPath, _tempFolder)
                 Dim tuple As Tuple(Of Assembly, String) = ReloadAll(tempDlls, newCount)
                 Return tuple
@@ -153,7 +182,7 @@ Namespace AutoCAD
                 Dim dllName As String = Path.GetFileName(dllFilePath)
                 Dim tempFolderFilePath As String = tempFolder + "\" + dllName
                 IO.File.Copy(dllFilePath, tempFolderFilePath)
-                WriteToDocEditor("Copied: " + tempFolderFilePath)
+                Log("Copied: " + tempFolderFilePath)
                 tempDlls.Add(tempFolderFilePath)
             Next
             Return tempDlls
@@ -213,9 +242,9 @@ Namespace AutoCAD
 
                 Try
                     _document = doc
-                    WriteToDocEditor("---------------------------------------------")
-                    WriteToDocEditor("---------------------------------------------")
-                    WriteToDocEditor("Dll reload started.")
+                    Log("---------------------------------------------")
+                    Log("---------------------------------------------")
+                    Log("Dll reload started.")
                     WriteIniPathToDocEditor()
                     'Remove all commands from iExtensionAppAssembly
                     CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath)
@@ -228,27 +257,27 @@ Namespace AutoCAD
                         _dependencyValues.OriginalAppDirectory = IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly.Location)
                     End If
                     Dim originalDirectory As String = _dependencyValues.OriginalAppDirectory
-                    WriteToDocEditor(String.Format("Original app directory: {0}", originalDirectory))
-                    WriteToDocEditor(String.Format("Dll reload path: {0}", copiedMainDll))
+                    Log(String.Format("Original app directory: {0}", originalDirectory))
+                    Log(String.Format("Dll reload path: {0}", copiedMainDll))
                     Dim types As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(appAssembly)
                     WriteIniPathToDocEditor()
-                    WriteToDocEditor("Dll reload complete.")
-                    WriteToDocEditor("---------------------------------------------")
-                    WriteToDocEditor("---------------------------------------------")
+                    Log("Dll reload complete.")
+                    Log("---------------------------------------------")
+                    Log("---------------------------------------------")
                 Catch ex As Exception
-                    WriteToDocEditor("Exception" + ex.Message)
+                    Log("Exception" + ex.Message)
                 End Try
             End If
         End Sub
 
         Private Sub WriteIniPathToDocEditor()
-            WriteToDocEditor("Ini settings read from " + _iniPath)
+            Log("Ini settings read from " + _iniPath)
         End Sub
 
         Private Sub RemoveAllCommandsFromAllAssembliesInAppDomain(doc As Document, dllPath As String)
             'Remove all commands from all assemblys in AppDomain
             For Each assembly As Assembly In AppDomain.CurrentDomain.GetAssemblies()
-                WriteToDocEditor("Attemping to remove commands from: " + assembly.GetName.Name)
+                Log("Attemping to remove commands from: " + assembly.GetName.Name)
                 CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, assembly, dllPath)
             Next
         End Sub
@@ -325,6 +354,7 @@ Namespace AutoCAD
             Dim DLLsConcat As String = String.Join(",", dependencyValues.DLLsToReload)
             objIniFile.WriteString(_sectionSettings, _keyDLLsToReload, DLLsConcat)
             objIniFile.WriteString(_sectionSettings, _keyTerminated, dependencyValues.Terminated.ToString)
+            objIniFile.WriteString(_sectionSettings, _keyLogMode, dependencyValues.LogMode.ToString)
         End Sub
 
         Private Sub CreateCadwikiTempFolderIfNotExists()
@@ -356,21 +386,23 @@ Namespace AutoCAD
             _dependencyValues.DLLsToReload = dlls.ToList
             stringValue = objIniFile.GetString(_sectionSettings, _keyTerminated, _dependencyValues.Terminated.ToString)
             _dependencyValues.Terminated = CType(stringValue, Boolean)
+            stringValue = objIniFile.GetString(_sectionSettings, _keyLogMode, _dependencyValues.LogMode.ToString)
+            LogMode.TryParse(stringValue, _dependencyValues.LogMode)
         End Sub
 
         Private Function ReloadAll(tempDlls As List(Of String), reloadCount As Integer) As Tuple(Of Assembly, String)
             Dim assemblies As Assembly() = AppDomain.CurrentDomain.GetAssemblies()
             Dim appAssembly As Assembly = Nothing
             Dim appAssemblyPath As String = ""
-            WriteToDocEditor("Looking for dlls to reload.")
-            WriteToDocEditor("Skipping these dlls: ")
+            Log("Looking for dlls to reload.")
+            Log("Skipping these dlls: ")
             For Each dllToSkip As String In _dependencyValues.DllsToSkip
-                WriteToDocEditor(dllToSkip)
+                Log(dllToSkip)
             Next
             appAssemblyPath = AddDllsToReloadToList(tempDlls, assemblies, appAssemblyPath)
             If String.IsNullOrEmpty(appAssemblyPath) Then
                 Dim errorMessage As String = "Unable to locate the Assembly whose name contains: " + _dependencyValues.IExtensionApplicationClassName
-                WriteToDocEditor(errorMessage)
+                Log(errorMessage)
             Else
                 'Add appAssembly as the last Item of the list, to ensure all other dlls are loaded before
                 AddDllToReload(appAssemblyPath)
@@ -383,16 +415,16 @@ Namespace AutoCAD
         End Function
 
         Private Sub WriteInfoAboutDllsToReload()
-            WriteToDocEditor("Found " + _dependencyValues.DLLsToReload.Count.ToString +
+            Log("Found " + _dependencyValues.DLLsToReload.Count.ToString +
                                     " dlls that are able to be loaded into the current appdomain.")
             If _dependencyValues.DLLsToReload.Count > 0 Then
-                WriteToDocEditor("These dlls have 1 of 2 qualities listed below:")
-                WriteToDocEditor("#1 They don't exist in the app domain yet.")
-                WriteToDocEditor("or")
-                WriteToDocEditor("#2 Their version number is newer than any assembly with the exact same name in the current app domain.")
+                Log("These dlls have 1 of 2 qualities listed below:")
+                Log("#1 They don't exist in the app domain yet.")
+                Log("or")
+                Log("#2 Their version number is newer than any assembly with the exact same name in the current app domain.")
                 If _dependencyValues.DLLsToReload.Count > 0 Then
                     For Each dllToReload As String In _dependencyValues.DLLsToReload
-                        WriteToDocEditor("Dll to reload: " + dllToReload)
+                        Log("Dll to reload: " + dllToReload)
                     Next
                 End If
             End If
@@ -467,8 +499,8 @@ Namespace AutoCAD
                 Try
                     assemblyBytes = System.IO.File.ReadAllBytes(dllPath)
                 Catch ex As Exception
-                    WriteToDocEditor("Error reading assembly to byte array: " + dllPath)
-                    WriteToDocEditor("Exception: " + ex.Message)
+                    Log("Error reading assembly to byte array: " + dllPath)
+                    Log("Exception: " + ex.Message)
                 End Try
                 Try
                     If dllPath.Contains(_dependencyValues.IExtensionApplicationClassName) Then
@@ -478,16 +510,16 @@ Namespace AutoCAD
                         WriteDependecyValuesToIni(_dependencyValues)
                         ' Upon loading the assemblyBytes from the IExtensionApplication class, the App.Initialize() method will be called
                         assemblyWithIExtensionApp = AppDomain.CurrentDomain.Load(assemblyBytes)
-                        WriteToDocEditor("Reloaded iExtensionAppAssembly dll: " + dllPath)
+                        Log("Reloaded iExtensionAppAssembly dll: " + dllPath)
                         SetReloadedValues(assemblyWithIExtensionApp)
                         WriteDependecyValuesToIni(_dependencyValues)
                     Else
                         Dim reloadedAssembly As Assembly = AppDomain.CurrentDomain.Load(assemblyBytes)
-                        WriteToDocEditor("Reloaded dll: " + dllPath)
+                        Log("Reloaded dll: " + dllPath)
                     End If
                 Catch ex As Exception
-                    WriteToDocEditor("Error loading assembly: " + dllPath)
-                    WriteToDocEditor("Exception: " + ex.Message)
+                    Log("Error loading assembly: " + dllPath)
+                    Log("Exception: " + ex.Message)
                 End Try
             Next
             Dim currentTypes As Type() = cadwiki.NetUtils.AssemblyUtils.GetTypesSafely(assemblyWithIExtensionApp)
@@ -515,13 +547,38 @@ Namespace AutoCAD
             Return timeStamp
         End Function
 
-        Private Sub WriteToDocEditor(message As String)
-            If _document IsNot Nothing Then
+        Public Sub Log(message As String)
+            Dim mode As AutoCADAppDomainDllReloader.LogMode = GetLogMode()
+            Select Case mode.Equals(AutoCADAppDomainDllReloader.LogMode.Off)
+                Case mode.Equals(AutoCADAppDomainDllReloader.LogMode.Text)
+                    LogToTextFile(message)
+                Case mode.Equals(AutoCADAppDomainDllReloader.LogMode.AcadDocEditor)
+                    LogToTextFile(message)
+                    LogToEditor(message)
+            End Select
+        End Sub
+
+        Private Sub LogToTextFile(message As String)
+            If (_textFileLog Is Nothing) Then
+                _textFileLog = New NetUtils.TextFileLog()
+                _textFileLog.Write(message)
+            Else
+                _textFileLog.Write(message)
+            End If
+        End Sub
+
+        Private Sub LogToEditor(message As String)
+            If (_document Is Nothing) Then
+                _document = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument
+                _document.Editor.WriteMessage(vbLf & message)
                 _document.Editor.WriteMessage(vbLf)
-                _document.Editor.WriteMessage(message)
+            Else
+                _document.Editor.WriteMessage(vbLf & message)
                 _document.Editor.WriteMessage(vbLf)
             End If
         End Sub
+
+
     End Class
 
 End Namespace
