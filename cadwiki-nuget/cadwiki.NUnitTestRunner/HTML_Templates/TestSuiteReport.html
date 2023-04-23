@@ -141,12 +141,19 @@
 			margin: 0 25px;
 		}
 
-		.testResult {
-			border: 1px black solid;
+		.testResultPassed {
+			border: 3px green solid;
 			margin-left: 25px;
 			margin-top: 15px;
 			padding: 15px;
 		}
+
+        .testResultFailed {
+            border: 3px red solid;
+            margin-left: 25px;
+            margin-top: 15px;
+            padding: 15px;
+        }
 
 		.imageCenter {
 			display: block;
@@ -219,23 +226,27 @@
 
 					<! -- inject list of test results -->
 					{{#each TestSuiteResults.TestResults}}
-                    <div class="testResult">
-                        <div>
-                            <div class="structureHeading">
-                                <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Test Name: {{TestName}}</div>
+					<div {{#if Passed}}class="testResultPassed"{{else}}class="testResultFailed"{{/if}}>
+						<div>
+							<div class="structureHeading">
+								<div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Test Name: {{TestName}}</div>
 
-                            </div>
-                        </div>
+							</div>
+						</div>
 
-                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Passed: {{Passed}}</div>
-                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Exception: {{ExceptionMessage}}</div>
-                        <div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Stack Trace: {{StackTrace}}</div>
-                        {{#each Evidence.Images}}
-							<img src="{{RelativeFilePath}}" class="imageCenter" />
-							<div class="structureHeadingText" style="margin-left: 6px; text-align: Center;">{{RelativeFilePath}}</div>
-                        {{/each}}
+						<div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Passed: {{Passed}}</div>
+						{{#if ExceptionMessage}}
+						<div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Exception: {{ExceptionMessage}}</div>
+						{{/if}}
+						{{#if StackTrace}}
+						<div class="structureHeadingText" style="margin-left: 15px; text-align: left;">Stack Trace: {{StackTrace}}</div>
+						{{/if}}
+						{{#each Evidence.Images}}
+						<img src="{{RelativeFilePath}}" class="imageCenter" />
+						<div class="structureHeadingText" style="margin-left: 6px; text-align: Center;">{{RelativeFilePath}}</div>
+						{{/each}}
 
-                    </div>
+					</div>
 					{{/each}}
 					<! -- TestSuiteResult Tree -->
 
