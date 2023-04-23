@@ -461,7 +461,7 @@ Namespace AutoCAD
                     Else
                         'skip all cadwiki dlls
                         If dllName.Contains("cadwiki.") Then
-                            Log("Skipped cadwiki dll")
+                            Log("Skipped cadwiki dll: " + dllName)
                             Continue For
                         End If
                         ' Else do version checks
@@ -483,7 +483,7 @@ Namespace AutoCAD
                                 AddDllToReload(tempDll)
                             End If
                         Else
-                            Log("Skipped copied dll whose version was not newer. " + dllName + ". App domain version:" + newestVersionInAppDomain + ", copied version:" + copiedVersion)
+                            Log(dllName + " skipped. App domain version:" + newestVersionInAppDomain + ", copied version:" + copiedVersion)
                         End If
                     End If
 
