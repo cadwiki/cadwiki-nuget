@@ -1,8 +1,5 @@
 # cadwiki-nuget README  
-Tools for increasing productivity during Autodesk addin developement.  
-
-## Blog  
-[https://www.cadwiki.net](https://www.cadwiki.net)  
+Tools for increasing productivity during Autodesk addin developement.   
 
 ## Docs links  
 [Automated Test Html Report sample](https://raw.githack.com/cadwiki/cadwiki-nuget/main/cadwiki-nuget/docs/Test_CreatePdf_ShouldCreatePdf-AutomatedTestEvidence__2023__03__14____22_02_49.html)
