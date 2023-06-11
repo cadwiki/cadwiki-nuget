@@ -24,7 +24,7 @@ Public Class TextFileLog
 
     Public Function Write(ByVal message As String) As Boolean
         Try
-            Dim timeStamp As String = Date.Now.ToString("yyyy-MM-dd HH:mm:s")
+            Dim timeStamp As String = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
             'pad to 19 spaces to keep log file lined up
             timeStamp.PadLeft(19)
             File.AppendAllText(_logFilePath, vbCrLf & timeStamp & " =>" & vbTab & message)
