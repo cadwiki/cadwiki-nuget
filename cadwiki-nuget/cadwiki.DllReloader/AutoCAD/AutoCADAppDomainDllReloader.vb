@@ -14,7 +14,8 @@ Namespace AutoCAD
         Inherits AutodeskAppDomainReloader
 
         Private _document As Document
-                Private _tempFolder As String
+        Private _tempFolder As String
+
         Public Shadows Function GetLogMode() As LogMode
             Return DependencyValues.LogMode
         End Function
@@ -87,6 +88,8 @@ Namespace AutoCAD
                 window.Show()
             End Try
         End Sub
+
+        'Called from DllReloadClickCommandHandler
         Public Sub ReloadDll(doc As Document, iExtensionAppAssembly As Assembly, dllPath As String)
 
             If (dllPath IsNot Nothing) Then
@@ -121,7 +124,12 @@ Namespace AutoCAD
             End If
         End Sub
 
-        Public Function ReloadAllDllsFoundInSameFolder(dllPath As String) As Tuple(Of Assembly, String)
+
+
+
+
+
+        Private Function ReloadAllDllsFoundInSameFolder(dllPath As String) As Tuple(Of Assembly, String)
             Try
                 Log(String.Format("Reload count {0}.", DependencyValues.ReloadCount))
                 Dim newCount As Integer = DependencyValues.ReloadCount + 1
@@ -140,7 +148,7 @@ Namespace AutoCAD
             End Try
         End Function
 
-        Public Function CopyAllDllsToTempFolder(dllPath As String, tempFolder As String) As List(Of String)
+        Private Function CopyAllDllsToTempFolder(dllPath As String, tempFolder As String) As List(Of String)
             Dim tempDlls As New List(Of String)
             For Each dllFilePath As String In Directory.GetFiles(Path.GetDirectoryName(dllPath), "*.dll")
                 Dim dllName As String = Path.GetFileName(dllFilePath)
@@ -152,15 +160,7 @@ Namespace AutoCAD
             Return tempDlls
         End Function
 
-        Public Sub RemoveAllCommandsFromAllAssembliesInAppDomain(doc As Document, dllPath As String)
-            'Remove all commands from all assemblys in AppDomain
-            For Each assembly As Assembly In AppDomain.CurrentDomain.GetAssemblies()
-                Log("Attemping to remove commands from: " + assembly.GetName.Name)
-                CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, assembly, dllPath)
-            Next
-        End Sub
-
-        Public Function ReloadAll(tempDlls As List(Of String), reloadCount As Integer) As Tuple(Of Assembly, String)
+        Private Function ReloadAll(tempDlls As List(Of String), reloadCount As Integer) As Tuple(Of Assembly, String)
             Dim assemblies As Assembly() = AppDomain.CurrentDomain.GetAssemblies()
             Dim appAssembly As Assembly = Nothing
             Dim appAssemblyPath As String = ""
@@ -185,7 +185,7 @@ Namespace AutoCAD
         End Function
 
 
-        Public Sub RemoveAllCommandsFromAnyAssemblyThatWillBeReloaded()
+        Private Sub RemoveAllCommandsFromAnyAssemblyThatWillBeReloaded()
             Dim assemblies As Assembly() = AppDomain.CurrentDomain.GetAssemblies()
             For Each dllFilePath As String In DependencyValues.DLLsToReload
                 Dim dllName As String = IO.Path.GetFileName(dllFilePath)
@@ -200,7 +200,7 @@ Namespace AutoCAD
             Next
         End Sub
 
-        Public Function AddDllsToReloadToList(tempDlls As List(Of String), assemblies() As Assembly, appAssemblyPath As String) As String
+        Private Function AddDllsToReloadToList(tempDlls As List(Of String), assemblies() As Assembly, appAssemblyPath As String) As String
             DependencyValues.DLLsToReload.Clear()
             For Each tempDll As String In tempDlls
                 If File.Exists(tempDll) Then
@@ -248,7 +248,7 @@ Namespace AutoCAD
             Return appAssemblyPath
         End Function
 
-        Public Sub ReloadDllsIntoAppDomain()
+        Private Sub ReloadDllsIntoAppDomain()
             Dim assemblyWithIExtensionApp As Assembly = Nothing
             For Each dllPath As String In DependencyValues.DLLsToReload
                 Dim assemblyBytes As Byte() = Nothing
