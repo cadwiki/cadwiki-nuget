@@ -165,6 +165,38 @@ Namespace Tests
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
         End Sub
 
+        <Test>
+        Public Sub Add_Neighbors_To_Complex_Node_Graph()
+            Dim xOffset As Double = 10.0
+
+            Dim doc As Document = Application.DocumentManager.MdiActiveDocument
+            Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
+
+            Dim pt1 As Point3d = New Point3d(0 + xOffset, 0, 0)
+            Dim pt2 As Point3d = New Point3d(2 + xOffset, 0, 0)
+            Dim pt3 As Point3d = New Point3d(2 + xOffset, 2, 0)
+            Dim pt4 As Point3d = New Point3d(0 + xOffset, 2, 0)
+            Dim linePointTuples As New List(Of LinePoints)
+            linePointTuples.Add(New LinePoints(pt1, pt2))
+            linePointTuples.Add(New LinePoints(pt2, pt3))
+            linePointTuples.Add(New LinePoints(pt3, pt4))
+            linePointTuples.Add(New LinePoints(pt4, pt1))
+            linePointTuples.Add(New LinePoints(pt1, pt3))
+
+            Dim linePoints As New List(Of Point3d) From {pt1, pt2, pt3, pt4}
+
+
+
+            Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, linePointTuples(0).StartPoint, linePointTuples(0).EndPoint)
+
+            Dim layerNameToSelectFrom As String = layer.Name
+            Zoom.Extents(doc)
+            nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom)
+            nodeGraph.LabelNodes()
+            Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
+        End Sub
+
         'Test connect start and end points to node graph
 
         'Test calculate ideal path
