@@ -13,7 +13,11 @@ Class MainWindow
         Public AutoCADExePath As String
         Public AutoCADStartupSwitches As String
         Public DllFilePathToNetload As String
+        Public CustomDirectoryToSearchForDllsToLoadFrom As String
+        Public DllWildCardSearchPattern As String
     End Class
+
+    Private _dependencies As Dependencies
 
     Public Sub New()
         ' This call is required by the designer.
@@ -39,6 +43,7 @@ Class MainWindow
             TextBoxStartupSwitches.Text = dependencies.AutoCADStartupSwitches
         End If
 
+        _dependencies = dependencies
 
     End Sub
 
@@ -216,7 +221,18 @@ Class MainWindow
         Dim folder As String = Directory.GetCurrentDirectory
         Dim solutionDir As String = Paths.TryGetSolutionDirectoryPath()
         Dim wildCardFileName As String = "*.dll"
-        Dim dlls As List(Of String) = Paths.GetAllWildcardFilesInAnySubfolder(solutionDir, wildCardFileName)
+        Dim dlls As List(Of String)
+
+        If Not String.IsNullOrEmpty(_dependencies.DllWildCardSearchPattern) Then
+            wildCardFileName = _dependencies.DllWildCardSearchPattern
+        End If
+
+        If String.IsNullOrEmpty(_dependencies.CustomDirectoryToSearchForDllsToLoadFrom) Then
+            dlls = Paths.GetAllWildcardFilesInAnySubfolder(solutionDir, wildCardFileName)
+        Else
+            dlls = Paths.GetAllWildcardFilesInAnySubfolder(_dependencies.CustomDirectoryToSearchForDllsToLoadFrom, wildCardFileName)
+        End If
+
         Dim window As WpfUi.WindowGetFilePath = New WpfUi.WindowGetFilePath(dlls)
         window.Width = 1200
         window.Height = 300
