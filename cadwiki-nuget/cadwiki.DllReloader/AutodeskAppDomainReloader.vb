@@ -13,6 +13,7 @@ Namespace AutoCAD
     Public MustInherit Class AutodeskAppDomainReloader
 
         Public TextFileLog As New NetUtils.TextFileLog(GetDllReloaderTempFolderLogFilePath())
+        Public SkipCadwikiDlls As Boolean
 
         Public Enum LogMode
             Off

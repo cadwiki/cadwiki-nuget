@@ -214,7 +214,7 @@ Namespace AutoCAD
                         AddDllToReload(tempDll)
                     Else
                         'skip all cadwiki dlls
-                        If dllName.Contains("cadwiki.") Then
+                        If SkipCadwikiDlls And dllName.Contains("cadwiki.") Then
                             Log("Skipped cadwiki dll: " + dllName)
                             Continue For
                         End If
