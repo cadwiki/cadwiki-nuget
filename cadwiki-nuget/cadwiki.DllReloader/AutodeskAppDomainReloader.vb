@@ -149,9 +149,9 @@ Namespace AutoCAD
             End If
 
             If Not String.IsNullOrEmpty(exeDir) Then
-                Dim parentDir As String = IO.Path.GetDirectoryName(exeDir)
+                Dim parentDir As String = Directory.GetParent(exeDir).FullName
                 Dim wildCardFileName As String = "*" + DependencyValues.IExtensionApplicationClassName + ".dll"
-                Dim cadApps As List(Of String) = cadwiki.NetUtils.Paths.GetAllWildcardFilesInVSubfolder(parentDir, wildCardFileName)
+                Dim cadApps As List(Of String) = cadwiki.NetUtils.Paths.GetAllWildcardFilesInAnySubfolder(parentDir, wildCardFileName)
                 filePaths.AddRange(cadApps)
             End If
 
