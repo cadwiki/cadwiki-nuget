@@ -4,31 +4,65 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cadwiki.AcRemoveCmdGroup", "cadwiki.AcRemoveCmdGroup\cadwiki.AcRemoveCmdGroup.vcxproj", "{D3AC8D74-C4C8-4662-A6CD-C0EC1EDCDABB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.DllReloader", "cadwiki.DllReloader\cadwiki.DllReloader.vbproj", "{F63B3063-2044-4F17-AC6C-FF343C56B03D}"
 	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
 		{D3AC8D74-C4C8-4662-A6CD-C0EC1EDCDABB} = {D3AC8D74-C4C8-4662-A6CD-C0EC1EDCDABB}
 	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.NetUtils", "cadwiki.NetUtils\cadwiki.NetUtils.vbproj", "{3C1158DA-4A90-4FC1-8CCC-6F1E4787A118}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.WpfUi", "cadwiki.WpfUi\cadwiki.WpfUi.vbproj", "{94651D61-EBD0-4D0B-8358-79B14C1805F8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.NUnitTestRunner", "cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.vbproj", "{20525DE1-199C-417F-85A1-BDA52F76EDD1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UnitTests", "UnitTests\UnitTests.vbproj", "{4EA70EF0-2B9C-4F28-A240-169B27F7034B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AutoCAD2021.Interop.Utilities", "cadwiki.AutoCAD2021.Interop.Utilities\cadwiki.AutoCAD2021.Interop.Utilities.vbproj", "{35F24F06-0F6E-4685-A07A-B53CC12BE4F0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CadDevToolsDriver", "CadDevToolsDriver\CadDevToolsDriver.vbproj", "{13E57F0E-ECA8-4667-BD80-5A17F91CE5A4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.CadDevTools", "cadwiki.CadDevTools\cadwiki.CadDevTools.vbproj", "{939AD7B0-3396-47BC-82EE-8B087CF164FD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AutoCAD2022.Interop.Utilities", "cadwiki.AutoCAD2022.Interop.Utilities\cadwiki.AutoCAD2022.Interop.Utilities.vbproj", "{901E09F6-393A-4386-94E4-13E52BE91FBD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.FileStore", "cadwiki.FileStore\cadwiki.FileStore.vbproj", "{80537D89-B441-44DD-AE0A-E4FDB9BB284D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AdminUtils", "cadwiki.AdminUtils\cadwiki.AdminUtils.vbproj", "{C549D301-6772-43DC-8DE1-F2BBB17C4FD7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C75B0FA-9CC9-475B-884D-6717FC72EFE4}"
 	ProjectSection(SolutionItems) = preProject
@@ -38,8 +72,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AutoCAD2021.Base.Utilities", "cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AutoCAD2021.Base.Utilities.vbproj", "{E9FA234C-898A-410D-B3E3-D45824EC6742}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AutoCAD2021.Base.Utilities.TestPlugin", "cadwiki.AutoCAD2021.Base.Utilities.TestPlugin\cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.vbproj", "{9FB70236-96F3-48AF-A09F-C00B9ED19037}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "buildThisFirst", "buildThisFirst\buildThisFirst.csproj", "{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -161,6 +203,14 @@ Global
 		{9FB70236-96F3-48AF-A09F-C00B9ED19037}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9FB70236-96F3-48AF-A09F-C00B9ED19037}.Release|x64.ActiveCfg = Release|Any CPU
 		{9FB70236-96F3-48AF-A09F-C00B9ED19037}.Release|x64.Build.0 = Release|Any CPU
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}.Debug|x64.ActiveCfg = Debug|x64
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}.Debug|x64.Build.0 = Debug|x64
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}.Release|x64.ActiveCfg = Release|x64
+		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
