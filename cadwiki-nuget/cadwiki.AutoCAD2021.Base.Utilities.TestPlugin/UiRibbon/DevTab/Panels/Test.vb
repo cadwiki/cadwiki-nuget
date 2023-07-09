@@ -36,7 +36,13 @@ Namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.DevTab.Panels
             'Dim allIntegrationTests = GetType(Tests.RegressionTests)
             Dim allRegressionTestTypes = {allRegressionTests}
             'Dim allRegressionTestTypes = {allRegressionTests, allIntegrationTests}
-            Dim uiRouter = New UiRouter("AutoCADTests", "AutoCADTests.TestRunner", "Run", {allRegressionTestTypes}, App.AcadAppDomainDllReloader, Assembly.GetExecutingAssembly())
+            Dim uiRouter = New UiRouter(
+                "cadwiki.AutoCAD2021.Base.Utilities",
+                "cadwiki.AutoCAD2021.Base.Utilities.Workflows.NunitTestRunner",
+                "Run",
+                {allRegressionTestTypes},
+                App.AcadAppDomainDllReloader,
+                Assembly.GetExecutingAssembly())
 
 
 
