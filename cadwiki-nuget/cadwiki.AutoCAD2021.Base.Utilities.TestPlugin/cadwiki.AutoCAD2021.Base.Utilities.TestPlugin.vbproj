@@ -3,32 +3,26 @@
   <Import Project="..\packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <UsingTask AssemblyFile="..\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo" />
-
-
-	<Target Name="CopyAssembliesToTempFolder" AfterTargets="Build">
-		
-		<GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-			<Output TaskParameter="Assemblies" ItemName="thisProjectAssemblyIdentities" />
-		</GetAssemblyIdentity>
-		
-		<PropertyGroup>
-		    <TempFolderPath>$([System.IO.Path]::Combine($([System.IO.Path]::GetTempPath()), "cadwiki.TestPlugin", %(thisProjectAssemblyIdentities.Version)))\</TempFolderPath>
-	    </PropertyGroup>
-		
-		<ItemGroup>
-			<OutputFiles Include="$(TargetPath)" />
-		</ItemGroup>
-
-		<MakeDir Directories="$(TempFolderPath)" />
-
-		<Copy SourceFiles="@(OutputFiles)" DestinationFolder="$(TempFolderPath)">
-			<Output TaskParameter="CopiedFiles" ItemName="CopiedOutputFiles" />
-		</Copy>
-
-		<Message Importance="High" Text="Files copied to Temp folder: $(TempFolderPath)" />
-		<Message Importance="High" Text="%(CopiedOutputFiles.Identity)" />
-	</Target>
-
+  <Target Name="CopyAssembliesToTempFolder" AfterTargets="Build">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="thisProjectAssemblyIdentities" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <TempFolderPath>$([System.IO.Path]::Combine($([System.IO.Path]::GetTempPath()), "cadwiki.TestPlugin", %(thisProjectAssemblyIdentities.Version)))\</TempFolderPath>
+    </PropertyGroup>
+    <ItemGroup>
+      <OutputFiles Include="$(TargetPath)" />
+    </ItemGroup>
+    <MakeDir Directories="$(TempFolderPath)" />
+    <ItemGroup>
+      <FilesToCopy Include="$(TargetDir)**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(TempFolderPath)">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedOutputFiles" />
+    </Copy>
+    <Message Importance="High" Text="Files copied to Temp folder: $(TempFolderPath)" />
+    <Message Importance="High" Text="%(CopiedOutputFiles.Identity)" />
+  </Target>
   <PropertyGroup>
     <ProjectDir>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)'))\</ProjectDir>
   </PropertyGroup>
