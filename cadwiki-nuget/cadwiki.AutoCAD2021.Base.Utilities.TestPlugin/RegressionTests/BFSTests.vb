@@ -102,7 +102,7 @@ Namespace Tests
 
         'Test make node graph
         <Test>
-        Public Sub Make_Node_Graph()
+        Public Sub Make_Simple_4x4_Node_Graph()
             Dim doc As Document = Application.DocumentManager.MdiActiveDocument
             Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
             Dim pt1 As Point3d = New Point3d(0, 0, 0)
@@ -142,7 +142,7 @@ Namespace Tests
 
         'Test add neighbors to node graph
         <Test>
-        Public Sub Add_Neightbors_To_Node_Graph()
+        Public Sub Add_Neighbors_To_Simple_4x4_Node_Graph()
             Dim doc As Document = Application.DocumentManager.MdiActiveDocument
             Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
             Dim pt1 As Point3d = New Point3d(0, 0, 0)
@@ -160,9 +160,7 @@ Namespace Tests
 
             Dim layerNameToSelectFrom As String = layer.Name
             Zoom.Extents(doc)
-            'left off here, make sure neighbors are correct
             nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom)
-
             nodeGraph.LabelNodes()
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
         End Sub
