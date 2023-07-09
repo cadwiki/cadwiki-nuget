@@ -26,6 +26,7 @@ Public Class App
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf AutoCADAppDomainDllReloader.AssemblyResolve
         Dim iExtensionAppAssembly As Assembly = Assembly.GetExecutingAssembly
         Dim iExtensionAppVersion As Version = NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
+        AcadAppDomainDllReloader.SkipCadwikiDlls = False
         AcadAppDomainDllReloader.Configure(iExtensionAppAssembly)
         AcadAppDomainDllReloader.Reload(iExtensionAppAssembly)
         doc.Editor.WriteMessage(vbLf & "App " & iExtensionAppVersion.ToString & " initialized...")
