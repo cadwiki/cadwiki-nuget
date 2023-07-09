@@ -19,12 +19,14 @@ Namespace NodeGraph
             Me.Document = document
             Dim counter As Integer = 2
             Dim nodeId As Integer = counter
-            Dim parentNode As Node = Nothing
-            Dim entitiesListAtNode As New List(Of Entity)
-            Dim neighborList As New List(Of Node)
-            Dim nodeCoordinates As Point3d = Nothing
-            Dim hasNodeBeenDiscovered As Boolean = False
+
             For Each point As Point3d In pointList
+                Dim parentNode As Node = Nothing
+                Dim entitiesListAtNode As New List(Of Entity)
+                Dim neighborList As New List(Of Node)
+                Dim nodeCoordinates As Point3d = Nothing
+                Dim hasNodeBeenDiscovered As Boolean = False
+
                 Dim distanceFromSource As Double = source.DistanceTo(point)
                 Dim distanceFromDestination As Double = destination.DistanceTo(point)
                 nodeId = counter
@@ -72,8 +74,13 @@ Namespace NodeGraph
 
         Private Sub AddNeighborIfNotExists(argumentNode As Node, neighbor As Node)
             Dim areNodesTheSame As Integer = argumentNode.NodeId.CompareTo(neighbor.NodeId)
+            'update argumentNode with neighbor
             If Not argumentNode.NeighborList.Contains(neighbor) And Not argumentNode.NodeId.Equals(neighbor.NodeId) Then
                 argumentNode.NeighborList.Add(neighbor)
+            End If
+            'update neighbor with argumentNode
+            If Not neighbor.NeighborList.Contains(argumentNode) And Not argumentNode.NodeId.Equals(neighbor.NodeId) Then
+                neighbor.NeighborList.Add(argumentNode)
             End If
         End Sub
 
