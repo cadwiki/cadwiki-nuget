@@ -25,6 +25,14 @@ Namespace NodeGraph
             Me.AutoCADPoint = location
             Me.DistanceFromDestination = distanceFromDestination
         End Sub
+
+        Public Function GetNeighborIds() As List(Of Integer)
+            If NeighborList IsNot Nothing Then
+                Dim neighborIds As List(Of Integer) = NeighborList.Select(Function(p) p.NodeId).ToList()
+                Return neighborIds
+            End If
+            Return New List(Of Integer)
+        End Function
     End Class
 
 End Namespace

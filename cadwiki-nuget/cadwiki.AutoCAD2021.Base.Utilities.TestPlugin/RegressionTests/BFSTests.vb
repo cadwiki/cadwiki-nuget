@@ -163,6 +163,7 @@ Namespace Tests
             'left off here, make sure neighbors are correct
             nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom)
 
+            nodeGraph.LabelNodes()
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
         End Sub
 

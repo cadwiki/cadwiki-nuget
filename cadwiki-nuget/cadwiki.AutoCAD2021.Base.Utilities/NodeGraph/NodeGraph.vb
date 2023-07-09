@@ -5,6 +5,7 @@ Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.DatabaseServices
 Imports Autodesk.AutoCAD.EditorInput
 Imports Autodesk.AutoCAD.Geometry
+Imports System.Linq
 
 Namespace NodeGraph
     Public Class NodeGraph
@@ -97,6 +98,22 @@ Namespace NodeGraph
 
         Private Sub ReplaceNode(index As Integer, newNode As Node)
             Me.Nodes(index) = newNode
+        End Sub
+
+        Public Sub LabelNodes()
+            For Each node As Node In Nodes
+                Dim neighborIds As List(Of Integer) = node.GetNeighborIds()
+
+                Dim label As String = String.Format("\r\nID:{0}\r\nNeighbors:{1}", node.NodeId, neighborIds)
+
+                Dim settings As Mtexts.Settings = New Mtexts.Settings()
+                settings.Height = 5.0
+                settings.Content = label
+                settings.Location = node.AutoCADPoint
+
+                Dim mtext As MText = Mtexts.Add(settings)
+
+            Next
         End Sub
     End Class
 End Namespace
