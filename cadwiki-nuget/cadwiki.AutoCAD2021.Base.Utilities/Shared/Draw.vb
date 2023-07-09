@@ -76,5 +76,30 @@ Public Class Draw
         End Using
         Return Nothing
     End Function
+
+    Public Shared Sub DrawCircleAtLocation(center As Point3d, radius As Double)
+        ' Get the current document and database
+        Dim doc As Document = Application.DocumentManager.MdiActiveDocument
+        Dim db As Database = doc.Database
+
+        ' Start a transaction
+        Using trans As Transaction = db.TransactionManager.StartTransaction()
+            ' Open the Block table for read
+            Dim bt As BlockTable = CType(trans.GetObject(db.BlockTableId, OpenMode.ForRead), BlockTable)
+
+            ' Open the Model Space block table record for write
+            Dim ms As BlockTableRecord = CType(trans.GetObject(bt(BlockTableRecord.ModelSpace), OpenMode.ForWrite), BlockTableRecord)
+
+            ' Create a new Circle entity
+            Dim circle As New Circle(center, Vector3d.ZAxis, radius)
+
+            ' Add the Circle entity to the Model Space block table record
+            ms.AppendEntity(circle)
+            trans.AddNewlyCreatedDBObject(circle, True)
+
+            ' Commit the transaction
+            trans.Commit()
+        End Using
+    End Sub
 End Class
 

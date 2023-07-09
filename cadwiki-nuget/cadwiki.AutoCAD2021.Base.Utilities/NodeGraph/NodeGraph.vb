@@ -108,21 +108,22 @@ Namespace NodeGraph
         End Sub
 
         Public Sub LabelNodes()
+            Dim newLine As String = vbCrLf
             For Each node As Node In Nodes
                 Dim neighborIds As List(Of String) = node.GetNeighborIdsToStringList()
                 Dim formattedNeighborString As String = String.Join(", ", neighborIds)
 
-
-                Dim newLine As String = vbCrLf
-                Dim label As String = String.Format("{0}ID:{1}{2}Neighbors:{3}", newLine, node.NodeId, newLine, formattedNeighborString)
+                Dim label As String = String.Format("{0}ID:{1}{2}Nbors:{3}", newLine, node.NodeId, newLine, formattedNeighborString)
 
                 Dim settings As Mtexts.Settings = New Mtexts.Settings()
-                settings.Height = 5.0
+                settings.Height = 2.5
                 settings.Content = label
                 settings.Location = node.AutoCADPoint
+                settings.Location = New Point3d(settings.Location.X + 0.1, settings.Location.Y, settings.Location.Z)
 
                 Dim mtext As MText = Mtexts.Add(settings)
 
+                Draw.DrawCircleAtLocation(node.AutoCADPoint, 0.1)
             Next
         End Sub
     End Class
