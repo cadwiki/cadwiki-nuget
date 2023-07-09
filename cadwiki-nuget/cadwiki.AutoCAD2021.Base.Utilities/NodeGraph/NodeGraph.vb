@@ -54,8 +54,14 @@ Namespace NodeGraph
             Dim closestPointOnGraphToDest As Point3d = SelectionSets.GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc, graphSS, destination)
             Dim line2 As Line = Draw.DrawLineByPoints(doc, destination, closestPointOnGraphToDest, layerName)
 
-            PointList.Add(closestPointOnGraphToSource)
-            PointList.Add(closestPointOnGraphToDest)
+            If (Not PointList.Contains(closestPointOnGraphToSource)) Then
+                PointList.Add(closestPointOnGraphToSource)
+            End If
+
+            If (Not PointList.Contains(closestPointOnGraphToDest)) Then
+                PointList.Add(closestPointOnGraphToDest)
+            End If
+
 
             BuildGraph(PointList)
         End Sub

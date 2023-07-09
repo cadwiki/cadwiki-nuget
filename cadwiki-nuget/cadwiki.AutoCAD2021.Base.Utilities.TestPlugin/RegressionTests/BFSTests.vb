@@ -203,6 +203,7 @@ Namespace Tests
 
             Dim doc As Document = Application.DocumentManager.MdiActiveDocument
             Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
+            Dim source As Point3d = New Point3d(2 + xOffset, 6, 0)
 
             Dim pt1 As Point3d = New Point3d(0 + xOffset, 0, 0)
             Dim pt2 As Point3d = New Point3d(2 + xOffset, 0, 0)
@@ -238,8 +239,8 @@ Namespace Tests
             Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
             Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints)
 
-            Dim source As Point3d = New Point3d(50, 50, 0)
-            Dim dest As Point3d = New Point3d(250, 250, 0)
+
+            Dim dest As Point3d = New Point3d(5 + xOffset, 5 + yOffset, 0)
             nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest)
 
             Dim layerNameToSelectFrom As String = layer.Name
