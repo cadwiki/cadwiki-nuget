@@ -54,7 +54,7 @@ Namespace NodeGraph
         Private Function AddNeighborsToNode(argumentNode As Node, layerNameToSelectFrom As String) As Node
             Dim entityList As List(Of Entity) = Me.GetEntitiesAtNodePoint(argumentNode, layerNameToSelectFrom)
             Dim index As Integer = 0
-            While index < entityList.Count - 1
+            While index < entityList.Count
                 Dim entity As Entity = entityList(index)
                 Dim line As Line = CType(entity, Line)
                 Dim startPoint As Point3d = line.StartPoint
