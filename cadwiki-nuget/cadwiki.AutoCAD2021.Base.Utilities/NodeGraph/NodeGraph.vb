@@ -12,12 +12,14 @@ Namespace NodeGraph
         Public Nodes As New List(Of Node)
         Public Edges As New List(Of Edge)
         Public Document As Document
+        Public SourceNodeId As Integer = -1
+        Public DestNodeId As Integer = -2
 
         Public Sub New(document As Document, pointList As List(Of Point3d), destination As Point3d, source As Point3d)
             Me.Nodes = Nodes
             Me.Edges = Edges
             Me.Document = document
-            Dim counter As Integer = 2
+            Dim counter As Integer = 0
             Dim nodeId As Integer = counter
 
             For Each point As Point3d In pointList
@@ -31,9 +33,9 @@ Namespace NodeGraph
                 Dim distanceFromDestination As Double = destination.DistanceTo(point)
                 nodeId = counter
                 If distanceFromSource = 0.0 Then
-                    nodeId = 0
+                    nodeId = SourceNodeId
                 ElseIf distanceFromDestination = 0.0 Then
-                    nodeId = 1
+                    nodeId = DestNodeId
                 End If
                 Dim node As New Node(nodeId, parentNode, entitiesListAtNode, neighborList, nodeCoordinates, hasNodeBeenDiscovered, point, distanceFromDestination)
                 Nodes.Add(node)
