@@ -7,7 +7,6 @@
     <BuildRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.root))</BuildRoot>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.cs</DefaultItemExcludes>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <Target Name="autoincrementBuildThisFirstAssemblyInfo" BeforeTargets="Build">
@@ -37,7 +36,7 @@
     </PropertyGroup>
     <ItemGroup>
       <Reference Include="Microsoft.VisualBasic" />
-      <AssemblyInfoFiles Include="$(BuildRoot)\**\AssemblyInfo.vb" />
+      <AssemblyInfoFiles Include="$(BuildRoot)\**\AssemblyInfo.vb;$(BuildRoot)\**\AssemblyInfo.cs" />
     </ItemGroup>
     <!-- auto inc date string with int_newRevNumber created above  -->
     <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" AssemblyMajorVersion="$(str_prevMajor)" AssemblyMinorVersion="$(str_prevMinor)" AssemblyBuildNumberType="DateString" AssemblyBuildNumberFormat="MMdd" AssemblyRevision="$(int_newRevNumber)" />
