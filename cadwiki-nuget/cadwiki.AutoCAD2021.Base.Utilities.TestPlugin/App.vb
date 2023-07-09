@@ -24,7 +24,7 @@ Public Class App
         'with the same name and differing version number
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf AutoCADAppDomainDllReloader.AssemblyResolve
         Dim iExtensionAppAssembly As Assembly = Assembly.GetExecutingAssembly
-        Dim iExtensionAppVersion As Version = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
+        Dim iExtensionAppVersion As Version = NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
         AcadAppDomainDllReloader.Configure(iExtensionAppAssembly)
         AcadAppDomainDllReloader.Reload(iExtensionAppAssembly)
         doc.Editor.WriteMessage(vbLf & "App " & iExtensionAppVersion.ToString & " initialized...")
