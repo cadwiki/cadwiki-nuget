@@ -3,6 +3,7 @@ Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.Runtime
 Imports cadwiki.DllReloader.AutoCAD
 Imports cadwiki.NetUtils
+Imports cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.Tabs
 
 Public Class App
     Implements IExtensionApplication
@@ -30,13 +31,14 @@ Public Class App
         doc.Editor.WriteMessage(vbLf & "App " & iExtensionAppVersion.ToString & " initialized...")
         doc.Editor.WriteMessage(vbLf)
 
+        cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.Tabs.TabCreator.AddDevTab(doc)
 
-        Dim allRegressionTests As Type = GetType(Tests.RegressionTests)
+        'Dim allRegressionTests As Type = GetType(Tests.RegressionTests)
         'Dim allIntegrationTests As Type = GetType(MainApp.IntegrationTests.Tests)
-        Dim allTestTypes As Type() = {allRegressionTests}
+        'Dim allTestTypes As Type() = {allRegressionTests}
 
-        Dim testRunner As Workflows.NunitTestRunner = New Workflows.NunitTestRunner()
-        testRunner.Run(allTestTypes)
+        'Dim testRunner As Workflows.NunitTestRunner = New Workflows.NunitTestRunner()
+        'testRunner.Run(allTestTypes)
 
     End Sub
 

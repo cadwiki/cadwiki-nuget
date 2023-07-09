@@ -70,7 +70,13 @@ Namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.DevTab.Panels
             button.ToolTip = "Reload the " & exeName & " dll into AutoCAD"
             Dim parameters = New Object() {}
 
-            Dim uiRouter = New UiRouter("assemblyName: not used by DllReloadClickCommandHandler", "fullClassName: not used by DllReloadClickCommandHandler", "methodName: not used by DllReloadClickCommandHandler", parameters, App.AcadAppDomainDllReloader, Assembly.GetExecutingAssembly())
+            Dim uiRouter = New UiRouter(
+                "assemblyName: not used by DllReloadClickCommandHandler",
+                "fullClassName: not used by DllReloadClickCommandHandler",
+                "methodName: not used by DllReloadClickCommandHandler",
+                parameters,
+                App.AcadAppDomainDllReloader,
+                Assembly.GetExecutingAssembly())
 
 
             button.CommandParameter = uiRouter
