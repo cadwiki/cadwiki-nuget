@@ -33,6 +33,16 @@ Namespace NodeGraph
             End If
             Return New List(Of Integer)
         End Function
+
+        Public Function GetNeighborIdsToStringList() As List(Of String)
+            Dim neighborIds As List(Of Integer) = GetNeighborIds()
+            Dim neighborStrings As New List(Of String)
+
+            For Each id As Integer In neighborIds
+                neighborStrings.Add(id.ToString)
+            Next
+            Return neighborStrings
+        End Function
     End Class
 
 End Namespace

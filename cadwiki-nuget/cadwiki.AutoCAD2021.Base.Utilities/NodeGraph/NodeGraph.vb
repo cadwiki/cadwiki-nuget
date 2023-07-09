@@ -102,9 +102,12 @@ Namespace NodeGraph
 
         Public Sub LabelNodes()
             For Each node As Node In Nodes
-                Dim neighborIds As List(Of Integer) = node.GetNeighborIds()
+                Dim neighborIds As List(Of String) = node.GetNeighborIdsToStringList()
+                Dim formattedNeighborString As String = String.Join(", ", neighborIds)
 
-                Dim label As String = String.Format("\r\nID:{0}\r\nNeighbors:{1}", node.NodeId, neighborIds)
+
+                Dim newLine As String = vbCrLf
+                Dim label As String = String.Format("{0}ID:{1}{2}Neighbors:{3}", newLine, node.NodeId, newLine, formattedNeighborString)
 
                 Dim settings As Mtexts.Settings = New Mtexts.Settings()
                 settings.Height = 5.0
