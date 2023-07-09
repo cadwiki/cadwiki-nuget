@@ -14,14 +14,55 @@ Namespace NodeGraph
         Public Document As Document
         Public SourceNodeId As Integer = -1
         Public DestNodeId As Integer = -2
+        Public Source As Point3d = Nothing
+        Public Dest As Point3d
+        Public PointList As New List(Of Point3d)
 
         Public Sub New(document As Document, pointList As List(Of Point3d), destination As Point3d, source As Point3d)
             Me.Nodes = Nodes
             Me.Edges = Edges
             Me.Document = document
+            Me.Source = source
+            Me.Dest = destination
+            Me.PointList = pointList
+            BuildGraph(pointList)
+        End Sub
+
+        Public Sub New(document As Document, pointList As List(Of Point3d))
+            Me.Nodes = Nodes
+            Me.Edges = Edges
+            Me.Document = document
+            Me.PointList = pointList
+            BuildGraph(pointList)
+        End Sub
+
+        Public Sub ModifyWithSourceAndDest(doc As Document, layerName As String, destination As Point3d, source As Point3d)
+            Me.Nodes = New List(Of Node)
+            Me.Edges = New List(Of Edge)
+
+            Me.Source = source
+            Me.Dest = destination
+            PointList.Add(source)
+            PointList.Add(destination)
+
+            Dim filter As SelectionFilter = SelectionFilters.GetAllLineBasedEntitiesOnLayer(layerName)
+            Dim graphSS As SelectionSet = SelectionSets.SelectAll(doc, filter)
+
+            Dim closestPointOnGraphToSource As Point3d = SelectionSets.GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc, graphSS, source)
+            Dim line As Line = Draw.DrawLineByPoints(doc, source, closestPointOnGraphToSource, layerName)
+
+            Dim closestPointOnGraphToDest As Point3d = SelectionSets.GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc, graphSS, destination)
+            Dim line2 As Line = Draw.DrawLineByPoints(doc, destination, closestPointOnGraphToDest, layerName)
+
+            PointList.Add(closestPointOnGraphToSource)
+            PointList.Add(closestPointOnGraphToDest)
+
+            BuildGraph(PointList)
+        End Sub
+
+        Private Sub BuildGraph(pointList As List(Of Point3d))
             Dim counter As Integer = 0
             Dim nodeId As Integer = counter
-
             For Each point As Point3d In pointList
                 Dim parentNode As Node = Nothing
                 Dim entitiesListAtNode As New List(Of Entity)
@@ -29,14 +70,23 @@ Namespace NodeGraph
                 Dim nodeCoordinates As Point3d = Nothing
                 Dim hasNodeBeenDiscovered As Boolean = False
 
-                Dim distanceFromSource As Double = source.DistanceTo(point)
-                Dim distanceFromDestination As Double = destination.DistanceTo(point)
                 nodeId = counter
-                If distanceFromSource = 0.0 Then
-                    nodeId = SourceNodeId
-                ElseIf distanceFromDestination = 0.0 Then
-                    nodeId = DestNodeId
+
+                If Not Me.Source.Equals(Nothing) Then
+                    Dim distanceFromSource As Double = Me.Source.DistanceTo(point)
+                    If distanceFromSource = 0.0 Then
+                        nodeId = SourceNodeId
+                    End If
                 End If
+
+                Dim distanceFromDestination As Double = Double.MaxValue
+                If Not Me.Dest.Equals(Nothing) Then
+                    distanceFromDestination = Me.Dest.DistanceTo(point)
+                    If distanceFromDestination = 0.0 Then
+                        nodeId = DestNodeId
+                    End If
+                End If
+
                 Dim node As New Node(nodeId, parentNode, entitiesListAtNode, neighborList, nodeCoordinates, hasNodeBeenDiscovered, point, distanceFromDestination)
                 Nodes.Add(node)
                 counter += 1

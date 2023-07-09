@@ -236,7 +236,11 @@ Namespace Tests
             linePoints.Add(pt4)
 
             Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
-            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, linePointTuples(0).StartPoint, linePointTuples(7).EndPoint)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints)
+
+            Dim source As Point3d = New Point3d(50, 50, 0)
+            Dim dest As Point3d = New Point3d(250, 250, 0)
+            nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest)
 
             Dim layerNameToSelectFrom As String = layer.Name
             Zoom.Extents(doc)

@@ -172,5 +172,36 @@ Public Class SelectionSets
         End Using
         Return entities
     End Function
+
+    Public Shared Function GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc As Document, selectionSet As SelectionSet, point As Point3d) As Point3d
+
+        Dim closestPoint As Point3d
+        Dim curveObj As Curve
+        Dim entities As New List(Of Entity)
+        Dim db As Database = doc.Database
+        Using lock As DocumentLock = doc.LockDocument()
+            Using t As Transaction = db.TransactionManager.StartTransaction()
+                Dim closestPointList As New List(Of Tuple(Of Double, Point3d))()
+                For Each objectId As ObjectId In selectionSet.GetObjectIds()
+                    Dim curve As Curve = TryCast(objectId.GetObject(OpenMode.ForRead), Curve)
+                    If curve IsNot Nothing Then
+                        closestPoint = curve.GetClosestPointTo(point, False)
+                        closestPointList.Add(New Tuple(Of Double, Point3d)(closestPoint.DistanceTo(point), closestPoint))
+                    End If
+                Next
+
+                closestPointList.Sort(Function(a, b) a.Item1.CompareTo(b.Item1))
+
+                Dim distance As Double = closestPointList(0).Item1
+                closestPoint = closestPointList(0).Item2
+
+                Return closestPoint
+            End Using
+        End Using
+
+
+    End Function
+
+
 End Class
 
