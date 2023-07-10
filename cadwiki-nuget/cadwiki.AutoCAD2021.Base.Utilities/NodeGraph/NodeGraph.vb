@@ -54,6 +54,15 @@ Namespace NodeGraph
             Dim closestPointOnGraphToDest As Point3d = SelectionSets.GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc, graphSS, destination)
             Dim line2 As Line = Draw.DrawLineByPoints(doc, destination, closestPointOnGraphToDest, layerName)
 
+            Dim modifiedGraph As SelectionSet = SelectionSets.SelectAll(doc, filter)
+            Dim inputs As New Workflows.BreakSs.BreakSsInputs
+            inputs.SelectionToBreak = modifiedGraph
+            inputs.SelectionToBreakWith = modifiedGraph
+            inputs.Self = True
+            inputs.NewLayer = layerName
+            inputs.DeleteOriginal = True
+            Dim newLines As List(Of ObjectId) = Workflows.BreakSs.BreakSsWithSs(doc, inputs)
+
             If (Not PointList.Contains(closestPointOnGraphToSource)) Then
                 PointList.Add(closestPointOnGraphToSource)
             End If
