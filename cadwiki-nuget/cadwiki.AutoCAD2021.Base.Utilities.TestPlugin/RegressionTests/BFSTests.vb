@@ -116,7 +116,7 @@ Namespace Tests
             linePointTuples.Add(New LinePoints(pt4, pt1))
             Dim linePoints As New List(Of Point3d) From {pt1, pt2, pt3, pt4}
             Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, tempLayer)
-            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, pt1, pt2)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, layer.Name)
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
         End Sub
 
@@ -156,7 +156,7 @@ Namespace Tests
             linePointTuples.Add(New LinePoints(pt4, pt1))
             Dim linePoints As New List(Of Point3d) From {pt1, pt2, pt3, pt4}
             Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
-            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, pt1, pt2)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, layer.Name)
 
             Dim layerNameToSelectFrom As String = layer.Name
             Zoom.Extents(doc)
@@ -188,7 +188,7 @@ Namespace Tests
 
 
             Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
-            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, linePointTuples(0).StartPoint, linePointTuples(0).EndPoint)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, linePointTuples(0).StartPoint, linePointTuples(0).EndPoint, layer.Name)
 
             Dim layerNameToSelectFrom As String = layer.Name
             Zoom.Extents(doc)
@@ -237,16 +237,21 @@ Namespace Tests
             linePoints.Add(pt4)
 
             Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
-            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, layer.Name)
 
 
             Dim dest As Point3d = New Point3d(5 + xOffset, 5 + yOffset, 0)
             nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest)
 
-            Dim layerNameToSelectFrom As String = layer.Name
-            Zoom.Extents(doc)
-            nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom)
             nodeGraph.LabelNodes()
+
+            Dim list As List(Of NodeGraph.Node) = nodeGraph.BFS(nodeGraph.SourceNodeId, nodeGraph.DestNodeId)
+
+            Dim pathLayer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
+            nodeGraph.DrawLinesAlongPath(doc, list, pathLayer.Name)
+
+            Zoom.Extents(doc)
+
             Assert.AreEqual(nodeGraph.Nodes.Count, 8, "Expected 8 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
         End Sub
 
