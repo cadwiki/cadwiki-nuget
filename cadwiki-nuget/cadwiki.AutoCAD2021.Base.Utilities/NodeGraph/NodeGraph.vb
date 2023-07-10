@@ -17,22 +17,25 @@ Namespace NodeGraph
         Public Source As Point3d = Nothing
         Public Dest As Point3d
         Public PointList As New List(Of Point3d)
+        Public LayerName As String
 
-        Public Sub New(document As Document, pointList As List(Of Point3d), destination As Point3d, source As Point3d)
+        Public Sub New(document As Document, pointList As List(Of Point3d), destination As Point3d, source As Point3d, layerName As String)
             Me.Nodes = Nodes
             Me.Edges = Edges
             Me.Document = document
             Me.Source = source
             Me.Dest = destination
             Me.PointList = pointList
+            Me.LayerName = layerName
             BuildGraph(pointList)
         End Sub
 
-        Public Sub New(document As Document, pointList As List(Of Point3d))
+        Public Sub New(document As Document, pointList As List(Of Point3d), layerName As String)
             Me.Nodes = Nodes
             Me.Edges = Edges
             Me.Document = document
             Me.PointList = pointList
+            Me.LayerName = layerName
             BuildGraph(pointList)
         End Sub
 
@@ -106,6 +109,7 @@ Namespace NodeGraph
                 Nodes.Add(node)
                 counter += 1
             Next
+            AddNeighborsToNodes(LayerName)
         End Sub
 
         Public Sub AddNeighborsToNodes(layerNameToSelectFrom As String)
@@ -193,6 +197,75 @@ Namespace NodeGraph
                 Draw.DrawCircleAtLocation(node.AutoCADPoint, 0.1)
             Next
         End Sub
+
+
+        Public Function FindNodeById(nodeId As Integer) As Node
+            Return Nodes.Find(Function(n) n.NodeId = nodeId)
+        End Function
+
+        Public Function BFS(startNodeId As Integer, destinationNodeId As Integer) As List(Of Node)
+            Dim visitedNodes As New HashSet(Of Node)()
+            Dim queue As New Queue(Of Node)()
+
+            Dim startNode As Node = FindNodeById(startNodeId)
+            Dim destinationNode As Node = FindNodeById(destinationNodeId)
+
+            queue.Enqueue(startNode)
+            visitedNodes.Add(startNode)
+
+            While queue.Count > 0
+                Dim currentNode As Node = queue.Dequeue()
+
+                ' Check if the destination node has been reached
+                If currentNode.NodeId = destinationNodeId Then
+                    ' Build and return the path from start to destination
+                    Return BuildPath(currentNode)
+                End If
+
+                ' Explore neighbors of the current node
+                For Each neighborNode As Node In currentNode.NeighborList
+                    If Not visitedNodes.Contains(neighborNode) Then
+                        queue.Enqueue(neighborNode)
+                        visitedNodes.Add(neighborNode)
+                        neighborNode.ParentNode = currentNode ' Set the parent node for backtracking the path
+                    End If
+                Next
+            End While
+
+            ' No path found
+            Return Nothing
+        End Function
+
+        Private Function BuildPath(destinationNode As Node) As List(Of Node)
+            Dim path As New List(Of Node)()
+            Dim currentNode As Node = destinationNode
+
+            ' Backtrack from destination to start using parent pointers
+            While currentNode IsNot Nothing
+                path.Insert(0, currentNode) ' Insert at the beginning to maintain the correct order
+                currentNode = currentNode.ParentNode
+            End While
+
+            Return path
+        End Function
+
+
+        Public Sub DrawLinesAlongPath(doc As Document, path As List(Of Node), layerName As String)
+            If path IsNot Nothing Then
+                Try
+                    Dim startPoint As Point3d = path(0).AutoCADPoint
+                    For i As Integer = 1 To path.Count - 1
+                        Dim endPoint As Point3d = path(i).AutoCADPoint
+                        Draw.DrawLineByPoints(doc, startPoint, endPoint, layerName)
+                        startPoint = endPoint
+                    Next
+                Catch ex As Exception
+                End Try
+            Else
+
+            End If
+        End Sub
+
     End Class
 End Namespace
 
