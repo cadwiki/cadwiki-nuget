@@ -9,7 +9,7 @@
     </NuGetPackageImportStamp>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-  <Target Name="autoincrementBuildThisFirstAssemblyInfo" BeforeTargets="Build">
+  <Target Name="autoincrementBuildThisFirstAssemblyInfo" BeforeTargets="Build2">
     <Exec Command="echo target for auto incrementing AssemblyInfo.vb files" />
     <!-- Autoincrement buildThisFirst AssemblyInfo-->
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
