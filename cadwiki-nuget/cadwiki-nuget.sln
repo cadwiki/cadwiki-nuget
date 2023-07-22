@@ -47,6 +47,7 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.CadDevTools", "cadwiki.CadDevTools\cadwiki.CadDevTools.vbproj", "{939AD7B0-3396-47BC-82EE-8B087CF164FD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
+		{D3AC8D74-C4C8-4662-A6CD-C0EC1EDCDABB} = {D3AC8D74-C4C8-4662-A6CD-C0EC1EDCDABB}
 	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "cadwiki.AutoCAD2022.Interop.Utilities", "cadwiki.AutoCAD2022.Interop.Utilities\cadwiki.AutoCAD2022.Interop.Utilities.vbproj", "{901E09F6-393A-4386-94E4-13E52BE91FBD}"

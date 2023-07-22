@@ -14,7 +14,7 @@ Namespace AutoCAD
         Inherits AutodeskAppDomainReloader
 
         Private _document As Document
-        Private _tempFolder As String
+        Private _tempFolder As String = CadwikiTempFolder
 
 
         Public Shadows Function GetLogMode() As LogMode
