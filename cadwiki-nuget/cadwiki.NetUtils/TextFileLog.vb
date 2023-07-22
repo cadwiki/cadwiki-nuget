@@ -43,22 +43,26 @@ Public MustInherit Class TextFileLog
     End Sub
 
     Public Sub CreateNewLogFile()
-        Dim dir As String = _logDir
-        Dim fileName As String = LogName
-        Dim fileExt As String = _logExt
+        Try
+            Dim dir As String = _logDir
+            Dim fileName As String = LogName
+            Dim fileExt As String = _logExt
 
-        If Not Directory.Exists(dir) Then
-            Dim di As DirectoryInfo = Directory.CreateDirectory(dir)
-        End If
+            If Not Directory.Exists(dir) Then
+                Dim di As DirectoryInfo = Directory.CreateDirectory(dir)
+            End If
 
-        Dim timeStamp As String = DateTime.Now.ToString("yyyy-MM-dd")
-        _logFilePath = String.Concat(dir, "\", fileName, "_", timeStamp, fileExt)
+            Dim timeStamp As String = DateTime.Now.ToString("yyyy-MM-dd")
+            _logFilePath = String.Concat(dir, "\", fileName, "_", timeStamp, fileExt)
 
-        If Not File.Exists(_logFilePath) Then
-            Dim stream As FileStream = File.Create(_logFilePath)
-            stream.Close()
-            Write("Log created.")
-        End If
+            If Not File.Exists(_logFilePath) Then
+                Dim stream As FileStream = File.Create(_logFilePath)
+                stream.Close()
+                Write("Log created.")
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Public Function Write(ByVal message As String) As Boolean
@@ -96,40 +100,54 @@ Public MustInherit Class TextFileLog
     End Sub
 
     Public Sub Delete()
-        Dim dir As String = Path.GetDirectoryName(_logFilePath)
+        Try
+            Dim dir As String = Path.GetDirectoryName(_logFilePath)
 
-        If Directory.Exists(dir) Then
-            If File.Exists(_logFilePath) Then File.Delete(_logFilePath)
-        End If
+            If Directory.Exists(dir) Then
+                If File.Exists(_logFilePath) Then File.Delete(_logFilePath)
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Public Sub DeleteOldLogFiles()
-        Dim thresholdDate As DateTime = DateTime.Now.AddDays(-1 * _daysToKeepLogFile)
-        Dim directoryInfo As DirectoryInfo = New DirectoryInfo(_logDir)
-        Dim files As FileInfo() = directoryInfo.GetFiles()
+        Try
+            Dim thresholdDate As DateTime = DateTime.Now.AddDays(-1 * _daysToKeepLogFile)
+            Dim directoryInfo As DirectoryInfo = New DirectoryInfo(_logDir)
+            Dim files As FileInfo() = directoryInfo.GetFiles()
 
-        For Each file As FileInfo In files
+            For Each file As FileInfo In files
 
-            If file.Extension.ToLower() = _logExt AndAlso IsLogFileOlderThanThreshold(file.Name, thresholdDate) Then
+                If file.Extension.ToLower() = _logExt AndAlso IsLogFileOlderThanThreshold(file.Name, thresholdDate) Then
 
-                Try
-                    file.Delete()
-                    Write("Deleted outdated log file: " & file.FullName)
-                Catch ex As Exception
-                    Exception(ex)
-                End Try
-            End If
-        Next
+                    Try
+                        file.Delete()
+                        Write("Deleted outdated log file: " & file.FullName)
+                    Catch ex As Exception
+                        Exception(ex)
+                    End Try
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Private Function IsLogFileOlderThanThreshold(ByVal fileName As String, ByVal thresholdDate As DateTime) As Boolean
-        Dim dateString As String = fileName.Replace(_logName, "").Replace(_logExt, "").Replace("_", "")
-        Dim logDate As DateTime = Nothing
+        Try
+            Dim dateString As String = fileName.Replace(_logName, "").Replace(_logExt, "").Replace("_", "")
+            Dim logDate As DateTime = Nothing
 
-        If DateTime.TryParseExact(dateString, "yyyy-MM-dd", Nothing, System.Globalization.DateTimeStyles.None, logDate) Then
-            Return logDate < thresholdDate
-        End If
+            If DateTime.TryParseExact(dateString, "yyyy-MM-dd", Nothing, System.Globalization.DateTimeStyles.None, logDate) Then
+                Return logDate < thresholdDate
+            End If
 
-        Return False
+            Return False
+        Catch ex As Exception
+
+        End Try
+
     End Function
 End Class
