@@ -28,7 +28,7 @@ Public Class InteropUtils
             Return False
         End If
         cadwiki.NetUtils.MessageFilter.Register()
-        SetAutoCADWindowToNormal()
+        'SetAutoCADWindowToNormal()
         Return True
     End Function
 
