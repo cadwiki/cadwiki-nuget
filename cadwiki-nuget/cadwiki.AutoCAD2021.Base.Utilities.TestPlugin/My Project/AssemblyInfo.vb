@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("cadwiki.AutoCAD2021.Base.Utilities.Tests")>
+<Assembly: AssemblyTitle("cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.Tests")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("cadwiki.AutoCAD2021.Base.Utilities.Tests")>
+<Assembly: AssemblyProduct("cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.Tests")>
 <Assembly: AssemblyCopyright("Copyright ©  2023")>
 <Assembly: AssemblyTrademark("")>
 

@@ -102,7 +102,7 @@ Namespace Tests
 
         'Test make node graph
         <Test>
-        Public Sub Make_Node_Graph()
+        Public Sub Make_Simple_4x4_Node_Graph()
             Dim doc As Document = Application.DocumentManager.MdiActiveDocument
             Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
             Dim pt1 As Point3d = New Point3d(0, 0, 0)
@@ -116,7 +116,7 @@ Namespace Tests
             linePointTuples.Add(New LinePoints(pt4, pt1))
             Dim linePoints As New List(Of Point3d) From {pt1, pt2, pt3, pt4}
             Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, tempLayer)
-            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, pt1, pt2)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, layer.Name)
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
         End Sub
 
@@ -142,7 +142,7 @@ Namespace Tests
 
         'Test add neighbors to node graph
         <Test>
-        Public Sub Add_Neightbors_To_Node_Graph()
+        Public Sub Add_Neighbors_To_Simple_4x4_Node_Graph()
             Dim doc As Document = Application.DocumentManager.MdiActiveDocument
             Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
             Dim pt1 As Point3d = New Point3d(0, 0, 0)
@@ -156,14 +156,103 @@ Namespace Tests
             linePointTuples.Add(New LinePoints(pt4, pt1))
             Dim linePoints As New List(Of Point3d) From {pt1, pt2, pt3, pt4}
             Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
-            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, pt1, pt2)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, layer.Name)
 
             Dim layerNameToSelectFrom As String = layer.Name
             Zoom.Extents(doc)
-            'left off here, make sure neighbors are correct
             nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom)
-
+            nodeGraph.LabelNodes()
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
+        End Sub
+
+        <Test>
+        Public Sub Add_Neighbors_To_Complex_Node_Graph()
+            Dim xOffset As Double = 10.0
+
+            Dim doc As Document = Application.DocumentManager.MdiActiveDocument
+            Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
+
+            Dim pt1 As Point3d = New Point3d(0 + xOffset, 0, 0)
+            Dim pt2 As Point3d = New Point3d(2 + xOffset, 0, 0)
+            Dim pt3 As Point3d = New Point3d(2 + xOffset, 2, 0)
+            Dim pt4 As Point3d = New Point3d(0 + xOffset, 2, 0)
+            Dim linePointTuples As New List(Of LinePoints)
+            linePointTuples.Add(New LinePoints(pt1, pt2))
+            linePointTuples.Add(New LinePoints(pt2, pt3))
+            linePointTuples.Add(New LinePoints(pt3, pt4))
+            linePointTuples.Add(New LinePoints(pt4, pt1))
+            linePointTuples.Add(New LinePoints(pt1, pt3))
+
+            Dim linePoints As New List(Of Point3d) From {pt1, pt2, pt3, pt4}
+
+
+
+            Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, linePointTuples(0).StartPoint, linePointTuples(0).EndPoint, layer.Name)
+
+            Dim layerNameToSelectFrom As String = layer.Name
+            Zoom.Extents(doc)
+            nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom)
+            nodeGraph.LabelNodes()
+            Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
+        End Sub
+
+        <Test>
+        Public Sub Add_Neighbors_To_Double_Complex_Node_Graph()
+            Dim xOffset As Double = 20.0
+
+            Dim doc As Document = Application.DocumentManager.MdiActiveDocument
+            Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
+            Dim source As Point3d = New Point3d(2 + xOffset, 6, 0)
+
+            Dim pt1 As Point3d = New Point3d(0 + xOffset, 0, 0)
+            Dim pt2 As Point3d = New Point3d(2 + xOffset, 0, 0)
+            Dim pt3 As Point3d = New Point3d(2 + xOffset, 2, 0)
+            Dim pt4 As Point3d = New Point3d(0 + xOffset, 2, 0)
+            Dim linePointTuples As New List(Of LinePoints)
+            linePointTuples.Add(New LinePoints(pt1, pt2))
+            linePointTuples.Add(New LinePoints(pt2, pt3))
+            linePointTuples.Add(New LinePoints(pt3, pt4))
+            linePointTuples.Add(New LinePoints(pt4, pt1))
+            linePointTuples.Add(New LinePoints(pt1, pt3))
+            Dim linePoints As New List(Of Point3d) From {pt1, pt2, pt3, pt4}
+
+            xOffset = 30.0
+            Dim yOffset As Double = 20.0
+            pt1 = New Point3d(0 + xOffset, 0 + yOffset, 0)
+            linePointTuples.Add(New LinePoints(pt1, pt3))
+
+            pt2 = New Point3d(2 + xOffset, 0 + yOffset, 0)
+            pt3 = New Point3d(2 + xOffset, 2 + yOffset, 0)
+            pt4 = New Point3d(0 + xOffset, 2 + yOffset, 0)
+            linePointTuples.Add(New LinePoints(pt1, pt2))
+            linePointTuples.Add(New LinePoints(pt2, pt3))
+            linePointTuples.Add(New LinePoints(pt3, pt4))
+            linePointTuples.Add(New LinePoints(pt4, pt1))
+            linePointTuples.Add(New LinePoints(pt1, pt3))
+
+            linePoints.Add(pt1)
+            linePoints.Add(pt2)
+            linePoints.Add(pt3)
+            linePoints.Add(pt4)
+
+            Dim lineIds As List(Of ObjectId) = DrawLines(doc, linePointTuples, layer.Name)
+            Dim nodeGraph As New NodeGraph.NodeGraph(doc, linePoints, layer.Name)
+
+
+            Dim dest As Point3d = New Point3d(5 + xOffset, 5 + yOffset, 0)
+            nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest)
+
+            nodeGraph.LabelNodes()
+
+            Dim list As List(Of NodeGraph.Node) = nodeGraph.BFS(nodeGraph.SourceNodeId, nodeGraph.DestNodeId)
+
+            Dim pathLayer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
+            nodeGraph.DrawLinesAlongPath(doc, list, pathLayer.Name)
+
+            Zoom.Extents(doc)
+
+            Assert.AreEqual(nodeGraph.Nodes.Count, 8, "Expected 8 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString)
         End Sub
 
         'Test connect start and end points to node graph
