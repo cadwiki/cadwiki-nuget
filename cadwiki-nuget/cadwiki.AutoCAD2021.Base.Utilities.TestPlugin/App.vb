@@ -8,7 +8,6 @@ Imports cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.Tabs
 Public Class App
     Implements IExtensionApplication
 
-    Private Shared logger As TextFileLog = New TextFileLog("c:\Temp\MainApp.txt")
 
     'start here 1 - AutoCADAppDomainDllReloader
     'this variable handles routing the Ui clicks on a AutoCAD ribbon button to your methods found in an Assembly

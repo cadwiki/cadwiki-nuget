@@ -172,6 +172,7 @@
     <Compile Include="AutoCAD\UiRibbon\Buttons\DllReloadClickCommandHandler.vb" />
     <Compile Include="AutoCAD\AutoCADAppDomainDllReloader.vb" />
     <Compile Include="AutoCAD\UiRibbon\Buttons\UiRouter.vb" />
+    <Compile Include="ReloaderLog.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
