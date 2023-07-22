@@ -20,6 +20,7 @@ Public MustInherit Class TextFileLog
         End Get
         Set(ByVal value As String)
             _logDir = value
+            CreateNewLogFile()
         End Set
     End Property
 

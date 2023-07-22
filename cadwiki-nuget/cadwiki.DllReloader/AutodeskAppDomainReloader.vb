@@ -12,7 +12,7 @@ Imports Autodesk.AutoCAD.EditorInput
 Namespace AutoCAD
     Public MustInherit Class AutodeskAppDomainReloader
 
-        Private _cadwikiAutoCADAppDomainDllReloaderFolderName As String = "cadwiki.AutoCADAppDomainDllReloader"
+        Public _cadwikiAutoCADAppDomainDllReloaderFolderName As String = "cadwiki.AutoCADAppDomainDllReloader"
         Public ReloaderLog As ReloaderLog
         Public SkipCadwikiDlls As Boolean
 
@@ -57,8 +57,9 @@ Namespace AutoCAD
 
 
         Public DependencyValues As Dependencies
-        Private _cadwikiTempFolder As String = GetDllReloaderTempFolder()
-        Private _iniPath As String = _cadwikiTempFolder + "\" + "AutodeskAppDomainDllReloader.ini"
+        Public CadwikiTempFolder As String = GetDllReloaderTempFolder()
+
+        Private _iniPath As String = CadwikiTempFolder + "\" + "AutodeskAppDomainDllReloader.ini"
 
         Private _sectionSettings As String = "Settings"
         Private _keyProjectName As String = "ProjectName"
@@ -261,8 +262,8 @@ Namespace AutoCAD
         End Sub
 
         Public Sub CreateCadwikiTempFolderIfNotExists()
-            If Not Directory.Exists(_cadwikiTempFolder) Then
-                Directory.CreateDirectory(_cadwikiTempFolder)
+            If Not Directory.Exists(CadwikiTempFolder) Then
+                Directory.CreateDirectory(CadwikiTempFolder)
             End If
         End Sub
 
@@ -327,7 +328,7 @@ Namespace AutoCAD
 
         Public Function GetNewReloadFolder(count As Integer, time As DateTime) As String
             Dim timeStamp As String = GetTimestampForReloadFolder(time)
-            Dim reloadFolder As String = _cadwikiTempFolder + "\" + timeStamp + "--Reload-" + count.ToString()
+            Dim reloadFolder As String = CadwikiTempFolder + "\" + timeStamp + "--Reload-" + count.ToString()
             Dim uniqueFolder As String = reloadFolder
             Dim int As Integer = 1
             'While necessary, add "(#) until unique folder is found
@@ -355,10 +356,10 @@ Namespace AutoCAD
         Public Sub LogToTextFile(message As String)
             If (ReloaderLog Is Nothing) Then
                 ReloaderLog = New ReloaderLog()
-                ReloaderLog.LogDir = _cadwikiTempFolder
+                ReloaderLog.LogDir = CadwikiTempFolder
                 ReloaderLog.Write(message)
             Else
-                ReloaderLog.LogDir = _cadwikiTempFolder
+                ReloaderLog.LogDir = CadwikiTempFolder
                 ReloaderLog.Write(message)
             End If
         End Sub
@@ -375,10 +376,10 @@ Namespace AutoCAD
         Public Sub LogExceptionToTextFile(ex As Exception)
             If (ReloaderLog Is Nothing) Then
                 ReloaderLog = New DllReloader.ReloaderLog
-                ReloaderLog.LogDir = _cadwikiTempFolder
+                ReloaderLog.LogDir = CadwikiTempFolder
                 ReloaderLog.Exception(ex)
             Else
-                ReloaderLog.LogDir = _cadwikiTempFolder
+                ReloaderLog.LogDir = CadwikiTempFolder
                 ReloaderLog.Exception(ex)
             End If
         End Sub
