@@ -28,7 +28,7 @@ Public Class InteropUtils
             Return False
         End If
         cadwiki.NetUtils.MessageFilter.Register()
-        SetAutoCADWindowToNormal()
+        'SetAutoCADWindowToNormal()
         Return True
     End Function
 
@@ -48,7 +48,7 @@ Public Class InteropUtils
         End While
         App = appAcad
         cadwiki.NetUtils.MessageFilter.Register()
-        SetAutoCADWindowToNormal()
+        'SetAutoCADWindowToNormal()
         Return True
     End Function
 
@@ -56,9 +56,13 @@ Public Class InteropUtils
         If Not IO.File.Exists(dllPath) Then
             Throw New Exception("Dll does not exist: " + dllPath)
         End If
-        App.ActiveDocument.SendCommand("(setvar ""secureload"" 0)" + vbLf)
+        Dim doc As AcadDocument = App.ActiveDocument
+        If (doc Is Nothing) Then
+            doc = App.Documents.Add()
+        End If
+        doc.SendCommand("(setvar ""secureload"" 0)" + vbLf)
         dllPath = dllPath.Replace("\", "\\")
-        App.ActiveDocument.SendCommand("(command ""_netload"" """ + dllPath + """)" + vbLf)
+        doc.SendCommand("(command ""_netload"" """ + dllPath + """)" + vbLf)
         Return True
     End Function
 

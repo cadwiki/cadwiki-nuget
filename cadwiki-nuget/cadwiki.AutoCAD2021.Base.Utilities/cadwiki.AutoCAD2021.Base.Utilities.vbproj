@@ -164,6 +164,7 @@
     <Compile Include="Shared\Layouts.vb" />
     <Compile Include="Shared\Lines.vb" />
     <Compile Include="Shared\Math.vb" />
+    <Compile Include="Shared\Mtext.vb" />
     <Compile Include="Shared\ObjectIds.vb" />
     <Compile Include="Shared\Paperspace.vb" />
     <Compile Include="Shared\Points.vb" />

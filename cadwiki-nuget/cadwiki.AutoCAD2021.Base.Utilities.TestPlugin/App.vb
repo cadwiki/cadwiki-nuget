@@ -3,11 +3,11 @@ Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.Runtime
 Imports cadwiki.DllReloader.AutoCAD
 Imports cadwiki.NetUtils
+Imports cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.Tabs
 
 Public Class App
     Implements IExtensionApplication
 
-    Private Shared logger As TextFileLog = New TextFileLog("c:\Temp\MainApp.txt")
 
     'start here 1 - AutoCADAppDomainDllReloader
     'this variable handles routing the Ui clicks on a AutoCAD ribbon button to your methods found in an Assembly
@@ -24,19 +24,21 @@ Public Class App
         'with the same name and differing version number
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf AutoCADAppDomainDllReloader.AssemblyResolve
         Dim iExtensionAppAssembly As Assembly = Assembly.GetExecutingAssembly
-        Dim iExtensionAppVersion As Version = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
+        Dim iExtensionAppVersion As Version = NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly)
+        AcadAppDomainDllReloader.SkipCadwikiDlls = False
         AcadAppDomainDllReloader.Configure(iExtensionAppAssembly)
         AcadAppDomainDllReloader.Reload(iExtensionAppAssembly)
         doc.Editor.WriteMessage(vbLf & "App " & iExtensionAppVersion.ToString & " initialized...")
         doc.Editor.WriteMessage(vbLf)
 
+        cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.Tabs.TabCreator.AddDevTab(doc)
 
-        Dim allRegressionTests As Type = GetType(Tests.RegressionTests)
+        'Dim allRegressionTests As Type = GetType(Tests.RegressionTests)
         'Dim allIntegrationTests As Type = GetType(MainApp.IntegrationTests.Tests)
-        Dim allTestTypes As Type() = {allRegressionTests}
+        'Dim allTestTypes As Type() = {allRegressionTests}
 
-        Dim testRunner As Workflows.NunitTestRunner = New Workflows.NunitTestRunner()
-        testRunner.Run(allTestTypes)
+        'Dim testRunner As Workflows.NunitTestRunner = New Workflows.NunitTestRunner()
+        'testRunner.Run(allTestTypes)
 
     End Sub
 

@@ -14,7 +14,8 @@ Namespace AutoCAD
         Inherits AutodeskAppDomainReloader
 
         Private _document As Document
-        Private _tempFolder As String
+        Private _tempFolder As String = CadwikiTempFolder
+
 
         Public Shadows Function GetLogMode() As LogMode
             Return DependencyValues.LogMode
@@ -214,7 +215,7 @@ Namespace AutoCAD
                         AddDllToReload(tempDll)
                     Else
                         'skip all cadwiki dlls
-                        If dllName.Contains("cadwiki.") Then
+                        If SkipCadwikiDlls And dllName.Contains("cadwiki.") Then
                             Log("Skipped cadwiki dll: " + dllName)
                             Continue For
                         End If
@@ -313,12 +314,14 @@ Namespace AutoCAD
             End Select
         End Sub
 
-        Private Sub LogToTextFile(message As String)
-            If (TextFileLog Is Nothing) Then
-                TextFileLog = New NetUtils.TextFileLog()
-                TextFileLog.Write(message)
+        Private Overloads Sub LogToTextFile(message As String)
+            If (ReloaderLog Is Nothing) Then
+                ReloaderLog = New ReloaderLog()
+                ReloaderLog.LogDir = _tempFolder
+                ReloaderLog.Write(message)
             Else
-                TextFileLog.Write(message)
+                ReloaderLog.LogDir = _tempFolder
+                ReloaderLog.Write(message)
             End If
         End Sub
 
@@ -329,7 +332,7 @@ Namespace AutoCAD
             End If
         End Sub
 
-        Public Sub LogException(ex As Exception)
+        Public Overloads Sub LogException(ex As Exception)
             Dim mode As AutoCADAppDomainDllReloader.LogMode = GetLogMode()
             Select Case mode.Equals(AutoCADAppDomainDllReloader.LogMode.Off)
                 Case mode.Equals(AutoCADAppDomainDllReloader.LogMode.Text)
@@ -340,12 +343,14 @@ Namespace AutoCAD
             End Select
         End Sub
 
-        Private Sub LogExceptionToTextFile(ex As Exception)
-            If (TextFileLog Is Nothing) Then
-                TextFileLog = New NetUtils.TextFileLog()
-                TextFileLog.Exception(ex)
+        Private Overloads Sub LogExceptionToTextFile(ex As Exception)
+            If (ReloaderLog Is Nothing) Then
+                ReloaderLog = New ReloaderLog()
+                ReloaderLog.LogDir = _tempFolder
+                ReloaderLog.Exception(ex)
             Else
-                TextFileLog.Exception(ex)
+                ReloaderLog.LogDir = _tempFolder
+                ReloaderLog.Exception(ex)
             End If
         End Sub
 
@@ -361,6 +366,9 @@ Namespace AutoCAD
             Next
 
         End Sub
+
+
+
 
     End Class
 
