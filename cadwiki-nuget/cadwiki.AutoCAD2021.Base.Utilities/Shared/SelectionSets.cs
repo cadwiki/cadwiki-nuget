@@ -240,6 +240,11 @@ namespace cadwiki.AutoCAD2021.Base.Utilities
 
         }
 
+        public static SelectionSet BlockRefListToSs(List<BlockReference> blockRefs)
+        {
+            var blockSs = SelectionSets.ObjectIdListToSs(blockRefs.Select(o => o.Id).ToList());
+            return blockSs;
+        }
 
     }
 }

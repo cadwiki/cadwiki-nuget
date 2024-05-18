@@ -137,6 +137,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shared\BoundingBoxes.cs" />
     <Compile Include="My Project\AssemblyInfo.cs" />
     <Compile Include="NodeGraph\Edge.cs" />
     <Compile Include="NodeGraph\Node.cs" />

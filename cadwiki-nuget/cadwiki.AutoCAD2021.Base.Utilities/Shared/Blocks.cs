@@ -9,6 +9,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using Microsoft.VisualBasic;
+using OpenMode = Autodesk.AutoCAD.DatabaseServices.OpenMode;
 
 namespace cadwiki.AutoCAD2021.Base.Utilities
 {
@@ -207,6 +208,38 @@ namespace cadwiki.AutoCAD2021.Base.Utilities
                 }
 
             }
+        }
+
+
+        public static List<string> GetAllBlockNamesFromDrawing(Document doc)
+        {
+            List<string> blockNames = new List<string>();
+            try
+            {
+                Database db = doc.Database;
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    BlockTable blockTable = tr.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
+                    if (blockTable != null)
+                    {
+                        foreach (ObjectId blockId in blockTable)
+                        {
+                            BlockTableRecord blockRecord = tr.GetObject(blockId, OpenMode.ForRead) as BlockTableRecord;
+                            if (blockRecord != null)
+                            {
+                                blockNames.Add(blockRecord.Name);
+                            }
+                        }
+                    }
+                    tr.Commit();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                ExceptionHandler.WriteToEditor(ex);
+            }
+
+            return blockNames;
         }
     }
 

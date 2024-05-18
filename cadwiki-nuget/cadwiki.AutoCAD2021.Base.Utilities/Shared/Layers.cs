@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.Windows.Features.PointCloud.PointCloudColorMapping;
 
 namespace cadwiki.AutoCAD2021.Base.Utilities
 {
@@ -188,6 +189,41 @@ namespace cadwiki.AutoCAD2021.Base.Utilities
                     transaction.Commit();
                 }
             }
+        }
+
+        public static List<string> GetLayerNamesFromDrawing(Document doc)
+        {
+            var layerNames = new List<string>();
+            try
+            {
+                Database db = doc.Database;
+                Editor ed = doc.Editor;
+                // Start a transaction
+                using (Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    // Get the LayerTable from the database
+                    LayerTable layerTable = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
+
+                    if (layerTable != null)
+                    {
+                        // Iterate through the layers in the LayerTable
+                        foreach (ObjectId layerId in layerTable)
+                        {
+                            LayerTableRecord layer = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
+                            if (layer != null)
+                            {
+                                layerNames.Add(layer.Name);
+                            }
+                        }
+                    }
+                    tr.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.WriteToEditor(ex);
+            }
+            return layerNames;
         }
     }
 }
