@@ -198,8 +198,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AutoCAD2021.Base.Utilities.vbproj">
-      <Project>{e9fa234c-898a-410d-b3e3-d45824ec6742}</Project>
+    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AutoCAD2021.Base.Utilities.csproj">
+      <Project>{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}</Project>
       <Name>cadwiki.AutoCAD2021.Base.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.vbproj">

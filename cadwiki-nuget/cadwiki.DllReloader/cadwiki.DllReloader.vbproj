@@ -195,8 +195,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.AutoCAD2021.Interop.Utilities\cadwiki.AutoCAD2021.Interop.Utilities.vbproj">
-      <Project>{35f24f06-0f6e-4685-a07a-b53cc12be4f0}</Project>
+    <ProjectReference Include="..\cadwiki.AutoCAD2021.Interop.Utilities\cadwiki.AutoCAD2021.Interop.Utilities.csproj">
+      <Project>{87D6CE6D-C336-0974-2222-7F42A3BCD050}</Project>
       <Name>cadwiki.AutoCAD2021.Interop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
