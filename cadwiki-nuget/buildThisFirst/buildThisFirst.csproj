@@ -166,45 +166,45 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="cadwiki.AutoCAD2021.Base.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.AutoCAD2021.Base.Utilities.dll</HintPath>
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.AutoCAD2021.Base.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="cadwiki.AutoCAD2021.Interop.Utilities, Version=1.0.909.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.AutoCAD2021.Interop.Utilities.dll</HintPath>
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.AutoCAD2021.Interop.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="cadwiki.AutoCAD2022.Interop.Utilities, Version=1.0.909.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.AutoCAD2022.Interop.Utilities.dll</HintPath>
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.AutoCAD2022.Interop.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="cadwiki.CadDevTools, Version=1.1.6.920, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.CadDevTools.dll</HintPath>
+    <Reference Include="cadwiki.CadDevTools, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.CadDevTools.dll</HintPath>
     </Reference>
-    <Reference Include="cadwiki.DllReloader, Version=1.1.6.920, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.DllReloader.dll</HintPath>
+    <Reference Include="cadwiki.DllReloader, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.DllReloader.dll</HintPath>
     </Reference>
-    <Reference Include="cadwiki.FileStore, Version=1.1.6.920, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.FileStore.dll</HintPath>
+    <Reference Include="cadwiki.FileStore, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.FileStore.dll</HintPath>
     </Reference>
-    <Reference Include="cadwiki.NetUtils, Version=1.1.6.920, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.NetUtils.dll</HintPath>
+    <Reference Include="cadwiki.NetUtils, Version=2.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.NetUtils.dll</HintPath>
     </Reference>
-    <Reference Include="cadwiki.NUnitTestRunner, Version=1.1.6.920, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.NUnitTestRunner.dll</HintPath>
+    <Reference Include="cadwiki.NUnitTestRunner, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.NUnitTestRunner.dll</HintPath>
     </Reference>
-    <Reference Include="cadwiki.WpfUi, Version=1.1.6.920, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.WpfUi.dll</HintPath>
+    <Reference Include="cadwiki.WpfUi, Version=2.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.WpfUi.dll</HintPath>
     </Reference>
     <Reference Include="Handlebars, Version=2.1.2.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\Handlebars.dll</HintPath>
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\Handlebars.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.13.3.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\PdfSharp.dll</HintPath>
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.Charting, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.Charting.dll</HintPath>
@@ -221,7 +221,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
     <Reference Include="TestApiCore, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\TestApiCore.dll</HintPath>
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\TestApiCore.dll</HintPath>
     </Reference>
     <Reference Include="TestApiWpf, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.TestApi.0.6.0.0\lib\net40\TestApiWpf.dll</HintPath>
@@ -253,7 +253,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.13.3\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\packages\cadwiki.CadDevTools.1.1.6.920\Build\cadwiki.CadDevTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cadwiki.CadDevTools.1.1.6.920\Build\cadwiki.CadDevTools.targets'))" />
+    <Error Condition="!Exists('..\packages\cadwiki.CadDevTools.2.0.0.0\build\cadwiki.CadDevTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cadwiki.CadDevTools.2.0.0.0\build\cadwiki.CadDevTools.targets'))" />
   </Target>
-  <Import Project="..\packages\cadwiki.CadDevTools.1.1.6.920\Build\cadwiki.CadDevTools.targets" Condition="Exists('..\packages\cadwiki.CadDevTools.1.1.6.920\Build\cadwiki.CadDevTools.targets')" />
+  <Import Project="..\packages\cadwiki.CadDevTools.2.0.0.0\build\cadwiki.CadDevTools.targets" Condition="Exists('..\packages\cadwiki.CadDevTools.2.0.0.0\build\cadwiki.CadDevTools.targets')" />
 </Project>

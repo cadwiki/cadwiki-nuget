@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -66,83 +67,113 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AcCoreMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcCoreMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcCoreMgd, Version=24.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcCoreMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcCui, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcCui.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcCui, Version=24.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcCui.dll</HintPath>
     </Reference>
-    <Reference Include="AcDbMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcDbMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcDbMgd, Version=24.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcDbMgd.dll</HintPath>
     </Reference>
-    <Reference Include="acdbmgdbrep, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\acdbmgdbrep.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="acdbmgdbrep, Version=24.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\acdbmgdbrep.dll</HintPath>
     </Reference>
-    <Reference Include="AcDx, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcDx.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcDx, Version=24.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcDx.dll</HintPath>
     </Reference>
-    <Reference Include="AcMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcMgd, Version=24.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcMr, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcMr.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcMr, Version=24.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcMr.dll</HintPath>
     </Reference>
-    <Reference Include="AcSeamless, Version=24.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcSeamless.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcSeamless, Version=24.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcSeamless.dll</HintPath>
     </Reference>
-    <Reference Include="AcTcMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcTcMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcTcMgd, Version=24.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcTcMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcWindows, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcWindows.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcWindows, Version=24.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AcWindows.dll</HintPath>
     </Reference>
-    <Reference Include="AdUIMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdUIMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AdUIMgd, Version=24.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AdUIMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AdUiPalettes, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdUiPalettes.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AdUiPalettes, Version=24.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AdUiPalettes.dll</HintPath>
     </Reference>
-    <Reference Include="AdWindows, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdWindows.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AdWindows, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Base.1.0.0\lib\AdWindows.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.AutoCAD.Interop">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2021\Autodesk.AutoCAD.Interop.dll</HintPath>
+    <Reference Include="Autodesk.AutoCAD.Interop, Version=24.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Interop.Base.1.0.0\lib\Autodesk.AutoCAD.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Autodesk.AutoCAD.Interop.Common">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2021\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
+    <Reference Include="Autodesk.AutoCAD.Interop.Common, Version=24.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2022.Interop.Base.1.0.0\lib\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="cadwiki.DllReloader, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\cadwiki.DllReloader.1.0.2\lib\net472\cadwiki.DllReloader.dll</HintPath>
+    <Reference Include="cadwiki.AutoCAD2021.Base.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.AutoCAD2021.Base.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="cadwiki.NetUtils, Version=1.0.810.19, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\cadwiki.DllReloader.1.0.2\lib\net472\cadwiki.NetUtils.dll</HintPath>
+    <Reference Include="cadwiki.AutoCAD2021.Interop.Utilities, Version=1.0.909.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.AutoCAD2021.Interop.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="cadwiki.WpfUi, Version=1.0.810.19, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\cadwiki.DllReloader.1.0.2\lib\net472\cadwiki.WpfUi.dll</HintPath>
+    <Reference Include="cadwiki.AutoCAD2022.Interop.Utilities, Version=1.0.909.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.AutoCAD2022.Interop.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="cadwiki.CadDevTools, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.CadDevTools.dll</HintPath>
+    </Reference>
+    <Reference Include="cadwiki.DllReloader, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.DllReloader.dll</HintPath>
+    </Reference>
+    <Reference Include="cadwiki.FileStore, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.FileStore.dll</HintPath>
+    </Reference>
+    <Reference Include="cadwiki.NetUtils, Version=2.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.NetUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="cadwiki.NUnitTestRunner, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.NUnitTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="cadwiki.WpfUi, Version=2.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\cadwiki.WpfUi.dll</HintPath>
+    </Reference>
+    <Reference Include="Handlebars, Version=2.1.2.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\Handlebars.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.13.3.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="TestApiCore, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.2.0.0.0\lib\net472\TestApiCore.dll</HintPath>
+    </Reference>
+    <Reference Include="TestApiWpf, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TestApi.0.6.0.0\lib\net40\TestApiWpf.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -163,11 +194,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets" Condition="Exists('..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cadwiki.DllReloader.1.0.2\Build\cadwiki.DllReloader.targets'))" />
+    <Error Condition="!Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.13.3\build\NUnit.props'))" />
+    <Error Condition="!Exists('..\packages\cadwiki.CadDevTools.2.0.0.0\Build\cadwiki.CadDevTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cadwiki.CadDevTools.2.0.0.0\Build\cadwiki.CadDevTools.targets'))" />
   </Target>
+  <Import Project="..\packages\cadwiki.CadDevTools.2.0.0.0\Build\cadwiki.CadDevTools.targets" Condition="Exists('..\packages\cadwiki.CadDevTools.2.0.0.0\Build\cadwiki.CadDevTools.targets')" />
 </Project>
