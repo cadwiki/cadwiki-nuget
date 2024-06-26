@@ -154,8 +154,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegressionTests\BFSTests.cs" />
-    <Compile Include="My Project\AssemblyInfo.cs" />
     <Compile Include="UiRibbon\ButtonCreator.cs" />
     <Compile Include="UiRibbon\DevTab\DevTab.cs" />
     <Compile Include="UiRibbon\DevTab\Panels\Info.cs" />
