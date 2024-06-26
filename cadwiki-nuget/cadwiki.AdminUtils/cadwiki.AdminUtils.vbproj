@@ -141,8 +141,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
-      <Project>{3c1158da-4a90-4fc1-8ccc-6f1e4787a118}</Project>
+    <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj">
+      <Project>{8E35D9B1-86C8-0030-0E94-A560251095B8}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
   </ItemGroup>

@@ -212,20 +212,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.vbproj">
-      <Project>{F63B3063-2044-4F17-AC6C-FF343C56B03D}</Project>
+    <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.csproj">
+      <Project>{441FB108-EC1C-00E6-2E34-354A5EC1849D}</Project>
       <Name>cadwiki.DllReloader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.vbproj">
-      <Project>{80537D89-B441-44DD-AE0A-E4FDB9BB284D}</Project>
+    <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.csproj">
+      <Project>{3277FCE2-7819-0B2C-2C52-2E83DB2C1CED}</Project>
       <Name>cadwiki.FileStore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
-      <Project>{3C1158DA-4A90-4FC1-8CCC-6F1E4787A118}</Project>
+    <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj">
+      <Project>{8E35D9B1-86C8-0030-0E94-A560251095B8}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.vbproj">
-      <Project>{20525de1-199c-417f-85a1-bda52f76edd1}</Project>
+    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.csproj">
+      <Project>{9276DC8A-D5C4-0E8E-07F9-77DB4DE1D971}</Project>
       <Name>cadwiki.NUnitTestRunner</Name>
     </ProjectReference>
   </ItemGroup>

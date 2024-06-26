@@ -194,12 +194,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.vbproj">
-      <Project>{80537d89-b441-44dd-ae0a-e4fdb9bb284d}</Project>
+    <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.csproj">
+      <Project>{3277FCE2-7819-0B2C-2C52-2E83DB2C1CED}</Project>
       <Name>cadwiki.FileStore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.vbproj">
-      <Project>{3C1158DA-4A90-4FC1-8CCC-6F1E4787A118}</Project>
+    <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj">
+      <Project>{8E35D9B1-86C8-0030-0E94-A560251095B8}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.vbproj">
