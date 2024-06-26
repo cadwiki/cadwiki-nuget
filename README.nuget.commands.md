@@ -1,6 +1,20 @@
 # cadwiki Nuget commands  
 This readme contains all the commands used for creating and pushing nuget packages  
 
+## Standard workflow for building and testing
+1.) Clean project
+2.) Build on Debug AnyCPU
+3.) Run nuget commands
+nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+4.) reference local nuget feed for testing
+5.) add any missing Autodesk references as needed
+
+## Local feed clear
+nuget locals all -list
+nuget locals all -clear
+
 ## Nuget commands for creating new .nuspec file  
 Cd into directory with .csproj or .vbproj  
 ```
@@ -47,16 +61,16 @@ Get-Project -All | Install-Package $Path\ToNuget\File\.nupkg
 Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\AutoCAD2021.Interop.Base\AutoCAD2021.Interop.Base.1.0.0.nupkg
 Only need to install dev tools
 Get-Project -All | UnInstall-Package cadwiki.CadDevTools
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools.1.1.7.610.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner.1.1.7.610.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader.1.1.7.610.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools.2.0.0.0.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner.2.0.0.0.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader.2.0.0.0.nupkg
 ```
 
 
 
 ### Push nuget package 
 ```  
-nuget push ./cadwiki.NUnitTestRunner.1.1.7.610.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.DllReloader.1.1.7.610.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.CadDevTools.1.1.7.610.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.NUnitTestRunner.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.DllReloader.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.CadDevTools.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
 ```
