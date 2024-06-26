@@ -181,41 +181,37 @@ namespace cadwiki.AutoCAD2021.Base.Utilities
 
         public static List<ObjectId> GetSsOfMatchingXdata(Document doc, SelectionSet ss, string xDataRegAppKey, string xDataKey, string xdataValue)
         {
-            try
+            var matchingXDataObjectIdList = new List<ObjectId>();
+            var db = doc.Database;
+            using (var @lock = doc.LockDocument())
             {
-                var matchingXDataObjectIdList = new List<ObjectId>();
-                var db = doc.Database;
-                using (var @lock = doc.LockDocument())
+                using (var t = db.TransactionManager.StartTransaction())
                 {
-                    using (var t = db.TransactionManager.StartTransaction())
+                    BlockTableRecord currentSpace = (BlockTableRecord)t.GetObject(db.CurrentSpaceId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                    foreach (ObjectId objId in ss.GetObjectIds())
                     {
-                        BlockTableRecord currentSpace = (BlockTableRecord)t.GetObject(db.CurrentSpaceId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
-                        foreach (ObjectId objId in ss.GetObjectIds())
+                        Entity entity = (Entity)t.GetObject(objId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                        var existingXData = entity.XData;
+                        if (existingXData == null)
                         {
-                            Entity entity = (Entity)t.GetObject(objId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
-                            var existingXData = entity.XData;
-                            var xdataFound = GetXDataValueFromBuffer(existingXData, xDataRegAppKey, xDataKey);
-                            if (xdataFound is not null)
+                            continue;
+                        }
+                        var xdataFound = GetXDataValueFromBuffer(existingXData, xDataRegAppKey, xDataKey);
+                        if (xdataFound is not null)
+                        {
+                            if (!(xdataFound.Index == -1))
                             {
-                                if (!(xdataFound.Index == -1))
+                                if ((xdataFound.Value ?? "") == (xdataValue ?? ""))
                                 {
-                                    if ((xdataFound.Value ?? "") == (xdataValue ?? ""))
-                                    {
-                                        matchingXDataObjectIdList.Add(entity.Id);
-                                    }
+                                    matchingXDataObjectIdList.Add(entity.Id);
                                 }
                             }
                         }
-                        t.Commit();
                     }
+                    t.Commit();
                 }
-                return matchingXDataObjectIdList;
             }
-            catch (Exception ex)
-            {
-                throw new Exception("GetMatchingXdata error: " + ex.Message);
-            }
-            return null;
+            return matchingXDataObjectIdList;
         }
 
         public static ResultBuffer SetXdataValue(Document doc, ResultBuffer existingBuffer, string xDataRegAppKey, string xDataKey, string xdataValue)
