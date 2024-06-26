@@ -175,17 +175,9 @@
     <Compile Include="cadwiki.NUnitTestRunner\TestsForEvidenceCreator.cs" />
     <Compile Include="cadwiki.NUnitTestRunner\TestStrings.cs" />
     <Compile Include="cadwiki.NUnitTestRunner\TestUiDriver.cs" />
-    <Compile Include="My Project\AssemblyInfo.cs" />
-    <Compile Include="My Project\Application.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Application.myapp</DependentUpon>
-    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="My Project\Application.myapp">
-      <Generator>MyApplicationCodeGenerator</Generator>
-      <LastGenOutput>Application.Designer.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
