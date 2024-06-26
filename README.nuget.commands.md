@@ -11,6 +11,10 @@ nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties Configur
 4.) reference local nuget feed for testing
 5.) add any missing Autodesk references as needed
 
+## Local feed clear
+nuget locals all -list
+nuget locals all -clear
+
 ## Nuget commands for creating new .nuspec file  
 Cd into directory with .csproj or .vbproj  
 ```
