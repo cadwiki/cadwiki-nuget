@@ -8,11 +8,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ComboBox = System.Windows.Controls.ComboBox;
+using TextBox = System.Windows.Controls.TextBox;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace cadwiki.WpfLibrary.Controls
 {
@@ -103,6 +107,13 @@ namespace cadwiki.WpfLibrary.Controls
                 if (IsDropDownEnabled)
                 {
                     SetValue(IsDropDownOpenProperty, value);
+                    ComboBox comboBox = this.ComboBox;
+                    comboBox.ApplyTemplate();
+                    TextBox editableTextBox = comboBox.Template.FindName("PART_EditableTextBox", comboBox) as TextBox;
+                    if (editableTextBox != null)
+                    {
+                        editableTextBox.Select(editableTextBox.Text.Length, 0);
+                    }
                 }
             }
         }
@@ -150,11 +161,25 @@ namespace cadwiki.WpfLibrary.Controls
                         control.IsDropDownOpen = true;
                     }
                 }
-                DeselectHighlightedCharactersOnBackspace(control, e);
+                ClearSelectedItemOnBackspace(control, e);
+                //DeselectHighlightedCharactersOnBackspace(control, e);
             }
             catch (Exception ex)
             {
                 cadwiki.WpfLibrary.Globals.Ex.Log(ex);
+            }
+        }
+
+        private void ClearSelectedItemOnBackspace(KeyPressSearchComboBox control, DependencyPropertyChangedEventArgs e)
+        {
+            var oldStr = e.OldValue as string;
+            var newStr = e.NewValue as string;
+            if (oldStr.Length > newStr.Length)
+            {
+                ComboBox comboBox = control.ComboBox;
+                comboBox.ApplyTemplate();
+                comboBox.SelectedItem = null;
+                SelectedItem = null;
             }
         }
 
@@ -205,13 +230,13 @@ namespace cadwiki.WpfLibrary.Controls
                 ComboBox comboBox = sender as ComboBox;
                 if (comboBox != null)
                 {
-                    comboBox.ApplyTemplate();
+                    //comboBox.ApplyTemplate();
                     TextBox editableTextBox = comboBox.Template.FindName("PART_EditableTextBox", comboBox) as TextBox;
                     if (editableTextBox != null)
                     {
                         if (comboBox.IsEditable && comboBox.SelectedItem == null)
                         {
-                            editableTextBox.Text = comboBox.Text;
+                            //editableTextBox.Text = comboBox.Text;
                         }
                         else
                         {
