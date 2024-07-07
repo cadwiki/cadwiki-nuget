@@ -51,7 +51,9 @@
   <ItemGroup>
     <Compile Include="Controls\BindableMultiSelectDataGrid.cs" />
     <Compile Include="Controls\BindableMultiSelectListBox.cs" />
-    <Compile Include="Controls\KeyPressSearchComboBox.xaml.cs" />
+    <Compile Include="Controls\KeyPressSearchComboBox.xaml.cs">
+      <DependentUpon>KeyPressSearchComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Exceptions\ExceptionHandler.cs" />
     <Compile Include="Globals\Globals.cs" />
@@ -80,8 +82,8 @@
   <ItemGroup />
   <ItemGroup>
     <Page Include="Controls\KeyPressSearchComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TwoWaySelection.xaml">
       <Generator>MSBuild:Compile</Generator>
