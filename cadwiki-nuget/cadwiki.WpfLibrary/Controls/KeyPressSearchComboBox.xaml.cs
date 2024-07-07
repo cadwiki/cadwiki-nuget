@@ -31,6 +31,12 @@ namespace cadwiki.WpfLibrary.Controls
             ItemsFiltered = ItemsOriginal;
         }
 
+        public static readonly DependencyProperty ComboListItemBackgroundColorProperty =
+            DependencyProperty.Register("ComboListItemBackgroundColor", typeof(SolidColorBrush), typeof(KeyPressSearchComboBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("Azure"))));
+
+        public static readonly DependencyProperty MouseOverColorProperty =
+            DependencyProperty.Register("MouseOverColor", typeof(SolidColorBrush), typeof(KeyPressSearchComboBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("Green"))));
+
         public static readonly DependencyProperty ItemsOriginalProperty =
             DependencyProperty.Register("ItemsOriginal", typeof(ObservableCollection<string>), typeof(KeyPressSearchComboBox), new PropertyMetadata(new ObservableCollection<string>()));
 
@@ -48,6 +54,24 @@ namespace cadwiki.WpfLibrary.Controls
 
         public static readonly DependencyProperty IsDropDownEnabledProperty =
             DependencyProperty.Register("IsDropDownEnabled", typeof(bool), typeof(KeyPressSearchComboBox), new PropertyMetadata(false));
+
+        public SolidColorBrush ComboListItemBackgroundColor
+        {
+            get { return (SolidColorBrush)GetValue(ComboListItemBackgroundColorProperty); }
+            set
+            {
+                SetValue(ComboListItemBackgroundColorProperty, value);
+            }
+        }
+
+        public SolidColorBrush MouseOverColor
+        {
+            get { return (SolidColorBrush)GetValue(MouseOverColorProperty); }
+            set
+            {
+                SetValue(MouseOverColorProperty, value);
+            }
+        }
 
         public ObservableCollection<string> ItemsOriginal
         {

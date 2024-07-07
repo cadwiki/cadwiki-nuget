@@ -22,13 +22,13 @@
                                 <Border
                                     Grid.Row="0"
                                     Margin="2"
-                                    Background="Azure" />
+                                    Background="{Binding ComboListItemBackgroundColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 <ContentPresenter />
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Green" />
+                                <Setter Property="Background" Value="{Binding MouseOverColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
