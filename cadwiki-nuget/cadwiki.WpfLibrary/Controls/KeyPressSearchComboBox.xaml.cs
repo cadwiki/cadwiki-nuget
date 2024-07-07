@@ -162,7 +162,6 @@ namespace cadwiki.WpfLibrary.Controls
                     }
                 }
                 ClearSelectedItemOnBackspace(control, e);
-                //DeselectHighlightedCharactersOnBackspace(control, e);
             }
             catch (Exception ex)
             {
@@ -180,22 +179,6 @@ namespace cadwiki.WpfLibrary.Controls
                 comboBox.ApplyTemplate();
                 comboBox.SelectedItem = null;
                 SelectedItem = null;
-            }
-        }
-
-        private static void DeselectHighlightedCharactersOnBackspace(KeyPressSearchComboBox control, DependencyPropertyChangedEventArgs e)
-        {
-            var oldStr = e.OldValue as string;
-            var newStr = e.NewValue as string;
-            if (oldStr.Length > newStr.Length)
-            {
-                ComboBox comboBox = control.ComboBox;
-                comboBox.ApplyTemplate();
-                TextBox editableTextBox = comboBox.Template.FindName("PART_EditableTextBox", comboBox) as TextBox;
-                if (editableTextBox != null)
-                {
-                    editableTextBox.Select(editableTextBox.Text.Length, 0);
-                }
             }
         }
 
@@ -230,7 +213,7 @@ namespace cadwiki.WpfLibrary.Controls
                 ComboBox comboBox = sender as ComboBox;
                 if (comboBox != null)
                 {
-                    //comboBox.ApplyTemplate();
+                    comboBox.ApplyTemplate();
                     TextBox editableTextBox = comboBox.Template.FindName("PART_EditableTextBox", comboBox) as TextBox;
                     if (editableTextBox != null)
                     {
