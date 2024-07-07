@@ -108,13 +108,18 @@ namespace cadwiki.WpfLibrary.Controls
                 {
                     SetValue(IsDropDownOpenProperty, value);
                     ComboBox comboBox = this.ComboBox;
-                    comboBox.ApplyTemplate();
-                    TextBox editableTextBox = comboBox.Template.FindName("PART_EditableTextBox", comboBox) as TextBox;
-                    if (editableTextBox != null)
-                    {
-                        editableTextBox.Select(editableTextBox.Text.Length, 0);
-                    }
+                    RemoveHighlightedTextFromCombo(comboBox);
                 }
+            }
+        }
+
+        private static void RemoveHighlightedTextFromCombo(ComboBox comboBox)
+        {
+            comboBox.ApplyTemplate();
+            TextBox editableTextBox = comboBox.Template.FindName("PART_EditableTextBox", comboBox) as TextBox;
+            if (editableTextBox != null)
+            {
+                editableTextBox.Select(editableTextBox.Text.Length, 0);
             }
         }
 
@@ -211,23 +216,7 @@ namespace cadwiki.WpfLibrary.Controls
             {
                 // Handle ComboBox selection changed event
                 ComboBox comboBox = sender as ComboBox;
-                if (comboBox != null)
-                {
-                    comboBox.ApplyTemplate();
-                    TextBox editableTextBox = comboBox.Template.FindName("PART_EditableTextBox", comboBox) as TextBox;
-                    if (editableTextBox != null)
-                    {
-                        if (comboBox.IsEditable && comboBox.SelectedItem == null)
-                        {
-                            //editableTextBox.Text = comboBox.Text;
-                        }
-                        else
-                        {
-                            editableTextBox.Text = comboBox.SelectedItem?.ToString();
-                            editableTextBox.Select(editableTextBox.Text.Length, 0);
-                        }
-                    }
-                }
+                SetEditTextWhenItemIsSelected(comboBox);
             }
             catch (Exception ex)
             {
@@ -235,6 +224,27 @@ namespace cadwiki.WpfLibrary.Controls
             }
         }
 
+        private static void SetEditTextWhenItemIsSelected(ComboBox comboBox)
+        {
+            if (comboBox != null)
+            {
+                comboBox.ApplyTemplate();
+                TextBox editableTextBox = comboBox.Template.FindName("PART_EditableTextBox", comboBox) as TextBox;
+                if (editableTextBox != null)
+                {
+                    if (comboBox.IsEditable && comboBox.SelectedItem == null)
+                    {
+                        //editableTextBox.Text = comboBox.Text;
+                    }
+                    else
+                    {
+                        //set text to value of selected item
+                        editableTextBox.Text = comboBox.SelectedItem?.ToString();
+                        RemoveHighlightedTextFromCombo(comboBox);
+                    }
+                }
+            }
+        }
     }
 
     public class FixedWidthComboBox : ComboBox
