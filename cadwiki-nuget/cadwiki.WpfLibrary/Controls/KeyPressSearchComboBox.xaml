@@ -13,28 +13,22 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                        <Border Background="{TemplateBinding Background}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Border
-                                    Grid.Row="0"
-                                    Margin="2"
-                                    Background="{Binding ComboListItemBackgroundColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                <ContentPresenter />
-                            </Grid>
+                        <Border x:Name="border" Background="{TemplateBinding Background}">
+                            <ContentPresenter />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{Binding MouseOverColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                <Setter TargetName="border" Property="Background" Value="{Binding MouseOverColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{Binding SelectedColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
     </UserControl.Resources>
     <Grid>
         <local:FixedWidthComboBox
