@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ComboBox = System.Windows.Controls.ComboBox;
 using TextBox = System.Windows.Controls.TextBox;
 using UserControl = System.Windows.Controls.UserControl;
@@ -76,23 +66,26 @@ namespace cadwiki.WpfLibrary.Controls
         public ObservableCollection<string> ItemsOriginal
         {
             get { return (ObservableCollection<string>)GetValue(ItemsOriginalProperty); }
-            set { 
-                SetValue(ItemsOriginalProperty, value); 
+            set
+            {
+                SetValue(ItemsOriginalProperty, value);
             }
         }
 
         public ObservableCollection<string> ItemsFiltered
         {
             get { return (ObservableCollection<string>)GetValue(ItemsFilteredProperty); }
-            set { 
-                SetValue(ItemsFilteredProperty, value); 
+            set
+            {
+                SetValue(ItemsFilteredProperty, value);
             }
         }
 
         public string SearchText
         {
             get { return (string)GetValue(SearchTextProperty); }
-            set { 
+            set
+            {
                 SetValue(SearchTextProperty, value);
 
                 //user backspaced current text
@@ -115,7 +108,8 @@ namespace cadwiki.WpfLibrary.Controls
         public string SelectedItem
         {
             get { return (string)GetValue(SelectedItemProperty); }
-            set { 
+            set
+            {
                 SetValue(SelectedItemProperty, value);
                 if (SelectedItem != null)
                 {
@@ -127,7 +121,8 @@ namespace cadwiki.WpfLibrary.Controls
         public bool IsDropDownOpen
         {
             get { return (bool)GetValue(IsDropDownOpenProperty); }
-            set { 
+            set
+            {
                 if (IsDropDownEnabled)
                 {
                     SetValue(IsDropDownOpenProperty, value);

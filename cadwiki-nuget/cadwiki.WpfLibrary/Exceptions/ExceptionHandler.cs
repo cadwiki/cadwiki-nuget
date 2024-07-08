@@ -2,7 +2,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
-using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
