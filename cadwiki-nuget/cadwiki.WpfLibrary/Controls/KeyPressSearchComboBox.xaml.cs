@@ -40,7 +40,7 @@ namespace cadwiki.WpfLibrary.Controls
 
         public static readonly DependencyProperty ComboListItemBackgroundColorProperty =
             DependencyProperty.Register("ComboListItemBackgroundColor", typeof(SolidColorBrush), 
-                typeof(KeyPressSearchComboBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("Azure"))));
+                typeof(KeyPressSearchComboBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("WhiteSmoke"))));
 
         public SolidColorBrush ComboListItemBackgroundColor
         {
