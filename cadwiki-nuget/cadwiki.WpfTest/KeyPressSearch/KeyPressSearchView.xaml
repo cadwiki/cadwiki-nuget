@@ -21,6 +21,8 @@
         <controls:KeyPressSearchComboBox
             x:Name="comboBoxOutlineLayers"
             MinWidth="150"
+            Background="Gold"
+            ComboBoxItemTextColor="Black"
             ComboListItemBackgroundColor="WhiteSmoke"
             FontSize="10"
             IsDropDownEnabled="{Binding IsScreenOpen, Mode=TwoWay}"
