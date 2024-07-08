@@ -22,16 +22,20 @@ namespace cadwiki.WpfLibrary.Controls
         }
 
         public static readonly DependencyProperty ComboListItemBackgroundColorProperty =
-            DependencyProperty.Register("ComboListItemBackgroundColor", typeof(SolidColorBrush), typeof(KeyPressSearchComboBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("Azure"))));
+            DependencyProperty.Register("ComboListItemBackgroundColor", typeof(SolidColorBrush), 
+                typeof(KeyPressSearchComboBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("Azure"))));
 
         public static readonly DependencyProperty MouseOverColorProperty =
-            DependencyProperty.Register("MouseOverColor", typeof(SolidColorBrush), typeof(KeyPressSearchComboBox), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("Green"))));
+            DependencyProperty.Register("MouseOverColor", typeof(SolidColorBrush), typeof(KeyPressSearchComboBox), 
+                new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("Green"))));
 
         public static readonly DependencyProperty ItemsOriginalProperty =
-            DependencyProperty.Register("ItemsOriginal", typeof(ObservableCollection<string>), typeof(KeyPressSearchComboBox), new PropertyMetadata(new ObservableCollection<string>()));
+            DependencyProperty.Register("ItemsOriginal", typeof(ObservableCollection<string>), typeof(KeyPressSearchComboBox), 
+                new PropertyMetadata(new ObservableCollection<string>()));
 
         public static readonly DependencyProperty ItemsFilteredProperty =
-            DependencyProperty.Register("ItemsFiltered", typeof(ObservableCollection<string>), typeof(KeyPressSearchComboBox), new PropertyMetadata(new ObservableCollection<string>()));
+            DependencyProperty.Register("ItemsFiltered", typeof(ObservableCollection<string>), typeof(KeyPressSearchComboBox), 
+                new PropertyMetadata(new ObservableCollection<string>()));
 
         public static readonly DependencyProperty SearchTextProperty =
             DependencyProperty.Register("SearchText", typeof(string), typeof(KeyPressSearchComboBox), new PropertyMetadata(string.Empty, OnSearchTextChanged));

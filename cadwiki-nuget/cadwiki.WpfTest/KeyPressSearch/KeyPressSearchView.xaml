@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="WhiteSmoke"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -20,10 +21,12 @@
         <controls:KeyPressSearchComboBox
             x:Name="comboBoxOutlineLayers"
             MinWidth="150"
+            ComboListItemBackgroundColor="WhiteSmoke"
             FontSize="10"
             IsDropDownEnabled="{Binding IsScreenOpen, Mode=TwoWay}"
             ItemsFiltered="{Binding ListFilteredStrings, Mode=TwoWay}"
             ItemsOriginal="{Binding ListOriginalStrings, Mode=TwoWay}"
+            MouseOverColor="PaleGoldenrod"
             SelectedItem="{Binding SelectedString, Mode=TwoWay}" />
     </Grid>
 </UserControl>
