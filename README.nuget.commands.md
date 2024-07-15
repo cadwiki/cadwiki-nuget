@@ -8,12 +8,14 @@ This readme contains all the commands used for creating and pushing nuget packag
 nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
 nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
 nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
+ 
 4.) reference local nuget feed for testing
 5.) add any missing Autodesk references as needed
 
 ## Local feed clear
 nuget locals all -list
 nuget locals all -clear
+C:\Users\{username}\.nuget\packages
 
 ## Nuget commands for creating new .nuspec file  
 Cd into directory with .csproj or .vbproj  

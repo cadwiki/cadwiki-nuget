@@ -44,8 +44,27 @@ namespace cadwiki.AdminOps
             folders.Reverse();
             folders.Add(repoFolder);
             folders.Reverse();
-            var projectsToUpdate = new List<string>() { "*cadwiki-nuget", "*CadDevToolsDriver*", "*cadwiki.AdminUtils*", "*cadwiki.CadDevTools*", "*cadwiki.DllReloader*", "*cadwiki.FileStore*", "*cadwiki.NetUtils*", "*cadwiki.NUnitTestRunner*", "*cadwiki.WpfUi*" };
-            var wildCardPatterns = new List<string>() { "*apikeys.txt", "*README.nuget.commands.md", "*AssemblyInfo.vb", "*.nuspec", "*.targets" };
+            var projectsToUpdate = new List<string>() { 
+                "*cadwiki-nuget",
+                "*CadDevToolsDriver*",
+                "*cadwiki.AdminUtils*",
+                "*cadwiki.CadDevTools*",
+                "*cadwiki.DllReloader*",
+                "*cadwiki.FileStore*",
+                "*cadwiki.NetUtils*",
+                "*cadwiki.NUnitTestRunner*",
+                "*cadwiki.WpfUi*",
+                "*cadwiki.WpfLibrary*"
+            };
+
+            var wildCardPatterns = new List<string>() { 
+                "*apikeys.txt",
+                "*README.nuget.commands.md", 
+                "*AssemblyInfo.vb",
+                "*AssemblyInfo.cs",
+                "*.nuspec", 
+                "*.targets" 
+            };
             foreach (var folder in folders)
             {
                 string folderName = Path.GetFileName(folder);
