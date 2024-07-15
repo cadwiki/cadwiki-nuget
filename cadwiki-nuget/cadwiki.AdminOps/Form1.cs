@@ -53,7 +53,8 @@ namespace cadwiki.AdminOps
                 "*cadwiki.FileStore*",
                 "*cadwiki.NetUtils*",
                 "*cadwiki.NUnitTestRunner*",
-                "*cadwiki.WpfUi*"
+                "*cadwiki.WpfUi*",
+                "*cadwiki.WpfLibrary*"
             };
 
             var wildCardPatterns = new List<string>() { 
