@@ -14,6 +14,7 @@ nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties Configur
 ## Local feed clear
 nuget locals all -list
 nuget locals all -clear
+C:\Users\{username}\.nuget\packages
 
 ## Nuget commands for creating new .nuspec file  
 Cd into directory with .csproj or .vbproj  
