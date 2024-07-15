@@ -60,7 +60,8 @@ namespace cadwiki.AdminOps
             var wildCardPatterns = new List<string>() { 
                 "*apikeys.txt",
                 "*README.nuget.commands.md", 
-                "*AssemblyInfo.vb", 
+                "*AssemblyInfo.vb",
+                "*AssemblyInfo.cs",
                 "*.nuspec", 
                 "*.targets" 
             };
