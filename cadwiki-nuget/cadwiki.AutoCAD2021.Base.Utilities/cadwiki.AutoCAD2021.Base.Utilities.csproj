@@ -170,6 +170,7 @@
     <Compile Include="Shared\UserInput.cs" />
     <Compile Include="Shared\XData.cs" />
     <Compile Include="Shared\Zoom.cs" />
+    <Compile Include="UserInput\Selections.cs" />
     <Compile Include="Workflows\BreakSs.cs" />
     <Compile Include="Workflows\NunitTestRunner.cs" />
   </ItemGroup>
