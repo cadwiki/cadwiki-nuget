@@ -21,19 +21,19 @@ namespace cadwiki.AutoCAD2021.Base.Utilities
         public static void SendLispCommandStartUndoMark()
         {
             string str = "(vla-startundomark (vla-get-ActiveDocument (vlax-get-acad-object)))";
-            global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument.SendStringToExecute(str + Environment.NewLine, true, false, false);
+            global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument.SendStringToExecute(str + "\n", true, false, false);
         }
 
         public static void SendLispCommandEndUndoMark()
         {
             string str = "(vla-endundomark (vla-get-ActiveDocument (vlax-get-acad-object)))";
-            global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument.SendStringToExecute(str + Environment.NewLine, true, false, false);
+            global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument.SendStringToExecute(str + "\n", true, false, false);
         }
 
         public static void SendLispCommandUndoBack()
         {
             string str = "(command-s \"._undo\" \"back\" \"yes\")";
-            global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument.SendStringToExecute(str + Environment.NewLine, true, false, false);
+            global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument.SendStringToExecute(str + "\n", true, false, false);
         }
 
         public static void SendCommand(string command)
