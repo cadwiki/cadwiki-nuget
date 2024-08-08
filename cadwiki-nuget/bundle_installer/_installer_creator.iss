@@ -27,8 +27,8 @@ OutputBaseFilename={#MyAppName}_v{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-SetupIconFile=YourApp_176x176.ico
-WizardImageFile=YourApp_176x176.bmp
+;SetupIconFile=YourApp_176x176.ico
+;WizardImageFile=YourApp_176x176.bmp
  
 
 [Languages]
