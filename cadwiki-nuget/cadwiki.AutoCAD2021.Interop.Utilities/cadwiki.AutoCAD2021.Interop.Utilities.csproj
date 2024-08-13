@@ -119,11 +119,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Autodesk.AutoCAD.Interop">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2021\Autodesk.AutoCAD.Interop.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\Autodesk.AutoCAD.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Autodesk.AutoCAD.Interop.Common">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\AutoCAD 2021\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="cadwiki.DllReloader, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">

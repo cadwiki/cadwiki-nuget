@@ -62,6 +62,14 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autodesk.AutoCAD.Interop, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Interop.Base.1.0.0\lib\Autodesk.AutoCAD.Interop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Autodesk.AutoCAD.Interop.Common, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Interop.Base.1.0.0\lib\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="AcCoreMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcCoreMgd.dll</HintPath>
@@ -162,6 +170,7 @@
     <Compile Include="Shared\UserInput.cs" />
     <Compile Include="Shared\XData.cs" />
     <Compile Include="Shared\Zoom.cs" />
+    <Compile Include="UserInput\Selections.cs" />
     <Compile Include="Workflows\BreakSs.cs" />
     <Compile Include="Workflows\NunitTestRunner.cs" />
   </ItemGroup>
