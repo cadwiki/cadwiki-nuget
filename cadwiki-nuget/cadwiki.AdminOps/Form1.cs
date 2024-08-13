@@ -47,7 +47,7 @@ namespace cadwiki.AdminOps
             var projectsToUpdate = new List<string>() { 
                 "*cadwiki-nuget",
                 "*CadDevToolsDriver*",
-                "*cadwiki.AdminUtils*",
+                "*cadwiki.AdminOps*",
                 "*cadwiki.CadDevTools*",
                 "*cadwiki.DllReloader*",
                 "*cadwiki.FileStore*",

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ApplicationPackage
+    SchemaVersion="1.0"
+    AppVersion="1.0.0.0"
+    ProductCode="{ad796d6a-7af9-4996-8e1a-11e4ed209cfa}"
+    UpgradeCode="{505b8436-a23d-446c-86d3-6fcc8a1bd3d4}"
+    Name="YourAppName"
+    AutodeskProduct="AutoCAD"
+    ProductType="Application"
+    Description="YourDescription"
+    HelpFile=""
+    Author="YourDeveloper">
+
+    <CompanyDetails Name="YourCompany" />
+    <Components>
+
+		<RuntimeRequirements />
+
+        <ComponentEntry AppName="YourApp"
+            ModuleName="./Contents/YourApp.dll"
+            LoadOnAppearance="True">
+		</ComponentEntry>
+
+		
+    </Components>
+
+</ApplicationPackage>
