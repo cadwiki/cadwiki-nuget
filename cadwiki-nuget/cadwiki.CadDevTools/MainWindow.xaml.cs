@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils;
+using InteropUtils2024 = cadwiki.AC24.Interop.InteropUtils;
 using cadwiki.NetUtils;
 
 namespace cadwiki.CadDevTools
@@ -220,6 +221,26 @@ namespace cadwiki.CadDevTools
                     interop2022.SetAutoCADWindowToNormal();
                 }
             }
+            else if (acadLocation.Contains("2024"))
+            {
+                var interop2024 = new InteropUtils2024();
+                bool isAutoCADRunning = interop2024.IsAutoCADRunning();
+                if (isAutoCADRunning == false)
+                {
+                    System.Windows.Forms.Application.DoEvents();
+                    var processInfo = new ProcessStartInfo()
+                    {
+                        FileName = acadLocation,
+                        Arguments = this.TextBoxStartupSwitches.Text
+                    };
+                    interop2024.StartAutoCADApp(processInfo);
+                }
+                interop2024.ConfigureRunningAutoCADForUsage();
+                if (_dependencies.SetAutocadWindowToNorm)
+                {
+                    interop2024.SetAutoCADWindowToNormal();
+                }
+            }
             // interop.OpenDrawingTemplate(dwtFilePath, True)
             else
             {
@@ -251,7 +272,15 @@ namespace cadwiki.CadDevTools
                 }
                 interop2022.NetloadDll(cadAppDll);
             }
-
+            else if (acadLocation.Contains("2024"))
+            {
+                var interop2024 = new InteropUtils2024();
+                bool isAutoCADRunning = interop2024.IsAutoCADRunning();
+                if (isAutoCADRunning == false)
+                {
+                }
+                interop2024.NetloadDll(cadAppDll);
+            }
             WpfUi.Utils.SetSuccessStatus(this.TextBlockStatus, this.TextBlockMessage, "Dll netload complete: " + cadAppDll);
             System.Windows.Forms.Application.DoEvents();
         }

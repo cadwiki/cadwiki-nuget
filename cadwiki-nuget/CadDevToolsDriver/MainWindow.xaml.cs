@@ -20,7 +20,7 @@ namespace CadDevToolsDriver
             string testPluginDll = cadwiki.NetUtils.Paths.GetNewestDllInAnySubfolderOfSolutionDirectory(tempDir, wildCardFileName);
 
             var dependencies = new cadwiki.CadDevTools.MainWindow.Dependencies();
-            dependencies.AutoCADExePath = @"E:\Program Files\Autodesk\AutoCAD 2021\acad.exe";
+            dependencies.AutoCADExePath = @"C:\Program Files\Autodesk\AutoCAD 2024\acad.exe";
             dependencies.AutoCADStartupSwitches = "/p VANILLA";
             dependencies.DllFilePathToNetload = testPluginDll;
             dependencies.CustomDirectoryToSearchForDllsToLoadFrom = tempDir;
