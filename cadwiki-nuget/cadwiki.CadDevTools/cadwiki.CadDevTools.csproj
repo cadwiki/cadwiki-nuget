@@ -10,10 +10,11 @@
     <AssemblyName>cadwiki.CadDevTools</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <Deterministic>true</Deterministic>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -101,6 +102,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cadwiki.AC24.Interop\cadwiki.AC24.Interop.csproj">
+      <Project>{d76226ab-71b7-4c2d-ac34-193fe4b76825}</Project>
+      <Name>cadwiki.AC24.Interop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AutoCAD2021.Base.Utilities.csproj">
       <Project>{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}</Project>
       <Name>cadwiki.AutoCAD2021.Base.Utilities</Name>
