@@ -164,6 +164,7 @@
     <Compile Include="Shared\Paperspace.cs" />
     <Compile Include="Shared\Points.cs" />
     <Compile Include="Shared\Polylines.cs" />
+    <Compile Include="Shared\RotatedBlockReferenceBoundingBoxes.cs" />
     <Compile Include="Shared\SelectionFilters.cs" />
     <Compile Include="Shared\SelectionSets.cs" />
     <Compile Include="Shared\Styles.cs" />
