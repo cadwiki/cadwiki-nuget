@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.Properties")]
+[assembly: AssemblyTitle("cadwiki.AC.TestPlugin.Properties")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.Properties")]
+[assembly: AssemblyProduct("cadwiki.AC.TestPlugin.Properties")]
 [assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -5,7 +5,7 @@ using cadwiki.DllReloader.AutoCAD;
 using cadwiki.NetUtils;
 using Microsoft.VisualBasic;
 
-namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin
+namespace cadwiki.AC.TestPlugin
 {
 
     public class App : IExtensionApplication
@@ -35,7 +35,7 @@ namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin
             doc.Editor.WriteMessage(Environment.NewLine + "App " + iExtensionAppVersion.ToString() + " initialized...");
             doc.Editor.WriteMessage(Environment.NewLine);
 
-            cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.Tabs.TabCreator.AddDevTab(doc);
+            cadwiki.AC.TestPlugin.UiRibbon.Tabs.TabCreator.AddDevTab(doc);
 
             // Dim allRegressionTests As Type = GetType(Tests.RegressionTests)
             // Dim allIntegrationTests As Type = GetType(MainApp.IntegrationTests.Tests)

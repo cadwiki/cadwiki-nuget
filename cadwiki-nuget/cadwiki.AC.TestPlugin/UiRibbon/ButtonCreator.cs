@@ -4,7 +4,7 @@ using Autodesk.Windows;
 using cadwiki.DllReloader.AutoCAD;
 using cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons;
 
-namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon
+namespace cadwiki.AC.TestPlugin.UiRibbon
 {
     internal class ButtonCreator
     {

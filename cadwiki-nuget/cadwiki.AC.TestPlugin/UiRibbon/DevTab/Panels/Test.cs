@@ -3,7 +3,7 @@ using System.Reflection;
 using Autodesk.Windows;
 using cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons;
 
-namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.DevTab.Panels
+namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
 {
     public class Test
     {
@@ -40,7 +40,7 @@ namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.cadwiki.AutoCAD2021.Base
             // Dim allIntegrationTests = GetType(Tests.RegressionTests)
             Type[] allRegressionTestTypes = new[] { allRegressionTests };
             // Dim allRegressionTestTypes = {allRegressionTests, allIntegrationTests}
-            var uiRouter = new UiRouter("cadwiki.AutoCAD2021.Base.Utilities", "cadwiki.AutoCAD2021.Base.Utilities.Workflows.NunitTestRunner", "Run", new[] { allRegressionTestTypes }, App.AcadAppDomainDllReloader, Assembly.GetExecutingAssembly());
+            var uiRouter = new UiRouter("cadwiki.AC", "cadwiki.AC.Workflows.NunitTestRunner", "Run", new[] { allRegressionTestTypes }, App.AcadAppDomainDllReloader, Assembly.GetExecutingAssembly());
 
 
 

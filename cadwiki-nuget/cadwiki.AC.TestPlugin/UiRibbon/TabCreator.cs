@@ -4,7 +4,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.Windows;
 using Microsoft.VisualBasic;
 
-namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.Tabs
+namespace cadwiki.AC.TestPlugin.UiRibbon.Tabs
 {
     public class TabCreator
     {

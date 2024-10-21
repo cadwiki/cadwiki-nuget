@@ -5,7 +5,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using NUnit.Framework;
 
-namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.Tests
+namespace cadwiki.AC.TestPlugin.Tests
 {
     [TestFixture]
     public partial class RegressionTests

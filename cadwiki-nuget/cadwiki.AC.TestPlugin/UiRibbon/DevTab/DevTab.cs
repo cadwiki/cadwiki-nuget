@@ -1,8 +1,8 @@
 ﻿
 using Autodesk.Windows;
-using cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.DevTab.Panels;
+using cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels;
 
-namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.Tabs
+namespace cadwiki.AC.TestPlugin.UiRibbon.Tabs
 {
     public class DevTab
     {

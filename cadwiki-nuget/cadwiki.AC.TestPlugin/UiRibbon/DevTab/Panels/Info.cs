@@ -5,7 +5,7 @@ using Autodesk.Windows;
 using static cadwiki.DllReloader.AutoCAD.AcadAssemblyUtils;
 using cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons;
 
-namespace cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.UiRibbon.DevTab.Panels
+namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
 {
     public class Info
     {
