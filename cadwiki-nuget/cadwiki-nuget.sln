@@ -67,12 +67,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		cadwiki.NUnitTestRunner.dgml = cadwiki.NUnitTestRunner.dgml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.AC", "cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AC.csproj", "{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.AC", "cadwiki.AC\cadwiki.AC.csproj", "{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.AutoCAD2021.Base.Utilities.TestPlugin", "cadwiki.AutoCAD2021.Base.Utilities.TestPlugin\cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.csproj", "{2D93835D-5AAB-075E-22C7-0A75FC46A497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.AC.TestPlugin", "cadwiki.AC.TestPlugin\cadwiki.AC.TestPlugin.csproj", "{2D93835D-5AAB-075E-22C7-0A75FC46A497}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0E45F9FB-7F4C-0ED1-3835-A09F08620C81} = {0E45F9FB-7F4C-0ED1-3835-A09F08620C81}
 	EndProjectSection
