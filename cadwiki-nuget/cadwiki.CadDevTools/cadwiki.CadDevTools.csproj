@@ -106,7 +106,7 @@
       <Project>{d76226ab-71b7-4c2d-ac34-193fe4b76825}</Project>
       <Name>cadwiki.AC24.Interop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AC.csproj">
+    <ProjectReference Include="..\cadwiki.AC\cadwiki.AC.csproj">
       <Project>{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}</Project>
       <Name>cadwiki.AC</Name>
     </ProjectReference>

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{21BE56DB-FFCE-084D-00B6-41761E66505D}</ProjectGuid>
+    <ProjectGuid>{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>cadwiki.CadDevTools</RootNamespace>
-    <AssemblyName>cadwiki.CadDevTools</AssemblyName>
+    <RootNamespace>cadwiki.AC</RootNamespace>
+    <AssemblyName>cadwiki.AC</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>bin\Debug\cadwiki.CadDevTools.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\cadwiki.AC.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\cadwiki.CadDevTools.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\cadwiki.AC.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
@@ -46,7 +46,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>bin\x64\Debug\cadwiki.CadDevTools.xml</DocumentationFile>
+    <DocumentationFile>bin\x64\Debug\cadwiki.AC.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -54,7 +54,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DocumentationFile>bin\x64\Release\cadwiki.CadDevTools.xml</DocumentationFile>
+    <DocumentationFile>bin\x64\Release\cadwiki.AC.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -63,19 +63,67 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="AcCoreMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcCoreMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcCui, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcCui.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcDbMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcDbMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acdbmgdbrep, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\acdbmgdbrep.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcDx, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcDx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcMr, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcMr.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcSeamless, Version=24.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcSeamless.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcTcMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcTcMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcWindows, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AdUIMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdUIMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AdUiPalettes, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdUiPalettes.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AdWindows, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -92,9 +140,6 @@
     <Compile Include="My Project\MyNamespace.Static.1.Designer.cs" />
     <Compile Include="My Project\MyNamespace.Static.2.Designer.cs" />
     <Compile Include="My Project\MyNamespace.Static.3.Designer.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="My Project\AssemblyInfo.cs" />
     <Compile Include="My Project\Application.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -110,12 +155,37 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="NodeGraph\Edge.cs" />
+    <Compile Include="NodeGraph\Node.cs" />
+    <Compile Include="NodeGraph\NodeGraph.cs" />
+    <Compile Include="Shared\ExceptionHandler.cs" />
+    <Compile Include="Shared\Blocks.cs" />
+    <Compile Include="Shared\Commands.cs" />
+    <Compile Include="Shared\Draw.cs" />
+    <Compile Include="Shared\Layers.cs" />
+    <Compile Include="Shared\LayerStates.cs" />
+    <Compile Include="Shared\Layouts.cs" />
+    <Compile Include="Shared\Lines.cs" />
+    <Compile Include="Shared\Math.cs" />
+    <Compile Include="Shared\Mtext.cs" />
+    <Compile Include="Shared\ObjectIds.cs" />
+    <Compile Include="Shared\Paperspace.cs" />
+    <Compile Include="Shared\Points.cs" />
+    <Compile Include="Shared\Polylines.cs" />
+    <Compile Include="Shared\SelectionFilters.cs" />
+    <Compile Include="Shared\SelectionSets.cs" />
+    <Compile Include="Shared\Styles.cs" />
+    <Compile Include="Shared\UserInput.cs" />
+    <Compile Include="Shared\XData.cs" />
+    <Compile Include="Shared\Zoom.cs" />
+    <Compile Include="Workflows\BreakSs.cs" />
+    <Compile Include="Workflows\NunitTestRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>cadwiki.CadDevTools.My.Resources</CustomToolNamespace>
+      <CustomToolNamespace>cadwiki.AC.My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -126,48 +196,19 @@
     </None>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <CustomToolNamespace>cadwiki.CadDevTools.My</CustomToolNamespace>
+      <CustomToolNamespace>cadwiki.AC.My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\cadwiki.AC\cadwiki.AC.csproj">
-      <Project>{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}</Project>
-      <Name>cadwiki.AC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\cadwiki.AutoCAD2021.Interop.Utilities\cadwiki.AutoCAD2021.Interop.Utilities.csproj">
-      <Project>{87D6CE6D-C336-0974-2222-7F42A3BCD050}</Project>
-      <Name>cadwiki.AutoCAD2021.Interop.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\cadwiki.AutoCAD2022.Interop.Utilities\cadwiki.AutoCAD2022.Interop.Utilities.csproj">
-      <Project>{223A889D-F562-0C77-16BC-D99B497E2B1D}</Project>
-      <Name>cadwiki.AutoCAD2022.Interop.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.csproj">
-      <Project>{441FB108-EC1C-00E6-2E34-354A5EC1849D}</Project>
-      <Name>cadwiki.DllReloader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.csproj">
-      <Project>{3277FCE2-7819-0B2C-2C52-2E83DB2C1CED}</Project>
-      <Name>cadwiki.FileStore</Name>
-    </ProjectReference>
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj">
       <Project>{8E35D9B1-86C8-0030-0E94-A560251095B8}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.csproj">
-      <Project>{9276DC8A-D5C4-0E8E-07F9-77DB4DE1D971}</Project>
+    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.vbproj">
+      <Project>{20525DE1-199C-417F-85A1-BDA52F76EDD1}</Project>
       <Name>cadwiki.NUnitTestRunner</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.vbproj">
-      <Project>{94651d61-ebd0-4d0b-8358-79b14c1805f8}</Project>
-      <Name>cadwiki.WpfUi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
