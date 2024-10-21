@@ -11,7 +11,7 @@ using Autodesk.AutoCAD.Runtime;
 using Microsoft.VisualBasic;
 using OpenMode = Autodesk.AutoCAD.DatabaseServices.OpenMode;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
 
     public class Blocks

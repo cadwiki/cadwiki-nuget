@@ -5,7 +5,7 @@ using Autodesk.AutoCAD.Interop;
 using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
 
     public class Commands

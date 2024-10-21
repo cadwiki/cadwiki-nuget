@@ -3,7 +3,7 @@ using Autodesk.AutoCAD.BoundaryRepresentation;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
 
     public class Polylines

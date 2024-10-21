@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
     public class BoundingBoxes
     {

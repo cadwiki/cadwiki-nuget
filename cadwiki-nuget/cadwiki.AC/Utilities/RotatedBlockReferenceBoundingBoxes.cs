@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Autodesk.AutoCAD.Geometry;
 
-namespace cadwiki.AC.Shared
+namespace cadwiki.AC.Utilities.Shared
 {
     public class RotatedBlockReferenceBoundingBoxes
     {

@@ -5,7 +5,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Windows.Features.PointCloud.PointCloudColorMapping;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
 
     public class Layers

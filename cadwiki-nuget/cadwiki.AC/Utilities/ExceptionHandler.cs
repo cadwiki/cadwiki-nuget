@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
 
     public class ExceptionHandler

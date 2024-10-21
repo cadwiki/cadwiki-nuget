@@ -8,7 +8,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Microsoft.VisualBasic;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
 
     public class SelectionSets

@@ -1,6 +1,6 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
 
     public class Lines

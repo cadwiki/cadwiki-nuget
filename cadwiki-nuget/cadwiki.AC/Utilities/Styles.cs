@@ -3,7 +3,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 
-namespace cadwiki.AC
+namespace cadwiki.AC.Utilities
 {
 
     public class Styles
