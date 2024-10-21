@@ -166,9 +166,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AutoCAD2021.Base.Utilities.csproj">
+    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AC.csproj">
       <Project>{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}</Project>
-      <Name>cadwiki.AutoCAD2021.Base.Utilities</Name>
+      <Name>cadwiki.AC</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.csproj">
       <Project>{441FB108-EC1C-00E6-2E34-354A5EC1849D}</Project>
