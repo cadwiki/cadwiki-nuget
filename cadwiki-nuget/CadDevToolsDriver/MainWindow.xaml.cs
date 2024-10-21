@@ -16,7 +16,7 @@ namespace CadDevToolsDriver
             string exeDir = System.IO.Path.GetDirectoryName(exePath);
             string tempDir = System.IO.Path.GetTempPath() + "cadwiki.TestPlugin";
 
-            string wildCardFileName = "*" + "cadwiki.AutoCAD2021.Base.Utilities.TestPlugin.dll";
+            string wildCardFileName = "*" + "cadwiki.AC.TestPlugin.dll";
             string testPluginDll = cadwiki.NetUtils.Paths.GetNewestDllInAnySubfolderOfSolutionDirectory(tempDir, wildCardFileName);
 
             var dependencies = new cadwiki.CadDevTools.MainWindow.Dependencies();

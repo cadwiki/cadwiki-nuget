@@ -70,10 +70,15 @@ namespace cadwiki.AC24.Interop
             {
                 throw new Exception("Dll does not exist: " + dllPath);
             }
-            var doc = App.ActiveDocument;
-            if (doc is null)
+
+            AcadDocument doc = null;
+            if (App.Documents.Count == 0)
             {
                 doc = App.Documents.Add();
+            }
+            else
+            {
+                doc = App.ActiveDocument;
             }
             doc.SendCommand("(setvar \"secureload\" 0)" + Environment.NewLine);
             dllPath = dllPath.Replace(@"\", @"\\");
