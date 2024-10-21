@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Microsoft.VisualBasic;
+using cadwiki.AC.Utilities;
 
 namespace cadwiki.AC.NodeGraph
 {

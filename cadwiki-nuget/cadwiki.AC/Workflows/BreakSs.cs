@@ -7,7 +7,7 @@ using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using Microsoft.VisualBasic;
+using cadwiki.AC.Utilities;
 
 namespace cadwiki.AC.Workflows
 {
@@ -143,7 +143,7 @@ namespace cadwiki.AC.Workflows
         {
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var promptEntityOptions = new PromptEntityOptions("Select entity on layer to break: " + Environment.NewLine);
-            var objectId = cadwiki.AC.UserInput.GetEntityFromUser(doc, promptEntityOptions);
+            var objectId = cadwiki.AC.Utilities.UserInput.GetEntityFromUser(doc, promptEntityOptions);
             var db = doc.Database;
             using (var @lock = doc.LockDocument())
             {

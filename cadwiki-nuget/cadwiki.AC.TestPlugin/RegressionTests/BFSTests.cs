@@ -3,6 +3,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using cadwiki.AC.Utilities;
 using NUnit.Framework;
 
 namespace cadwiki.AC.TestPlugin.Tests
