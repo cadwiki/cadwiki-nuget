@@ -86,7 +86,18 @@
       AssemblyRevisionType="$(AssemblyRevisionType)"
       AssemblyRevisionFormat="$(AssemblyRevisionFormat)" />
 
-
+    <AssemblyInfo
+      AssemblyInfoFiles="@(AssemblyInfoFiles)"
+      AssemblyFileMajorVersion="$(AssemblyMajorVersion)"
+      AssemblyFileMinorVersion="$(AssemblyMinorVersion)"
+      AssemblyFileBuildNumberType="$(AssemblyBuildNumberType)"
+      AssemblyFileBuildNumberFormat="$(AssemblyBuildNumberFormat)"
+      AssemblyFileRevision="$(AssemblyRevision)"
+      AssemblyBuildNumber="$(AssemblyBuildNumber)"
+      AssemblyRevisionType="$(AssemblyRevisionType)"
+      AssemblyRevisionFormat="$(AssemblyRevisionFormat)"
+  />
+    
     <Exec Command="echo target incremented assembly version for all assemblies in solution." />
     <!-- print statement for debugging -->
     <Message Text="@(AssemblyInfoFiles, '%0a')" Importance="high" />
