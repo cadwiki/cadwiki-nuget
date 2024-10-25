@@ -89,43 +89,43 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AcCoreMgd">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcCoreMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcCoreMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcCui">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcCui.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcCui.dll</HintPath>
     </Reference>
     <Reference Include="AcDbMgd">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcDbMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcDbMgd.dll</HintPath>
     </Reference>
     <Reference Include="acdbmgdbrep">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\acdbmgdbrep.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\acdbmgdbrep.dll</HintPath>
     </Reference>
     <Reference Include="AcDx">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcDx.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcDx.dll</HintPath>
     </Reference>
     <Reference Include="AcMgd">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcMr">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcMr.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcMr.dll</HintPath>
     </Reference>
     <Reference Include="AcSeamless">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcSeamless.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcSeamless.dll</HintPath>
     </Reference>
     <Reference Include="AcTcMgd">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcTcMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcTcMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcWindows">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AcWindows.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AcWindows.dll</HintPath>
     </Reference>
     <Reference Include="AdUIMgd">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AdUIMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AdUIMgd.dll</HintPath>
     </Reference>
     <Reference Include="AdUiPalettes">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AdUiPalettes.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AdUiPalettes.dll</HintPath>
     </Reference>
     <Reference Include="AdWindows">
-      <HintPath>C:\Autodesk\ObjectARX_for_AutoCAD_2021_Win_64bit_dlm\inc\AdWindows.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2021\AdWindows.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.13.3.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.13.3\lib\net45\nunit.framework.dll</HintPath>
