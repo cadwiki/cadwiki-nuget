@@ -9,7 +9,7 @@
     </GetAssemblyIdentity>
     <PropertyGroup>
       <CurrentDateTime>$([System.DateTime]::Now.ToString("yyyy_MM_dd_HH_mm_ss"))</CurrentDateTime>
-      <TempFolderPath>$([System.IO.Path]::Combine($([System.IO.Path]::GetTempPath()), "cadwiki.TestPlugin", %(thisProjectAssemblyIdentities.Version), $(CurrentDateTime)))\</TempFolderPath>
+      <TempFolderPath>$([System.IO.Path]::Combine($([System.IO.Path]::GetTempPath()), "cadwiki.TestPlugin", %(thisProjectAssemblyIdentities.Version)))\</TempFolderPath>
       <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
       <LangVersion>latest</LangVersion>
     </PropertyGroup>
