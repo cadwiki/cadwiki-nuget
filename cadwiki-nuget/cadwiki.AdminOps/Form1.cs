@@ -46,15 +46,21 @@ namespace cadwiki.AdminOps
             folders.Reverse();
             var projectsToUpdate = new List<string>() { 
                 "*cadwiki-nuget",
+                "*buildThisFirst*",
                 "*CadDevToolsDriver*",
+                "*cadwiki.AC*",
+                "*cadwiki.AdminOps*",
+                "*cadwiki.AutoCAD2021*",
                 "*cadwiki.AdminOps*",
                 "*cadwiki.CadDevTools*",
                 "*cadwiki.DllReloader*",
                 "*cadwiki.FileStore*",
                 "*cadwiki.NetUtils*",
                 "*cadwiki.NUnitTestRunner*",
+                "*cadwiki.WpfLibrary*",
+                "*cadwiki.WpfTest*",
                 "*cadwiki.WpfUi*",
-                "*cadwiki.WpfLibrary*"
+                "*UnitTests*",
             };
 
             var wildCardPatterns = new List<string>() { 

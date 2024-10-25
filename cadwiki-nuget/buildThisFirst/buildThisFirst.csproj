@@ -165,8 +165,8 @@
       <HintPath>..\packages\AutoCAD2022.Interop.Base.1.0.0\lib\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="cadwiki.AutoCAD2021.Base.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.AutoCAD2021.Base.Utilities.dll</HintPath>
+    <Reference Include="cadwiki.AC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.AC.dll</HintPath>
     </Reference>
     <Reference Include="cadwiki.AutoCAD2021.Interop.Utilities, Version=1.0.909.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\cadwiki.CadDevTools.1.1.6.920\lib\net472\cadwiki.AutoCAD2021.Interop.Utilities.dll</HintPath>
