@@ -137,9 +137,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.AutoCAD2021.Base.Utilities\cadwiki.AutoCAD2021.Base.Utilities.csproj">
+    <ProjectReference Include="..\cadwiki.AC\cadwiki.AC.csproj">
       <Project>{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}</Project>
-      <Name>cadwiki.AutoCAD2021.Base.Utilities</Name>
+      <Name>cadwiki.AC</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.AutoCAD2021.Interop.Utilities\cadwiki.AutoCAD2021.Interop.Utilities.csproj">
       <Project>{87D6CE6D-C336-0974-2222-7F42A3BCD050}</Project>
