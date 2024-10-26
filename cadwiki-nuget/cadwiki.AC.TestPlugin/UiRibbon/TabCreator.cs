@@ -8,22 +8,32 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.Tabs
 {
     public class TabCreator
     {
-        public static void AddDevTab(Document doc)
+        public static bool AddDevTab(Document doc)
         {
             var devTab = DevTab.Create();
             DevTab.AddAllPanels(devTab);
             var allRibbonTabs = new List<RibbonTab>(new RibbonTab[] { devTab });
-            AddTabs(doc, allRibbonTabs);
+            return AddTabs(doc, allRibbonTabs);
         }
 
-        private static void AddTabs(Document doc, List<RibbonTab> ribbonTabs)
+        private static bool AddTabs(Document doc, List<RibbonTab> ribbonTabs)
         {
             doc.Editor.WriteMessage(Environment.NewLine + "Adding tabs...");
+            var wasTabAdded = false;
+            var wereAllTabsAdded = true;
             foreach (var ribbonTab in ribbonTabs)
-                AddTab(doc, ribbonTab);
+            {
+                wasTabAdded = AddTab(doc, ribbonTab);
+                if (!wasTabAdded)
+                {
+                    doc.Editor.WriteMessage(Environment.NewLine + "Failed to add tab..." + ribbonTab.Name);
+                    wereAllTabsAdded = false;
+                }
+            }
+            return wereAllTabsAdded;
         }
 
-        private static void AddTab(Document doc, RibbonTab ribbonTab)
+        private static bool AddTab(Document doc, RibbonTab ribbonTab)
         {
             doc.Editor.WriteMessage(Environment.NewLine + "Add tab...");
             var ribbonControl = ComponentManager.Ribbon;
@@ -42,7 +52,13 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.Tabs
                 }
                 ribbonControl.Tabs.Add(ribbonTab);
                 ribbonTab.IsActive = true;
+                return true;
             }
+            else
+            {
+                doc.Editor.WriteMessage(Environment.NewLine + "Ribbon is not shown...type RIBBON into AutoCAD command line.");
+            }
+            return false;
         }
     }
 }

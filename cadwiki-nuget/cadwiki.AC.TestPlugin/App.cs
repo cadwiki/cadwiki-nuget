@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection;
+using System.Windows.Controls;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using cadwiki.DllReloader.AutoCAD;
 using cadwiki.NetUtils;
@@ -21,30 +23,35 @@ namespace cadwiki.AC.TestPlugin
         // to the correct method
         public void Initialize()
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            doc.Editor.WriteMessage(Environment.NewLine + "App initialize called...");
-            // This Event Handler allows the IExtensionApplication to Resolve any Assemblies
-            // The AssemblyResolve method finds the correct assembly in the AppDomain when there are multiple assemblies
-            // with the same name and differing version number
-            AppDomain.CurrentDomain.AssemblyResolve += AutodeskAppDomainReloader.AssemblyResolve;
-            var iExtensionAppAssembly = Assembly.GetExecutingAssembly();
-            var iExtensionAppVersion = AssemblyUtils.GetVersion(iExtensionAppAssembly);
-            AcadAppDomainDllReloader.SkipCadwikiDlls = false;
-            AcadAppDomainDllReloader.Configure(iExtensionAppAssembly);
-            AcadAppDomainDllReloader.Reload(iExtensionAppAssembly);
-            doc.Editor.WriteMessage(Environment.NewLine + "App " + iExtensionAppVersion.ToString() + " initialized...");
-            doc.Editor.WriteMessage(Environment.NewLine);
+            try
+            {
+                var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+                doc.Editor.WriteMessage(Environment.NewLine + "App initialize called...");
+                // This Event Handler allows the IExtensionApplication to Resolve any Assemblies
+                // The AssemblyResolve method finds the correct assembly in the AppDomain when there are multiple assemblies
+                // with the same name and differing version number
+                AppDomain.CurrentDomain.AssemblyResolve += AutodeskAppDomainReloader.AssemblyResolve;
+                var iExtensionAppAssembly = Assembly.GetExecutingAssembly();
+                var iExtensionAppVersion = AssemblyUtils.GetVersion(iExtensionAppAssembly);
+                AcadAppDomainDllReloader.SkipCadwikiDlls = false;
+                AcadAppDomainDllReloader.Configure(iExtensionAppAssembly);
+                AcadAppDomainDllReloader.Reload(iExtensionAppAssembly);
+                doc.Editor.WriteMessage(Environment.NewLine + "App " + iExtensionAppVersion.ToString() + " initialized...");
+                doc.Editor.WriteMessage(Environment.NewLine);
 
-            cadwiki.AC.TestPlugin.UiRibbon.Tabs.TabCreator.AddDevTab(doc);
-
-            // Dim allRegressionTests As Type = GetType(Tests.RegressionTests)
-            // Dim allIntegrationTests As Type = GetType(MainApp.IntegrationTests.Tests)
-            // Dim allTestTypes As Type() = {allRegressionTests}
-
-            // Dim testRunner As Workflows.NunitTestRunner = New Workflows.NunitTestRunner()
-            // testRunner.Run(allTestTypes)
-
+                if (doc != null)
+                {
+                    var reactors = new ReactorsRibbonCreate();
+                    reactors.AttachQuiescentReactors(doc);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
+
+
 
 
         // start here 3 - IExtensionApplication.Terminate
