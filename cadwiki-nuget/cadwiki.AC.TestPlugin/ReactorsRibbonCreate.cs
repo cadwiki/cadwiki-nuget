@@ -34,13 +34,13 @@ namespace cadwiki.AC.TestPlugin
         {
             try
             {
-                Application.DocumentManager.DocumentBecameCurrent += DocumentManager_DocumentBecameCurrent;
-                Application.DocumentManager.DocumentToBeActivated += DocumentManager_DocumentToBeActivated;
-                Application.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
+                Application.DocumentManager.DocumentBecameCurrent -= DocumentManager_DocumentBecameCurrent;
+                Application.DocumentManager.DocumentToBeActivated -= DocumentManager_DocumentToBeActivated;
+                Application.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
                 var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
                 if (doc != null)
                 {
-                    doc.Editor.EnteringQuiescentState += Editor_EnteringQuiescentState;
+                    doc.Editor.EnteringQuiescentState -= Editor_EnteringQuiescentState;
                 }
             }
             catch (Exception ex)
@@ -56,9 +56,10 @@ namespace cadwiki.AC.TestPlugin
                 var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
                 _numberOfTries += 1;
                 System.Threading.Thread.Sleep(2000);
+                WriteToEditor(Environment.NewLine + "Sleep.");
                 if (_numberOfTries >= _maxNumberOfTries)
                 {
-                    WriteToEditor(Environment.NewLine + "Max number of ribbon create tries exceeded.");
+                    WriteToEditor(Environment.NewLine + "Max number of ribbon create re-tries exceeded.");
                     _isSetupComplete = true;
                     DetachAllReactors();
                     return;
@@ -136,7 +137,7 @@ namespace cadwiki.AC.TestPlugin
             var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             if (doc != null)
             {
-                doc.Editor.WriteMessage(Environment.NewLine + "Max number of ribbon create tries exceeded.");
+                doc.Editor.WriteMessage(msg);
             }
         }
     }
