@@ -56,7 +56,6 @@ namespace cadwiki.AC.TestPlugin
                 var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
                 _numberOfTries += 1;
                 System.Threading.Thread.Sleep(2000);
-                WriteToEditor(Environment.NewLine + "Sleep.");
                 if (_numberOfTries >= _maxNumberOfTries)
                 {
                     WriteToEditor(Environment.NewLine + "Max number of ribbon create re-tries exceeded.");
@@ -65,21 +64,25 @@ namespace cadwiki.AC.TestPlugin
                     return;
                 }
 
-                
                 if (doc != null && _isSetupComplete == false)
                 {
-                    var wereAllTabsAdded = TabCreator.AddDevTab(doc);
-                    if (wereAllTabsAdded)
-                    {
-                        WriteToEditor(Environment.NewLine + "Ribbon setup complete.");
-                        _isSetupComplete = true;
-                        DetachAllReactors();
-                    }
+                    SetupRibbon(doc);
                 }
             }
             catch (Exception ex)
             {
                 WriteToEditor(ex.Message);
+            }
+        }
+
+        private void SetupRibbon(Document doc)
+        {
+            var wereAllTabsAdded = TabCreator.AddDevTab(doc);
+            if (wereAllTabsAdded)
+            {
+                WriteToEditor(Environment.NewLine + "Ribbon setup complete.");
+                _isSetupComplete = true;
+                DetachAllReactors();
             }
         }
 
