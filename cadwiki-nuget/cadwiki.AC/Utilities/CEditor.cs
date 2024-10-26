@@ -8,11 +8,18 @@ namespace cadwiki.AC.Utilities
     {
         private void Write(string msg)
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            if (doc != null)
+            try
             {
-                msg = msg.StartsWith(Environment.NewLine) ? msg : Environment.NewLine + msg;
-                doc.Editor.WriteMessage(msg);
+                var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+                if (doc != null)
+                {
+                    msg = msg.StartsWith(Environment.NewLine) ? msg : Environment.NewLine + msg;
+                    doc.Editor.WriteMessage(msg);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
             }
         }
     }
