@@ -55,7 +55,7 @@ namespace cadwiki.AC.TestPlugin
             {
                 var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
                 _numberOfTries += 1;
-
+                System.Threading.Thread.Sleep(2000);
                 if (_numberOfTries >= _maxNumberOfTries)
                 {
                     WriteToEditor(Environment.NewLine + "Max number of ribbon create tries exceeded.");
