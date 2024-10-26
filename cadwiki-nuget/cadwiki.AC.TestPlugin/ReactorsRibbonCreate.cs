@@ -70,6 +70,7 @@ namespace cadwiki.AC.TestPlugin
                     var wereAllTabsAdded = TabCreator.AddDevTab(doc);
                     if (wereAllTabsAdded)
                     {
+                        WriteToEditor(Environment.NewLine + "Ribbon setup complete.");
                         _isSetupComplete = true;
                         DetachAllReactors();
                     }

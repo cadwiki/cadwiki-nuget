@@ -35,19 +35,22 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.Tabs
 
         private static bool AddTab(Document doc, RibbonTab ribbonTab)
         {
-            doc.Editor.WriteMessage(Environment.NewLine + "Add tab...");
             var ribbonControl = ComponentManager.Ribbon;
             if (ribbonControl != null && ribbonTab != null)
             {
-                if (Equals(ribbonTab.Name, null))
+                if (string.IsNullOrEmpty(ribbonTab.Name))
                 {
-                    throw new Exception("Ribbon Tab does not have a name. Please add a name to the ribbon tab.");
+                    doc.Editor.WriteMessage(Environment.NewLine + 
+                        "Ribbon Tab does not have a name. Please add a name to the ribbon tab.");
+                    return false;
                 }
                 string tabName = ribbonTab.Name;
-                doc.Editor.WriteMessage(Environment.NewLine + tabName);
+                doc.Editor.WriteMessage(Environment.NewLine + "Add tab..." + tabName);
                 var doesTabAlreadyExist = ribbonControl.FindTab(tabName);
                 if (doesTabAlreadyExist != null)
                 {
+                    doc.Editor.WriteMessage(Environment.NewLine +
+                        "Removing tab that already exists..." + tabName);
                     ribbonControl.Tabs.Remove(doesTabAlreadyExist);
                 }
                 ribbonControl.Tabs.Add(ribbonTab);
