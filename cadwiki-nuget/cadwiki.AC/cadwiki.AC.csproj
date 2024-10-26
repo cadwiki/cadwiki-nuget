@@ -150,6 +150,7 @@
     <Compile Include="NodeGraph\Edge.cs" />
     <Compile Include="NodeGraph\Node.cs" />
     <Compile Include="NodeGraph\NodeGraph.cs" />
+    <Compile Include="Utilities\CEditor.cs" />
     <Compile Include="Utilities\ExceptionHandler.cs" />
     <Compile Include="Utilities\Blocks.cs" />
     <Compile Include="Utilities\Commands.cs" />
