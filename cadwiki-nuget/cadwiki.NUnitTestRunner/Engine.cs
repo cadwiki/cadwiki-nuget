@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using cadwiki.NetUtils;
@@ -74,15 +75,31 @@ namespace cadwiki.NUnitTestRunner
                     tearDownMethodInfo = tearDownTuple.Item2;
                 }
 
-                await TryExecuteWithEvidenceCollection(suiteResult, testResult, testType, testMethodInfo, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+                var testCases = testMethodInfo.GetCustomAttributes<TestCaseAttribute>();
+                var parametersList = testCases.Select(tc => tc.Arguments).ToList();
+
+                if (parametersList.Count == 0)
+                {
+                    parametersList.Add(new object[0]);
+                }
+
+                foreach (var testParameters in parametersList)
+                {
+                    await TryExecuteWithEvidenceCollection(suiteResult, testResult, testType,
+                        testMethodInfo, testParameters, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+                }
+
             }
         }
 
-        private static async Task TryExecuteWithEvidenceCollection(ObservableTestSuiteResults suiteResult, TestResult testResult, Type testType, MethodInfo testMethodInfo, object setupObject, MethodInfo setupMethodInfo, object tearDownObject, MethodInfo tearDownMethodInfo)
+        private static async Task TryExecuteWithEvidenceCollection(ObservableTestSuiteResults suiteResult, 
+            TestResult testResult, Type testType, MethodInfo testMethodInfo, object[] testParameters, object setupObject, 
+            MethodInfo setupMethodInfo, object tearDownObject, MethodInfo tearDownMethodInfo)
         {
             try
             {
-                await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+                await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, testParameters,
+                    setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
             }
             catch (SuccessException ex)
             {
@@ -139,7 +156,7 @@ namespace cadwiki.NUnitTestRunner
         }
 
         private static async Task ExecuteTest(ObservableTestSuiteResults suiteResult, TestResult testResult, 
-            Type testType, MethodInfo testMethodInfo, object setupObject, 
+            Type testType, MethodInfo testMethodInfo, object[] testParameters, object setupObject, 
             MethodInfo setupMethodInfo, object tearDownObject, 
             MethodInfo tearDownMethodInfo)
         {
@@ -151,7 +168,7 @@ namespace cadwiki.NUnitTestRunner
             }
 
             bool isAwaitable = testMethodInfo.ReturnType.GetMethod(nameof(Task.GetAwaiter)) is not null;
-            object result = testMethodInfo.Invoke(o, null);
+            object result = testMethodInfo.Invoke(o, testParameters);
 
             if (isAwaitable && result is Task task)
             {
