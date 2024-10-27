@@ -76,32 +76,7 @@ namespace cadwiki.NUnitTestRunner
 
                 try
                 {
-                    suiteResult.AddMessage(Environment.NewLine + "Running test method: " + mi.Name);
-                    object o = Activator.CreateInstance(type);
-                    if (setupMethodInfo is not null && setupObject is not null)
-                    {
-                        setupMethodInfo.Invoke(setupObject, null);
-                    }
-
-                    bool isAwaitable = mi.ReturnType.GetMethod(nameof(Task.GetAwaiter)) is not null;
-                    object result = mi.Invoke(o, null);
-
-                    if (isAwaitable && result is Task task)
-                    {
-                        await task.ConfigureAwait(false);
-                        if (task.GetType().IsGenericType && task.GetType().GetGenericTypeDefinition() == typeof(Task<>))
-                        {
-                            result = task.GetType().GetProperty("Result")?.GetValue(task);
-                        }
-                    }
-
-                    testResult.TestName = mi.Name;
-                    testResult.Passed = true;
-
-                    if (tearDownMethodInfo is not null && tearDownObject is not null)
-                    {
-                        tearDownMethodInfo.Invoke(tearDownObject, null);
-                    }
+                    await ExecuteTest(suiteResult, testResult, type, mi, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
                 }
                 catch (SuccessException ex)
                 {
@@ -155,6 +130,39 @@ namespace cadwiki.NUnitTestRunner
                     testResult.Evidence = evidence;
                 }
                 suiteResult.AddResult(testResult);
+            }
+        }
+
+        private static async Task ExecuteTest(ObservableTestSuiteResults suiteResult, TestResult testResult, 
+            Type type, MethodInfo mi, object setupObject, 
+            MethodInfo setupMethodInfo, object tearDownObject, 
+            MethodInfo tearDownMethodInfo)
+        {
+            suiteResult.AddMessage(Environment.NewLine + "Running test method: " + mi.Name);
+            object o = Activator.CreateInstance(type);
+            if (setupMethodInfo is not null && setupObject is not null)
+            {
+                setupMethodInfo.Invoke(setupObject, null);
+            }
+
+            bool isAwaitable = mi.ReturnType.GetMethod(nameof(Task.GetAwaiter)) is not null;
+            object result = mi.Invoke(o, null);
+
+            if (isAwaitable && result is Task task)
+            {
+                await task.ConfigureAwait(false);
+                if (task.GetType().IsGenericType && task.GetType().GetGenericTypeDefinition() == typeof(Task<>))
+                {
+                    result = task.GetType().GetProperty("Result")?.GetValue(task);
+                }
+            }
+
+            testResult.TestName = mi.Name;
+            testResult.Passed = true;
+
+            if (tearDownMethodInfo is not null && tearDownObject is not null)
+            {
+                tearDownMethodInfo.Invoke(tearDownObject, null);
             }
         }
 
