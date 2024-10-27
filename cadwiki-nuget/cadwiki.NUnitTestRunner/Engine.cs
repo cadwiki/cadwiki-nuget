@@ -50,11 +50,11 @@ namespace cadwiki.NUnitTestRunner
                 var testResult = new TestResult();
                 // Clear current evidence
                 TestEvidenceCreator.SetEvidenceForCurrentTest(null);
-                var type = item.Item1;
-                var mi = item.Item2;
-                string methodName = mi.Name;
+                var testType = item.Item1;
+                var testMethodInfo = item.Item2;
+                string methodName = testMethodInfo.Name;
 
-                var setupTuple = Utils.GetSetupMethod(new[] { type });
+                var setupTuple = Utils.GetSetupMethod(new[] { testType });
                 object setupObject = null;
                 MethodInfo setupMethodInfo = null;
                 if (setupTuple is not null)
@@ -64,7 +64,7 @@ namespace cadwiki.NUnitTestRunner
                     setupMethodInfo = setupTuple.Item2;
                 }
 
-                var tearDownTuple = Utils.GetTearDownMethod(new[] { type });
+                var tearDownTuple = Utils.GetTearDownMethod(new[] { testType });
                 object tearDownObject = null;
                 MethodInfo tearDownMethodInfo = null;
                 if (tearDownTuple is not null)
@@ -76,11 +76,11 @@ namespace cadwiki.NUnitTestRunner
 
                 try
                 {
-                    await ExecuteTest(suiteResult, testResult, type, mi, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+                    await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
                 }
                 catch (SuccessException ex)
                 {
-                    testResult.TestName = mi.Name;
+                    testResult.TestName = testMethodInfo.Name;
                     testResult.Passed = true;
                     testResult.ExceptionMessage = ex.Message;
                 }
@@ -88,7 +88,7 @@ namespace cadwiki.NUnitTestRunner
                 {
                     if (ex.InnerException is SuccessException)
                     {
-                        testResult.TestName = mi.Name;
+                        testResult.TestName = testMethodInfo.Name;
                         testResult.Passed = true;
                         testResult.ExceptionMessage = ex.Message;
                     }
@@ -96,21 +96,21 @@ namespace cadwiki.NUnitTestRunner
                     {
                         AssertionException ae = (AssertionException)ex.InnerException;
                         var result = ae.ResultState;
-                        testResult.TestName = mi.Name;
+                        testResult.TestName = testMethodInfo.Name;
                         testResult.Passed = false;
                         testResult.ExceptionMessage = ae.Message;
                         testResult.StackTrace = Exceptions.GetStackTraceLines(ae);
                     }
                     else
                     {
-                        testResult.TestName = mi.Name;
+                        testResult.TestName = testMethodInfo.Name;
                         testResult.Passed = false;
                         AddFullExceptionToTestResult(testResult, ex);
                     }
                 }
                 catch (Exception ex)
                 {
-                    testResult.TestName = mi.Name;
+                    testResult.TestName = testMethodInfo.Name;
                     testResult.Passed = false;
                     if (ex.InnerException is not null)
                     {
@@ -134,19 +134,19 @@ namespace cadwiki.NUnitTestRunner
         }
 
         private static async Task ExecuteTest(ObservableTestSuiteResults suiteResult, TestResult testResult, 
-            Type type, MethodInfo mi, object setupObject, 
+            Type testType, MethodInfo testMethodInfo, object setupObject, 
             MethodInfo setupMethodInfo, object tearDownObject, 
             MethodInfo tearDownMethodInfo)
         {
-            suiteResult.AddMessage(Environment.NewLine + "Running test method: " + mi.Name);
-            object o = Activator.CreateInstance(type);
+            suiteResult.AddMessage(Environment.NewLine + "Running test method: " + testMethodInfo.Name);
+            object o = Activator.CreateInstance(testType);
             if (setupMethodInfo is not null && setupObject is not null)
             {
                 setupMethodInfo.Invoke(setupObject, null);
             }
 
-            bool isAwaitable = mi.ReturnType.GetMethod(nameof(Task.GetAwaiter)) is not null;
-            object result = mi.Invoke(o, null);
+            bool isAwaitable = testMethodInfo.ReturnType.GetMethod(nameof(Task.GetAwaiter)) is not null;
+            object result = testMethodInfo.Invoke(o, null);
 
             if (isAwaitable && result is Task task)
             {
@@ -157,7 +157,7 @@ namespace cadwiki.NUnitTestRunner
                 }
             }
 
-            testResult.TestName = mi.Name;
+            testResult.TestName = testMethodInfo.Name;
             testResult.Passed = true;
 
             if (tearDownMethodInfo is not null && tearDownObject is not null)
