@@ -74,63 +74,68 @@ namespace cadwiki.NUnitTestRunner
                     tearDownMethodInfo = tearDownTuple.Item2;
                 }
 
-                try
-                {
-                    await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
-                }
-                catch (SuccessException ex)
+                await TryExecuteWithEvidenceCollection(suiteResult, testResult, testType, testMethodInfo, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+            }
+        }
+
+        private static async Task TryExecuteWithEvidenceCollection(ObservableTestSuiteResults suiteResult, TestResult testResult, Type testType, MethodInfo testMethodInfo, object setupObject, MethodInfo setupMethodInfo, object tearDownObject, MethodInfo tearDownMethodInfo)
+        {
+            try
+            {
+                await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+            }
+            catch (SuccessException ex)
+            {
+                testResult.TestName = testMethodInfo.Name;
+                testResult.Passed = true;
+                testResult.ExceptionMessage = ex.Message;
+            }
+            catch (TargetInvocationException ex)
+            {
+                if (ex.InnerException is SuccessException)
                 {
                     testResult.TestName = testMethodInfo.Name;
                     testResult.Passed = true;
                     testResult.ExceptionMessage = ex.Message;
                 }
-                catch (TargetInvocationException ex)
+                else if (ex.InnerException is AssertionException)
                 {
-                    if (ex.InnerException is SuccessException)
-                    {
-                        testResult.TestName = testMethodInfo.Name;
-                        testResult.Passed = true;
-                        testResult.ExceptionMessage = ex.Message;
-                    }
-                    else if (ex.InnerException is AssertionException)
-                    {
-                        AssertionException ae = (AssertionException)ex.InnerException;
-                        var result = ae.ResultState;
-                        testResult.TestName = testMethodInfo.Name;
-                        testResult.Passed = false;
-                        testResult.ExceptionMessage = ae.Message;
-                        testResult.StackTrace = Exceptions.GetStackTraceLines(ae);
-                    }
-                    else
-                    {
-                        testResult.TestName = testMethodInfo.Name;
-                        testResult.Passed = false;
-                        AddFullExceptionToTestResult(testResult, ex);
-                    }
+                    AssertionException ae = (AssertionException)ex.InnerException;
+                    var result = ae.ResultState;
+                    testResult.TestName = testMethodInfo.Name;
+                    testResult.Passed = false;
+                    testResult.ExceptionMessage = ae.Message;
+                    testResult.StackTrace = Exceptions.GetStackTraceLines(ae);
                 }
-                catch (Exception ex)
+                else
                 {
                     testResult.TestName = testMethodInfo.Name;
                     testResult.Passed = false;
-                    if (ex.InnerException is not null)
-                    {
-                        AddFullExceptionToTestResult(testResult, (TargetInvocationException)ex);
-                    }
-                    else
-                    {
-                        testResult.ExceptionMessage = ex.Message;
-                        testResult.StackTrace = Exceptions.GetStackTraceLines(ex);
-                    }
+                    AddFullExceptionToTestResult(testResult, ex);
                 }
-
-                // Get any evidence that was collected during the test
-                var evidence = TestEvidenceCreator.GetEvidenceForCurrentTest();
-                if (evidence is not null)
-                {
-                    testResult.Evidence = evidence;
-                }
-                suiteResult.AddResult(testResult);
             }
+            catch (Exception ex)
+            {
+                testResult.TestName = testMethodInfo.Name;
+                testResult.Passed = false;
+                if (ex.InnerException is not null)
+                {
+                    AddFullExceptionToTestResult(testResult, (TargetInvocationException)ex);
+                }
+                else
+                {
+                    testResult.ExceptionMessage = ex.Message;
+                    testResult.StackTrace = Exceptions.GetStackTraceLines(ex);
+                }
+            }
+
+            // Get any evidence that was collected during the test
+            var evidence = TestEvidenceCreator.GetEvidenceForCurrentTest();
+            if (evidence is not null)
+            {
+                testResult.Evidence = evidence;
+            }
+            suiteResult.AddResult(testResult);
         }
 
         private static async Task ExecuteTest(ObservableTestSuiteResults suiteResult, TestResult testResult, 
