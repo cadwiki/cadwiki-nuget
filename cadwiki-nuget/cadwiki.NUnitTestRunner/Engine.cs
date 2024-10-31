@@ -80,25 +80,27 @@ namespace cadwiki.NUnitTestRunner
 
                 if (parametersList.Count == 0)
                 {
-                    parametersList.Add(new object[0]);
+                    parametersList.Add(null);
                 }
-
+                
+                int testNumber = 0;
                 foreach (var testParameters in parametersList)
                 {
+                    testNumber++;
                     await TryExecuteWithEvidenceCollection(suiteResult, testResult, testType,
-                        testMethodInfo, testParameters, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+                        testMethodInfo, testParameters, testNumber, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
                 }
 
             }
         }
 
         private static async Task TryExecuteWithEvidenceCollection(ObservableTestSuiteResults suiteResult, 
-            TestResult testResult, Type testType, MethodInfo testMethodInfo, object[] testParameters, object setupObject, 
+            TestResult testResult, Type testType, MethodInfo testMethodInfo, object[] testParameters, int testNumber, object setupObject, 
             MethodInfo setupMethodInfo, object tearDownObject, MethodInfo tearDownMethodInfo)
         {
             try
             {
-                await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, testParameters,
+                await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, testParameters, testNumber,
                     setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
             }
             catch (SuccessException ex)
@@ -156,7 +158,7 @@ namespace cadwiki.NUnitTestRunner
         }
 
         private static async Task ExecuteTest(ObservableTestSuiteResults suiteResult, TestResult testResult, 
-            Type testType, MethodInfo testMethodInfo, object[] testParameters, object setupObject, 
+            Type testType, MethodInfo testMethodInfo, object[] testParameters, int testNumber, object setupObject, 
             MethodInfo setupMethodInfo, object tearDownObject, 
             MethodInfo tearDownMethodInfo)
         {
@@ -179,7 +181,15 @@ namespace cadwiki.NUnitTestRunner
                 }
             }
 
-            testResult.TestName = testMethodInfo.Name;
+            if (testParameters != null)
+            {
+                testResult.TestName = testMethodInfo.Name + "_" + testNumber.ToString();
+            }
+            else
+            {
+                testResult.TestName = testMethodInfo.Name;
+            }
+            
             testResult.Passed = true;
 
             if (tearDownMethodInfo is not null && tearDownObject is not null)
