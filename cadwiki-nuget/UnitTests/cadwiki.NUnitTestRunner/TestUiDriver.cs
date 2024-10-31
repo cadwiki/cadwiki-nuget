@@ -58,7 +58,7 @@ namespace UnitTests
             cadwiki.NUnitTestRunner.UI.WindowTestRunner window = driver.GetWindow();
             driver.ExecuteTestsAsync();
             string jsonString = results.ToJson();
-            Assert.AreEqual(2, results.TotalTests);
+            Assert.AreEqual(6, results.TotalTests);
             Assert.IsNotNull(jsonString);
             Assert.AreNotEqual("{}", jsonString);
             Assert.AreNotEqual("", jsonString);
@@ -75,7 +75,7 @@ namespace UnitTests
             cadwiki.NUnitTestRunner.UI.FormTestRunner form = driver.GetForm();
             driver.ExecuteTestsAsync();
             string jsonString = results.ToJson();
-            Assert.AreEqual(2, results.TotalTests);
+            Assert.AreEqual(6, results.TotalTests);
             Assert.IsNotNull(jsonString);
             Assert.AreNotEqual("{}", jsonString);
             Assert.AreNotEqual("", jsonString);

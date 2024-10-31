@@ -23,6 +23,14 @@ namespace UnitTests
             NUnit.Framework.Assert.AreEqual(expected, actual, "Input strings don't match");
         }
 
-
+        [TestCase("Hello", "Hello")]
+        [TestCase("Hello", "World")]
+        [TestCase("Test", "Test")]
+        [TestCase("Test", "test")]
+        [Test]
+        public bool Test_DoStringsMatch_Parameterized(string expected, string actual)
+        {
+            return expected == actual;
+        }
     }
 }

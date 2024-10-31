@@ -3,7 +3,7 @@
   <metadata>
     <id>cadwiki.CadDevTools</id>
 	<!-- need to update cadwiki.CadDevTools.targets file when version changes-->
-    <version>3.0.0.0</version>
+    <version>3.0.0.1</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using cadwiki.NetUtils;
@@ -50,11 +51,11 @@ namespace cadwiki.NUnitTestRunner
                 var testResult = new TestResult();
                 // Clear current evidence
                 TestEvidenceCreator.SetEvidenceForCurrentTest(null);
-                var type = item.Item1;
-                var mi = item.Item2;
-                string methodName = mi.Name;
+                var testType = item.Item1;
+                var testMethodInfo = item.Item2;
+                string methodName = testMethodInfo.Name;
 
-                var setupTuple = Utils.GetSetupMethod(new[] { type });
+                var setupTuple = Utils.GetSetupMethod(new[] { testType });
                 object setupObject = null;
                 MethodInfo setupMethodInfo = null;
                 if (setupTuple is not null)
@@ -64,7 +65,7 @@ namespace cadwiki.NUnitTestRunner
                     setupMethodInfo = setupTuple.Item2;
                 }
 
-                var tearDownTuple = Utils.GetTearDownMethod(new[] { type });
+                var tearDownTuple = Utils.GetTearDownMethod(new[] { testType });
                 object tearDownObject = null;
                 MethodInfo tearDownMethodInfo = null;
                 if (tearDownTuple is not null)
@@ -74,87 +75,126 @@ namespace cadwiki.NUnitTestRunner
                     tearDownMethodInfo = tearDownTuple.Item2;
                 }
 
-                try
+                var testCases = testMethodInfo.GetCustomAttributes<TestCaseAttribute>();
+                var parametersList = testCases.Select(tc => tc.Arguments).ToList();
+
+                if (parametersList.Count == 0)
                 {
-                    suiteResult.AddMessage(Environment.NewLine + "Running test method: " + mi.Name);
-                    object o = Activator.CreateInstance(type);
-                    if (setupMethodInfo is not null && setupObject is not null)
-                    {
-                        setupMethodInfo.Invoke(setupObject, null);
-                    }
-
-                    bool isAwaitable = mi.ReturnType.GetMethod(nameof(Task.GetAwaiter)) is not null;
-                    object result = mi.Invoke(o, null);
-
-                    if (isAwaitable && result is Task task)
-                    {
-                        await task.ConfigureAwait(false);
-                        if (task.GetType().IsGenericType && task.GetType().GetGenericTypeDefinition() == typeof(Task<>))
-                        {
-                            result = task.GetType().GetProperty("Result")?.GetValue(task);
-                        }
-                    }
-
-                    testResult.TestName = mi.Name;
-                    testResult.Passed = true;
-
-                    if (tearDownMethodInfo is not null && tearDownObject is not null)
-                    {
-                        tearDownMethodInfo.Invoke(tearDownObject, null);
-                    }
+                    parametersList.Add(null);
                 }
-                catch (SuccessException ex)
+                
+                int testNumber = 0;
+                foreach (var testParameters in parametersList)
                 {
-                    testResult.TestName = mi.Name;
+                    testNumber++;
+                    await TryExecuteWithEvidenceCollection(suiteResult, testResult, testType,
+                        testMethodInfo, testParameters, testNumber, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+                }
+
+            }
+        }
+
+        private static async Task TryExecuteWithEvidenceCollection(ObservableTestSuiteResults suiteResult, 
+            TestResult testResult, Type testType, MethodInfo testMethodInfo, object[] testParameters, int testNumber, object setupObject, 
+            MethodInfo setupMethodInfo, object tearDownObject, MethodInfo tearDownMethodInfo)
+        {
+            try
+            {
+                await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, testParameters, testNumber,
+                    setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+            }
+            catch (SuccessException ex)
+            {
+                testResult.TestName = testMethodInfo.Name;
+                testResult.Passed = true;
+                testResult.ExceptionMessage = ex.Message;
+            }
+            catch (TargetInvocationException ex)
+            {
+                if (ex.InnerException is SuccessException)
+                {
+                    testResult.TestName = testMethodInfo.Name;
                     testResult.Passed = true;
                     testResult.ExceptionMessage = ex.Message;
                 }
-                catch (TargetInvocationException ex)
+                else if (ex.InnerException is AssertionException)
                 {
-                    if (ex.InnerException is SuccessException)
-                    {
-                        testResult.TestName = mi.Name;
-                        testResult.Passed = true;
-                        testResult.ExceptionMessage = ex.Message;
-                    }
-                    else if (ex.InnerException is AssertionException)
-                    {
-                        AssertionException ae = (AssertionException)ex.InnerException;
-                        var result = ae.ResultState;
-                        testResult.TestName = mi.Name;
-                        testResult.Passed = false;
-                        testResult.ExceptionMessage = ae.Message;
-                        testResult.StackTrace = Exceptions.GetStackTraceLines(ae);
-                    }
-                    else
-                    {
-                        testResult.TestName = mi.Name;
-                        testResult.Passed = false;
-                        AddFullExceptionToTestResult(testResult, ex);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    testResult.TestName = mi.Name;
+                    AssertionException ae = (AssertionException)ex.InnerException;
+                    var result = ae.ResultState;
+                    testResult.TestName = testMethodInfo.Name;
                     testResult.Passed = false;
-                    if (ex.InnerException is not null)
-                    {
-                        AddFullExceptionToTestResult(testResult, (TargetInvocationException)ex);
-                    }
-                    else
-                    {
-                        testResult.ExceptionMessage = ex.Message;
-                        testResult.StackTrace = Exceptions.GetStackTraceLines(ex);
-                    }
+                    testResult.ExceptionMessage = ae.Message;
+                    testResult.StackTrace = Exceptions.GetStackTraceLines(ae);
                 }
-
-                // Get any evidence that was collected during the test
-                var evidence = TestEvidenceCreator.GetEvidenceForCurrentTest();
-                if (evidence is not null)
+                else
                 {
-                    testResult.Evidence = evidence;
+                    testResult.TestName = testMethodInfo.Name;
+                    testResult.Passed = false;
+                    AddFullExceptionToTestResult(testResult, ex);
                 }
-                suiteResult.AddResult(testResult);
+            }
+            catch (Exception ex)
+            {
+                testResult.TestName = testMethodInfo.Name;
+                testResult.Passed = false;
+                if (ex.InnerException is not null)
+                {
+                    AddFullExceptionToTestResult(testResult, (TargetInvocationException)ex);
+                }
+                else
+                {
+                    testResult.ExceptionMessage = ex.Message;
+                    testResult.StackTrace = Exceptions.GetStackTraceLines(ex);
+                }
+            }
+
+            // Get any evidence that was collected during the test
+            var evidence = TestEvidenceCreator.GetEvidenceForCurrentTest();
+            if (evidence is not null)
+            {
+                testResult.Evidence = evidence;
+            }
+            suiteResult.AddResult(testResult);
+        }
+
+        private static async Task ExecuteTest(ObservableTestSuiteResults suiteResult, TestResult testResult, 
+            Type testType, MethodInfo testMethodInfo, object[] testParameters, int testNumber, object setupObject, 
+            MethodInfo setupMethodInfo, object tearDownObject, 
+            MethodInfo tearDownMethodInfo)
+        {
+            suiteResult.AddMessage(Environment.NewLine + "Running test method: " + testMethodInfo.Name);
+            object o = Activator.CreateInstance(testType);
+            if (setupMethodInfo is not null && setupObject is not null)
+            {
+                setupMethodInfo.Invoke(setupObject, null);
+            }
+
+            bool isAwaitable = testMethodInfo.ReturnType.GetMethod(nameof(Task.GetAwaiter)) is not null;
+            object result = testMethodInfo.Invoke(o, testParameters);
+
+            if (isAwaitable && result is Task task)
+            {
+                await task.ConfigureAwait(false);
+                if (task.GetType().IsGenericType && task.GetType().GetGenericTypeDefinition() == typeof(Task<>))
+                {
+                    result = task.GetType().GetProperty("Result")?.GetValue(task);
+                }
+            }
+
+            if (testParameters != null)
+            {
+                testResult.TestName = testMethodInfo.Name + "_" + testNumber.ToString();
+            }
+            else
+            {
+                testResult.TestName = testMethodInfo.Name;
+            }
+            
+            testResult.Passed = true;
+
+            if (tearDownMethodInfo is not null && tearDownObject is not null)
+            {
+                tearDownMethodInfo.Invoke(tearDownObject, null);
             }
         }
 

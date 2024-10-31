@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using HWND = System.IntPtr;
 using System.Text;
+using System.Linq;
+using System;
 
 namespace cadwiki.NUnitTestRunner.WinAPI
 {
@@ -10,8 +12,7 @@ namespace cadwiki.NUnitTestRunner.WinAPI
         public static HWND GetOpenWindow(string title)
         {
             Dictionary<string, HWND> titleToHandle = (Dictionary<string, HWND>)GetOpenWindows();
-            HWND windowHandle;
-            titleToHandle.TryGetValue(title, out windowHandle);
+            HWND windowHandle = DictionaryExtensions.GetValuesByKeyContains(titleToHandle, title).FirstOrDefault();
             return windowHandle;
         }
 
@@ -46,6 +47,17 @@ namespace cadwiki.NUnitTestRunner.WinAPI
         public static void CloseWindow(HWND hWnd)
         {
             Stubs.SendMessage(hWnd, Constants.WM_SYSCOMMAND, Constants.SC_CLOSE, (HWND)0);
+        }
+    }
+
+    public static class DictionaryExtensions
+    {
+        public static List<TValue> GetValuesByKeyContains<TKey, TValue>(Dictionary<TKey, TValue> dictionary, string searchString)
+        {
+            return dictionary
+                .Where(entry => entry.Key.ToString().Contains(searchString))
+                .Select(entry => entry.Value)
+                .ToList();
         }
     }
 }
