@@ -73,59 +73,57 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="AcCoreMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcCoreMgd.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_libs\AutoCAD 2024\AcCoreMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcCui, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcCui.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcCui">
+      <HintPath>..\_libs\AutoCAD 2024\AcCui.dll</HintPath>
     </Reference>
     <Reference Include="AcDbMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcDbMgd.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_libs\AutoCAD 2024\AcDbMgd.dll</HintPath>
     </Reference>
-    <Reference Include="acdbmgdbrep, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\acdbmgdbrep.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="acdbmgdbrep">
+      <HintPath>..\_libs\AutoCAD 2024\acdbmgdbrep.dll</HintPath>
     </Reference>
-    <Reference Include="AcDx, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcDx.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcDx">
+      <HintPath>..\_libs\AutoCAD 2024\AcDx.dll</HintPath>
     </Reference>
-    <Reference Include="AcMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcMgd">
+      <HintPath>..\_libs\AutoCAD 2024\AcMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcMr, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcMr.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcMr">
+      <HintPath>..\_libs\AutoCAD 2024\AcMr.dll</HintPath>
     </Reference>
-    <Reference Include="AcSeamless, Version=24.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcSeamless.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcSeamless">
+      <HintPath>..\_libs\AutoCAD 2024\AcSeamless.dll</HintPath>
     </Reference>
-    <Reference Include="AcTcMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcTcMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcTcMgd">
+      <HintPath>..\_libs\AutoCAD 2024\AcTcMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcWindows, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AcWindows.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AcWindows">
+      <HintPath>..\_libs\AutoCAD 2024\AcWindows.dll</HintPath>
     </Reference>
-    <Reference Include="AdUIMgd, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdUIMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AdUIMgd">
+      <HintPath>..\_libs\AutoCAD 2024\AdUIMgd.dll</HintPath>
     </Reference>
-    <Reference Include="AdUiPalettes, Version=24.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdUiPalettes.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="AdUiPalettes">
+      <HintPath>..\_libs\AutoCAD 2024\AdUiPalettes.dll</HintPath>
     </Reference>
     <Reference Include="AdWindows, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoCAD2021.Base.1.0.0\lib\AdWindows.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_libs\AutoCAD 2024\AdWindows.dll</HintPath>
     </Reference>
+    <Reference Include="Autodesk.AutoCAD.Interop">
+      <HintPath>..\_libs\AutoCAD 2024\Autodesk.AutoCAD.Interop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Autodesk.AutoCAD.Interop.Common">
+      <HintPath>..\_libs\AutoCAD 2024\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.2.2.7\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
