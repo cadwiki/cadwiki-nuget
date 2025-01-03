@@ -5,6 +5,7 @@
   <UsingTask AssemblyFile="..\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo" />
   <PropertyGroup>
     <NoWarn>168,1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,162,649,1717,219,67,414,4244,414,MSB3270,3270</NoWarn>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Target Name="CopyAssembliesToTempFolder" AfterTargets="Build">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
@@ -40,7 +41,7 @@
     <AssemblyName>cadwiki.AC.TestPlugin</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -50,7 +51,6 @@
     <DebugType>full</DebugType>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>bin\Debug\cadwiki.AC.TestPlugin.xml</DocumentationFile>
-    
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -58,7 +58,6 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\Release\cadwiki.AC.TestPlugin.xml</DocumentationFile>
-    
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
@@ -77,7 +76,6 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>bin\x64\Debug\cadwiki.AC.TestPlugin.xml</DocumentationFile>
-    
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
@@ -86,7 +84,6 @@
     <OutputPath>bin\x64\Release\</OutputPath>
     <DocumentationFile>bin\x64\Release\cadwiki.AC.TestPlugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
-    
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <DefineConstants>TRACE</DefineConstants>

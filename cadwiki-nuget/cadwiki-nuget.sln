@@ -87,6 +87,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.WpfTest", "cadwiki.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.AC24.Interop", "cadwiki.AC24.Interop\cadwiki.AC24.Interop.csproj", "{D76226AB-71B7-4C2D-AC34-193FE4B76825}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.MVVM", "cadwiki.MVVM\cadwiki.MVVM.csproj", "{9F6B0B69-AC7F-4948-80B3-25C34032501A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -461,6 +463,26 @@ Global
 		{D76226AB-71B7-4C2D-AC34-193FE4B76825}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D76226AB-71B7-4C2D-AC34-193FE4B76825}.Release|x64.ActiveCfg = Release|Any CPU
 		{D76226AB-71B7-4C2D-AC34-193FE4B76825}.Release|x64.Build.0 = Release|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Debug|x64.Build.0 = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugAuto|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugAuto|Any CPU.Build.0 = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugAuto|x64.ActiveCfg = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugAuto|x64.Build.0 = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugAutoRev|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugAutoRev|Any CPU.Build.0 = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugAutoRev|x64.ActiveCfg = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugAutoRev|x64.Build.0 = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugHC|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugHC|Any CPU.Build.0 = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugHC|x64.ActiveCfg = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.DebugHC|x64.Build.0 = Debug|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Release|x64.ActiveCfg = Release|Any CPU
+		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
