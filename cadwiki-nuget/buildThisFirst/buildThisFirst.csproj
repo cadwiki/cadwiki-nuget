@@ -77,7 +77,7 @@
     <Exec Command="echo target incremented assembly version for all assemblies in solution." />
     <Exec Command="echo new version: v$(AssemblyMajorVersion).$(AssemblyMinorVersion).$(AssemblyBuildNumber).$(AssemblyRevision)  Debug vars: AssemblyFileBuildNumberType=$(AssemblyBuildNumberType) AssemblyFileBuildNumberFormat=$(AssemblyBuildNumberFormat) AssemblyRevisionType=$(AssemblyRevisionType) AssemblyRevisionFormat=$(AssemblyRevisionFormat)." />
     <Exec Command="echo $(Configuration)$(Platform)." />
-	<!-- print statement for debugging -->
+    <!-- print statement for debugging -->
     <!--<Message Text="@(AssemblyInfoFiles, '%0a')" Importance="high" />-->
   </Target>
   <PropertyGroup>
@@ -136,7 +136,6 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\x64\Release\buildThisFirst.xml</DocumentationFile>
     <Optimize>true</Optimize>
-    
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>9.0</LangVersion>
@@ -147,7 +146,6 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
-    
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>9.0</LangVersion>
@@ -158,7 +156,46 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
-    
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugHC|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\DebugHC\</OutputPath>
+    <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugHC|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\DebugHC\</OutputPath>
+    <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugAutoRev|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\DebugAutoRev\</OutputPath>
+    <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugAutoRev|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\DebugAutoRev\</OutputPath>
+    <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>9.0</LangVersion>
