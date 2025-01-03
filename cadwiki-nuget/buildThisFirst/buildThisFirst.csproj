@@ -75,8 +75,9 @@
     <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" AssemblyMajorVersion="$(AssemblyMajorVersion)" AssemblyMinorVersion="$(AssemblyMinorVersion)" AssemblyBuildNumberType="$(AssemblyBuildNumberType)" AssemblyBuildNumberFormat="$(AssemblyBuildNumberFormat)" AssemblyRevision="$(AssemblyRevision)" AssemblyBuildNumber="$(AssemblyBuildNumber)" AssemblyRevisionType="$(AssemblyRevisionType)" AssemblyRevisionFormat="$(AssemblyRevisionFormat)" />
     <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" AssemblyFileMajorVersion="$(AssemblyMajorVersion)" AssemblyFileMinorVersion="$(AssemblyMinorVersion)" AssemblyFileBuildNumberType="$(AssemblyBuildNumberType)" AssemblyFileBuildNumberFormat="$(AssemblyBuildNumberFormat)" AssemblyFileRevision="$(AssemblyRevision)" AssemblyBuildNumber="$(AssemblyBuildNumber)" AssemblyRevisionType="$(AssemblyRevisionType)" AssemblyRevisionFormat="$(AssemblyRevisionFormat)" />
     <Exec Command="echo target incremented assembly version for all assemblies in solution." />
+    <Exec Command="echo new version: v$(AssemblyMajorVersion).$(AssemblyMinorVersion).$(AssemblyBuildNumber).$(AssemblyRevision)  Debug vars: AssemblyFileBuildNumberType=$(AssemblyBuildNumberType) AssemblyFileBuildNumberFormat=$(AssemblyBuildNumberFormat) AssemblyRevisionType=$(AssemblyRevisionType) AssemblyRevisionFormat=$(AssemblyRevisionFormat)." />
     <!-- print statement for debugging -->
-    <Message Text="@(AssemblyInfoFiles, '%0a')" Importance="high" />
+    <!--<Message Text="@(AssemblyInfoFiles, '%0a')" Importance="high" />-->
   </Target>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>

@@ -28,7 +28,8 @@
       <Output TaskParameter="CopiedFiles" ItemName="CopiedOutputFiles" />
     </Copy>
     <Message Importance="High" Text="Files copied to Temp folder: $(TempFolderPath)" />
-    <Message Importance="High" Text="%(CopiedOutputFiles.Identity)" />
+    <!--print out copied files-->
+    <!--<Message Importance="High" Text="%(CopiedOutputFiles.Identity)" />-->
   </Target>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
