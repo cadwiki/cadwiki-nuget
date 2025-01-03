@@ -56,10 +56,10 @@
     <!-- 2.) hard coded version rev and version build -->
     <PropertyGroup Condition="'$(Configuration)' == 'DebugHC'">
       <AssemblyInfoVersionType>HardCoded</AssemblyInfoVersionType>
-      <AssemblyMajorVersion>3</AssemblyMajorVersion>
+      <AssemblyMajorVersion>4</AssemblyMajorVersion>
       <AssemblyMinorVersion>0</AssemblyMinorVersion>
       <AssemblyBuildNumber>0</AssemblyBuildNumber>
-      <AssemblyRevision>3</AssemblyRevision>
+      <AssemblyRevision>0</AssemblyRevision>
     </PropertyGroup>
     <!-- 3.) three digit rev auto inc  -->
     <!-- format: major.minor.date_string.###  -->
