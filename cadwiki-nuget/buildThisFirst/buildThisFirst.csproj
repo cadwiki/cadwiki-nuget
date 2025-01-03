@@ -5,6 +5,7 @@
   <UsingTask AssemblyFile="..\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo" />
   <PropertyGroup>
     <NoWarn>168,1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,162,649,1717,219,67,414,4244,414,MSB3270,3270</NoWarn>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <BuildRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.root))</BuildRoot>
@@ -58,7 +59,7 @@
       <AssemblyMajorVersion>3</AssemblyMajorVersion>
       <AssemblyMinorVersion>0</AssemblyMinorVersion>
       <AssemblyBuildNumber>0</AssemblyBuildNumber>
-      <AssemblyRevision>2</AssemblyRevision>
+      <AssemblyRevision>3</AssemblyRevision>
     </PropertyGroup>
     <!-- 3.) three digit rev auto inc  -->
     <!-- format: major.minor.date_string.###  -->
@@ -89,7 +90,7 @@
     <AssemblyName>buildThisFirst</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup>
