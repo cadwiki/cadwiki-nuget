@@ -58,7 +58,7 @@
       <AssemblyMajorVersion>3</AssemblyMajorVersion>
       <AssemblyMinorVersion>0</AssemblyMinorVersion>
       <AssemblyBuildNumber>0</AssemblyBuildNumber>
-      <AssemblyRevision>1</AssemblyRevision>
+      <AssemblyRevision>2</AssemblyRevision>
     </PropertyGroup>
     <!-- 3.) three digit rev auto inc  -->
     <!-- format: major.minor.date_string.###  -->
