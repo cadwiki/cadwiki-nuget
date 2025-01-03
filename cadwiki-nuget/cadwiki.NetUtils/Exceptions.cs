@@ -19,20 +19,18 @@ namespace cadwiki.NetUtils
             var list = new List<string>();
             list.Add("-----------------------------------------------------------------------------");
 
-            if (!string.IsNullOrEmpty(ex.Message))
+            if (ex != null && !string.IsNullOrEmpty(ex.Message))
             {
                 list.Add("Message : ".PadLeft(26) + ex.Message);
             }
-            if (!string.IsNullOrEmpty(ex.StackTrace))
+            if (ex.StackTrace != null && !string.IsNullOrEmpty(ex.StackTrace))
             {
                 list.Add("StackTrace : ".PadLeft(26) + ex.StackTrace);
             }
-            if (!string.IsNullOrEmpty(ex.InnerException.Message))
+            if (ex.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.Message))
             {
                 list.Add("InnerException Message : " + ex.InnerException.Message);
             }
-            // If (Not String.IsNullOrEmpty(ex.Message)) Then
-            // End If
 
             list.Add("-----------------------------------------------------------------------------");
             return list;
