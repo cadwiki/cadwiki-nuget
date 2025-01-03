@@ -1,0 +1,115 @@
+﻿<UserControl
+    x:Class="cadwiki.MVVM.Views.DLLAutoCADView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:cadwiki.MVVM.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Background="LightGray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="rowOne" Height="Auto" />
+            <RowDefinition x:Name="rowTwo" Height="Auto" />
+            <RowDefinition x:Name="rowThree" Height="Auto" />
+            <RowDefinition x:Name="rowFour" Height="Auto" />
+            <RowDefinition x:Name="rowFive" Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DataGrid
+            x:Name="LoadedAssembliesDataGrid"
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Height="400"
+            MinHeight="20"
+            MaxHeight="400"
+            AutoGenerateColumns="False"
+            CanUserAddRows="false"
+            CanUserSortColumns="True"
+            HeadersVisibility="Column"
+            ItemsSource="{Binding CustomAssemblyInfoList, Mode=TwoWay}"
+            VerticalScrollBarVisibility="Visible"
+            VirtualizingPanel.ScrollUnit="Pixel">
+            <DataGrid.Columns>
+
+                <DataGridTemplateColumn
+                    Width="Auto"
+                    MinWidth="80"
+                    CanUserSort="True"
+                    SortMemberPath="Name">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" Text="Name" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="5,0,10,0" Text="{Binding Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
+                    Width="Auto"
+                    MinWidth="80"
+                    CanUserSort="True"
+                    SortMemberPath="Version">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" Text="Version" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="5,0,10,0" Text="{Binding Version}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
+                    Width="Auto"
+                    MinWidth="80"
+                    CanUserSort="True"
+                    SortMemberPath="DateModified">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" Text="DateModified" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="5,0,10,0" Text="{Binding DateModified}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
+                    Width="Auto"
+                    MinWidth="80"
+                    CanUserSort="True"
+                    SortMemberPath="FilePath">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" Text="FilePath" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="5,0,10,0" Text="{Binding FilePath}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
