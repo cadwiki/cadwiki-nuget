@@ -1,4 +1,8 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -16,6 +20,9 @@ namespace CadDevToolsDriver
             string exeDir = System.IO.Path.GetDirectoryName(exePath);
             string tempDir = System.IO.Path.GetTempPath() + "cadwiki.TestPlugin";
 
+            var cadApps = Directory.GetDirectories(tempDir).ToList().OrderByDescending(f => new FileInfo(f).CreationTime).ToList();
+            DeleteFoldersOlderThanOneDay(cadApps);
+
             string wildCardFileName = "*" + "cadwiki.AC.TestPlugin.dll";
             string testPluginDll = cadwiki.NetUtils.Paths.GetNewestDllInAnySubfolderOfSolutionDirectory(tempDir, wildCardFileName);
 
@@ -30,5 +37,24 @@ namespace CadDevToolsDriver
             Window.Show();
         }
 
+        private static void DeleteFoldersOlderThanOneDay(List<string> cadApps)
+        {
+            var dateNow = DateTime.Now;
+            foreach (var cadApp in cadApps)
+            {
+                var dateCreated = new DirectoryInfo(cadApp).CreationTime;
+                if (dateNow.Subtract(dateCreated).TotalDays > 1)
+                {
+                    try
+                    {
+                        Directory.Delete(cadApp, true);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+        }
     }
 }
