@@ -37,5 +37,21 @@ namespace UnitTests
             Assert.IsNotNull(bitMap);
             Assert.IsNotNull(icon);
         }
+
+
+        [TestMethod()]
+        public void Test_CreateAcadImage_WithFileStoreResource_ShouldReturnBitmap()
+        {
+            Bitmap bitMap = ResourceIcons._500x500_cadwiki_v1;
+            var acadBitMap = cadwiki.FileStore.Bitmaps.CreateBitmapSourceFromGdiBitmapForAutoCADButtonIcon(bitMap);
+            Assert.IsNotNull(acadBitMap);
+        }
+
+        [TestMethod()]
+        public void Test_CreateAcadImage_WithNull_ShouldReturnBitmap()
+        {
+            var acadBitMap = cadwiki.FileStore.Bitmaps.CreateBitmapSourceFromGdiBitmapForAutoCADButtonIcon(null);
+            Assert.IsNotNull(acadBitMap);
+        }
     }
 }
