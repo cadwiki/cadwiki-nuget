@@ -4,6 +4,9 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <UsingTask AssemblyFile="..\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo" />
   <PropertyGroup>
+    <NoWarn>168,1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
     <BuildRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.root))</BuildRoot>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -105,7 +108,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
-    <NoWarn>1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
@@ -114,7 +117,7 @@
     <OutputPath>bin\x64\Release\</OutputPath>
     <DocumentationFile>bin\x64\Release\buildThisFirst.xml</DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
@@ -124,7 +127,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
-    <NoWarn>1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>9.0</LangVersion>
@@ -134,7 +137,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\x64\Release\buildThisFirst.xml</DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>9.0</LangVersion>
@@ -145,7 +148,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
-    <NoWarn>1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>9.0</LangVersion>
@@ -156,7 +159,7 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>bin\x64\Debug\buildThisFirst.xml</DocumentationFile>
-    <NoWarn>1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>9.0</LangVersion>
