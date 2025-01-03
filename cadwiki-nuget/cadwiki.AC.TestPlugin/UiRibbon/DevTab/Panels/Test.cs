@@ -30,23 +30,17 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
 
         public static RibbonButton CreateRegressionTestsButton()
         {
-            var ribbonButton = new RibbonButton();
-            ribbonButton.Name = "Regression Tests";
-            ribbonButton.ShowText = true;
-            ribbonButton.Text = "Regression Tests";
 
             var testRunner = new Workflows.NunitTestRunner();
             var allRegressionTests = typeof(Tests.RegressionTests);
             // Dim allIntegrationTests = GetType(Tests.RegressionTests)
             Type[] allRegressionTestTypes = new[] { allRegressionTests };
             // Dim allRegressionTestTypes = {allRegressionTests, allIntegrationTests}
-            var uiRouter = new UiRouter("cadwiki.AC", "cadwiki.AC.Workflows.NunitTestRunner", "Run", new[] { allRegressionTestTypes }, App.AcadAppDomainDllReloader, Assembly.GetExecutingAssembly());
+            var ribbonButton = cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons.Creator.Create(
+                "Regression Tests", "Regression Tests", "Runs regression tests from the current .dll", null,
+                "cadwiki.AC", "cadwiki.AC.Workflows.NunitTestRunner", "Run", 
+                new[] { allRegressionTestTypes }, App.AcadAppDomainDllReloader, Assembly.GetExecutingAssembly());
 
-
-
-            ribbonButton.CommandParameter = uiRouter;
-            ribbonButton.CommandHandler = new GenericClickCommandHandler();
-            ribbonButton.ToolTip = "Runs regression tests from the current .dll";
             return ribbonButton;
         }
 
