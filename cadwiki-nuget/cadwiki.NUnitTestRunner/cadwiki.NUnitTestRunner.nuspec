@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>cadwiki.NUnitTestRunner</id>
-    <version>4.0.0.0</version>
+    <version>4.0.0.1</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
@@ -14,7 +14,7 @@
     <copyright>$copyright$</copyright>
     <tags>cadwiki Autocad UnitTest RegressionTest IntegrationTest AutomationTest </tags>
     <dependencies>
-        <group targetFramework=".NETFramework4.7.2" >
+        <group targetFramework=".NETFramework4.8" >
 			<dependency id="Handlebars.Net" version="2.1.2" />
 			<dependency id="Microsoft.TestApi" version="0.6.0.0"/>
 			<dependency id="Newtonsoft.Json" version="13.0.1"/>
@@ -24,7 +24,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\*.dll" target="lib\net472"/>
+    <file src="bin\$configuration$\*.dll" target="lib\net48"/>
 	<file src="..\icons\500x500-cadwiki-v1.png" target="images\" />
   </files>
 </package>
