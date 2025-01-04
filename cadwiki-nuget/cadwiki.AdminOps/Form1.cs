@@ -69,7 +69,8 @@ namespace cadwiki.AdminOps
                 "*AssemblyInfo.vb",
                 "*AssemblyInfo.cs",
                 "*.nuspec", 
-                "*.targets" 
+                "*.targets",
+                "*.csproj"
             };
             foreach (var folder in folders)
             {
