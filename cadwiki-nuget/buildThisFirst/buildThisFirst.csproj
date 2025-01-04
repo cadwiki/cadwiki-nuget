@@ -61,6 +61,7 @@
       <AssemblyMajorVersion>4</AssemblyMajorVersion>
       <AssemblyMinorVersion>0</AssemblyMinorVersion>
       <AssemblyBuildNumber>0</AssemblyBuildNumber>
+      <!--don't set to 0-->
       <AssemblyRevision>1</AssemblyRevision>
     </PropertyGroup>
     <!-- Execute AssemblyInfo updates based on defined properties -->
