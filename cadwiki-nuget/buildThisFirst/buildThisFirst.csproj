@@ -55,12 +55,13 @@
     </PropertyGroup>
     <!-- 2.) hard coded version rev and version build -->
     <!--don't manually change this, use AdminOps to update-->
+    <!--this version number always has to be 4 digits to ensure nuspec target works as expected-->
     <PropertyGroup Condition="'$(Configuration)' == 'DebugHC'">
       <AssemblyInfoVersionType>HardCoded</AssemblyInfoVersionType>
       <AssemblyMajorVersion>4</AssemblyMajorVersion>
       <AssemblyMinorVersion>0</AssemblyMinorVersion>
       <AssemblyBuildNumber>0</AssemblyBuildNumber>
-      <AssemblyRevision>0</AssemblyRevision>
+      <AssemblyRevision>1</AssemblyRevision>
     </PropertyGroup>
     <!-- Execute AssemblyInfo updates based on defined properties -->
     <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" AssemblyMajorVersion="$(AssemblyMajorVersion)" AssemblyMinorVersion="$(AssemblyMinorVersion)" AssemblyBuildNumberType="$(AssemblyBuildNumberType)" AssemblyBuildNumberFormat="$(AssemblyBuildNumberFormat)" AssemblyRevision="$(AssemblyRevision)" AssemblyBuildNumber="$(AssemblyBuildNumber)" AssemblyRevisionType="$(AssemblyRevisionType)" AssemblyRevisionFormat="$(AssemblyRevisionFormat)" />
