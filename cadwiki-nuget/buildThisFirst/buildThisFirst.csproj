@@ -54,6 +54,7 @@
       <AssemblyRevision>$(int_newRevNumber)</AssemblyRevision>
     </PropertyGroup>
     <!-- 2.) hard coded version rev and version build -->
+    <!--don't manually change this, use AdminOps to update-->
     <PropertyGroup Condition="'$(Configuration)' == 'DebugHC'">
       <AssemblyInfoVersionType>HardCoded</AssemblyInfoVersionType>
       <AssemblyMajorVersion>4</AssemblyMajorVersion>
