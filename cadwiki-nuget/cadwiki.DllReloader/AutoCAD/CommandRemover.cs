@@ -62,7 +62,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 }
                 else
                 {
-                    throw new System.Exception("cadwiki.AcRemoveCmdGroup.dll not found in assembly folder. Can't unload command group.");
+                    throw new System.Exception("cadwiki.AcRemoveCmdGroup.dll not found in assembly folder " + dllFolder + ". Can't unload command group.");
                 }
 
             }
