@@ -26,10 +26,13 @@ namespace CadDevToolsDriver
             string wildCardFileName = "*" + "cadwiki.AC.TestPlugin.dll";
             string testPluginDll = cadwiki.NetUtils.Paths.GetNewestDllInAnySubfolderOfSolutionDirectory(tempDir, wildCardFileName);
 
+            string wildCardFileName2 = "*" + "cadwiki.AC.dll";
+            string testPluginDll2 = cadwiki.NetUtils.Paths.GetNewestDllInAnySubfolderOfSolutionDirectory(tempDir, wildCardFileName2);
+
             var dependencies = new cadwiki.CadDevTools.MainWindow.Dependencies();
             dependencies.AutoCADExePath = @"C:\Program Files\Autodesk\AutoCAD 2024\acad.exe";
             dependencies.AutoCADStartupSwitches = "/p VANILLA";
-            dependencies.DllFilePathsToNetloadCommaDelimited = testPluginDll + "," + testPluginDll;
+            dependencies.DllFilePathsToNetloadCommaDelimited = testPluginDll + "," + testPluginDll2;
             dependencies.CustomDirectoryToSearchForDllsToLoadFrom = tempDir;
             dependencies.DllWildCardSearchPattern = wildCardFileName;
 
