@@ -62,13 +62,10 @@ namespace cadwiki.AC.PalleteSets
             var size = new System.Drawing.Size(opts.Width, opts.Height);
 
             //order matters, set vis, then size, then dock, then visual, then recalculate layout
-            AcadPaletteSet.Visible = true;
+            
             AcadPaletteSet.MinimumSize = size;
             AcadPaletteSet.Size = size;
-            if (opts.DockTo != DockSides.None)
-            {
-                AcadPaletteSet.Dock = opts.DockTo;
-            }
+
 
             if (opts.UseElementHost)
             {
@@ -86,6 +83,12 @@ namespace cadwiki.AC.PalleteSets
             AcadPaletteSet.Text = opts.Title;
 
             AcadPaletteSet.RecalculateDockSiteLayout();
+
+            AcadPaletteSet.Visible = true;
+            if (opts.DockTo != DockSides.None)
+            {
+                AcadPaletteSet.Dock = opts.DockTo;
+            }
 
             IsOpen = true;
             Messages.Add(opts.Title + " palette opened");

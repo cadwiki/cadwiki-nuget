@@ -159,9 +159,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Assemblies.cs" />
-    <Compile Include="PalleteSets\PaletteSetHost.cs" />
-    <Compile Include="PalleteSets\PaletteSetJson.cs" />
-    <Compile Include="PalleteSets\PaletteSetViewModel.cs" />
+    <Compile Include="Commands\Commands.cs" />
+    <Compile Include="PaletteSetJson\PaletteSetHost.cs" />
+    <Compile Include="PaletteSetJson\PaletteSetJson.cs" />
+    <Compile Include="PaletteSetJson\PaletteSetViewModel.cs" />
+    <Compile Include="PaletteSets\PaletteSetSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\BoundingBoxes.cs" />
     <Compile Include="NodeGraph\Edge.cs" />
@@ -190,6 +192,10 @@
     <Compile Include="Utilities\XData.cs" />
     <Compile Include="Utilities\Zoom.cs" />
     <Compile Include="UserInput\Selections.cs" />
+    <Compile Include="ViewModels\ViewModelSample.cs" />
+    <Compile Include="Views\ViewSample.xaml.cs">
+      <DependentUpon>ViewSample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Workflows\BreakSs.cs" />
     <Compile Include="Workflows\NunitTestRunner.cs" />
   </ItemGroup>
@@ -209,6 +215,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\ViewSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

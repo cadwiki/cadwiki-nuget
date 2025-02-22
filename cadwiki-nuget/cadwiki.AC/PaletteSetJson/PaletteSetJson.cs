@@ -6,14 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using cadwiki.MVVM.ViewModels;
 
 namespace cadwiki.AC.PalleteSets
 {
     public class PaletteSetJson :  PaletteSetHost
     {
-        public static UserControl View { get; set; } = new UserControl();
-        public static PaletteSetViewModel ViewModel { get; set; } = new PaletteSetViewModel();
-        public static Guid PaletteSetGuid = new Guid();
+        public UserControl View { get; set; } = new UserControl();
+        public PaletteSetViewModel ViewModel { get; set; } = new PaletteSetViewModel();
+        public Guid PaletteSetGuid = new Guid();
 
         public PaletteSetJson()
         {
@@ -36,12 +37,12 @@ namespace cadwiki.AC.PalleteSets
                 //new view must be instantiated before setting default opts, since it relies on view
                 Options opts = GetDefaultOpts(title);
                 LoadPreset();
-                MergeDefaultWithVm(opts, title);
+                //MergeDefaultWithVm(opts, title);
 
-                this.AcadPaletteSet = new Autodesk.AutoCAD.Windows.PaletteSet(opts.Name, opts.Guid);
-                this.AcadPaletteSet.Style = opts.Styles;
+                //this.AcadPaletteSet = new Autodesk.AutoCAD.Windows.PaletteSet(opts.Name, opts.Guid);
+                //this.AcadPaletteSet.Style = opts.Styles;
                 // Create the PaletteSet and Show it
-                TrySetPaletteConfigFromViewModel(opts);
+                //TrySetPaletteConfigFromViewModel(opts);
                 CreatePaletteSet(opts);
                 this.AcadPaletteSet.SizeChanged += AcadPaletteSet_SizeChanged;
             }
@@ -51,13 +52,13 @@ namespace cadwiki.AC.PalleteSets
             }
         }
 
-        private static void GetNewView()
+        private void GetNewView()
         {
             View = new UserControl();
             View.DataContext = ViewModel;
         }
 
-        private static void LoadPreset()
+        private void LoadPreset()
         {
             ViewModel.LoadFirstFoundPresetFileIntoViewModel<PaletteSetViewModel>();
         }
@@ -90,7 +91,7 @@ namespace cadwiki.AC.PalleteSets
             opts.DockTo = DockSides.Left;
             opts.ResizeViewForPalette = true;
             opts.Guid = PaletteSetGuid;
-            opts.Styles = PaletteSetStyles.Snappable | PaletteSetStyles.NameEditable | PaletteSetStyles.UsePaletteNameAsTitleForSingle;
+            opts.Styles = PaletteSetStyles.ShowCloseButton | PaletteSetStyles.Snappable | PaletteSetStyles.NameEditable | PaletteSetStyles.UsePaletteNameAsTitleForSingle;
             return opts;
         }
 
