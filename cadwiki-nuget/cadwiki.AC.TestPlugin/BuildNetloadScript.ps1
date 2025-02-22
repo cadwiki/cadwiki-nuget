@@ -1,11 +1,14 @@
 param (
     [string]$RootDir
 )
-Write-Host "Root Directory: $RootDir"
-#$RootDir = "$env:Temp\cadwiki.TestPlugin\4.0.222.55"
+
+#enable for powershell ISE testing
+#$RootDir = "$env:Temp\cadwiki.TestPlugin\4.0.222.55" + '"'  # Example with trailing quote
+$RootDir = $RootDir -replace '"$', ''
+
 if (-not $RootDir -or -not (Test-Path $RootDir)) {
-    Write-Error "Invalid or missing root directory argument."
-    exit 1
+    #Write-Error "Invalid or missing root directory argument."
+    #exit 1
 }
 
 
@@ -32,7 +35,6 @@ Add-Content -Path $netload -Value $sd
 $nd = "netload"
 foreach ($assembly in $assemblies)
 {
-    $d = "$nd $RootDir\$assembly"
     $d = "$nd ""$RootDir\$assembly"""
     Add-Content -Path $netload -Value $d
 }
