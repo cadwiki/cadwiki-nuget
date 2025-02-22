@@ -6,7 +6,24 @@
   <PropertyGroup>
     <NoWarn>168,1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,162,649,1717,219,67,414,4244,414,MSB3270,3270</NoWarn>
     <TargetFrameworkProfile />
+    <BuildRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.root))</BuildRoot>
   </PropertyGroup>
+  <Target Name="CopyUnloadDll" AfterTargets="Build">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="thisProjectAssemblyIdentities" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <CurrentDateTime>$([System.DateTime]::Now.ToString("yyyy_MM_dd_HH_mm_ss"))</CurrentDateTime>
+      <TempFolderPath>$([System.IO.Path]::Combine($([System.IO.Path]::GetTempPath()), "cadwiki.TestPlugin", %(thisProjectAssemblyIdentities.Version)))\</TempFolderPath>
+      <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    </PropertyGroup>
+    <MakeDir Directories="$(TempFolderPath)" />
+    <ItemGroup>
+      <DllFiles Include="$(BuildRoot)\_libs\AutoCAD 2024\cadwiki.AcRemoveCmdGroup.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DllFiles)" DestinationFolder="$(TempFolderPath)" />
+    <Message Importance="High" Text="Unload copied to Temp folder: $(TempFolderPath)" />
+  </Target>
   <Target Name="CopyAssembliesToTempFolder" AfterTargets="Build">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="thisProjectAssemblyIdentities" />
