@@ -8,6 +8,19 @@
     <TargetFrameworkProfile />
     <BuildRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.root))</BuildRoot>
   </PropertyGroup>
+  <Target Name="ExecutePowerShellScriptToCreateNetloadScripts" AfterTargets="CopyAssembliesToTempFolder">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="thisProjectAssemblyIdentities" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <CurrentDateTime>$([System.DateTime]::Now.ToString("yyyy_MM_dd_HH_mm_ss"))</CurrentDateTime>
+      <TempFolderPath>$([System.IO.Path]::Combine($([System.IO.Path]::GetTempPath()), "cadwiki.TestPlugin", %(thisProjectAssemblyIdentities.Version)))\</TempFolderPath>
+      <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+      <ScriptPath>$(ProjectDir)BuildNetloadScript.ps1</ScriptPath>
+    </PropertyGroup>
+    <MakeDir Directories="$(TempFolderPath)" />
+    <Exec Command="PowerShell -NoProfile -ExecutionPolicy Unrestricted -File &quot;$(ScriptPath)&quot; &quot;$(TempFolderPath)&quot;" />
+  </Target>
   <Target Name="CopyUnloadDll" AfterTargets="Build">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="thisProjectAssemblyIdentities" />
@@ -204,6 +217,9 @@
     <PackageReference Include="MSBuild.Extension.Pack">
       <Version>1.9.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BuildNetloadScript.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
