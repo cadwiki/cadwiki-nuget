@@ -11,13 +11,14 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
         public static RibbonPanel CreateTestsPanel(RibbonButton blankButton)
         {
             var integrationTestsButton = CreateRegressionTestsButton();
+            var dllButton = CreateDllButton();
             var ribbonPanelSource = new RibbonPanelSource();
             ribbonPanelSource.Title = "Tests";
             var row1 = new RibbonRowPanel();
             row1.IsTopJustified = true;
             row1.Items.Add(integrationTestsButton);
             row1.Items.Add(new RibbonRowBreak());
-            row1.Items.Add(blankButton);
+            row1.Items.Add(dllButton);
             row1.Items.Add(new RibbonRowBreak());
             row1.Items.Add(blankButton);
             row1.Items.Add(new RibbonRowBreak());
@@ -44,5 +45,22 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
             return ribbonButton;
         }
 
+
+        public static RibbonButton CreateDllButton()
+        {
+            var ribbonButton = cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons.Creator.Create(
+                "Dlls",
+                "Dlls",
+                "Dlls",
+                null,
+                "cadwiki.AC",
+                "cadwiki.AC.Commands.Commands",
+                "ShowSamplePallete",
+                null,
+                App.AcadAppDomainDllReloader,
+                Assembly.GetExecutingAssembly()
+            );
+            return ribbonButton;
+        }
     }
 }
