@@ -46,6 +46,11 @@ namespace cadwiki.CadDevTools
             if (!string.IsNullOrEmpty(dependencies.AutoCADExePath))
             {
                 acadLocation = dependencies.AutoCADExePath;
+                if (File.Exists(acadLocation))
+                {
+                    this.ButtonLaunch.IsEnabled = true;
+                    EditRichTextBoxWithAutoCADLocation();
+                }
             }
 
             if (!string.IsNullOrEmpty(dependencies.DllFilePathToNetload))
