@@ -61,8 +61,6 @@ namespace cadwiki.AC.PalleteSets
 
             var size = new System.Drawing.Size(opts.Width, opts.Height);
 
-            //order matters, set vis, then size, then dock, then visual, then recalculate layout
-            
             AcadPaletteSet.MinimumSize = size;
             AcadPaletteSet.Size = size;
 

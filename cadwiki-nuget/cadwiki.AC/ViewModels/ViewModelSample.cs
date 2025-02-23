@@ -8,5 +8,10 @@ namespace cadwiki.AC.ViewModels
 {
     public class ViewModelSample : PalleteSets.PaletteSetViewModel
     {
+        public ViewModelSample()
+        {
+            Title = "Sample";
+            FileNamePrefix = "Sample";
+        }
     }
 }

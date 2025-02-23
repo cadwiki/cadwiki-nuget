@@ -151,6 +151,11 @@ namespace cadwiki.AC.PalleteSets
                 };
 
                 string firstPresetFile = GetFile(UserSetingsFolder, FileNamePrefix, _fileExension);
+                if (!Directory.Exists(UserSetingsFolder))
+                {
+                    Directory.CreateDirectory(UserSetingsFolder);
+                }
+
                 if (!String.IsNullOrEmpty(firstPresetFile))
                 {
                     string json = JsonConvert.SerializeObject(this, settings);
