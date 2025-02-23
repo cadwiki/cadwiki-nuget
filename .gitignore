@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 apikeys.txt
+cadwiki-nuget/cadwiki.AC.TestPlugin/netload.scr

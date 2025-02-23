@@ -19,7 +19,7 @@ namespace cadwiki.CadDevTools
         {
             public string AutoCADExePath;
             public string AutoCADStartupSwitches;
-            public string DllFilePathToNetload;
+            public string DllFilePathsToNetloadCommaDelimited;
             public string CustomDirectoryToSearchForDllsToLoadFrom;
             public string DllWildCardSearchPattern;
             public bool SetAutocadWindowToNorm;
@@ -46,11 +46,16 @@ namespace cadwiki.CadDevTools
             if (!string.IsNullOrEmpty(dependencies.AutoCADExePath))
             {
                 acadLocation = dependencies.AutoCADExePath;
+                if (File.Exists(acadLocation))
+                {
+                    this.ButtonLaunch.IsEnabled = true;
+                    EditRichTextBoxWithAutoCADLocation();
+                }
             }
 
-            if (!string.IsNullOrEmpty(dependencies.DllFilePathToNetload))
+            if (!string.IsNullOrEmpty(dependencies.DllFilePathsToNetloadCommaDelimited))
             {
-                this.TextBoxDllPath.Text = dependencies.DllFilePathToNetload;
+                this.TextBoxDllPath.Text = dependencies.DllFilePathsToNetloadCommaDelimited;
             }
 
             if (!string.IsNullOrEmpty(dependencies.AutoCADStartupSwitches))
@@ -162,15 +167,19 @@ namespace cadwiki.CadDevTools
         {
             System.Windows.Forms.Application.DoEvents();
             WpfUi.Utils.SetProcessingStatus(this.TextBlockStatus, this.TextBlockMessage, "Please wait until CAD launches and netloads " + this.TextBoxDllPath.Text + " into AutoCAD.");
+            LaunchAutocad();
 
             string filePath = this.TextBoxDllPath.Text;
-            if (!File.Exists(filePath))
+            var paths = filePath.Split(new string[] { "," }, StringSplitOptions.None);
+            if (paths.Count() > 1)
             {
-                LaunchAutocad();
+                foreach (var path in paths)
+                {
+                    NetloadDll(path);
+                }
             }
-            else
+            else if (File.Exists(filePath))
             {
-                LaunchAutocad();
                 NetloadDll(filePath);
             }
         }
