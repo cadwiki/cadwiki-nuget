@@ -40,7 +40,10 @@
     </PropertyGroup>
     <ItemGroup>
       <Reference Include="Microsoft.VisualBasic" />
+      <!-- Include multiple directories for AssemblyInfo.cs -->
       <AssemblyInfoFiles Include="$(BuildRoot)\**\AssemblyInfo.cs" />
+      <AssemblyInfoFiles Include="$(BuildRoot)\cadwiki.AC\**\AssemblyInfo.cs" />
+      <AssemblyInfoFiles Include="$(BuildRoot)\cadwiki.AC.TestPlugin\**\AssemblyInfo.cs" />
     </ItemGroup>
     <!-- select option 1 or 2 for assembly version incrementation and comment out the others  -->
     <!-- 1.) single digit rev auto inc format from int_newRevNumber created above  -->
