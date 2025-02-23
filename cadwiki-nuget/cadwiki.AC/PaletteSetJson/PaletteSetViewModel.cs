@@ -118,17 +118,20 @@ namespace cadwiki.AC.PalleteSets
                         PropertyInfo[] properties = typeof(T).GetProperties();
                         foreach (PropertyInfo property in properties)
                         {
-                            if (property.GetCustomAttribute<DataMemberAttribute>() != null)
+                            if (property.GetCustomAttribute<DataMemberAttribute>() != null && property.Name != "Version")
                             {
                                 object readInValue = property.GetValue(readInViewModel);
-                                try
+                                if (readInValue != null)
                                 {
-                                    property.SetValue(this, readInValue);
-                                    this.NotifyOfPropertyChange(property.Name);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Exceptions.Add(ex);
+                                    try
+                                    {
+                                        property.SetValue(this, readInValue);
+                                        this.NotifyOfPropertyChange(property.Name);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Exceptions.Add(ex);
+                                    }
                                 }
                             }
                         }
