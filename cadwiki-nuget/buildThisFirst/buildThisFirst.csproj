@@ -65,7 +65,7 @@
       <AssemblyMinorVersion>0</AssemblyMinorVersion>
       <AssemblyBuildNumber>0</AssemblyBuildNumber>
       <!--don't set to 0-->
-      <AssemblyRevision>1</AssemblyRevision>
+      <AssemblyRevision>2</AssemblyRevision>
     </PropertyGroup>
     <!-- Execute AssemblyInfo updates based on defined properties -->
     <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" AssemblyMajorVersion="$(AssemblyMajorVersion)" AssemblyMinorVersion="$(AssemblyMinorVersion)" AssemblyBuildNumberType="$(AssemblyBuildNumberType)" AssemblyBuildNumberFormat="$(AssemblyBuildNumberFormat)" AssemblyRevision="$(AssemblyRevision)" AssemblyBuildNumber="$(AssemblyBuildNumber)" AssemblyRevisionType="$(AssemblyRevisionType)" AssemblyRevisionFormat="$(AssemblyRevisionFormat)" />
