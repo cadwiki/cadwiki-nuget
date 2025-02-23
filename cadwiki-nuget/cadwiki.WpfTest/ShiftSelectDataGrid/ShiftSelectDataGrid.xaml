@@ -17,9 +17,18 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <controls:ShiftSelectableDataGrid
-            x:Name="dg"
-            AutoGenerateColumns="True"
-            ItemsSource="{Binding Items}" />
+        <Grid>
+            <controls:ShiftSelectableDataGrid
+                x:Name="dg"
+                AutoGenerateColumns="False"
+                ItemsSource="{Binding Items}"
+                SelectionMode="Extended"
+                SelectionUnit="FullRow">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=TwoWay}" Header="Select" />
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                </DataGrid.Columns>
+            </controls:ShiftSelectableDataGrid>
+        </Grid>
     </Grid>
 </UserControl>

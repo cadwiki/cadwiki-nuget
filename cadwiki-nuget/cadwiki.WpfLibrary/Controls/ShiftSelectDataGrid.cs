@@ -1,6 +1,9 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 namespace cadwiki.WpfLibrary.Controls
@@ -26,7 +29,7 @@ namespace cadwiki.WpfLibrary.Controls
                 {
                     int currentIndex = ItemContainerGenerator.IndexFromContainer(row);
 
-                    if ((Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) && 
+                    if ((Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)) &&
                         _lastSelectedIndex >= 0)
                     {
                         SelectRange(_lastSelectedIndex, currentIndex);
@@ -55,4 +58,38 @@ namespace cadwiki.WpfLibrary.Controls
             }
         }
     }
+
+    public class SelectableItem : INotifyPropertyChanged
+    {
+        private bool _isSelected;
+        private string _name;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+
 }

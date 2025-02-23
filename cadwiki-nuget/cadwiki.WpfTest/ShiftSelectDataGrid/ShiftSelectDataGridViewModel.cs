@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using cadwiki.WpfLibrary.Controls;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,9 +13,9 @@ namespace cadwiki.WpfTest.ShiftSelectDataGrid
 {
     public class ShiftSelectDataGridViewModel : Screen
     {
-        private ObservableCollection<string> _items;
+        private ObservableCollection<SelectableItem> _items;
 
-        public ObservableCollection<string> Items
+        public ObservableCollection<SelectableItem> Items
         {
             get => _items;
             set
@@ -26,18 +27,18 @@ namespace cadwiki.WpfTest.ShiftSelectDataGrid
 
         public ShiftSelectDataGridViewModel()
         {
-            Items = new ObservableCollection<string>();
+            Items = new ObservableCollection<SelectableItem>();
             for (int i = 1; i <= 20; i++)
             {
-                Items.Add($"Item {i}");
+                Items.Add(new SelectableItem { Name = $"Item {i}", IsSelected = false });
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
 }
