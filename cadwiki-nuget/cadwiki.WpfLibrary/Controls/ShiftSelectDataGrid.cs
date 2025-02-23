@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls.Primitives;
+using System;
 
 
 namespace cadwiki.WpfLibrary.Controls
@@ -18,10 +19,34 @@ namespace cadwiki.WpfLibrary.Controls
             SelectionMode = DataGridSelectionMode.Extended;
             SelectionUnit = DataGridSelectionUnit.FullRow;
             // Subscribe to column header click event
-            this.AddHandler(DataGridColumnHeader.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnColumnHeaderClick), true);
+            //this.AddHandler(DataGridColumnHeader.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnColumnHeaderClick_ToggleSelectedCheckBoxes), true);
+            this.AddHandler(DataGridCell.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnCheckBoxRowClick_ToggleSelectedCheckBoxes), true);
         }
 
-        private void OnColumnHeaderClick(object sender, MouseButtonEventArgs e)
+        private void OnCheckBoxRowClick_ToggleSelectedCheckBoxes(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is ShiftSelectableDataGrid dg)
+            {
+                if (e.OriginalSource is System.Windows.Controls.Border border)
+                {
+                    var currentItem = dg.CurrentCell.Item;
+                    if (currentItem is SelectableItem currenSelectableItem)
+                    {
+                        var toggleTo = !currenSelectableItem.IsSelected;
+                        foreach (var item in this.SelectedItems)
+                        {
+                            if (item is SelectableItem selectableItem)
+                            {
+                                selectableItem.IsSelected = toggleTo;
+                            }
+                        }
+                        e.Handled = true;
+                    }
+                }
+            }
+        }
+
+        private void OnColumnHeaderClick_ToggleSelectedCheckBoxes(object sender, MouseButtonEventArgs e)
         {
             if (sender is ShiftSelectableDataGrid dg)
             {
