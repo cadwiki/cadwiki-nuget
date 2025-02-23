@@ -54,6 +54,7 @@
     <Compile Include="Controls\KeyPressSearchComboBox.xaml.cs">
       <DependentUpon>KeyPressSearchComboBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ShiftSelectDataGrid.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Exceptions\ExceptionHandler.cs" />
     <Compile Include="Globals\Globals.cs" />
