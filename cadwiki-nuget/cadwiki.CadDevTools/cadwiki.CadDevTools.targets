@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
  <ItemGroup>
   <!--This item group tells the consumer to go get the cadwiki.AcRemoveCmdGroup.dll from the packages folder-->
-  <None Include="$(SolutionDir)packages\cadwiki.CadDevTools.4.0.0.1\Build\cadwiki.AcRemoveCmdGroup.dll">
+  <None Include="$(SolutionDir)packages\cadwiki.CadDevTools.4.0.0.2\Build\cadwiki.AcRemoveCmdGroup.dll">
      <!--Link must be set to ensure the file can be copied with the linker-->
      <Link>cadwiki.AcRemoveCmdGroup.dll</Link>
 	 <!--Tells consumer to Copy file to output directory-->
