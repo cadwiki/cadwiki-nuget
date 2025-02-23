@@ -50,7 +50,7 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons
             }
             catch (Exception ex)
             {
-                var window = new WpfUi.Templates.WindowAutoCADException(new Exception("Not able to cast parameter to UiRouter object."));
+                var window = new WpfUi.Templates.WindowAutoCADException(ex);
                 window.Show();
             }
 

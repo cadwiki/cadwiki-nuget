@@ -69,13 +69,29 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons
 
                     string dllRepo = Path.GetDirectoryName(netReloader.GetDllPath());
                     var asm = AcadAssemblyUtils.GetNewestAssembly(AppDomain.CurrentDomain.GetAssemblies(), assemblyName, dllRepo + @"\" + assemblyName + ".dll");
-                    // Dim asm As System.Reflection.Assembly = If(App.ReloadedAssembly, Assembly.GetExecutingAssembly)
+                    if (asm == null)
+                    {
+                        throw new Exception(string.Format("Assembly {0} not found in folder {1} ", 
+                            assemblyName, dllRepo));
+                    }
                     Type[] types = NetUtils.AssemblyUtils.GetTypesSafely(asm);
+                    if (types == null)
+                    {
+                        throw new Exception(string.Format("Unable to parse types from Assembly {0} in folder {1} ", 
+                            assemblyName, dllRepo));
+                    }
                     var @type = asm.GetType(uiRouter.FullClassName);
+                    if (@type == null)
+                    {
+                        throw new Exception(string.Format("Unable to parse class {0} from Assembly {1} in folder {2} ", 
+                            uiRouter.FullClassName, assemblyName, dllRepo));
+                    }
                     var methodInfo = type.GetMethod(uiRouter.MethodName);
                     if (methodInfo == null)
                     {
                         netReloader.Log("Method not found: " + uiRouter.MethodName);
+                        throw new Exception(string.Format("Unable to parse method {0} from class {1} from Assembly {2} in folder {3} ", 
+                            uiRouter.MethodName, uiRouter.FullClassName, assemblyName, dllRepo));
                     }
                     else
                     {

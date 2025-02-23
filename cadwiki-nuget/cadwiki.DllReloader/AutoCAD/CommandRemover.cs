@@ -48,23 +48,15 @@ namespace cadwiki.DllReloader.AutoCAD
                 var commandGlobalName = new StringBuilder(256);
                 commandGlobalName.Append(commandLineMethodString);
                 string dllFolder = Path.GetDirectoryName(dllPath);
-                if (File.Exists(dllFolder + @"\" + "cadwiki.AcRemoveCmdGroup.dll"))
+                int wasCommandUndefined = RemoveCommand(groupName, commandGlobalName);
+                if (wasCommandUndefined == 0)
                 {
-                    int wasCommandUndefined = RemoveCommand(groupName, commandGlobalName);
-                    if (wasCommandUndefined == 0)
-                    {
-                        doc.Editor.WriteMessage(Environment.NewLine + "Command successfully removed: " + commandGlobalName.ToString());
-                    }
-                    else
-                    {
-                        doc.Editor.WriteMessage(Environment.NewLine + "Remove command failed: " + commandLineMethodString + ".");
-                    }
+                    doc.Editor.WriteMessage(Environment.NewLine + "Command successfully removed: " + commandGlobalName.ToString());
                 }
                 else
                 {
-                    throw new System.Exception("cadwiki.AcRemoveCmdGroup.dll not found in assembly folder. Can't unload command group.");
+                    doc.Editor.WriteMessage(Environment.NewLine + "Remove command failed: " + commandLineMethodString + ".");
                 }
-
             }
         }
     }

@@ -63,18 +63,18 @@ Get-Project -All | Install-Package $Path\ToNuget\File\.nupkg
 Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\AutoCAD2021.Interop.Base\AutoCAD2021.Interop.Base.1.0.0.nupkg
 Only need to install dev tools
 Get-Project -All | UnInstall-Package cadwiki.CadDevTools
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools.4.0.0.1.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.CadDevTools.4.0.0.2.nupkg
 
 
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner.4.0.0.1.nupkg
-Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader.4.0.0.1.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.NUnitTestRunner.4.0.0.2.nupkg
+Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget\cadwiki.DllReloader.4.0.0.2.nupkg
 ```
 
 
 
 ### Push nuget package 
 ```  
-nuget push ./cadwiki.NUnitTestRunner.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.DllReloader.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.CadDevTools.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.NUnitTestRunner.4.0.0.2.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.DllReloader.4.0.0.2.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.CadDevTools.4.0.0.2.nupkg apikey -src https://www.nuget.org/  
 ```
