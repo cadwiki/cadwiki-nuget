@@ -4,6 +4,7 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls.Primitives;
 
 
 namespace cadwiki.WpfLibrary.Controls
@@ -16,6 +17,30 @@ namespace cadwiki.WpfLibrary.Controls
         {
             SelectionMode = DataGridSelectionMode.Extended;
             SelectionUnit = DataGridSelectionUnit.FullRow;
+            // Subscribe to column header click event
+            this.AddHandler(DataGridColumnHeader.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnColumnHeaderClick), true);
+        }
+
+        private void OnColumnHeaderClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is ShiftSelectableDataGrid dg)
+            {
+                if (e.OriginalSource is TextBlock tb)
+                {
+                    var text = tb.Text;
+                    if (text == "Select")
+                    {
+                        foreach (var item in this.SelectedItems)
+                        {
+                            if (item is SelectableItem selectableItem)
+                            {
+                                selectableItem.IsSelected = !selectableItem.IsSelected;
+                            }
+                        }
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
