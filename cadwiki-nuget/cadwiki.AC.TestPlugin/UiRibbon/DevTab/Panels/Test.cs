@@ -11,7 +11,7 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
         public static RibbonPanel CreateTestsPanel(RibbonButton blankButton)
         {
             var integrationTestsButton = CreateRegressionTestsButton();
-            var dllButton = CreateDllButton();
+            var dllButton = CreatePaletteButton();
             var ribbonPanelSource = new RibbonPanelSource();
             ribbonPanelSource.Title = "Tests";
             var row1 = new RibbonRowPanel();
@@ -46,12 +46,12 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
         }
 
 
-        public static RibbonButton CreateDllButton()
+        public static RibbonButton CreatePaletteButton()
         {
             var ribbonButton = cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons.Creator.Create(
-                "Dlls",
-                "Dlls",
-                "Dlls",
+                "Palette",
+                "Palette",
+                "Palette",
                 null,
                 "cadwiki.AC",
                 "cadwiki.AC.Commands.Commands",
