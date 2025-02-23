@@ -74,7 +74,7 @@ Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget
 
 ### Push nuget package 
 ```  
-nuget push ./cadwiki.NUnitTestRunner.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.DllReloader.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.CadDevTools.2.0.0.0.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.NUnitTestRunner.4.0.0.2.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.DllReloader.4.0.0.2.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.CadDevTools.4.0.0.2.nupkg apikey -src https://www.nuget.org/  
 ```
