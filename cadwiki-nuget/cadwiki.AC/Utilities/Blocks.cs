@@ -8,6 +8,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
+using acadEx = Autodesk.AutoCAD.Runtime.Exception;
 using Microsoft.VisualBasic;
 using OpenMode = Autodesk.AutoCAD.DatabaseServices.OpenMode;
 
@@ -337,6 +338,18 @@ namespace cadwiki.AC.Utilities
                     tr.AddNewlyCreatedDBObject(attRef, true);
                 }
             }
+
+            public static string EffectiveName(this BlockReference block)
+            {
+                if (block == null)
+                    throw new ArgumentNullException(nameof(block));
+
+                if (block.DynamicBlockTableRecord.Database.TransactionManager.TopTransaction == null)
+                    throw new acadEx(ErrorStatus.NoActiveTransactions);
+
+                return ((BlockTableRecord)block.DynamicBlockTableRecord.GetObject(OpenMode.ForRead)).Name;
+            }
+
         }
     }
 }

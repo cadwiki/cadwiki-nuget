@@ -27,7 +27,9 @@ namespace cadwiki.WpfLibrary.Controls
         {
             if (sender is ShiftSelectableDataGrid dg)
             {
-                if (e.OriginalSource is System.Windows.Controls.Border border)
+                if (e.OriginalSource is System.Windows.Controls.Grid grid ||
+                    e.OriginalSource is System.Windows.Controls.Border border ||
+                    e.OriginalSource is System.Windows.Shapes.Rectangle rectangle)
                 {
                     var currentItem = dg.CurrentCell.Item;
                     if (currentItem is SelectableItem currenSelectableItem)

@@ -87,10 +87,22 @@ namespace cadwiki.AC.PalleteSets
             {
                 AcadPaletteSet.Dock = opts.DockTo;
             }
-
+            AcadPaletteSet.StateChanged += AcadPaletteSet_StateChanged;
             IsOpen = true;
             Messages.Add(opts.Title + " palette opened");
             OpenPalettes.Add(this);
+        }
+
+        private void AcadPaletteSet_StateChanged(object sender, PaletteSetStateEventArgs e)
+        {
+            if (e.NewState == Autodesk.AutoCAD.Windows.StateEventIndex.Hide)
+            {
+                IsOpen = false;
+            }
+            else if (e.NewState == Autodesk.AutoCAD.Windows.StateEventIndex.Show)
+            {
+                IsOpen = true;
+            }
         }
 
         public void ReAdd(Options opts)
