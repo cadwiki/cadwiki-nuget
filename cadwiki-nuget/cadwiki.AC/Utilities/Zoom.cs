@@ -19,7 +19,7 @@ namespace cadwiki.AC.Utilities
                     var min2d = new Point2d(min.X, min.Y);
                     var max2d = new Point2d(max.X, max.Y);
 
-                    var view = new ViewTableRecord();
+                    var view = doc.Editor.GetCurrentView();
 
                     view.CenterPoint = min2d + (max2d - min2d) / 2.0d;
                     view.Height = max2d.Y - min2d.Y;
@@ -39,13 +39,13 @@ namespace cadwiki.AC.Utilities
 
                     var db = doc.Database;
 
-                    var min = db.Extmin;
-                    var max = db.Extmax;
+                    var min = db.Pextmin;
+                    var max = db.Pextmax;
 
                     var min2d = new Point2d(min.X, min.Y);
                     var max2d = new Point2d(max.X, max.Y);
 
-                    var view = new ViewTableRecord();
+                    var view = doc.Editor.GetCurrentView();
 
                     view.CenterPoint = min2d + (max2d - min2d) / 2.0d;
                     view.Height = max2d.Y - min2d.Y;
