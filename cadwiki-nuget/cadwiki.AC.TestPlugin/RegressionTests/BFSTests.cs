@@ -260,7 +260,7 @@ namespace cadwiki.AC.TestPlugin.Tests
 
             Zoom.Extents(doc);
 
-            Assert.AreEqual(nodeGraph.Nodes.Count, 8, "Expected 8 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+            Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
         // Test connect start and end points to node graph
