@@ -205,7 +205,7 @@ namespace cadwiki.AC.TestPlugin.Tests
         }
 
 
-        private static int _doubleComplexCount = 1;
+        private static int _doubleComplexCount = 0;
 
         public NodeGraph.NodeGraph DrawDoubleComplexNodeGraph(
             Document doc, 
@@ -215,15 +215,18 @@ namespace cadwiki.AC.TestPlugin.Tests
             bool calcDiversePaths = false
             )
         {
-            double xOffset = 20.0d * _doubleComplexCount;
+            var xStart = (20.0d * _doubleComplexCount);
+            var xOffset = 20.0d;
+
+            
 
             var layer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
-            var source = new Point3d(2d + xOffset, 6d, 0d);
+            var source = new Point3d(2d + xStart + xOffset, 6d, 0d);
 
-            var pt1 = new Point3d(0d + xOffset, 0d, 0d);
-            var pt2 = new Point3d(2d + xOffset, 0d, 0d);
-            var pt3 = new Point3d(2d + xOffset, 2d, 0d);
-            var pt4 = new Point3d(0d + xOffset, 2d, 0d);
+            var pt1 = new Point3d(0d + xStart + xOffset, 0d, 0d);
+            var pt2 = new Point3d(2d + xStart + xOffset, 0d, 0d);
+            var pt3 = new Point3d(2d + xStart + xOffset, 2d, 0d);
+            var pt4 = new Point3d(0d + xStart + xOffset, 2d, 0d);
             var linePointTuples = new List<LinePoints>();
             linePointTuples.Add(new LinePoints(pt1, pt2));
             linePointTuples.Add(new LinePoints(pt2, pt3));
@@ -232,14 +235,17 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt1, pt3));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
 
-            xOffset = 30.0d * _doubleComplexCount;
-            double yOffset = 20.0d * _doubleComplexCount;
-            pt1 = new Point3d(0d + xOffset, 0d + yOffset, 0d);
+            xOffset = 30.0d;
+
+            var yStart = 20.0d;
+            var yOffset = 20.0 ;
+
+            pt1 = new Point3d(0d + xStart + xOffset, 0d + yStart + yOffset, 0d);
             linePointTuples.Add(new LinePoints(pt1, pt3));
 
-            pt2 = new Point3d(2d + xOffset, 0d + yOffset, 0d);
-            pt3 = new Point3d(2d + xOffset, 2d + yOffset, 0d);
-            pt4 = new Point3d(0d + xOffset, 2d + yOffset, 0d);
+            pt2 = new Point3d(2d + xStart + xOffset, 0d + yStart + yOffset, 0d);
+            pt3 = new Point3d(2d + xStart + xOffset, 2d + yStart + yOffset, 0d);
+            pt4 = new Point3d(0d + xStart + xOffset, 2d + yStart + yOffset, 0d);
             linePointTuples.Add(new LinePoints(pt1, pt2));
             linePointTuples.Add(new LinePoints(pt2, pt3));
             linePointTuples.Add(new LinePoints(pt3, pt4));
@@ -259,7 +265,7 @@ namespace cadwiki.AC.TestPlugin.Tests
                 nodeGraph.AddNeighborsToNodes(layer.Name);
             }
 
-            var dest = new Point3d(5d + xOffset, 5d + yOffset, 0d);
+            var dest = new Point3d(5d + xStart + xOffset, 5d + yStart + yOffset, 0d);
             if (connectSrcAndDest)
             {
                 nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest);
@@ -273,7 +279,7 @@ namespace cadwiki.AC.TestPlugin.Tests
                 nodeGraph.DrawLinesAlongPath(doc, list, pathLayer.Name);
             }
 
-            _doubleComplexCount = _doubleComplexCount + 2;
+            _doubleComplexCount = _doubleComplexCount + 1;
             return nodeGraph;
         }
 
