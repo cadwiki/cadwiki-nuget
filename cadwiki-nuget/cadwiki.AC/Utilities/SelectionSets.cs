@@ -190,6 +190,10 @@ namespace cadwiki.AC.Utilities
         public static List<Entity> GetEntityList(Document doc, SelectionSet ss)
         {
             var entities = new List<Entity>();
+            if (ss == null)
+            {
+                return entities;
+            }
             var db = doc.Database;
             using (var @lock = doc.LockDocument())
             {
