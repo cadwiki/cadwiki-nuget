@@ -204,12 +204,19 @@ namespace cadwiki.AC.TestPlugin.Tests
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
-        [Test]
-        public void Add_Neighbors_To_Double_Complex_Node_Graph()
-        {
-            double xOffset = 20.0d;
 
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+        private static int _doubleComplexCount = 1;
+
+        public NodeGraph.NodeGraph DrawDoubleComplexNodeGraph(
+            Document doc, 
+            bool addNeighbors = false, 
+            bool connectSrcAndDest = false, 
+            bool calcPath = false, 
+            bool calcDiversePaths = false
+            )
+        {
+            double xOffset = 20.0d * _doubleComplexCount;
+
             var layer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
             var source = new Point3d(2d + xOffset, 6d, 0d);
 
@@ -225,8 +232,8 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt1, pt3));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
 
-            xOffset = 30.0d;
-            double yOffset = 20.0d;
+            xOffset = 30.0d * _doubleComplexCount;
+            double yOffset = 20.0d * _doubleComplexCount;
             pt1 = new Point3d(0d + xOffset, 0d + yOffset, 0d);
             linePointTuples.Add(new LinePoints(pt1, pt3));
 
@@ -247,19 +254,45 @@ namespace cadwiki.AC.TestPlugin.Tests
             var lineIds = DrawLines(doc, linePointTuples, layer.Name);
             var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, layer.Name);
 
+            if (addNeighbors)
+            {
+                nodeGraph.AddNeighborsToNodes(layer.Name);
+            }
 
             var dest = new Point3d(5d + xOffset, 5d + yOffset, 0d);
-            nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest);
+            if (connectSrcAndDest)
+            {
+                nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest);
+            }
 
-            nodeGraph.LabelNodes();
+            if (calcPath)
+            {
+                nodeGraph.LabelNodes();
+                var list = nodeGraph.BFS(nodeGraph.SourceNodeId, nodeGraph.DestNodeId);
+                var pathLayer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
+                nodeGraph.DrawLinesAlongPath(doc, list, pathLayer.Name);
+            }
 
-            var list = nodeGraph.BFS(nodeGraph.SourceNodeId, nodeGraph.DestNodeId);
+            _doubleComplexCount = _doubleComplexCount + 2;
+            return nodeGraph;
+        }
 
-            var pathLayer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
-            nodeGraph.DrawLinesAlongPath(doc, list, pathLayer.Name);
 
+        [Test]
+        public void Add_Neighbors_To_Double_Complex_Node_Graph()
+        {
+            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var nodeGraph = DrawDoubleComplexNodeGraph(doc, true);
             Zoom.Extents(doc);
+            Assert.AreEqual(nodeGraph.Nodes.Count, 8, "Expected 8 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+        }
 
+        [Test]
+        public void Add_Src_And_Dest_To_Double_Complex_Node_Graph()
+        {
+            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var nodeGraph = DrawDoubleComplexNodeGraph(doc, true, true);
+            Zoom.Extents(doc);
             Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
