@@ -198,25 +198,29 @@ namespace cadwiki.AC.Utilities
             {
                 Database db = doc.Database;
                 Editor ed = doc.Editor;
-                // Start a transaction
-                using (Transaction tr = db.TransactionManager.StartTransaction())
-                {
-                    // Get the LayerTable from the database
-                    LayerTable layerTable = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
 
-                    if (layerTable != null)
+                using (var lk = doc.LockDocument())
+                {
+                    // Start a transaction
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
                     {
-                        // Iterate through the layers in the LayerTable
-                        foreach (ObjectId layerId in layerTable)
+                        // Get the LayerTable from the database
+                        LayerTable layerTable = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
+
+                        if (layerTable != null)
                         {
-                            LayerTableRecord layer = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
-                            if (layer != null)
+                            // Iterate through the layers in the LayerTable
+                            foreach (ObjectId layerId in layerTable)
                             {
-                                layerNames.Add(layer.Name);
+                                LayerTableRecord layer = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
+                                if (layer != null)
+                                {
+                                    layerNames.Add(layer.Name);
+                                }
                             }
                         }
+                        tr.Commit();
                     }
-                    tr.Commit();
                 }
             }
             catch (Exception ex)
