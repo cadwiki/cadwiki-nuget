@@ -194,7 +194,7 @@ namespace cadwiki.AC.NodeGraph
             var pt1 = new Point3d(point.X + fuzz, point.Y + fuzz, point.Z);
             var pt2 = new Point3d(point.X - fuzz, point.Y - fuzz, point.Z);
             var filter = SelectionFilters.GetAllLineEntitiesOnLayer(layerNameToSelectFrom);
-            var ss = SelectionSets.CrossingWindow(Document, pt2, pt2, filter);
+            var ss = SelectionSets.CrossingWindow(Document, pt1, pt2, filter);
             var entityListAtNode = SelectionSets.GetEntityList(Document, ss);
             return entityListAtNode;
         }
