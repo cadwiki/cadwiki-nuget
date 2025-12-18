@@ -21,6 +21,28 @@ namespace cadwiki.NUnitTestRunner
             return null;
         }
 
+        public static Tuple<Type, MethodInfo> GetOneTimeSetupMethod(Type[] types)
+        {
+
+            var typeToMethodInfo = new List<Tuple<Type, MethodInfo>>();
+            foreach (Type @type in types)
+            {
+                MethodInfo[] methodInfos = type.GetMethods();
+
+                foreach (MethodInfo methodInfo in methodInfos)
+                {
+                    var setupAttribute = DoesMethodInfoHaveOneSetupAttribute(methodInfo);
+                    if (setupAttribute is not null)
+                    {
+                        var tuple = new Tuple<Type, MethodInfo>(type, methodInfo);
+                        return tuple;
+                    }
+
+                }
+            }
+            return null;
+        }
+
         public static Tuple<Type, MethodInfo> GetSetupMethod(Type[] types)
         {
 
@@ -85,6 +107,21 @@ namespace cadwiki.NUnitTestRunner
                 }
             }
             return typeToMethodInfo;
+        }
+
+        private static object DoesMethodInfoHaveOneSetupAttribute(MethodInfo methodInfo)
+        {
+            object[] objectAttributes = methodInfo.GetCustomAttributes(true);
+            foreach (object objectAttribute in objectAttributes)
+            {
+                var attributeType = objectAttribute.GetType();
+                var setupAttribute = typeof(OneTimeSetUpAttribute);
+                if (attributeType.FullName.Equals(setupAttribute.FullName))
+                {
+                    return objectAttribute;
+                }
+            }
+            return null;
         }
 
         private static object DoesMethodInfoHaveSetupAttribute(MethodInfo methodInfo)
