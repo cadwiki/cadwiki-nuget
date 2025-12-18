@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Controls;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -11,6 +12,16 @@ namespace cadwiki.AC.TestPlugin.Tests
     [TestFixture]
     public partial class RegressionTests
     {
+        [OneTimeSetUp]
+        public void Init()
+        {
+            _doubleComplexCount = 0;
+
+            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("Temp*");
+            var ss = SelectionSets.SelectAll(doc, filter);
+            SelectionSets.DeleteAllEntities(doc, ss);
+        }
 
         // <SetUp>
         // Public Sub Init()
@@ -271,9 +282,11 @@ namespace cadwiki.AC.TestPlugin.Tests
                 nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest);
             }
 
+            nodeGraph.LabelNodes();
+
             if (calcPath)
             {
-                nodeGraph.LabelNodes();
+                
                 var list = nodeGraph.BFS(nodeGraph.SourceNodeId, nodeGraph.DestNodeId);
                 var pathLayer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
                 nodeGraph.DrawLinesAlongPath(doc, list, pathLayer.Name);
@@ -298,6 +311,15 @@ namespace cadwiki.AC.TestPlugin.Tests
         {
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var nodeGraph = DrawDoubleComplexNodeGraph(doc, true, true);
+            Zoom.Extents(doc);
+            Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+        }
+
+        [Test]
+        public void Add_Calc_Path_To_Double_Complex_Node_Graph()
+        {
+            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var nodeGraph = DrawDoubleComplexNodeGraph(doc, true, true, true);
             Zoom.Extents(doc);
             Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
