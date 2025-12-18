@@ -46,6 +46,7 @@ namespace cadwiki.NUnitTestRunner
 
         private static async Task RunTests(ObservableTestSuiteResults suiteResult, List<Tuple<Type, MethodInfo>> tuples)
         {
+            var i = 0;
             foreach (var item in tuples)
             {
                 var testResult = new TestResult();
@@ -54,6 +55,16 @@ namespace cadwiki.NUnitTestRunner
                 var testType = item.Item1;
                 var testMethodInfo = item.Item2;
                 string methodName = testMethodInfo.Name;
+
+                var oneTimeSetupTuple = Utils.GetOneTimeSetupMethod(new[] { testType });
+                object oneTimeSetupObject = null;
+                MethodInfo oneTimeSetupMethodInfo = null;
+                if (oneTimeSetupTuple is not null)
+                {
+                    var setupType = oneTimeSetupTuple.Item1;
+                    oneTimeSetupObject = Activator.CreateInstance(setupType);
+                    oneTimeSetupMethodInfo = oneTimeSetupTuple.Item2;
+                }
 
                 var setupTuple = Utils.GetSetupMethod(new[] { testType });
                 object setupObject = null;
@@ -84,23 +95,35 @@ namespace cadwiki.NUnitTestRunner
                 }
                 
                 int testNumber = 0;
+
+                if (i > 0)
+                {
+                    oneTimeSetupObject = null;
+                    oneTimeSetupMethodInfo = null;
+                }
+
                 foreach (var testParameters in parametersList)
                 {
                     testNumber++;
                     await TryExecuteWithEvidenceCollection(suiteResult, testResult, testType,
-                        testMethodInfo, testParameters, testNumber, setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
+                        testMethodInfo, testParameters, testNumber, 
+                        oneTimeSetupObject, oneTimeSetupMethodInfo,
+                        setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
                 }
-
+                i++;
             }
         }
 
         private static async Task TryExecuteWithEvidenceCollection(ObservableTestSuiteResults suiteResult, 
-            TestResult testResult, Type testType, MethodInfo testMethodInfo, object[] testParameters, int testNumber, object setupObject, 
-            MethodInfo setupMethodInfo, object tearDownObject, MethodInfo tearDownMethodInfo)
+            TestResult testResult, Type testType, MethodInfo testMethodInfo, object[] testParameters, int testNumber,
+            object oneTimeSetupObject, MethodInfo oneTimeSetupMethodInfo,
+            object setupObject, MethodInfo setupMethodInfo, 
+            object tearDownObject, MethodInfo tearDownMethodInfo)
         {
             try
             {
                 await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, testParameters, testNumber,
+                    oneTimeSetupObject, oneTimeSetupMethodInfo,
                     setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
             }
             catch (SuccessException ex)
@@ -158,12 +181,19 @@ namespace cadwiki.NUnitTestRunner
         }
 
         private static async Task ExecuteTest(ObservableTestSuiteResults suiteResult, TestResult testResult, 
-            Type testType, MethodInfo testMethodInfo, object[] testParameters, int testNumber, object setupObject, 
-            MethodInfo setupMethodInfo, object tearDownObject, 
-            MethodInfo tearDownMethodInfo)
+            Type testType, MethodInfo testMethodInfo, object[] testParameters, int testNumber,
+            object oneTimeSetupObject, MethodInfo oneTimeSetupMethodInfo,
+            object setupObject, MethodInfo setupMethodInfo, 
+            object tearDownObject, MethodInfo tearDownMethodInfo
+            )
         {
             suiteResult.AddMessage(Environment.NewLine + "Running test method: " + testMethodInfo.Name);
             object o = Activator.CreateInstance(testType);
+            if (oneTimeSetupMethodInfo is not null && oneTimeSetupObject is not null)
+            {
+                oneTimeSetupMethodInfo.Invoke(oneTimeSetupObject, null);
+            }
+
             if (setupMethodInfo is not null && setupObject is not null)
             {
                 setupMethodInfo.Invoke(setupObject, null);
