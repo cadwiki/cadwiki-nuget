@@ -145,8 +145,9 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt3, pt4));
             linePointTuples.Add(new LinePoints(pt4, pt1));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
-            var lineIds = DrawLines(doc, linePointTuples, currentTestLayerName);
+            
             var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2);
+            var lineIds = DrawLines(doc, linePointTuples, nodeGraph.LayerNameLines);
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
@@ -189,10 +190,10 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt3, pt4));
             linePointTuples.Add(new LinePoints(pt4, pt1));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
-            var lineIds = DrawLines(doc, linePointTuples, currentTestLayerName);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2);
 
-            string layerNameToSelectFrom = currentTestLayerName;
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2);
+            var lineIds = DrawLines(doc, linePointTuples, nodeGraph.LayerNameLines);
+
             nodeGraph.AddNeighborsToNodes();
             nodeGraph.LabelNodes();
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
@@ -220,8 +221,8 @@ namespace cadwiki.AC.TestPlugin.Tests
 
 
 
-            var lineIds = DrawLines(doc, linePointTuples, currentTestLayerName);
             var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, linePointTuples[0].StartPoint, linePointTuples[0].EndPoint);
+            var lineIds = DrawLines(doc, linePointTuples, nodeGraph.LayerNameLines);
 
             nodeGraph.AddNeighborsToNodes();
             nodeGraph.LabelNodes();
@@ -300,7 +301,7 @@ namespace cadwiki.AC.TestPlugin.Tests
             {
                 
                 var list = nodeGraph.BFS(nodeGraph.SourceNodeId, nodeGraph.DestNodeId);
-                nodeGraph.DrawLinesAlongPath(doc, list, currentTestLayerName);
+                nodeGraph.DrawLinesAlongPath(doc, list, nodeGraph.LayerNameBFSPath);
             }
 
             _doubleComplexCount = _doubleComplexCount + 1;
