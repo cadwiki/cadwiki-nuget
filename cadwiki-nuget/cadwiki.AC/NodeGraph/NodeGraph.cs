@@ -26,6 +26,7 @@ namespace cadwiki.AC.NodeGraph
         public string LayerNameLines = "cadwiki-NodeGraph-";
         private string _layerNameNodes = "cadwiki-NodeGraph-";
         private string _layerNameSsBroken = "cadwiki-NodeGraph-";
+        public string LayerNameBFSPath = "cadwiki-NodeGraph-";
 
         public NodeGraph(Document document, List<Point3d> pointList, Point3d destination, Point3d source)
         {
@@ -59,6 +60,10 @@ namespace cadwiki.AC.NodeGraph
             _layerNameSsBroken = newLayer.Name;
             //white ss broken
             Layers.SetLayerColor(doc, _layerNameSsBroken, Color.FromColorIndex(ColorMethod.ByLayer, 255));
+            newLayer = Layers.CreateFirstAvailableLayerName(doc, this.LayerNamePrefix + "BFSPath");
+            LayerNameBFSPath = newLayer.Name;
+            //red path
+            Layers.SetLayerColor(doc, LayerNameBFSPath, Color.FromColorIndex(ColorMethod.ByLayer, 1));
         }
 
         public NodeGraph(Document document, List<Point3d> pointList)
