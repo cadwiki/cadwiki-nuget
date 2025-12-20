@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Windows.Features.PointCloud.PointCloudColorMapping;
+using Autodesk.AutoCAD.Colors;
 
 namespace cadwiki.AC.Utilities
 {
@@ -228,6 +229,31 @@ namespace cadwiki.AC.Utilities
                 ExceptionHandler.WriteToEditor(ex);
             }
             return layerNames;
+        }
+
+
+        public static bool SetLayerColor(Document doc, string layerName, Color acColor)
+        {
+            var db = doc.Database;
+            using (var @lock = doc.LockDocument())
+            {
+                using (var transaction = db.TransactionManager.StartTransaction())
+                {
+                    var dbObject = transaction.GetObject(db.LayerTableId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForRead);
+                    LayerTable layerTable = (LayerTable)dbObject;
+                    if (layerTable.Has(layerName))
+                    {
+                        var layerId = layerTable[layerName];
+                        var layerObject = transaction.GetObject(layerId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                        LayerTableRecord layerTableRecord = (LayerTableRecord)layerObject;
+                        layerTableRecord.Color = acColor;
+                        transaction.Commit();
+                        return true;
+                    }
+
+                }
+            }
+            return false;
         }
     }
 }

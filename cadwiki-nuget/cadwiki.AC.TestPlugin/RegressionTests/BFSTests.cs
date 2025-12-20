@@ -18,11 +18,11 @@ namespace cadwiki.AC.TestPlugin.Tests
             _doubleComplexCount = 0;
 
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("*temp*");
+            var filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("*test*");
             var ss = SelectionSets.SelectAll(doc, filter);
             SelectionSets.DeleteAllEntities(doc, ss);
 
-            filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("*test*");
+            filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("*cadwiki*");
             ss = SelectionSets.SelectAll(doc, filter);
             SelectionSets.DeleteAllEntities(doc, ss);
         }
@@ -141,7 +141,7 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt4, pt1));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
             var lineIds = DrawLines(doc, linePointTuples, tempLayer);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, tempLayer);
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2);
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
@@ -185,11 +185,11 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt4, pt1));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
             var lineIds = DrawLines(doc, linePointTuples, tempLayer);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, tempLayer);
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2);
 
             string layerNameToSelectFrom = tempLayer;
-            Zoom.Extents(doc);
-            nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom);
+            //Zoom.Extents(doc);
+            nodeGraph.AddNeighborsToNodes();
             nodeGraph.LabelNodes();
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
@@ -217,10 +217,10 @@ namespace cadwiki.AC.TestPlugin.Tests
 
 
             var lineIds = DrawLines(doc, linePointTuples, tempLayer);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, linePointTuples[0].StartPoint, linePointTuples[0].EndPoint, tempLayer);
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, linePointTuples[0].StartPoint, linePointTuples[0].EndPoint);
 
-            Zoom.Extents(doc);
-            nodeGraph.AddNeighborsToNodes(tempLayer);
+            //Zoom.Extents(doc);
+            nodeGraph.AddNeighborsToNodes();
             nodeGraph.LabelNodes();
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
@@ -277,18 +277,18 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePoints.Add(pt3);
             linePoints.Add(pt4);
 
-            var lineIds = DrawLines(doc, linePointTuples, tempLayer);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, tempLayer);
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints);
+            var lineIds = DrawLines(doc, linePointTuples, nodeGraph.LayerNameLines);
 
             if (addNeighbors)
             {
-                nodeGraph.AddNeighborsToNodes(tempLayer);
+                nodeGraph.AddNeighborsToNodes();
             }
 
             var dest = new Point3d(5d + xStart + xOffset, 5d + yStart + yOffset, 0d);
             if (connectSrcAndDest)
             {
-                nodeGraph.ModifyWithSourceAndDest(doc, tempLayer, source, dest);
+                nodeGraph.ModifyWithSourceAndDest(doc, source, dest);
             }
 
             nodeGraph.LabelNodes();
@@ -310,7 +310,7 @@ namespace cadwiki.AC.TestPlugin.Tests
         {
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var nodeGraph = DrawDoubleComplexNodeGraph(doc, true);
-            Zoom.Extents(doc);
+            //Zoom.Extents(doc);
             Assert.AreEqual(nodeGraph.Nodes.Count, 8, "Expected 8 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
@@ -319,7 +319,7 @@ namespace cadwiki.AC.TestPlugin.Tests
         {
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var nodeGraph = DrawDoubleComplexNodeGraph(doc, true, true);
-            Zoom.Extents(doc);
+            //Zoom.Extents(doc);
             Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
@@ -328,7 +328,7 @@ namespace cadwiki.AC.TestPlugin.Tests
         {
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var nodeGraph = DrawDoubleComplexNodeGraph(doc, true, true, true);
-            Zoom.Extents(doc);
+            //Zoom.Extents(doc);
             Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
