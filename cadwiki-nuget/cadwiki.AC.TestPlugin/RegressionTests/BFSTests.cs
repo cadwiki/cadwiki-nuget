@@ -18,13 +18,18 @@ namespace cadwiki.AC.TestPlugin.Tests
             _doubleComplexCount = 0;
 
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("*test*");
+            var wcTest = "*test*";
+            var filter = SelectionFilters.GetAllEntitiesOnWildCardLayer(wcTest);
             var ss = SelectionSets.SelectAll(doc, filter);
             SelectionSets.DeleteAllEntities(doc, ss);
+            Layers.DeleteLayersFromDrawing(doc, wcTest);
 
-            filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("*cadwiki*");
+            var wcCadwiki = "*cadwiki*";
+            filter = SelectionFilters.GetAllEntitiesOnWildCardLayer(wcCadwiki);
             ss = SelectionSets.SelectAll(doc, filter);
             SelectionSets.DeleteAllEntities(doc, ss);
+
+            Layers.DeleteLayersFromDrawing(doc, wcCadwiki);
         }
 
         

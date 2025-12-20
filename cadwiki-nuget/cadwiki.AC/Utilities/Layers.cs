@@ -5,6 +5,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Windows.Features.PointCloud.PointCloudColorMapping;
 using Autodesk.AutoCAD.Colors;
+using System.Text.RegularExpressions;
 
 namespace cadwiki.AC.Utilities
 {
@@ -125,6 +126,61 @@ namespace cadwiki.AC.Utilities
                 }
             }
             return null;
+        }
+
+        public static List<string> DeleteLayersFromDrawing(Document doc, string wcLayerName)
+        {
+            var layerNames = new List<string>();
+            try
+            {
+                Database db = doc.Database;
+                Editor ed = doc.Editor;
+
+                using (var lk = doc.LockDocument())
+                {
+                    // Start a transaction
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        // Get the LayerTable from the database
+                        LayerTable layerTable = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
+
+                        if (layerTable != null)
+                        {
+                            // Iterate through the layers in the LayerTable
+                            foreach (ObjectId layerId in layerTable)
+                            {
+                                LayerTableRecord layer = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
+                                if (layer != null)
+                                {
+                                    if (WildcardMatch(layer.Name, wcLayerName))
+                                    {
+                                        layerNames.Add(layer.Name);
+                                    }
+                                }
+                            }
+                        }
+                        tr.Commit();
+                    }
+                    foreach (var layer in layerNames)
+                    {
+                        Delete(doc, layer);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.WriteToEditor(ex);
+            }
+            return layerNames;
+        }
+
+        static bool WildcardMatch(string input, string pattern)
+        {
+            var regexPattern = "^" + Regex.Escape(pattern)
+                .Replace("\\*", ".*")
+                .Replace("\\?", ".") + "$";
+
+            return Regex.IsMatch(input, regexPattern, RegexOptions.IgnoreCase);
         }
 
         public static bool Delete(Document doc, string layerName)
