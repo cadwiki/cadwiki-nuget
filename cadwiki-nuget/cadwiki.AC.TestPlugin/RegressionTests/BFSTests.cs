@@ -18,10 +18,25 @@ namespace cadwiki.AC.TestPlugin.Tests
             _doubleComplexCount = 0;
 
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("Temp*");
+            var filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("*temp*");
             var ss = SelectionSets.SelectAll(doc, filter);
             SelectionSets.DeleteAllEntities(doc, ss);
+
+            filter = SelectionFilters.GetAllEntitiesOnWildCardLayer("*test*");
+            ss = SelectionSets.SelectAll(doc, filter);
+            SelectionSets.DeleteAllEntities(doc, ss);
         }
+
+        
+        [SetUp]
+        public void SetUp()
+        {
+            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var testName = TestContext.CurrentContext.Test.Name;
+            tempLayer = "Test-" + testName;
+            tempLayer = Layers.CreateFirstAvailableLayerName(doc, tempLayer).Name;
+        }
+
 
         // <SetUp>
         // Public Sub Init()
@@ -88,13 +103,12 @@ namespace cadwiki.AC.TestPlugin.Tests
         public void Break_2_overlapping_lines_with_self_Should_return_4_new_lines()
         {
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var layer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
             var pt1 = new Point3d(0d, -2, 0d);
             var pt2 = new Point3d(0d, 2d, 0d);
-            var line1 = DrawLine(doc, pt1, pt2, layer.Name);
+            var line1 = DrawLine(doc, pt1, pt2, tempLayer);
             pt1 = new Point3d(-2, 0d, 0d);
             pt2 = new Point3d(2d, 0d, 0d);
-            var line2 = DrawLine(doc, pt1, pt2, layer.Name);
+            var line2 = DrawLine(doc, pt1, pt2, tempLayer);
             var lines = new List<ObjectId>();
             lines.Add(line1.Id);
             lines.Add(line2.Id);
@@ -116,7 +130,6 @@ namespace cadwiki.AC.TestPlugin.Tests
         public void Make_Simple_4x4_Node_Graph()
         {
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var layer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
             var pt1 = new Point3d(0d, 0d, 0d);
             var pt2 = new Point3d(2d, 0d, 0d);
             var pt3 = new Point3d(2d, 2d, 0d);
@@ -128,7 +141,7 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt4, pt1));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
             var lineIds = DrawLines(doc, linePointTuples, tempLayer);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, layer.Name);
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, tempLayer);
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
@@ -161,7 +174,6 @@ namespace cadwiki.AC.TestPlugin.Tests
         public void Add_Neighbors_To_Simple_4x4_Node_Graph()
         {
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var layer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
             var pt1 = new Point3d(0d, 0d, 0d);
             var pt2 = new Point3d(2d, 0d, 0d);
             var pt3 = new Point3d(2d, 2d, 0d);
@@ -172,10 +184,10 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt3, pt4));
             linePointTuples.Add(new LinePoints(pt4, pt1));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
-            var lineIds = DrawLines(doc, linePointTuples, layer.Name);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, layer.Name);
+            var lineIds = DrawLines(doc, linePointTuples, tempLayer);
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2, tempLayer);
 
-            string layerNameToSelectFrom = layer.Name;
+            string layerNameToSelectFrom = tempLayer;
             Zoom.Extents(doc);
             nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom);
             nodeGraph.LabelNodes();
@@ -188,7 +200,6 @@ namespace cadwiki.AC.TestPlugin.Tests
             double xOffset = 10.0d;
 
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var layer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
 
             var pt1 = new Point3d(0d + xOffset, 0d, 0d);
             var pt2 = new Point3d(2d + xOffset, 0d, 0d);
@@ -205,12 +216,11 @@ namespace cadwiki.AC.TestPlugin.Tests
 
 
 
-            var lineIds = DrawLines(doc, linePointTuples, layer.Name);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, linePointTuples[0].StartPoint, linePointTuples[0].EndPoint, layer.Name);
+            var lineIds = DrawLines(doc, linePointTuples, tempLayer);
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, linePointTuples[0].StartPoint, linePointTuples[0].EndPoint, tempLayer);
 
-            string layerNameToSelectFrom = layer.Name;
             Zoom.Extents(doc);
-            nodeGraph.AddNeighborsToNodes(layerNameToSelectFrom);
+            nodeGraph.AddNeighborsToNodes(tempLayer);
             nodeGraph.LabelNodes();
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
@@ -231,7 +241,6 @@ namespace cadwiki.AC.TestPlugin.Tests
 
             
 
-            var layer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
             var source = new Point3d(2d + xStart + xOffset, 6d, 0d);
 
             var pt1 = new Point3d(0d + xStart + xOffset, 0d, 0d);
@@ -268,18 +277,18 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePoints.Add(pt3);
             linePoints.Add(pt4);
 
-            var lineIds = DrawLines(doc, linePointTuples, layer.Name);
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, layer.Name);
+            var lineIds = DrawLines(doc, linePointTuples, tempLayer);
+            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, tempLayer);
 
             if (addNeighbors)
             {
-                nodeGraph.AddNeighborsToNodes(layer.Name);
+                nodeGraph.AddNeighborsToNodes(tempLayer);
             }
 
             var dest = new Point3d(5d + xStart + xOffset, 5d + yStart + yOffset, 0d);
             if (connectSrcAndDest)
             {
-                nodeGraph.ModifyWithSourceAndDest(doc, layer.Name, source, dest);
+                nodeGraph.ModifyWithSourceAndDest(doc, tempLayer, source, dest);
             }
 
             nodeGraph.LabelNodes();
@@ -288,8 +297,7 @@ namespace cadwiki.AC.TestPlugin.Tests
             {
                 
                 var list = nodeGraph.BFS(nodeGraph.SourceNodeId, nodeGraph.DestNodeId);
-                var pathLayer = Layers.CreateFirstAvailableLayerName(doc, tempLayer);
-                nodeGraph.DrawLinesAlongPath(doc, list, pathLayer.Name);
+                nodeGraph.DrawLinesAlongPath(doc, list, tempLayer);
             }
 
             _doubleComplexCount = _doubleComplexCount + 1;
