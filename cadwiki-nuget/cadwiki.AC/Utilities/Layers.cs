@@ -4,12 +4,52 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Windows.Features.PointCloud.PointCloudColorMapping;
+using Autodesk.AutoCAD.Colors;
+using System.Text.RegularExpressions;
 
 namespace cadwiki.AC.Utilities
 {
 
     public class Layers
     {
+
+        public static List<Entity> MoveEntitiesOnLayerToNewLayer(Document doc, string oldLayerName, string newLayerName)
+        {
+            var oldLayer = GetLayer(doc, oldLayerName);
+            if (oldLayer is null)
+            {
+                throw new Exception("Layer " + oldLayerName + " does not exist in dwg.");
+            }
+            var newLayer = GetLayer(doc, newLayerName);
+            if (newLayer is null)
+            {
+                throw new Exception("Layer " + newLayerName + " does not exist in dwg.");
+            }
+
+            else
+            {
+                var moviedEntities = new List<Entity>();
+                var db = doc.Database;
+                using (var @lock = doc.LockDocument())
+                {
+                    using (var t = db.TransactionManager.StartTransaction())
+                    {
+                        BlockTableRecord currentSpace = (BlockTableRecord)t.GetObject(db.CurrentSpaceId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                        foreach (ObjectId objId in currentSpace)
+                        {
+                            Entity entity = (Entity)t.GetObject(objId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                            if (entity is not null && entity.Visible && entity.LayerId == oldLayer.Id)
+                            {
+                                entity.LayerId = newLayer.Id;
+                            }
+                        }
+                        t.Commit();
+                    }
+                }
+                return moviedEntities;
+            }
+        }
+
         public static List<Entity> CopyVisibleEntitiesToNewLayer(Document doc, SelectionSet ss, LayerTableRecord newLayer)
         {
             var copiedEntities = new List<Entity>();
@@ -21,7 +61,7 @@ namespace cadwiki.AC.Utilities
                     BlockTableRecord currentSpace = (BlockTableRecord)t.GetObject(db.CurrentSpaceId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
                     foreach (ObjectId objId in ss.GetObjectIds())
                     {
-                        Entity entity = (Entity)t.GetObject(objId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForRead);
+                        Entity entity = (Entity)t.GetObject(objId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
                         if (entity is not null && entity.Visible)
                         {
                             Entity newEntity = entity.Clone() as Entity;
@@ -126,6 +166,61 @@ namespace cadwiki.AC.Utilities
             return null;
         }
 
+        public static List<string> DeleteLayersFromDrawing(Document doc, string wcLayerName)
+        {
+            var layerNames = new List<string>();
+            try
+            {
+                Database db = doc.Database;
+                Editor ed = doc.Editor;
+
+                using (var lk = doc.LockDocument())
+                {
+                    // Start a transaction
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
+                    {
+                        // Get the LayerTable from the database
+                        LayerTable layerTable = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
+
+                        if (layerTable != null)
+                        {
+                            // Iterate through the layers in the LayerTable
+                            foreach (ObjectId layerId in layerTable)
+                            {
+                                LayerTableRecord layer = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
+                                if (layer != null)
+                                {
+                                    if (WildcardMatch(layer.Name, wcLayerName))
+                                    {
+                                        layerNames.Add(layer.Name);
+                                    }
+                                }
+                            }
+                        }
+                        tr.Commit();
+                    }
+                    foreach (var layer in layerNames)
+                    {
+                        Delete(doc, layer);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.WriteToEditor(ex);
+            }
+            return layerNames;
+        }
+
+        static bool WildcardMatch(string input, string pattern)
+        {
+            var regexPattern = "^" + Regex.Escape(pattern)
+                .Replace("\\*", ".*")
+                .Replace("\\?", ".") + "$";
+
+            return Regex.IsMatch(input, regexPattern, RegexOptions.IgnoreCase);
+        }
+
         public static bool Delete(Document doc, string layerName)
         {
             var db = doc.Database;
@@ -198,25 +293,29 @@ namespace cadwiki.AC.Utilities
             {
                 Database db = doc.Database;
                 Editor ed = doc.Editor;
-                // Start a transaction
-                using (Transaction tr = db.TransactionManager.StartTransaction())
-                {
-                    // Get the LayerTable from the database
-                    LayerTable layerTable = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
 
-                    if (layerTable != null)
+                using (var lk = doc.LockDocument())
+                {
+                    // Start a transaction
+                    using (Transaction tr = db.TransactionManager.StartTransaction())
                     {
-                        // Iterate through the layers in the LayerTable
-                        foreach (ObjectId layerId in layerTable)
+                        // Get the LayerTable from the database
+                        LayerTable layerTable = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
+
+                        if (layerTable != null)
                         {
-                            LayerTableRecord layer = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
-                            if (layer != null)
+                            // Iterate through the layers in the LayerTable
+                            foreach (ObjectId layerId in layerTable)
                             {
-                                layerNames.Add(layer.Name);
+                                LayerTableRecord layer = tr.GetObject(layerId, OpenMode.ForRead) as LayerTableRecord;
+                                if (layer != null)
+                                {
+                                    layerNames.Add(layer.Name);
+                                }
                             }
                         }
+                        tr.Commit();
                     }
-                    tr.Commit();
                 }
             }
             catch (Exception ex)
@@ -224,6 +323,31 @@ namespace cadwiki.AC.Utilities
                 ExceptionHandler.WriteToEditor(ex);
             }
             return layerNames;
+        }
+
+
+        public static bool SetLayerColor(Document doc, string layerName, Color acColor)
+        {
+            var db = doc.Database;
+            using (var @lock = doc.LockDocument())
+            {
+                using (var transaction = db.TransactionManager.StartTransaction())
+                {
+                    var dbObject = transaction.GetObject(db.LayerTableId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForRead);
+                    LayerTable layerTable = (LayerTable)dbObject;
+                    if (layerTable.Has(layerName))
+                    {
+                        var layerId = layerTable[layerName];
+                        var layerObject = transaction.GetObject(layerId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                        LayerTableRecord layerTableRecord = (LayerTableRecord)layerObject;
+                        layerTableRecord.Color = acColor;
+                        transaction.Commit();
+                        return true;
+                    }
+
+                }
+            }
+            return false;
         }
     }
 }

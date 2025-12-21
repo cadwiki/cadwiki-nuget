@@ -5,6 +5,9 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Microsoft.VisualBasic;
 using cadwiki.AC.Utilities;
+using Color = Autodesk.AutoCAD.Colors.Color;
+using System.Drawing;
+using Autodesk.AutoCAD.Colors;
 
 namespace cadwiki.AC.NodeGraph
 {
@@ -18,9 +21,15 @@ namespace cadwiki.AC.NodeGraph
         public Point3d Source = default;
         public Point3d Dest;
         public List<Point3d> PointList = new List<Point3d>();
-        public string LayerName;
+        public string LayerNamePrefix = "cadwiki-NodeGraph-";
+        private string _layerNameLabels = "cadwiki-NodeGraph-";
+        public string LayerNameLines = "cadwiki-NodeGraph-";
+        private string _layerNameNodes = "cadwiki-NodeGraph-";
+        private string _layerNameSsBroken = "cadwiki-NodeGraph-";
+        public string LayerNameBFSPath = "cadwiki-NodeGraph-";
+        public List<Node> BFSPath = new List<Node>();
 
-        public NodeGraph(Document document, List<Point3d> pointList, Point3d destination, Point3d source, string layerName)
+        public NodeGraph(Document document, List<Point3d> pointList, Point3d destination, Point3d source)
         {
             Nodes = Nodes;
             Edges = Edges;
@@ -28,21 +37,47 @@ namespace cadwiki.AC.NodeGraph
             Source = source;
             Dest = destination;
             PointList = pointList;
-            LayerName = layerName;
+            CreateLayers(document);
             BuildGraph(pointList);
         }
 
-        public NodeGraph(Document document, List<Point3d> pointList, string layerName)
+        private void CreateLayers(Document doc)
+        {
+            var newLayer = Layers.CreateFirstAvailableLayerName(doc, LayerNamePrefix);
+            LayerNamePrefix = newLayer.Name;
+            newLayer = Layers.CreateFirstAvailableLayerName(doc, this.LayerNamePrefix + "Labels");
+            _layerNameLabels = newLayer.Name;
+            //white labels
+            Layers.SetLayerColor(doc, _layerNameLabels, Color.FromColorIndex(ColorMethod.ByLayer, 255));
+            newLayer = Layers.CreateFirstAvailableLayerName(doc, this.LayerNamePrefix + "Lines");
+            LayerNameLines = newLayer.Name;
+            //white lines
+            Layers.SetLayerColor(doc, LayerNameLines, Color.FromColorIndex(ColorMethod.ByLayer, 255));
+            newLayer = Layers.CreateFirstAvailableLayerName(doc, this.LayerNamePrefix + "Nodes");
+            _layerNameNodes = newLayer.Name;
+            //cyan nodes
+            Layers.SetLayerColor(doc, _layerNameNodes, Color.FromColorIndex(ColorMethod.ByLayer, 4));
+            newLayer = Layers.CreateFirstAvailableLayerName(doc, this.LayerNamePrefix + "SsBroken");
+            _layerNameSsBroken = newLayer.Name;
+            //white ss broken
+            Layers.SetLayerColor(doc, _layerNameSsBroken, Color.FromColorIndex(ColorMethod.ByLayer, 255));
+            newLayer = Layers.CreateFirstAvailableLayerName(doc, this.LayerNamePrefix + "BFSPath");
+            LayerNameBFSPath = newLayer.Name;
+            //red path
+            Layers.SetLayerColor(doc, LayerNameBFSPath, Color.FromColorIndex(ColorMethod.ByLayer, 1));
+        }
+
+        public NodeGraph(Document document, List<Point3d> pointList)
         {
             Nodes = Nodes;
             Edges = Edges;
             Document = document;
             PointList = pointList;
-            LayerName = layerName;
+            CreateLayers(document);
             BuildGraph(pointList);
         }
 
-        public void ModifyWithSourceAndDest(Document doc, string layerName, Point3d destination, Point3d source)
+        public void ModifyWithSourceAndDest(Document doc, Point3d destination, Point3d source)
         {
             Nodes = new List<Node>();
             Edges = new List<Edge>();
@@ -52,23 +87,26 @@ namespace cadwiki.AC.NodeGraph
             PointList.Add(source);
             PointList.Add(destination);
 
-            var filter = SelectionFilters.GetAllLineBasedEntitiesOnLayer(layerName);
+            var filter = SelectionFilters.GetAllLineBasedEntitiesOnLayer(LayerNameLines);
             var graphSS = SelectionSets.SelectAll(doc, filter);
 
             var closestPointOnGraphToSource = SelectionSets.GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc, graphSS, source);
-            var line = Draw.DrawLineByPoints(doc, source, closestPointOnGraphToSource, layerName);
+            var line = Draw.DrawLineByPoints(doc, source, closestPointOnGraphToSource, LayerNameLines);
+            Draw.SetLineColor(line, 1);
 
             var closestPointOnGraphToDest = SelectionSets.GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc, graphSS, destination);
-            var line2 = Draw.DrawLineByPoints(doc, destination, closestPointOnGraphToDest, layerName);
+            var line2 = Draw.DrawLineByPoints(doc, destination, closestPointOnGraphToDest, LayerNameLines);
+            Draw.SetLineColor(line2, 1);
 
             var modifiedGraph = SelectionSets.SelectAll(doc, filter);
             var inputs = new Workflows.BreakSs.BreakSsInputs();
             inputs.SelectionToBreak = modifiedGraph;
             inputs.SelectionToBreakWith = modifiedGraph;
             inputs.Self = true;
-            inputs.NewLayer = layerName;
+            inputs.NewLayer = _layerNameSsBroken;
             inputs.DeleteOriginal = true;
             var newLines = Workflows.BreakSs.BreakSsWithSs(doc, inputs);
+            Layers.MoveEntitiesOnLayerToNewLayer(doc, _layerNameSsBroken, LayerNameLines);
 
             if (!PointList.Contains(closestPointOnGraphToSource))
             {
@@ -121,24 +159,24 @@ namespace cadwiki.AC.NodeGraph
                 Nodes.Add(node);
                 counter += 1;
             }
-            AddNeighborsToNodes(LayerName);
+            AddNeighborsToNodes();
         }
 
-        public void AddNeighborsToNodes(string layerNameToSelectFrom)
+        public void AddNeighborsToNodes()
         {
             int index = 0;
             while (index < Nodes.Count - 1)
             {
                 var node = Nodes[index];
-                var newNode = AddNeighborsToNode(node, layerNameToSelectFrom);
+                var newNode = AddNeighborsToNode(node);
                 ReplaceNode(index, newNode);
                 index += 1;
             }
         }
 
-        private Node AddNeighborsToNode(Node argumentNode, string layerNameToSelectFrom)
+        private Node AddNeighborsToNode(Node argumentNode)
         {
-            var entityList = GetEntitiesAtNodePoint(argumentNode, layerNameToSelectFrom);
+            var entityList = GetEntitiesAtNodePoint(argumentNode, LayerNameLines);
             int index = 0;
             while (index < entityList.Count)
             {
@@ -194,7 +232,7 @@ namespace cadwiki.AC.NodeGraph
             var pt1 = new Point3d(point.X + fuzz, point.Y + fuzz, point.Z);
             var pt2 = new Point3d(point.X - fuzz, point.Y - fuzz, point.Z);
             var filter = SelectionFilters.GetAllLineEntitiesOnLayer(layerNameToSelectFrom);
-            var ss = SelectionSets.CrossingWindow(Document, pt2, pt2, filter);
+            var ss = SelectionSets.CrossingWindow(Document, pt1, pt2, filter);
             var entityListAtNode = SelectionSets.GetEntityList(Document, ss);
             return entityListAtNode;
         }
@@ -219,10 +257,11 @@ namespace cadwiki.AC.NodeGraph
                 settings.Content = label;
                 settings.Location = node.AutoCADPoint;
                 settings.Location = new Point3d(settings.Location.X + 0.1d, settings.Location.Y, settings.Location.Z);
+                settings.LayerName = _layerNameLabels;
 
                 var mtext = Mtexts.Add(settings);
 
-                Draw.DrawCircleAtLocation(node.AutoCADPoint, 0.1d);
+                Draw.DrawCircleAtLocation(node.AutoCADPoint, 0.1d, _layerNameNodes);
             }
         }
 
@@ -281,7 +320,7 @@ namespace cadwiki.AC.NodeGraph
                 path.Insert(0, currentNode); // Insert at the beginning to maintain the correct order
                 currentNode = currentNode.ParentNode;
             }
-
+            BFSPath = path;
             return path;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 
@@ -108,30 +109,49 @@ namespace cadwiki.AC.Utilities
             return null;
         }
 
-        public static void DrawCircleAtLocation(Point3d center, double radius)
+        public static void DrawCircleAtLocation(Point3d center, double radius, string layerName)
         {
             // Get the current document and database
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var db = doc.Database;
 
-            // Start a transaction
-            using (var trans = db.TransactionManager.StartTransaction())
+            using (var lk = doc.LockDocument())
             {
-                // Open the Block table for read
-                BlockTable bt = (BlockTable)trans.GetObject(db.BlockTableId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForRead);
+                // Start a transaction
+                using (var trans = db.TransactionManager.StartTransaction())
+                {
+                    // Open the Block table for read
+                    BlockTable bt = (BlockTable)trans.GetObject(db.BlockTableId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForRead);
 
-                // Open the Model Space block table record for write
-                BlockTableRecord ms = (BlockTableRecord)trans.GetObject(bt[BlockTableRecord.ModelSpace], global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                    // Open the Model Space block table record for write
+                    BlockTableRecord ms = (BlockTableRecord)trans.GetObject(bt[BlockTableRecord.ModelSpace], global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
 
-                // Create a new Circle entity
-                var circle = new Circle(center, Vector3d.ZAxis, radius);
+                    // Create a new Circle entity
+                    var circle = new Circle(center, Vector3d.ZAxis, radius);
+                    circle.Layer = layerName;
 
-                // Add the Circle entity to the Model Space block table record
-                ms.AppendEntity(circle);
-                trans.AddNewlyCreatedDBObject(circle, true);
+                    // Add the Circle entity to the Model Space block table record
+                    ms.AppendEntity(circle);
+                    trans.AddNewlyCreatedDBObject(circle, true);
 
-                // Commit the transaction
-                trans.Commit();
+                    // Commit the transaction
+                    trans.Commit();
+                }
+            }
+        }
+
+        public static void SetLineColor(DBObject obj, short colorIndex)
+        {
+            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var db = doc.Database;
+            using (var lk = doc.LockDocument())
+            {
+                using (var tr = db.TransactionManager.StartTransaction())
+                {
+                    var ent = (Line) tr.GetObject(obj.Id, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                    ent.Color = Color.FromColorIndex(ColorMethod.ByColor, colorIndex);
+                    tr.Commit();
+                }
             }
         }
     }
