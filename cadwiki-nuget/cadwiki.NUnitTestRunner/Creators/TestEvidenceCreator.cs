@@ -143,6 +143,22 @@ namespace cadwiki.NUnitTestRunner.Creators
             return hWnd;
         }
 
+        public IntPtr ProcessGetHandleFromProcessName(string processName)
+        {
+            var hWnd = IntPtr.Zero;
+
+            foreach (Process pList in Process.GetProcesses())
+            {
+
+                if (pList.ProcessName.Contains(processName))
+                {
+                    hWnd = pList.MainWindowHandle;
+                }
+            }
+
+            return hWnd;
+        }
+
         public static void PrintWindowToImage(IntPtr windowIntPtr, string screenshotPath, ImageFormat format)
         {
             var screenshot = PrintWindowWithWinAPI(windowIntPtr);
@@ -207,7 +223,33 @@ namespace cadwiki.NUnitTestRunner.Creators
         {
             WinAPI.RECT rc;
             WinAPI.Stubs.GetWindowRect(hwnd, out rc);
-            var bmp = new Bitmap(rc.Width, rc.Height, PixelFormat.Format32bppArgb);
+            var h = rc.Height;
+            var w = rc.Width;
+            if (rc.Width <= 0 || rc.Height <= 0)
+            {
+                var placeholder = new Bitmap(200, 100);
+                using (var g = Graphics.FromImage(placeholder))
+                {
+                    g.Clear(Color.DarkGray);
+                    g.DrawString(
+                        "WIN Api process error",
+                        SystemFonts.DefaultFont,
+                        Brushes.White,
+                        new PointF(10, 10));
+                    g.DrawString(
+                        "Window not available",
+                        SystemFonts.DefaultFont,
+                        Brushes.White,
+                        new PointF(10, 40));
+                    g.DrawString(
+                        "height or width is 0",
+                        SystemFonts.DefaultFont,
+                        Brushes.White,
+                        new PointF(10, 80));
+                }
+                return placeholder;
+            }
+            var bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
             var gfxBmp = Graphics.FromImage(bmp);
             var hdcBitmap = gfxBmp.GetHdc();
             WinAPI.Stubs.PrintWindow(hwnd, hdcBitmap, 0);
