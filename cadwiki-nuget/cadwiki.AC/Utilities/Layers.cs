@@ -12,16 +12,41 @@ namespace cadwiki.AC.Utilities
 
     public class Layers
     {
-        public static List<Entity> CopyVisibleEntitiesToNewLayer(Document doc, SelectionSet ss, string layerName)
+
+        public static List<Entity> MoveEntitiesOnLayerToNewLayer(Document doc, string oldLayerName, string newLayerName)
         {
-            var layer = GetLayer(doc, layerName);
-            if (layer is null)
+            var oldLayer = GetLayer(doc, oldLayerName);
+            if (oldLayer is null)
             {
-                throw new Exception("Layer " + layerName + " does not exist in dwg.");
+                throw new Exception("Layer " + oldLayerName + " does not exist in dwg.");
             }
+            var newLayer = GetLayer(doc, newLayerName);
+            if (newLayer is null)
+            {
+                throw new Exception("Layer " + newLayerName + " does not exist in dwg.");
+            }
+
             else
             {
-                return CopyVisibleEntitiesToNewLayer(doc, ss, layer);
+                var moviedEntities = new List<Entity>();
+                var db = doc.Database;
+                using (var @lock = doc.LockDocument())
+                {
+                    using (var t = db.TransactionManager.StartTransaction())
+                    {
+                        BlockTableRecord currentSpace = (BlockTableRecord)t.GetObject(db.CurrentSpaceId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                        foreach (ObjectId objId in currentSpace)
+                        {
+                            Entity entity = (Entity)t.GetObject(objId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                            if (entity is not null && entity.Visible && entity.LayerId == oldLayer.Id)
+                            {
+                                entity.LayerId = newLayer.Id;
+                            }
+                        }
+                        t.Commit();
+                    }
+                }
+                return moviedEntities;
             }
         }
 
