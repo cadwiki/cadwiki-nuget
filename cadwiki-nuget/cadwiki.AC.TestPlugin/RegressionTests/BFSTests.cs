@@ -5,7 +5,10 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using cadwiki.AC.Utilities;
+using cadwiki.NUnitTestRunner.Creators;
 using NUnit.Framework;
+using cadwiki.NUnitTestRunner.TestEvidence;
+using cadwiki.NUnitTestRunner;
 
 namespace cadwiki.AC.TestPlugin.Tests
 {
@@ -41,6 +44,19 @@ namespace cadwiki.AC.TestPlugin.Tests
             var testName = TestContext.CurrentContext.Test.Name;
             currentTestLayerName = "Test-" + testName;
             currentTestLayerName = Layers.CreateFirstAvailableLayerName(_doc, currentTestLayerName).Name;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            var testName = Engine.ExecutingTest;
+            var testEvidenceCreator = new TestEvidenceCreator();
+
+            var input = new cadwiki.AC.Plotters.Input();
+            input.LayoutName = "Model";
+            input.OutputFilePath = TestEvidenceCreator.LocalScreenShotCache + "\\" + testName + ".pdf";
+            var output = cadwiki.AC.Plotters.PlotterSinglePage.PlotSingleLayoutToSinglePagePDF(_doc, _doc.Database, input);
+            testEvidenceCreator.AddPDFToEvidence(testName, output.OutputPath);
         }
 
         public void AcMarkUndo()
