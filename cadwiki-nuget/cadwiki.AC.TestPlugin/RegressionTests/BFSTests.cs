@@ -12,34 +12,35 @@ namespace cadwiki.AC.TestPlugin.Tests
     [TestFixture]
     public partial class RegressionTests
     {
+        private static Document _doc;
+
         [OneTimeSetUp]
         public void Init()
         {
             _doubleComplexCount = 0;
 
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            _doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var wcTest = "*test*";
             var filter = SelectionFilters.GetAllEntitiesOnWildCardLayer(wcTest);
-            var ss = SelectionSets.SelectAll(doc, filter);
-            SelectionSets.DeleteAllEntities(doc, ss);
-            Layers.DeleteLayersFromDrawing(doc, wcTest);
+            var ss = SelectionSets.SelectAll(_doc, filter);
+            SelectionSets.DeleteAllEntities(_doc, ss);
+            Layers.DeleteLayersFromDrawing(_doc, wcTest);
 
             var wcCadwiki = "*cadwiki*";
             filter = SelectionFilters.GetAllEntitiesOnWildCardLayer(wcCadwiki);
-            ss = SelectionSets.SelectAll(doc, filter);
-            SelectionSets.DeleteAllEntities(doc, ss);
+            ss = SelectionSets.SelectAll(_doc, filter);
+            SelectionSets.DeleteAllEntities(_doc, ss);
 
-            Layers.DeleteLayersFromDrawing(doc, wcCadwiki);
+            Layers.DeleteLayersFromDrawing(_doc, wcCadwiki);
         }
 
         
         [SetUp]
         public void SetUp()
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var testName = TestContext.CurrentContext.Test.Name;
             currentTestLayerName = "Test-" + testName;
-            currentTestLayerName = Layers.CreateFirstAvailableLayerName(doc, currentTestLayerName).Name;
+            currentTestLayerName = Layers.CreateFirstAvailableLayerName(_doc, currentTestLayerName).Name;
         }
 
 
@@ -57,11 +58,11 @@ namespace cadwiki.AC.TestPlugin.Tests
         private static string currentTestLayerName = "Temp";
 
 
-        public Line DrawLine(Document doc, Point3d pt1, Point3d pt2, string layerName)
+        public Line DrawLine(Document _doc, Point3d pt1, Point3d pt2, string layerName)
         {
             Line line = null;
-            var db = doc.Database;
-            using (var @lock = doc.LockDocument())
+            var db = _doc.Database;
+            using (var @lock = _doc.LockDocument())
             {
                 using (var t = db.TransactionManager.StartTransaction())
                 {
@@ -83,14 +84,14 @@ namespace cadwiki.AC.TestPlugin.Tests
 
         // <Test>
         // Public Sub Break_2_overlapping_lines_Should_return_2_new_lines()
-        // Dim doc As Document = Application.DocumentManager.MdiActiveDocument
-        // Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(doc, tempLayer)
+        // Dim _doc As Document = Application.DocumentManager.MdiActiveDocument
+        // Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(_doc, tempLayer)
         // Dim pt1 As Point3d = New Point3d(0, -2, 0)
         // Dim pt2 As Point3d = New Point3d(0, 2, 0)
-        // Dim line1 As Line = DrawLine(doc, pt1, pt2)
+        // Dim line1 As Line = DrawLine(_doc, pt1, pt2)
         // pt1 = New Point3d(-2, 0, 0)
         // pt2 = New Point3d(2, 0, 0)
-        // Dim line2 As Line = DrawLine(doc, pt1, pt2)
+        // Dim line2 As Line = DrawLine(_doc, pt1, pt2)
         // Dim lines As List(Of ObjectId) = New List(Of ObjectId)
         // lines.Add(line1.Id)
         // Dim lines2 As List(Of ObjectId) = New List(Of ObjectId)
@@ -100,20 +101,19 @@ namespace cadwiki.AC.TestPlugin.Tests
         // Dim inputs As New Inputs
         // inputs.SelectionToBreak = selection
         // inputs.SelectionToBreakWith = selection2
-        // Dim newLines As List(Of ObjectId) = BreakSsWithSs(doc, inputs)
+        // Dim newLines As List(Of ObjectId) = BreakSsWithSs(_doc, inputs)
         // Assert.AreEqual(newLines.Count, 2, "Expected 2 new lines, instead was: " + newLines.Count.ToString)
         // End Sub
 
         [Test]
         public void Break_2_overlapping_lines_with_self_Should_return_4_new_lines()
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var pt1 = new Point3d(0d, -2, 0d);
             var pt2 = new Point3d(0d, 2d, 0d);
-            var line1 = DrawLine(doc, pt1, pt2, currentTestLayerName);
+            var line1 = DrawLine(_doc, pt1, pt2, currentTestLayerName);
             pt1 = new Point3d(-2, 0d, 0d);
             pt2 = new Point3d(2d, 0d, 0d);
-            var line2 = DrawLine(doc, pt1, pt2, currentTestLayerName);
+            var line2 = DrawLine(_doc, pt1, pt2, currentTestLayerName);
             var lines = new List<ObjectId>();
             lines.Add(line1.Id);
             lines.Add(line2.Id);
@@ -126,7 +126,7 @@ namespace cadwiki.AC.TestPlugin.Tests
             inputs.SelectionToBreak = selection;
             inputs.SelectionToBreakWith = selection2;
             inputs.Self = true;
-            var newLines = Workflows.BreakSs.BreakSsWithSs(doc, inputs);
+            var newLines = Workflows.BreakSs.BreakSsWithSs(_doc, inputs);
             Assert.AreEqual(newLines.Count, 4, "Expected 4 new lines, instead was: " + newLines.Count.ToString());
         }
 
@@ -134,7 +134,6 @@ namespace cadwiki.AC.TestPlugin.Tests
         [Test]
         public void Make_Simple_4x4_Node_Graph()
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var pt1 = new Point3d(0d, 0d, 0d);
             var pt2 = new Point3d(2d, 0d, 0d);
             var pt3 = new Point3d(2d, 2d, 0d);
@@ -146,8 +145,8 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt4, pt1));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
             
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2);
-            var lineIds = DrawLines(doc, linePointTuples, nodeGraph.LayerNameLines);
+            var nodeGraph = new NodeGraph.NodeGraph(_doc, linePoints, pt1, pt2);
+            var lineIds = DrawLines(_doc, linePointTuples, nodeGraph.LayerNameLines);
             Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
@@ -164,12 +163,12 @@ namespace cadwiki.AC.TestPlugin.Tests
         }
 
 
-        public List<ObjectId> DrawLines(Document doc, List<LinePoints> linePointTuples, string layerName)
+        public List<ObjectId> DrawLines(Document _doc, List<LinePoints> linePointTuples, string layerName)
         {
             var lineIds = new List<ObjectId>();
             foreach (LinePoints points in linePointTuples)
             {
-                var line = DrawLine(doc, points.StartPoint, points.EndPoint, layerName);
+                var line = DrawLine(_doc, points.StartPoint, points.EndPoint, layerName);
                 lineIds.Add(line.ObjectId);
             }
             return lineIds;
@@ -179,7 +178,6 @@ namespace cadwiki.AC.TestPlugin.Tests
         [Test]
         public void Add_Neighbors_To_Simple_4x4_Node_Graph()
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
             var pt1 = new Point3d(0d, 0d, 0d);
             var pt2 = new Point3d(2d, 0d, 0d);
             var pt3 = new Point3d(2d, 2d, 0d);
@@ -191,8 +189,8 @@ namespace cadwiki.AC.TestPlugin.Tests
             linePointTuples.Add(new LinePoints(pt4, pt1));
             var linePoints = new List<Point3d>() { pt1, pt2, pt3, pt4 };
 
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, pt1, pt2);
-            var lineIds = DrawLines(doc, linePointTuples, nodeGraph.LayerNameLines);
+            var nodeGraph = new NodeGraph.NodeGraph(_doc, linePoints, pt1, pt2);
+            var lineIds = DrawLines(_doc, linePointTuples, nodeGraph.LayerNameLines);
 
             nodeGraph.AddNeighborsToNodes();
             nodeGraph.LabelNodes();
@@ -204,7 +202,7 @@ namespace cadwiki.AC.TestPlugin.Tests
         {
             double xOffset = 10.0d;
 
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            
 
             var pt1 = new Point3d(0d + xOffset, 0d, 0d);
             var pt2 = new Point3d(2d + xOffset, 0d, 0d);
@@ -221,8 +219,8 @@ namespace cadwiki.AC.TestPlugin.Tests
 
 
 
-            var nodeGraph = new NodeGraph.NodeGraph(doc, linePoints, linePointTuples[0].StartPoint, linePointTuples[0].EndPoint);
-            var lineIds = DrawLines(doc, linePointTuples, nodeGraph.LayerNameLines);
+            var nodeGraph = new NodeGraph.NodeGraph(_doc, linePoints, linePointTuples[0].StartPoint, linePointTuples[0].EndPoint);
+            var lineIds = DrawLines(_doc, linePointTuples, nodeGraph.LayerNameLines);
 
             nodeGraph.AddNeighborsToNodes();
             nodeGraph.LabelNodes();
@@ -236,7 +234,7 @@ namespace cadwiki.AC.TestPlugin.Tests
             Document doc, 
             bool addNeighbors = false, 
             bool connectSrcAndDest = false, 
-            bool calcPath = false, 
+            bool bfsPath = false, 
             bool calcDiversePaths = false
             )
         {
@@ -297,7 +295,7 @@ namespace cadwiki.AC.TestPlugin.Tests
 
             nodeGraph.LabelNodes();
 
-            if (calcPath)
+            if (bfsPath)
             {
                 
                 var list = nodeGraph.BFS(nodeGraph.SourceNodeId, nodeGraph.DestNodeId);
@@ -312,32 +310,26 @@ namespace cadwiki.AC.TestPlugin.Tests
         [Test]
         public void Add_Neighbors_To_Double_Complex_Node_Graph()
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var nodeGraph = DrawDoubleComplexNodeGraph(doc, true);
+            var nodeGraph = DrawDoubleComplexNodeGraph(_doc, true);
             Assert.AreEqual(nodeGraph.Nodes.Count, 8, "Expected 8 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
         [Test]
         public void Add_Src_And_Dest_To_Double_Complex_Node_Graph()
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var nodeGraph = DrawDoubleComplexNodeGraph(doc, true, true);
+            var nodeGraph = DrawDoubleComplexNodeGraph(_doc, true, true);
             Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
         [Test]
-        public void Add_Calc_Path_To_Double_Complex_Node_Graph()
+        public void Add_Bfs_Path_To_Double_Complex_Node_Graph()
         {
-            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            var nodeGraph = DrawDoubleComplexNodeGraph(doc, true, true, true);
-            Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+            var nodeGraph = DrawDoubleComplexNodeGraph(_doc, true, true, true);
+            Assert.AreEqual(nodeGraph.BFSPath.Count, 5, "Expected 5 nodes on BFS Path, instead was: " + nodeGraph.BFSPath.Count.ToString());
         }
 
-        // Test connect start and end points to node graph
-
-        // Test calculate ideal path
-
-        // Test calculate ideal diverse path
+        // Test larger graph of nodes
+        // Test calculate ideal diverse paths
 
     }
 }

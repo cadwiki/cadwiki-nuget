@@ -109,7 +109,7 @@ namespace cadwiki.AC.Utilities
             return null;
         }
 
-        public static void DrawCircleAtLocation(Point3d center, double radius)
+        public static void DrawCircleAtLocation(Point3d center, double radius, string layerName)
         {
             // Get the current document and database
             var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
@@ -128,6 +128,7 @@ namespace cadwiki.AC.Utilities
 
                     // Create a new Circle entity
                     var circle = new Circle(center, Vector3d.ZAxis, radius);
+                    circle.Layer = layerName;
 
                     // Add the Circle entity to the Model Space block table record
                     ms.AppendEntity(circle);
