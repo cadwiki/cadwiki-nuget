@@ -12,6 +12,19 @@ namespace cadwiki.AC.Utilities
 
     public class Layers
     {
+        public static List<Entity> CopyVisibleEntitiesToNewLayer(Document doc, SelectionSet ss, string layerName)
+        {
+            var layer = GetLayer(doc, layerName);
+            if (layer is null)
+            {
+                throw new Exception("Layer " + layerName + " does not exist in dwg.");
+            }
+            else
+            {
+                return CopyVisibleEntitiesToNewLayer(doc, ss, layer);
+            }
+        }
+
         public static List<Entity> CopyVisibleEntitiesToNewLayer(Document doc, SelectionSet ss, LayerTableRecord newLayer)
         {
             var copiedEntities = new List<Entity>();
@@ -23,7 +36,7 @@ namespace cadwiki.AC.Utilities
                     BlockTableRecord currentSpace = (BlockTableRecord)t.GetObject(db.CurrentSpaceId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
                     foreach (ObjectId objId in ss.GetObjectIds())
                     {
-                        Entity entity = (Entity)t.GetObject(objId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForRead);
+                        Entity entity = (Entity)t.GetObject(objId, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
                         if (entity is not null && entity.Visible)
                         {
                             Entity newEntity = entity.Clone() as Entity;
