@@ -11,6 +11,7 @@ namespace cadwiki.AC.Utilities
             public Point3d Location;
             public double Height;
             public string Content;
+            public string LayerName;
         }
 
         public static MText Add(Settings settings)
@@ -36,7 +37,10 @@ namespace cadwiki.AC.Utilities
                     mtext.Location = settings.Location;
                     mtext.Height = settings.Height;
                     mtext.Contents = settings.Content;
-
+                    if (!string.IsNullOrEmpty(settings.LayerName))
+                    {
+                        mtext.Layer = settings.LayerName;
+                    }
                     // Add the text entity to the Model Space block table record
                     ms.AppendEntity(mtext);
                     trans.AddNewlyCreatedDBObject(mtext, true);

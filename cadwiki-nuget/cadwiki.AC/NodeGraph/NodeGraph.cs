@@ -27,6 +27,7 @@ namespace cadwiki.AC.NodeGraph
         private string _layerNameNodes = "cadwiki-NodeGraph-";
         private string _layerNameSsBroken = "cadwiki-NodeGraph-";
         public string LayerNameBFSPath = "cadwiki-NodeGraph-";
+        public List<Node> BFSPath = new List<Node>();
 
         public NodeGraph(Document document, List<Point3d> pointList, Point3d destination, Point3d source)
         {
@@ -256,10 +257,11 @@ namespace cadwiki.AC.NodeGraph
                 settings.Content = label;
                 settings.Location = node.AutoCADPoint;
                 settings.Location = new Point3d(settings.Location.X + 0.1d, settings.Location.Y, settings.Location.Z);
+                settings.LayerName = _layerNameLabels;
 
                 var mtext = Mtexts.Add(settings);
 
-                Draw.DrawCircleAtLocation(node.AutoCADPoint, 0.1d);
+                Draw.DrawCircleAtLocation(node.AutoCADPoint, 0.1d, _layerNameNodes);
             }
         }
 
@@ -318,7 +320,7 @@ namespace cadwiki.AC.NodeGraph
                 path.Insert(0, currentNode); // Insert at the beginning to maintain the correct order
                 currentNode = currentNode.ParentNode;
             }
-
+            BFSPath = path;
             return path;
         }
 
