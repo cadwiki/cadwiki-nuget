@@ -103,10 +103,9 @@ namespace cadwiki.AC.NodeGraph
             inputs.SelectionToBreakWith = modifiedGraph;
             inputs.Self = true;
             inputs.NewLayer = _layerNameSsBroken;
-            inputs.DeleteOriginal = false;
+            inputs.DeleteOriginal = true;
             var newLines = Workflows.BreakSs.BreakSsWithSs(doc, inputs);
-            var newLinesSs = SelectionSets.ObjectIdListToSs(newLines);
-            Layers.CopyVisibleEntitiesToNewLayer(doc, newLinesSs, LayerNameLines);
+            Layers.MoveEntitiesOnLayerToNewLayer(doc, _layerNameSsBroken, LayerNameLines);
 
             if (!PointList.Contains(closestPointOnGraphToSource))
             {
