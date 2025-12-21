@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Windows.Controls;
+﻿using System;
+using System.Collections.Generic;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -43,19 +43,26 @@ namespace cadwiki.AC.TestPlugin.Tests
             currentTestLayerName = Layers.CreateFirstAvailableLayerName(_doc, currentTestLayerName).Name;
         }
 
+        public void AcMarkUndo()
+        {
+            _doc.SendStringToExecute("(vla-startundomark (vla-get-ActiveDocument (vlax-get-acad-object)))" + Environment.NewLine, true, false, false);
+        }
 
-        // <SetUp>
-        // Public Sub Init()
-        // Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.SendStringToExecute("(vla-startundomark (vla-get-ActiveDocument (vlax-get-acad-object)))" + vbLf, True, False, False)
-        // End Sub
+        public void AcUndo()
+        {
+            _doc.SendStringToExecute("(vla-endundomark (vla-get-ActiveDocument (vlax-get-acad-object)))" + Environment.NewLine, true, false, false);
+            Autodesk.AutoCAD.ApplicationServices.Application
+                .DocumentManager
+                .MdiActiveDocument
+                .SendStringToExecute(
+                    "(command-s \"._undo\" \"back\" \"yes\")" + Environment.NewLine,
+                    true,
+                    false,
+                    false
+                );
+        }
 
-        // <TearDown>
-        // Public Sub TearDown()
-        // Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.SendStringToExecute("(vla-endundomark (vla-get-ActiveDocument (vlax-get-acad-object)))" + vbLf, True, False, False)
-        // Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.SendStringToExecute("(command-s ""._undo"" ""back"" ""yes"")" + vbLf, True, False, False)
-        // End Sub
-
-        private static string currentTestLayerName = "Temp";
+        private static string currentTestLayerName = "Test-";
 
 
         public Line DrawLine(Document _doc, Point3d pt1, Point3d pt2, string layerName)
@@ -82,29 +89,6 @@ namespace cadwiki.AC.TestPlugin.Tests
             return line;
         }
 
-        // <Test>
-        // Public Sub Break_2_overlapping_lines_Should_return_2_new_lines()
-        // Dim _doc As Document = Application.DocumentManager.MdiActiveDocument
-        // Dim layer As LayerTableRecord = Layers.CreateFirstAvailableLayerName(_doc, tempLayer)
-        // Dim pt1 As Point3d = New Point3d(0, -2, 0)
-        // Dim pt2 As Point3d = New Point3d(0, 2, 0)
-        // Dim line1 As Line = DrawLine(_doc, pt1, pt2)
-        // pt1 = New Point3d(-2, 0, 0)
-        // pt2 = New Point3d(2, 0, 0)
-        // Dim line2 As Line = DrawLine(_doc, pt1, pt2)
-        // Dim lines As List(Of ObjectId) = New List(Of ObjectId)
-        // lines.Add(line1.Id)
-        // Dim lines2 As List(Of ObjectId) = New List(Of ObjectId)
-        // lines2.Add(line2.Id)
-        // Dim selection As SelectionSet = SelectionSet.FromObjectIds(lines.ToArray)
-        // Dim selection2 As SelectionSet = SelectionSet.FromObjectIds(lines2.ToArray)
-        // Dim inputs As New Inputs
-        // inputs.SelectionToBreak = selection
-        // inputs.SelectionToBreakWith = selection2
-        // Dim newLines As List(Of ObjectId) = BreakSsWithSs(_doc, inputs)
-        // Assert.AreEqual(newLines.Count, 2, "Expected 2 new lines, instead was: " + newLines.Count.ToString)
-        // End Sub
-
         [Test]
         public void Break_2_overlapping_lines_with_self_Should_return_4_new_lines()
         {
@@ -130,7 +114,6 @@ namespace cadwiki.AC.TestPlugin.Tests
             Assert.AreEqual(newLines.Count, 4, "Expected 4 new lines, instead was: " + newLines.Count.ToString());
         }
 
-        // Test make node graph
         [Test]
         public void Make_Simple_4x4_Node_Graph()
         {
@@ -174,7 +157,6 @@ namespace cadwiki.AC.TestPlugin.Tests
             return lineIds;
         }
 
-        // Test add neighbors to node graph
         [Test]
         public void Add_Neighbors_To_Simple_4x4_Node_Graph()
         {
