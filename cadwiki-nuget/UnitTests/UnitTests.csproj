@@ -173,6 +173,7 @@
     <Compile Include="cadwiki.NUnitTestRunner\TestsForEvidenceCreator.cs" />
     <Compile Include="cadwiki.NUnitTestRunner\TestStrings.cs" />
     <Compile Include="cadwiki.NUnitTestRunner\TestUiDriver.cs" />
+    <Compile Include="cadwiki.NUnitTestRunner\TestWinAPIExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
