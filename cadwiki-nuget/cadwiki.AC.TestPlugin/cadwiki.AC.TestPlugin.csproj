@@ -212,6 +212,10 @@
       <Project>{8E35D9B1-86C8-0030-0E94-A560251095B8}</Project>
       <Name>cadwiki.NetUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.csproj">
+      <Project>{9276dc8a-d5c4-0e8e-07f9-77db4de1d971}</Project>
+      <Name>cadwiki.NUnitTestRunner</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Extension.Pack">
