@@ -16,6 +16,7 @@ namespace cadwiki.NUnitTestRunner
     {
 
         public static Creators.TestEvidenceCreator TestEvidenceCreator = new Creators.TestEvidenceCreator();
+        public static string ExecutingTest = "";
 
         public static async Task RunTestsFromType(ObservableTestSuiteResults suiteResult, Stopwatch stopwatch, Type[] integrationTestTypes)
         {
@@ -122,6 +123,7 @@ namespace cadwiki.NUnitTestRunner
         {
             try
             {
+                ExecutingTest = testMethodInfo.Name;
                 await ExecuteTest(suiteResult, testResult, testType, testMethodInfo, testParameters, testNumber,
                     oneTimeSetupObject, oneTimeSetupMethodInfo,
                     setupObject, setupMethodInfo, tearDownObject, tearDownMethodInfo).ConfigureAwait(false);
