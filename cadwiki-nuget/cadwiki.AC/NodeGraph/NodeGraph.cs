@@ -91,9 +91,11 @@ namespace cadwiki.AC.NodeGraph
 
             var closestPointOnGraphToSource = SelectionSets.GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc, graphSS, source);
             var line = Draw.DrawLineByPoints(doc, source, closestPointOnGraphToSource, LayerNameLines);
+            Draw.SetLineColor(line, 1);
 
             var closestPointOnGraphToDest = SelectionSets.GetClosestPointOnAnyLineFromSelectionToAGivenPoint(doc, graphSS, destination);
             var line2 = Draw.DrawLineByPoints(doc, destination, closestPointOnGraphToDest, LayerNameLines);
+            Draw.SetLineColor(line2, 1);
 
             var modifiedGraph = SelectionSets.SelectAll(doc, filter);
             var inputs = new Workflows.BreakSs.BreakSsInputs();
@@ -101,8 +103,10 @@ namespace cadwiki.AC.NodeGraph
             inputs.SelectionToBreakWith = modifiedGraph;
             inputs.Self = true;
             inputs.NewLayer = _layerNameSsBroken;
-            inputs.DeleteOriginal = true;
+            inputs.DeleteOriginal = false;
             var newLines = Workflows.BreakSs.BreakSsWithSs(doc, inputs);
+            var newLinesSs = SelectionSets.ObjectIdListToSs(newLines);
+            Layers.CopyVisibleEntitiesToNewLayer(doc, newLinesSs, LayerNameLines);
 
             if (!PointList.Contains(closestPointOnGraphToSource))
             {

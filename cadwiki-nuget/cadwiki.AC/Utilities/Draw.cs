@@ -1,5 +1,6 @@
 ﻿using System;
 using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 
@@ -134,6 +135,21 @@ namespace cadwiki.AC.Utilities
 
                     // Commit the transaction
                     trans.Commit();
+                }
+            }
+        }
+
+        public static void SetLineColor(DBObject obj, short colorIndex)
+        {
+            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var db = doc.Database;
+            using (var lk = doc.LockDocument())
+            {
+                using (var tr = db.TransactionManager.StartTransaction())
+                {
+                    var ent = (Line) tr.GetObject(obj.Id, global::Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite);
+                    ent.Color = Color.FromColorIndex(ColorMethod.ByColor, colorIndex);
+                    tr.Commit();
                 }
             }
         }
