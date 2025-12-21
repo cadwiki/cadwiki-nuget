@@ -18,7 +18,7 @@ namespace cadwiki.NUnitTestRunner.Creators
 
         private static Evidence _evidenceForCurrentlyExecutingTest;
         private static string _localFolderCache = Path.GetTempPath() + "cadwiki.NUnitTestRunner";
-        private static string _localScreenShotCache = _localFolderCache + @"\" + "screenshots";
+        public readonly static string LocalScreenShotCache = _localFolderCache + @"\" + "screenshots";
         private static string _pdfFileReport = "AutomatedTestEvidence.pdf";
         private static string _jsonFileResults = "AutomatedTestEvidence.json";
         private static string _htmlFileReport = "AutomatedTestEvidence.html";
@@ -33,9 +33,9 @@ namespace cadwiki.NUnitTestRunner.Creators
             {
                 Directory.CreateDirectory(_localFolderCache);
             }
-            if (!Directory.Exists(_localScreenShotCache))
+            if (!Directory.Exists(LocalScreenShotCache))
             {
-                Directory.CreateDirectory(_localScreenShotCache);
+                Directory.CreateDirectory(LocalScreenShotCache);
             }
         }
 
@@ -114,7 +114,7 @@ namespace cadwiki.NUnitTestRunner.Creators
 
         public string GetScreenshotCache()
         {
-            return _localScreenShotCache;
+            return LocalScreenShotCache;
         }
 
         public void SetEvidenceForCurrentTest(Evidence testEvidence)
@@ -314,6 +314,14 @@ namespace cadwiki.NUnitTestRunner.Creators
             return true;
         }
 
+        public void AddPDFToEvidence(string title, string pdfPath)
+        {
+            var image = new Image();
+            image.Title = title;
+            image.FilePath = pdfPath;
+            _evidenceForCurrentlyExecutingTest.PdfScreenshots.Add(image);
+            SetEvidenceForCurrentTest(_evidenceForCurrentlyExecutingTest);
+        }
     }
 
 

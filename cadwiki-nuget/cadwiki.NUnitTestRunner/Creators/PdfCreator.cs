@@ -58,7 +58,14 @@ namespace cadwiki.NUnitTestRunner.Creators
             if (testResult.Evidence is not null)
             {
                 foreach (TestEvidence.Image image in testResult.Evidence.Images)
+                {
                     AddImageAsNewPage(image.FilePath);
+                }
+
+                foreach (TestEvidence.Image image in testResult.Evidence.PdfScreenshots)
+                {
+                    AddPdfAsNewPage(image.FilePath);
+                }
             }
         }
 
@@ -228,6 +235,17 @@ namespace cadwiki.NUnitTestRunner.Creators
         {
             int widthMinusMargin = (int)Math.Round(page.Width.Point - _rightEdgeMargin);
             return widthMinusMargin;
+        }
+
+        public void AddPdfAsNewPage(string pdfFilePath)
+        {
+            using (var sourceDoc = PdfSharp.Pdf.IO.PdfReader.Open(pdfFilePath, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import))
+            {
+                foreach (var page in sourceDoc.Pages)
+                {
+                    PdfDoc.AddPage(page);
+                }
+            }
         }
 
     }
