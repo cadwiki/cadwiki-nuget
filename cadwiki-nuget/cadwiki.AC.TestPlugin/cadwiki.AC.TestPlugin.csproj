@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -211,6 +211,10 @@
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj">
       <Project>{8E35D9B1-86C8-0030-0E94-A560251095B8}</Project>
       <Name>cadwiki.NetUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.csproj">
+      <Project>{9276dc8a-d5c4-0e8e-07f9-77db4de1d971}</Project>
+      <Name>cadwiki.NUnitTestRunner</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

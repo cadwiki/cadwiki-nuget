@@ -12,6 +12,7 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
         {
             var integrationTestsButton = CreateRegressionTestsButton();
             var dllButton = CreatePaletteButton();
+            var snapshotButton = CreateSnapshotButton();
             var ribbonPanelSource = new RibbonPanelSource();
             ribbonPanelSource.Title = "Tests";
             var row1 = new RibbonRowPanel();
@@ -20,7 +21,7 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
             row1.Items.Add(new RibbonRowBreak());
             row1.Items.Add(dllButton);
             row1.Items.Add(new RibbonRowBreak());
-            row1.Items.Add(blankButton);
+            row1.Items.Add(snapshotButton);
             row1.Items.Add(new RibbonRowBreak());
             row1.Items.Add(blankButton);
             ribbonPanelSource.Items.Add(row1);
@@ -56,6 +57,23 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
                 "cadwiki.AC",
                 "cadwiki.AC.Commands.Commands",
                 "ShowSamplePallete",
+                null,
+                App.AcadAppDomainDllReloader,
+                Assembly.GetExecutingAssembly()
+            );
+            return ribbonButton;
+        }
+
+        public static RibbonButton CreateSnapshotButton()
+        {
+            var ribbonButton = cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons.Creator.Create(
+                "Snapshot",
+                "Snapshot",
+                "Snapshot",
+                null,
+                "cadwiki.AC",
+                "cadwiki.AC.Commands.Commands",
+                "TakeSnapshot",
                 null,
                 App.AcadAppDomainDllReloader,
                 Assembly.GetExecutingAssembly()

@@ -61,6 +61,10 @@ namespace cadwiki.AC.Utilities
         public static List<Entity> DeleteAllEntities(Document doc, SelectionSet ss)
         {
             var deletedEntities = new List<Entity>();
+            if (ss == null)
+            {
+                return deletedEntities;
+            }
             var db = doc.Database;
             using (var @lock = doc.LockDocument())
             {
@@ -139,7 +143,11 @@ namespace cadwiki.AC.Utilities
 
         public static void HighlightAll(Document doc, SelectionSet ss, bool highlight)
         {
-            var deletedEntities = new List<Entity>();
+            if (ss == null)
+            {
+                return;
+            }
+
             var db = doc.Database;
 
             using (var @lock = doc.LockDocument())
@@ -166,7 +174,10 @@ namespace cadwiki.AC.Utilities
 
         public static Entity GetEntityByHandle(Document doc, SelectionSet ss, string handle)
         {
-            var deletedEntities = new List<Entity>();
+            if (ss == null)
+            {
+                return null;
+            }
             var db = doc.Database;
             using (var @lock = doc.LockDocument())
             {
@@ -190,6 +201,10 @@ namespace cadwiki.AC.Utilities
         public static List<Entity> GetEntityList(Document doc, SelectionSet ss)
         {
             var entities = new List<Entity>();
+            if (ss == null)
+            {
+                return entities;
+            }
             var db = doc.Database;
             using (var @lock = doc.LockDocument())
             {
@@ -212,6 +227,10 @@ namespace cadwiki.AC.Utilities
             Point3d closestPoint;
             Curve curveObj;
             var entities = new List<Entity>();
+            if (selectionSet == null)
+            {
+                return new Point3d();
+            }
             var db = doc.Database;
             using (var @lock = doc.LockDocument())
             {

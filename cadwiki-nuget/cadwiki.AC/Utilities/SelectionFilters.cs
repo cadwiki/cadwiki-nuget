@@ -94,5 +94,13 @@ namespace cadwiki.AC.Utilities
             var filter = new SelectionFilter(typedValues);
             return filter;
         }
+
+        public static SelectionFilter GetAllEntitiesOnWildCardLayer(string wcLayer)
+        {
+            var layerName = new TypedValue(8, wcLayer);
+            TypedValue[] typedValues = new[] { layerName };
+            var filter = new SelectionFilter(typedValues);
+            return filter;
+        }
     }
 }
