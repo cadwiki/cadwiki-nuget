@@ -48,6 +48,52 @@ namespace cadwiki.NUnitTestRunner.WinAPI
         {
             Stubs.SendMessage(hWnd, Constants.WM_SYSCOMMAND, Constants.SC_CLOSE, (HWND)0);
         }
+
+        private static string GetWindowTitle(IntPtr hWnd)
+        {
+            int length = WinAPI.Stubs.GetWindowTextLength(hWnd);
+            if (length == 0)
+                return string.Empty;
+
+            var sb = new StringBuilder(length + 1);
+            WinAPI.Stubs.GetWindowText(hWnd, sb, sb.Capacity);
+            return sb.ToString();
+        }
+
+        public static IntPtr FindWindowByTitle(string titleContains)
+        {
+            IntPtr found = IntPtr.Zero;
+
+            WinAPI.Stubs.EnumWindows((hWnd, lParam) =>
+            {
+                if (!WinAPI.Stubs.IsWindowVisible(hWnd))
+                    return true;
+
+                string title = GetWindowTitle(hWnd);
+                if (string.IsNullOrWhiteSpace(title))
+                    return true;
+
+                if (title.IndexOf(titleContains, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    found = hWnd;
+                    return false;
+                }
+
+                return true;
+            }, 0);
+
+            return found;
+        }
+
+        public static bool CloseWindowByTitle(string titleContains)
+        {
+            IntPtr hwnd = FindWindowByTitle(titleContains);
+            if (hwnd == IntPtr.Zero)
+                return false;
+
+            CloseWindow(hwnd);
+            return true;
+        }
     }
 
     public static class DictionaryExtensions
