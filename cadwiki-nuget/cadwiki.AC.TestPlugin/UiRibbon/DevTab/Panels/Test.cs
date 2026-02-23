@@ -13,6 +13,9 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
             var integrationTestsButton = CreateRegressionTestsButton();
             var dllButton = CreatePaletteButton();
             var snapshotButton = CreateSnapshotButton();
+            var blockReplacerButton = CreateBlockReplacerButton();
+            var exportBlocksButton = CreateExportBlocksButton();
+            var listBlocksButton = CreateListBlocksButton();
             var ribbonPanelSource = new RibbonPanelSource();
             ribbonPanelSource.Title = "Tests";
             var row1 = new RibbonRowPanel();
@@ -22,6 +25,12 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
             row1.Items.Add(dllButton);
             row1.Items.Add(new RibbonRowBreak());
             row1.Items.Add(snapshotButton);
+            row1.Items.Add(new RibbonRowBreak());
+            row1.Items.Add(blockReplacerButton);
+            row1.Items.Add(new RibbonRowBreak());
+            row1.Items.Add(exportBlocksButton);
+            row1.Items.Add(new RibbonRowBreak());
+            row1.Items.Add(listBlocksButton);
             row1.Items.Add(new RibbonRowBreak());
             row1.Items.Add(blankButton);
             ribbonPanelSource.Items.Add(row1);
@@ -74,6 +83,57 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
                 "cadwiki.AC",
                 "cadwiki.AC.Commands.Commands",
                 "TakeSnapshot",
+                null,
+                App.AcadAppDomainDllReloader,
+                Assembly.GetExecutingAssembly()
+            );
+            return ribbonButton;
+        }
+
+        public static RibbonButton CreateBlockReplacerButton()
+        {
+            var ribbonButton = cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons.Creator.Create(
+                "Block Replacer",
+                "Block Replacer",
+                "Replace block references with new block definitions from an external file",
+                null,
+                "cadwiki.AC",
+                "cadwiki.AC.Commands.BlockReplaceCommands",
+                "ShowBlockReplacerPalette",
+                null,
+                App.AcadAppDomainDllReloader,
+                Assembly.GetExecutingAssembly()
+            );
+            return ribbonButton;
+        }
+
+        public static RibbonButton CreateExportBlocksButton()
+        {
+            var ribbonButton = cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons.Creator.Create(
+                "Export Blocks",
+                "Export Blocks",
+                "Export all block definitions from current drawing to individual DWG files",
+                null,
+                "cadwiki.AC",
+                "cadwiki.AC.Commands.BlockReplaceCommands",
+                "ExportBlocks",
+                null,
+                App.AcadAppDomainDllReloader,
+                Assembly.GetExecutingAssembly()
+            );
+            return ribbonButton;
+        }
+
+        public static RibbonButton CreateListBlocksButton()
+        {
+            var ribbonButton = cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons.Creator.Create(
+                "List Blocks",
+                "List Blocks",
+                "List all block definitions in current drawing",
+                null,
+                "cadwiki.AC",
+                "cadwiki.AC.Commands.BlockReplaceCommands",
+                "ListBlocks",
                 null,
                 App.AcadAppDomainDllReloader,
                 Assembly.GetExecutingAssembly()

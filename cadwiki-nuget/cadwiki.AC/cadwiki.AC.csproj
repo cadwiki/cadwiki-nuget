@@ -160,6 +160,7 @@
   <ItemGroup>
     <Compile Include="Commands\Assemblies.cs" />
     <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Commands\BlockReplaceCommands.cs" />
     <Compile Include="DocProcessor\DocProcessor.cs" />
     <Compile Include="DocProcessor\OpenResult.cs" />
     <Compile Include="DocProcessor\SaveResult.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="PaletteSetJson\PaletteSetHost.cs" />
     <Compile Include="PaletteSetJson\PaletteSetJson.cs" />
     <Compile Include="PaletteSetJson\PaletteSetViewModel.cs" />
+    <Compile Include="PaletteSets\PaletteSetBlockReplace.cs" />
     <Compile Include="PaletteSets\PaletteSetSample.cs" />
     <Compile Include="Plotters\PlotterDefaults.cs" />
     <Compile Include="Plotters\Input.cs" />
@@ -181,6 +183,9 @@
     <Compile Include="Utilities\CEditor.cs" />
     <Compile Include="Utilities\ExceptionHandler.cs" />
     <Compile Include="Utilities\Blocks.cs" />
+    <Compile Include="Utilities\BlockHighlighter.cs" />
+    <Compile Include="Utilities\BlockReplacer.cs" />
+    <Compile Include="Utilities\DebugLogger.cs" />
     <Compile Include="Utilities\Commands.cs" />
     <Compile Include="Utilities\Draw.cs" />
     <Compile Include="Utilities\Layers.cs" />
@@ -201,7 +206,11 @@
     <Compile Include="Utilities\XData.cs" />
     <Compile Include="Utilities\Zoom.cs" />
     <Compile Include="UserInput\Selections.cs" />
+    <Compile Include="ViewModels\BlockReplaceViewModel.cs" />
     <Compile Include="ViewModels\ViewModelSample.cs" />
+    <Compile Include="Views\BlockReplaceView.xaml.cs">
+      <DependentUpon>BlockReplaceView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewSample.xaml.cs">
       <DependentUpon>ViewSample.xaml</DependentUpon>
     </Compile>
@@ -226,6 +235,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\BlockReplaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ViewSample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
