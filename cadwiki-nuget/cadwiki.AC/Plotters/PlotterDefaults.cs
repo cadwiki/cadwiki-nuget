@@ -14,7 +14,7 @@ namespace cadwiki.AC.Plotters
         public static readonly string PlotDeviceName = "DWG To PDF.pc3";
         public static readonly string MediaName = "ANSI_D_(34.00_x_22.00_Inches)";
         public static readonly string SheetStyleName = "monochrome.ctb";
-        public static readonly string OutputFilePath = "C:\\idc\\output.pdf";
+        public static readonly string OutputFilePath = "C:\\temp\\output.pdf";
         public static readonly PlotType PlotArea = PlotType.Extents;
         public static readonly Point2d PlotWindowStart = new Point2d();
         public static readonly Point2d PlotWindowEnd = new Point2d();

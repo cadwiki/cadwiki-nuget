@@ -1,0 +1,400 @@
+<UserControl
+    x:Class="cadwiki.AC.Views.BlockReplaceView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:cadwiki.AC.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utilities="clr-namespace:cadwiki.AC.Utilities"
+    xmlns:vm="clr-namespace:cadwiki.AC.ViewModels"
+    d:DataContext="{d:DesignInstance vm:BlockReplaceViewModel}"
+    d:DesignHeight="1500"
+    d:DesignWidth="480"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,5,0,5" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style x:Key="SectionBorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#CCCCCC" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Margin" Value="0,5,0,10" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Background" Value="#FAFAFA" />
+        </Style>
+    </UserControl.Resources>
+
+    <TabControl>
+
+        <!--  Block Replacer Tab  -->
+        <TabItem Header="Block Replacer">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="10">
+                    <!--  Status  -->
+                    <Border
+                        Margin="0,10,0,0"
+                        Padding="5"
+                        Background="#F0F0F0">
+                        <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" />
+                    </Border>
+
+                    <!--  Block References Section  -->
+                    <TextBlock
+                        Margin="0,10,0,0"
+                        Style="{StaticResource HeaderTextStyle}"
+                        Text="Block References" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Button
+                            Command="{Binding SelectAllBlocksCommand}"
+                            Content="Select All"
+                            Style="{StaticResource ButtonStyle}" />
+                        <Button
+                            Command="{Binding DeselectAllBlocksCommand}"
+                            Content="Deselect All"
+                            Style="{StaticResource ButtonStyle}" />
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            FontStyle="Italic"
+                            Text="{Binding SelectedBlocksCountText}" />
+                    </StackPanel>
+
+                    <Border
+                        Margin="0,0,0,0"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <DataGrid
+                            Height="120"
+                            vm:DataGridSelectedItemsBehavior.SelectedItems="{Binding HighlightedBlocks}"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="False"
+                            IsReadOnly="False"
+                            ItemsSource="{Binding CurrentDocumentBlocks}"
+                            SelectedItem="{Binding SelectedBlockReference, Mode=TwoWay}"
+                            SelectionMode="Extended"
+                            SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn
+                                    Width="60"
+                                    Binding="{Binding IsReplaceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Header="Replace" />
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding EffectiveBlockName}"
+                                    Header="Block Name"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Width="80"
+                                    Binding="{Binding Layer}"
+                                    Header="Layer"
+                                    IsReadOnly="True" />
+                                <DataGridCheckBoxColumn
+                                    Width="40"
+                                    Binding="{Binding IsDynamicBlock}"
+                                    Header="Dyn"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <!--  Replacement File  -->
+                    <TextBlock
+                        Margin="0,15,0,0"
+                        Style="{StaticResource HeaderTextStyle}"
+                        Text="Replacement Block File" />
+                    <Border Style="{StaticResource SectionBorderStyle}">
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                Text="Select an external DWG file containing the new block definition"
+                                TextWrapping="Wrap" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button
+                                    Command="{Binding BrowseExternalFileCommand}"
+                                    Content="Browse..."
+                                    Style="{StaticResource ButtonStyle}" />
+                                <TextBlock
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ExternalFileName}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Settings  -->
+                    <TextBlock
+                        Margin="0,10,0,0"
+                        Style="{StaticResource HeaderTextStyle}"
+                        Text="Replacement Settings" />
+                    <Border Style="{StaticResource SectionBorderStyle}">
+                        <StackPanel>
+                            <!--  Preserve Scale  -->
+                            <CheckBox
+                                Margin="0,2,0,0"
+                                Content="Preserve original scale"
+                                IsChecked="{Binding PreserveScale}" />
+
+                            <!--  Scale Override  -->
+                            <StackPanel
+                                Margin="20,5,0,5"
+                                Orientation="Horizontal"
+                                Visibility="{Binding ShowScaleOverride, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock VerticalAlignment="Center" Text="Override Scale - X:" />
+                                <TextBox
+                                    Width="50"
+                                    Margin="5,0"
+                                    Text="{Binding OverrideScaleX, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="Y:" />
+                                <TextBox
+                                    Width="50"
+                                    Margin="5,0"
+                                    Text="{Binding OverrideScaleY, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="Z:" />
+                                <TextBox
+                                    Width="50"
+                                    Margin="5,0"
+                                    Text="{Binding OverrideScaleZ, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <!--  Preserve Rotation  -->
+                            <CheckBox
+                                Margin="0,5,0,0"
+                                Content="Preserve original rotation"
+                                IsChecked="{Binding PreserveRotation}" />
+
+                            <!--  Rotation Override  -->
+                            <StackPanel
+                                Margin="20,5,0,5"
+                                Orientation="Horizontal"
+                                Visibility="{Binding ShowRotationOverride, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock VerticalAlignment="Center" Text="Override Rotation (degrees):" />
+                                <TextBox
+                                    Width="60"
+                                    Margin="5,0"
+                                    Text="{Binding OverrideRotation, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <!--  Other Settings  -->
+                            <CheckBox
+                                Margin="0,5,0,0"
+                                Content="Preserve original layer"
+                                IsChecked="{Binding Settings.PreserveLayer}" />
+                            <CheckBox
+                                Margin="0,5,0,0"
+                                Content="Transfer attribute values (by tag name)"
+                                IsChecked="{Binding Settings.TransferAttributes}" />
+                            <CheckBox
+                                Margin="0,5,0,0"
+                                Content="Add missing attribute definitions to new block"
+                                IsChecked="{Binding Settings.AddMissingAttributeDefinitions}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Execute  -->
+                    <TextBlock
+                        Margin="0,10,0,0"
+                        Style="{StaticResource HeaderTextStyle}"
+                        Text="Execute Replacement" />
+                    <Button
+                        Padding="15,8"
+                        HorizontalAlignment="Left"
+                        Command="{Binding ReplaceSelectedBlocksCommand}"
+                        Content="Replace Selected Blocks"
+                        FontWeight="Bold"
+                        Style="{StaticResource ButtonStyle}" />
+
+
+
+                    <!--  Results  -->
+                    <TextBlock Margin="0,10,0,5" Text="Replacement Results:" />
+                    <Border BorderBrush="Gray" BorderThickness="1">
+                        <DataGrid
+                            Height="100"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="False"
+                            ItemsSource="{Binding ReplacementResults}">
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn
+                                    Width="35"
+                                    Binding="{Binding Success}"
+                                    Header="OK"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding OriginalBlockName}"
+                                    Header="Original"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding NewBlockName}"
+                                    Header="New"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Width="40"
+                                    Binding="{Binding AttributesTransferred}"
+                                    Header="Atts"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    Width="140"
+                                    Binding="{Binding Message}"
+                                    Header="Message"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                    <Button
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Left"
+                        Command="{Binding ClearResultsCommand}"
+                        Content="Clear Results"
+                        Style="{StaticResource ButtonStyle}" />
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <!--  Debug Log Tab  -->
+        <TabItem Header="Debug Log">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!--  Header  -->
+                <StackPanel
+                    Grid.Row="0"
+                    Margin="0,0,0,10"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="Debug Output" />
+                    <Button
+                        Margin="20,0,0,0"
+                        Command="{Binding ClearDebugLogCommand}"
+                        Content="Clear Log"
+                        Style="{StaticResource ButtonStyle}" />
+                </StackPanel>
+
+                <!--  Log Output  -->
+                <TextBox
+                    Grid.Row="1"
+                    FontFamily="Consolas"
+                    FontSize="11"
+                    HorizontalScrollBarVisibility="Disabled"
+                    IsReadOnly="True"
+                    Text="{Binding DebugLog, Mode=OneWay}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+        </TabItem>
+
+        <!--  Block Export Tab  -->
+        <TabItem Header="Block Export">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="10">
+                    <!--  Current Document Info  -->
+                    <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Current Document" />
+                    <Border Style="{StaticResource SectionBorderStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontWeight="Bold" Text="Document: " />
+                            <TextBlock Text="{Binding CurrentDocumentName}" TextTrimming="CharacterEllipsis" />
+                            <Button
+                                Margin="10,0,0,0"
+                                Command="{Binding RefreshBlocksCommand}"
+                                Content="Refresh"
+                                Style="{StaticResource ButtonStyle}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Export Blocks Section  -->
+                    <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Export Blocks" />
+                    <Border Style="{StaticResource SectionBorderStyle}">
+                        <StackPanel>
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                Text="Export all block definitions from current drawing to individual DWG files"
+                                TextWrapping="Wrap" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button
+                                    Command="{Binding BrowseExportFolderCommand}"
+                                    Content="Select Folder"
+                                    Style="{StaticResource ButtonStyle}" />
+                                <TextBlock
+                                    Width="250"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ExportFolderPath}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                            <Button
+                                Margin="0,5,0,0"
+                                Command="{Binding ExportBlocksCommand}"
+                                Content="Export All Blocks"
+                                FontWeight="Bold"
+                                Style="{StaticResource ButtonStyle}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  Block Definitions Grid for Export  -->
+                    <TextBlock Style="{StaticResource HeaderTextStyle}" Text="Block Definitions in Drawing" />
+                    <Border
+                        Margin="0,0,0,0"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <DataGrid
+                            Height="300"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="False"
+                            IsReadOnly="True"
+                            ItemsSource="{Binding BlockDefinitions}"
+                            SelectedItem="{Binding SelectedBlockDefinition}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding Name}"
+                                    Header="Block Name" />
+                                <DataGridCheckBoxColumn
+                                    Width="60"
+                                    Binding="{Binding IsDynamic}"
+                                    Header="Dynamic" />
+                                <DataGridCheckBoxColumn
+                                    Width="45"
+                                    Binding="{Binding HasAttributes}"
+                                    Header="Atts" />
+                                <DataGridTextColumn
+                                    Width="50"
+                                    Binding="{Binding ReferenceCount}"
+                                    Header="Refs" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                    <TextBlock
+                        Margin="0,5,0,0"
+                        Text="{Binding StatusMessage}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+    </TabControl>
+</UserControl>

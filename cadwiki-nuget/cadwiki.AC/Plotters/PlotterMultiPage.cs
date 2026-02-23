@@ -86,7 +86,7 @@ namespace cadwiki.AC.Plotters
                                     //pe.BeginDocument(pi, doc.Name, null, 1, true, Exportpath + NewFileNameWithoutExtension);
 
 
-                                    ///***aml workaround for multi plots with layouts of differing sizes
+                                    ///workaround for multi plots with layouts of differing sizes
                                     if (i == 0 || firstPaperSize == lo.PlotPaperSize)
                                     {
                                         ps.CopyFrom(lo);
@@ -104,7 +104,7 @@ namespace cadwiki.AC.Plotters
                                     ps.PlotPlotStyles = input.PlotPlotStyles;
 
                                     PlotSettingsValidator psv = PlotSettingsValidator.Current;
-                                    //***aml set default first, these settings will be overridden below
+                                    //set default first, these settings will be overridden below
                                     psv.SetDefaultPlotConfig(ps);
 
                                     if (input.PlotArea == PlotType.Window)
