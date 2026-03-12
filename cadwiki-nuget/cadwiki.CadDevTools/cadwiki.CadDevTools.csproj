@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -140,21 +140,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.AC24.Interop\cadwiki.AC24.Interop.csproj">
-      <Project>{d76226ab-71b7-4c2d-ac34-193fe4b76825}</Project>
-      <Name>cadwiki.AC24.Interop</Name>
+    <ProjectReference Include="..\cadwiki.AC25.Interop\cadwiki.AC25.Interop.csproj">
+      <Project>{4567eb22-8189-4cee-9ca3-8290b6f52f1e}</Project>
+      <Name>cadwiki.AC25.Interop</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.AC\cadwiki.AC.csproj">
       <Project>{5BDEA227-45D2-0EFC-31BB-1E26467B53E2}</Project>
       <Name>cadwiki.AC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\cadwiki.AutoCAD2021.Interop.Utilities\cadwiki.AutoCAD2021.Interop.Utilities.csproj">
-      <Project>{87D6CE6D-C336-0974-2222-7F42A3BCD050}</Project>
-      <Name>cadwiki.AutoCAD2021.Interop.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\cadwiki.AutoCAD2022.Interop.Utilities\cadwiki.AutoCAD2022.Interop.Utilities.csproj">
-      <Project>{223A889D-F562-0C77-16BC-D99B497E2B1D}</Project>
-      <Name>cadwiki.AutoCAD2022.Interop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.csproj">
       <Project>{441FB108-EC1C-00E6-2E34-354A5EC1849D}</Project>
