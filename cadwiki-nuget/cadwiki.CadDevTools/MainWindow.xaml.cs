@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
-using InteropUtils2022 = cadwiki.AutoCAD2021.Interop.Utilities.InteropUtils;
-using InteropUtils2024 = cadwiki.AC24.Interop.InteropUtils;
+using InteropUtils = cadwiki.AC25.Interop.InteropUtils;
+
 using cadwiki.NetUtils;
 
 namespace cadwiki.CadDevTools
@@ -188,67 +188,22 @@ namespace cadwiki.CadDevTools
         {
 
             WpfUi.Utils.SetProcessingStatus(this.TextBlockStatus, this.TextBlockMessage, "Please wait until CAD launches.");
-            if (acadLocation.Contains("2021"))
+            var interop2024 = new InteropUtils();
+            bool isAutoCADRunning = interop2024.IsAutoCADRunning();
+            if (isAutoCADRunning == false)
             {
-                var interop2021 = new InteropUtils2022();
-                bool isAutoCADRunning = interop2021.IsAutoCADRunning();
-                if (isAutoCADRunning == false)
+                System.Windows.Forms.Application.DoEvents();
+                var processInfo = new ProcessStartInfo()
                 {
-                    System.Windows.Forms.Application.DoEvents();
-                    var processInfo = new ProcessStartInfo()
-                    {
-                        FileName = acadLocation,
-                        Arguments = this.TextBoxStartupSwitches.Text
-                    };
-
-                    interop2021.StartAutoCADApp(processInfo);
-                }
-                interop2021.ConfigureRunningAutoCADForUsage();
-                if (_dependencies.SetAutocadWindowToNorm)
-                {
-                    interop2021.SetAutoCADWindowToNormal();
-                }
+                    FileName = acadLocation,
+                    Arguments = this.TextBoxStartupSwitches.Text
+                };
+                interop2024.StartAutoCADApp(processInfo);
             }
-            // interop.OpenDrawingTemplate(dwtFilePath, True)
-            else if (acadLocation.Contains("2022"))
+            interop2024.ConfigureRunningAutoCADForUsage();
+            if (_dependencies.SetAutocadWindowToNorm)
             {
-                var interop2022 = new InteropUtils2022();
-                bool isAutoCADRunning = interop2022.IsAutoCADRunning();
-                if (isAutoCADRunning == false)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                    var processInfo = new ProcessStartInfo()
-                    {
-                        FileName = acadLocation,
-                        Arguments = this.TextBoxStartupSwitches.Text
-                    };
-                    interop2022.StartAutoCADApp(processInfo);
-                }
-                interop2022.ConfigureRunningAutoCADForUsage();
-                if (_dependencies.SetAutocadWindowToNorm)
-                {
-                    interop2022.SetAutoCADWindowToNormal();
-                }
-            }
-            else if (acadLocation.Contains("2024"))
-            {
-                var interop2024 = new InteropUtils2024();
-                bool isAutoCADRunning = interop2024.IsAutoCADRunning();
-                if (isAutoCADRunning == false)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                    var processInfo = new ProcessStartInfo()
-                    {
-                        FileName = acadLocation,
-                        Arguments = this.TextBoxStartupSwitches.Text
-                    };
-                    interop2024.StartAutoCADApp(processInfo);
-                }
-                interop2024.ConfigureRunningAutoCADForUsage();
-                if (_dependencies.SetAutocadWindowToNorm)
-                {
-                    interop2024.SetAutoCADWindowToNormal();
-                }
+                interop2024.SetAutoCADWindowToNormal();
             }
             // interop.OpenDrawingTemplate(dwtFilePath, True)
             else
@@ -263,33 +218,12 @@ namespace cadwiki.CadDevTools
         private void NetloadDll(string cadAppDll)
         {
             WpfUi.Utils.SetProcessingStatus(this.TextBlockStatus, this.TextBlockMessage, "Please wait until CAD launches netloads the" + cadAppDll + " dll.");
-            if (acadLocation.Contains("2021"))
+            var interopAcCw = new InteropUtils();
+            bool isAutoCADRunning = interopAcCw.IsAutoCADRunning();
+            if (isAutoCADRunning == false)
             {
-                var interop2021 = new InteropUtils2022();
-                bool isAutoCADRunning = interop2021.IsAutoCADRunning();
-                if (isAutoCADRunning == false)
-                {
-                }
-                interop2021.NetloadDll(cadAppDll);
             }
-            else if (acadLocation.Contains("2022"))
-            {
-                var interop2022 = new InteropUtils2022();
-                bool isAutoCADRunning = interop2022.IsAutoCADRunning();
-                if (isAutoCADRunning == false)
-                {
-                }
-                interop2022.NetloadDll(cadAppDll);
-            }
-            else if (acadLocation.Contains("2024"))
-            {
-                var interop2024 = new InteropUtils2024();
-                bool isAutoCADRunning = interop2024.IsAutoCADRunning();
-                if (isAutoCADRunning == false)
-                {
-                }
-                interop2024.NetloadDll(cadAppDll);
-            }
+            interopAcCw.NetloadDll(cadAppDll);
             WpfUi.Utils.SetSuccessStatus(this.TextBlockStatus, this.TextBlockMessage, "Dll netload complete: " + cadAppDll);
             System.Windows.Forms.Application.DoEvents();
         }
