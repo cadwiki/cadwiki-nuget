@@ -1,21 +1,17 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CadDevToolsDriver
 {
-
-    public partial class MainWindow : Window
+    public class Launcher
     {
-        public MainWindow()
+        public static cadwiki.CadDevTools.MainWindow.Dependencies GetDependencies()
         {
-            // This call is required by the designer.
-            this.InitializeComponent();
-            this.Hide();
             string exePath = Assembly.GetExecutingAssembly().Location;
             string exeDir = System.IO.Path.GetDirectoryName(exePath);
             string tempDir = System.IO.Path.GetTempPath() + "cadwiki.TestPlugin";
@@ -35,9 +31,7 @@ namespace CadDevToolsDriver
             dependencies.DllFilePathsToNetloadCommaDelimited = testPluginDll + "," + testPluginDll2;
             dependencies.CustomDirectoryToSearchForDllsToLoadFrom = tempDir;
             dependencies.DllWildCardSearchPattern = wildCardFileName;
-
-            Window Window = new cadwiki.CadDevTools.MainWindow(dependencies);
-            Window.Show();
+            return dependencies;
         }
 
         private static void DeleteFoldersOlderThanOneDay(List<string> cadApps)
