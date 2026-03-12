@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Autodesk.AutoCAD.Interop">
+      <HintPath>..\_libs\AutoCAD 2025\Autodesk.AutoCAD.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.AutoCAD.Interop.Common">
+      <HintPath>..\_libs\AutoCAD 2025\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

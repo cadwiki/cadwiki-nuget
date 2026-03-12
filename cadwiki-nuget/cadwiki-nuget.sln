@@ -89,6 +89,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.AC24.Interop", "cad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.MVVM", "cadwiki.MVVM\cadwiki.MVVM.csproj", "{9F6B0B69-AC7F-4948-80B3-25C34032501A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cadwiki.AC25.Interop", "cadwiki.AC25.Interop\cadwiki.AC25.Interop.csproj", "{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -405,6 +407,22 @@ Global
 		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Release|x64.ActiveCfg = Release|Any CPU
 		{9F6B0B69-AC7F-4948-80B3-25C34032501A}.Release|x64.Build.0 = Release|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.Debug|x64.Build.0 = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.DebugAuto|Any CPU.ActiveCfg = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.DebugAuto|Any CPU.Build.0 = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.DebugAuto|x64.ActiveCfg = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.DebugAuto|x64.Build.0 = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.DebugHC|Any CPU.ActiveCfg = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.DebugHC|Any CPU.Build.0 = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.DebugHC|x64.ActiveCfg = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.DebugHC|x64.Build.0 = Debug|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.Release|x64.ActiveCfg = Release|Any CPU
+		{4567EB22-8189-4CEE-9CA3-8290B6F52F1E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
