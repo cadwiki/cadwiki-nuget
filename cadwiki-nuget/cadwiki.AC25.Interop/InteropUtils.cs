@@ -61,34 +61,34 @@ namespace cadwiki.AC25.Interop
 
         public bool StartAutoCADApp(ProcessStartInfo autocadProcessInfo)
         {
-            //var pr = Process.Start(autocadProcessInfo);
-            //pr.WaitForInputIdle();
+            var pr = Process.Start(autocadProcessInfo);
+            pr.WaitForInputIdle();
 
-            //AcadApplication appAcad = null;
+            AcadApplication appAcad = null;
 
-            //while (appAcad == null)
-            //{
-            //    try
-            //    {
-            //        appAcad = (AcadApplication)GetActiveObject(autocadProgId);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Debug.WriteLine("Error: " + ex.Message);
-            //        Thread.Sleep(1000);
-            //    }
-            //}
-
-            AcadApplication appAcad =
-             (AcadApplication)Activator.CreateInstance(
-                Type.GetTypeFromProgID(autocadProgId));
-
-            Thread.Sleep(5000);
-
-            if (appAcad == null)
+            while (appAcad == null)
             {
-                return false;
+                try
+                {
+                    appAcad = (AcadApplication)GetActiveObject(autocadProgId);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
+                    Thread.Sleep(1000);
+                }
             }
+
+            //AcadApplication appAcad =
+            // (AcadApplication)Activator.CreateInstance(
+            //    Type.GetTypeFromProgID(autocadProgId));
+
+            //Thread.Sleep(5000);
+
+            //if (appAcad == null)
+            //{
+            //    return false;
+            //}
 
             App = appAcad;
 
