@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows.Controls;
 using Autodesk.AutoCAD.ApplicationServices;
 using Microsoft.VisualBasic;
 
@@ -123,7 +124,7 @@ namespace cadwiki.DllReloader.AutoCAD
                     Log("Dll reload started.");
                     WriteIniPathToDocEditor();
                     // Remove all commands from iExtensionAppAssembly
-                    CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath);
+                    TryRemoveAllCommands(doc, iExtensionAppAssembly, dllPath);
                     // RemoveAllCommandsFromAllAssembliesInAppDomain(doc, dllPath)
                     var tuple = ReloadAllDllsFoundInSameFolder(dllPath);
                     var appAssembly = tuple.Item1;
@@ -149,10 +150,17 @@ namespace cadwiki.DllReloader.AutoCAD
             }
         }
 
-
-
-
-
+        private void TryRemoveAllCommands(Document doc, Assembly iExtensionAppAssembly, string dllPath)
+        {
+            try
+            {
+                CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath);
+            }
+            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            {
+                Log("Exception" + ex.Message);
+            }
+        }
 
         private Tuple<Assembly, string> ReloadAllDllsFoundInSameFolder(string dllPath)
         {
@@ -230,7 +238,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 // Remove any commands that need to be overwritten latter
                 if (newestAssemblyWithNameInAppDomain is not null)
                 {
-                    CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(_document, newestAssemblyWithNameInAppDomain, DependencyValues.OriginalAppDirectory);
+                    TryRemoveAllCommands(_document, newestAssemblyWithNameInAppDomain, DependencyValues.OriginalAppDirectory);
                 }
 
             }
