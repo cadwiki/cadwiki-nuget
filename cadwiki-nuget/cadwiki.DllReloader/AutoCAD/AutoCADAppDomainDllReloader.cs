@@ -53,7 +53,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 Log("---------------------------------------------");
                 Log("---------------------------------------------");
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
                 var window = new WpfUi.Templates.WindowAutoCADException(ex);
                 window.Show();
@@ -102,7 +102,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 Log("---------------------------------------------");
                 Log("---------------------------------------------");
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
                 var window = new WpfUi.Templates.WindowAutoCADException(ex);
                 window.Show();
@@ -143,7 +143,7 @@ namespace cadwiki.DllReloader.AutoCAD
                     Log("---------------------------------------------");
                     Log("---------------------------------------------");
                 }
-                catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                catch (Exception ex)
                 {
                     Log("Exception" + ex.Message);
                 }
@@ -156,7 +156,7 @@ namespace cadwiki.DllReloader.AutoCAD
             {
                 CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath);
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
                 Log("Exception" + ex.Message);
             }
@@ -177,7 +177,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 var tuple = ReloadAll(tempDlls, newCount);
                 return tuple;
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
                 var window = new WpfUi.Templates.WindowAutoCADException(ex);
                 window.Show();
@@ -315,7 +315,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 {
                     assemblyBytes = File.ReadAllBytes(dllPath);
                 }
-                catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                catch (Exception ex)
                 {
                     Log("Error reading assembly to byte array: " + dllPath);
                     Log("Exception: " + ex.Message);
@@ -340,7 +340,7 @@ namespace cadwiki.DllReloader.AutoCAD
                         Log("Reloaded dll: " + dllPath);
                     }
                 }
-                catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                catch (Exception ex)
                 {
                     Log("Error loading assembly: " + dllPath);
                     Log("Exception: " + ex.Message);
@@ -413,7 +413,7 @@ namespace cadwiki.DllReloader.AutoCAD
             }
         }
 
-        public new void LogException(Autodesk.AutoCAD.Runtime.Exception ex)
+        public new void LogException(Exception ex)
         {
             var mode = GetLogMode();
             switch (mode.Equals(LogMode.Off))
@@ -432,7 +432,7 @@ namespace cadwiki.DllReloader.AutoCAD
             }
         }
 
-        private new void LogExceptionToTextFile(Autodesk.AutoCAD.Runtime.Exception ex)
+        private new void LogExceptionToTextFile(Exception ex)
         {
             if (ReloaderLog is null)
             {
@@ -447,7 +447,7 @@ namespace cadwiki.DllReloader.AutoCAD
             }
         }
 
-        private void LogExceptionToEditor(Autodesk.AutoCAD.Runtime.Exception ex)
+        private void LogExceptionToEditor(Exception ex)
         {
             if (_document is null)
             {
