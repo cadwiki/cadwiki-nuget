@@ -74,7 +74,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>rxapi.lib;acdb24.lib;acge24.lib;acad.lib;ac1st24.lib;accore.lib</AdditionalDependencies>
+      <AdditionalDependencies>rxapi.lib;acdb25.lib;acge25.lib;acad.lib;ac1st25.lib;accore.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>C:\Autodesk\OBJECTARX_FOR_AUTOCAD_2025_Win_64bit_dlm\lib-x64</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>ArxProject.def</ModuleDefinitionFile>
@@ -107,7 +107,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>rxapi.lib;acdb24.lib;acge24.lib;acad.lib;ac1st24.lib;accore.lib</AdditionalDependencies>
+      <AdditionalDependencies>rxapi.lib;acdb25.lib;acge25.lib;acad.lib;ac1st25.lib;accore.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>C:\Autodesk\OBJECTARX_FOR_AUTOCAD_2025_Win_64bit_dlm\lib-x64</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>ArxProject.def</ModuleDefinitionFile>
