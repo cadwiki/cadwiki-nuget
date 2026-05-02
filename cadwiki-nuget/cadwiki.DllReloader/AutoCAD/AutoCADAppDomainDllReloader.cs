@@ -449,22 +449,37 @@ namespace cadwiki.DllReloader.AutoCAD
                 }
                 try
                 {
-                    if (dllPath.Contains(DependencyValues.IExtensionApplicationClassName))
+                    var reloadedAssembly = AppDomain.CurrentDomain.Load(assemblyBytes);
+                    Log("Reloaded dll: " + dllPath);
+
+                    try
                     {
-                        // Update Reloader values
-                        DependencyValues.ReloadCount += 1;
-                        DependencyValues.Terminated = false;
-                        WriteDependecyValuesToIni(DependencyValues);
-                        // Upon loading the assemblyBytes from the IExtensionApplication class, the App.Initialize() method will be called
-                        assemblyWithIExtensionApp = AppDomain.CurrentDomain.Load(assemblyBytes);
-                        Log("Reloaded iExtensionAppAssembly dll: " + dllPath);
-                        SetReloadedValues(assemblyWithIExtensionApp);
-                        WriteDependecyValuesToIni(DependencyValues);
+                        Type[] currentTypes = NetUtils.AssemblyUtils.GetTypesSafely(reloadedAssembly);
+                        // Create reference to the IExtensionApplication object
+                        var currentAppObject = AcadAssemblyUtils.GetAppObjectSafely(currentTypes);
+                        if (currentAppObject != null)
+                        {
+                            assemblyWithIExtensionApp = reloadedAssembly;
+                            // currentAppObject.Initialize()
+                            var match = DoesAssemblyMatchExtensionAppFromDependencyValues(assemblyWithIExtensionApp, dllPath);
+                            if (match)
+                            {
+                                // Update Reloader values
+                                DependencyValues.ReloadCount += 1;
+                                DependencyValues.Terminated = false;
+                                WriteDependecyValuesToIni(DependencyValues);
+                                // Upon loading the assemblyBytes from the IExtensionApplication class, the App.Initialize() method will be called
+                                assemblyWithIExtensionApp = AppDomain.CurrentDomain.Load(assemblyBytes);
+                                Log("Reloaded iExtensionAppAssembly dll matching dependency values from config: " + dllPath);
+                                SetReloadedValues(assemblyWithIExtensionApp);
+                                WriteDependecyValuesToIni(DependencyValues);
+                            }
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        var reloadedAssembly = AppDomain.CurrentDomain.Load(assemblyBytes);
-                        Log("Reloaded dll: " + dllPath);
+                        Log("Error loading assembly: " + dllPath);
+                        Log("Exception: " + ex.Message);
                     }
                 }
                 catch (Exception ex)
@@ -473,29 +488,17 @@ namespace cadwiki.DllReloader.AutoCAD
                     Log("Exception: " + ex.Message);
                 }
             }
-            Type[] currentTypes = NetUtils.AssemblyUtils.GetTypesSafely(assemblyWithIExtensionApp);
-            // Create reference to the IExtensionApplication object
-            var currentAppObject = AcadAssemblyUtils.GetAppObjectSafely(currentTypes);
-            // currentAppObject.Initialize()
+
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        private bool DoesAssemblyMatchExtensionAppFromDependencyValues(Assembly assemblyWithIExtensionApp, string dllPath)
+        {
+            var iExtensionAppClassName = assemblyWithIExtensionApp.GetName().Name;
+            var dllName = Path.GetFileName(dllPath);
+            var doesAssemblyContainIExtensionApp = dllName.Contains(DependencyValues.IExtensionAppDllName)
+                && iExtensionAppClassName.Contains(DependencyValues.IExtensionApplicationClassName);
+            return doesAssemblyContainIExtensionApp;
+        }
 
         public new void Log(string message)
         {

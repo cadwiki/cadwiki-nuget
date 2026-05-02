@@ -180,7 +180,7 @@ namespace cadwiki.PluginReloadService
                     FilterReason  = filterReason
                 };
 
-                if (shouldRewrite)
+                if (false && shouldRewrite)
                 {
                     try
                     {

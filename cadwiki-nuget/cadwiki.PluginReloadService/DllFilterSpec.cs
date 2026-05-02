@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.Script.Serialization;
 
 namespace cadwiki.PluginReloadService
 {
@@ -273,32 +274,53 @@ namespace cadwiki.PluginReloadService
 
             try
             {
-                string json = File.ReadAllText(jsonPath, System.Text.Encoding.UTF8);
-                var doc  = System.Text.Json.JsonDocument.Parse(json);
+                string json = File.ReadAllText(jsonPath);
+
+                var serializer = new JavaScriptSerializer();
+                var root = serializer.Deserialize<Dictionary<string, object>>(json);
+
                 var spec = new DllFilterSpec { MainDllName = mainDllName };
 
-                if (doc.RootElement.TryGetProperty("dllFilter", out var filter))
+                if (root != null && root.TryGetValue("dllFilter", out var filterObj))
                 {
-                    if (filter.TryGetProperty("include", out var inc))
-                        spec.IncludePatterns = inc
-                            .EnumerateArray()
-                            .Select(e => e.GetString())
-                            .Where(s => !string.IsNullOrWhiteSpace(s))
-                            .ToList();
+                    var filter = filterObj as Dictionary<string, object>;
+                    if (filter != null)
+                    {
+                        if (filter.TryGetValue("include", out var incObj))
+                        {
+                            var incList = incObj as object[];
+                            if (incList != null)
+                            {
+                                spec.IncludePatterns = incList
+                                    .Select(o => o?.ToString())
+                                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                                    .ToList();
+                            }
+                        }
 
-                    if (filter.TryGetProperty("exclude", out var exc))
-                        spec.ExcludePatterns = exc
-                            .EnumerateArray()
-                            .Select(e => e.GetString())
-                            .Where(s => !string.IsNullOrWhiteSpace(s))
-                            .ToList();
+                        if (filter.TryGetValue("exclude", out var excObj))
+                        {
+                            var excList = excObj as object[];
+                            if (excList != null)
+                            {
+                                spec.ExcludePatterns = excList
+                                    .Select(o => o?.ToString())
+                                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                                    .ToList();
+                            }
+                        }
 
-                    if (filter.TryGetProperty("verbose", out var verb))
-                        spec.VerboseLogging = verb.GetBoolean();
+                        if (filter.TryGetValue("verbose", out var verbObj))
+                        {
+                            if (verbObj is bool b)
+                                spec.VerboseLogging = b;
+                        }
+                    }
                 }
 
                 logger?.Info(Component,
                     $"Loaded from JSON: {jsonPath}, mode={spec.DescribeMode()}");
+
                 return spec;
             }
             catch (Exception ex)
@@ -307,7 +329,6 @@ namespace cadwiki.PluginReloadService
                 return null;
             }
         }
-
         /// <summary>
         /// Builds a filter spec from command-line argument tokens.
         /// Recognises <c>--include &lt;pattern&gt;</c> and
