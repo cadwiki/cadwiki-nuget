@@ -164,6 +164,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cadwiki.PluginReloadService\TestPluginReloadService.cs" />
     <Compile Include="cadwiki.DllReloader\TestAutoCADNetReloader.cs" />
     <Compile Include="cadwiki.DllReloader\TestAcadAssemblyUtils.cs" />
     <Compile Include="cadwiki.FileStore\TestFileStore.cs" />
@@ -187,6 +188,10 @@
     <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.csproj">
       <Project>{3277FCE2-7819-0B2C-2C52-2E83DB2C1CED}</Project>
       <Name>cadwiki.FileStore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cadwiki.PluginReloadService\cadwiki.PluginReloadService.csproj">
+      <Project>{B2C3D4E5-F6A7-B8C9-D0E1-F2A3B4C5D6E7}</Project>
+      <Name>cadwiki.PluginReloadService</Name>
     </ProjectReference>
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj">
       <Project>{8E35D9B1-86C8-0030-0E94-A560251095B8}</Project>

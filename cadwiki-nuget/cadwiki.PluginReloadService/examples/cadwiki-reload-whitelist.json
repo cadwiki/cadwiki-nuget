@@ -1,0 +1,27 @@
+{
+  "_comment": [
+    "cadwiki-reload.json — place this file in your plugin's build output directory.",
+    "WHITELIST MODE: only DLLs matching 'include' patterns get version-rewritten.",
+    "All other DLLs (Newtonsoft, etc.) are copied verbatim. AutoCAD SDK DLLs are",
+    "always excluded regardless of configuration."
+  ],
+  "dllFilter": {
+    "include": [
+      "MyPlugin.dll",
+      "MyPlugin.Core.dll",
+      "MyPlugin.Utilities.dll"
+    ],
+    "verbose": false
+  },
+  "_documentation": {
+    "filterPrecedence": "CLI args > cadwiki-reload.json > INI file > default (rewrite all)",
+    "globPatterns": "'*' matches any sequence of characters; '?' matches one character",
+    "mainDll": "The main plugin DLL is always version-rewritten regardless of patterns",
+    "sdkBlacklist": [
+      "AcCoreMgd.dll", "AcCui.dll", "AcDbMgd.dll", "acdbmgdbrep.dll",
+      "AcDx.dll", "AcMgd.dll", "AcMr.dll", "AcSeamless.dll", "AcTcMgd.dll",
+      "AcWindows.dll", "AdUIMgd.dll", "AdUiPalettes.dll", "AdWindows.dll",
+      "cadwiki.AcRemoveCmdGroup.dll"
+    ]
+  }
+}

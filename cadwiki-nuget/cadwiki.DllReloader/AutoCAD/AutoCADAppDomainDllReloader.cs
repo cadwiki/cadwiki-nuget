@@ -109,6 +109,133 @@ namespace cadwiki.DllReloader.AutoCAD
             }
         }
 
+        // -------------------------------------------------------------------------
+        // Phase 2 — staged-folder reload entry point
+        // -------------------------------------------------------------------------
+
+        /// <summary>
+        /// Thin wrapper that delegates to the existing <see cref="ReloadAll"/> pipeline
+        /// using a pre-staged folder produced by <c>cadwiki.PluginReloadService.StagingCopier</c>.
+        ///
+        /// <para>
+        ///   Unlike <see cref="ReloadDll"/>, this method does <em>not</em> require a
+        ///   live <see cref="Assembly"/> reference for the plugin — making it safe for
+        ///   <em>external</em> plugins that were not loaded by the cadwiki assemblies.
+        /// </para>
+        ///
+        /// <para>
+        ///   The staged folder must already contain:
+        ///   <list type="bullet">
+        ///     <item>Version-rewritten copies of the managed plugin DLLs.</item>
+        ///     <item>Verbatim copies of all other DLLs and supporting files.</item>
+        ///   </list>
+        ///   These are produced by <c>cadwiki.PluginReloadService.StagingCopier.StagePlugin()</c>.
+        /// </para>
+        /// </summary>
+        /// <param name="doc">
+        ///   Active AutoCAD document. Used for command removal and editor log.
+        /// </param>
+        /// <param name="stagedFolderPath">
+        ///   Full path to the staging folder.
+        ///   Example: <c>%TEMP%\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3\</c>
+        /// </param>
+        /// <param name="mainDllName">
+        ///   Filename of the main plugin DLL inside the staged folder
+        ///   (e.g. <c>MyPlugin.dll</c>).
+        /// </param>
+        public void ReloadFromStagedFolder(Document doc, string stagedFolderPath, string mainDllName)
+        {
+            if (stagedFolderPath is null)
+                throw new ArgumentNullException(nameof(stagedFolderPath));
+            if (mainDllName is null)
+                throw new ArgumentNullException(nameof(mainDllName));
+
+            try
+            {
+                _document = doc;
+                Log("---------------------------------------------");
+                Log("---------------------------------------------");
+                Log($"ReloadFromStagedFolder started.");
+                Log($"Staged folder : {stagedFolderPath}");
+                Log($"Main DLL      : {mainDllName}");
+
+                WriteIniPathToDocEditor();
+
+                // Build the list of DLLs in the staged folder (same shape as
+                // CopyAllDllsToTempFolder output, but already at their final paths).
+                var stagedDlls = new System.Collections.Generic.List<string>();
+                foreach (string dllFilePath in Directory.GetFiles(stagedFolderPath, "*.dll"))
+                    stagedDlls.Add(dllFilePath);
+
+                Log($"Found {stagedDlls.Count} DLL(s) in staged folder.");
+
+                // Ensure IExtensionApplicationClassName is set so ReloadAll can
+                // identify the main plugin assembly.
+                if (string.IsNullOrEmpty(DependencyValues.IExtensionApplicationClassName))
+                {
+                    string mainName = Path.GetFileNameWithoutExtension(mainDllName);
+                    SetIExtensionApplicationClassName(mainName);
+                    Log($"IExtensionApplicationClassName set to: {mainName}");
+                }
+
+                // Determine build number (reuse counter from dependency values)
+                int newCount = DependencyValues.ReloadCount + 1;
+
+                // Store the staged folder as the temp folder so log + ini paths align
+                _tempFolder = stagedFolderPath;
+
+                // Remove commands from the existing version of the plugin before reload
+                TryRemoveAllCommandsExternal(doc, stagedFolderPath, mainDllName);
+
+                // Delegate to the shared ReloadAll pipeline — no code duplication
+                var tuple = ReloadAll(stagedDlls, newCount);
+
+                if (DependencyValues.OriginalAppDirectory is null)
+                    DependencyValues.OriginalAppDirectory = stagedFolderPath;
+
+                Log($"ReloadFromStagedFolder complete. Main assembly: {tuple?.Item2 ?? "(none)"}");
+                Log("---------------------------------------------");
+                Log("---------------------------------------------");
+            }
+            catch (Exception ex)
+            {
+                Log($"ReloadFromStagedFolder exception: {ex.Message}");
+                Log($"StackTrace: {ex.StackTrace}");
+            }
+        }
+
+        /// <summary>
+        /// Attempts to remove commands for an external plugin by scanning the
+        /// current AppDomain for an assembly whose name matches <paramref name="mainDllName"/>.
+        /// Swallows all exceptions — command removal is best-effort.
+        /// </summary>
+        private void TryRemoveAllCommandsExternal(Document doc, string stagedFolderPath, string mainDllName)
+        {
+            try
+            {
+                string assemblyName = Path.GetFileNameWithoutExtension(mainDllName);
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var existing = AcadAssemblyUtils.GetNewestAssembly(assemblies, assemblyName, null);
+                if (existing != null)
+                {
+                    Log($"Removing commands from existing assembly: {existing.FullName}");
+                    TryRemoveAllCommands(doc, existing, stagedFolderPath);
+                }
+                else
+                {
+                    Log($"No existing assembly named '{assemblyName}' found in AppDomain; skipping command removal.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"TryRemoveAllCommandsExternal exception (ignored): {ex.Message}");
+            }
+        }
+
+        // -------------------------------------------------------------------------
+        // End of staged-folder reload — existing methods follow
+        // -------------------------------------------------------------------------
+
         // Called from DllReloadClickCommandHandler
         public void ReloadDll(Document doc, Assembly iExtensionAppAssembly, string dllPath)
         {
