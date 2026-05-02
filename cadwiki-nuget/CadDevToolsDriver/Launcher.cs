@@ -31,7 +31,9 @@ namespace CadDevToolsDriver
             var dependencies = new cadwiki.CadDevTools.MainWindow.Dependencies();
             dependencies.AutoCADExePath = @"C:\Program Files\Autodesk\AutoCAD 2025\acad.exe";
             dependencies.AutoCADStartupSwitches = "/p VANILLA";
-            dependencies.DllFilePathsToNetloadCommaDelimited = testPluginDll + "," + testPluginDll2 + "," + testPluginDll3 + "," + testPluginDll4;
+            dependencies.DllFilePathsToNetloadCommaDelimited = testPluginDll + "," + testPluginDll2;
+            //dependencies.DllFilePathsToNetloadCommaDelimited += "," + testPluginDll3 + "," + testPluginDll4;
+
             dependencies.CustomDirectoryToSearchForDllsToLoadFrom = exeDir;
             dependencies.DllWildCardSearchPattern = wildCardFileName;
             return dependencies;
