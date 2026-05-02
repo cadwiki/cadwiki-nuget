@@ -4,6 +4,51 @@ Branch: `release-25.0.0.0`
 
 ---
 
+## Phase 0 — Pre-build Setup: Deterministic Version Stamping
+
+**File: `cadwiki-nuget/build-targets/UpdateAssemblyVersionTimestamp.targets`**
+
+A drop-in MSBuild `.targets` file that automatically rewrites the 4th segment
+(revision) of `AssemblyVersion` in `AssemblyInfo.cs` **before every build**,
+using the same compact-timestamp encoding as `AssemblyVersionRewriter.cs`:
+
+```
+Revision = (DaysSinceEpoch(UTC 2020-01-01) × 100_000) + SecondsOfDay(UTC)
+```
+
+**Properties:**
+- Strictly monotonically increasing — every UTC second produces a larger revision
+- Fully deterministic — same UTC second → same revision, always
+- Timezone-invariant — always computed in UTC regardless of build machine locale
+- No overflow until ~2079
+
+**Usage — one import line in any `.csproj`:**
+```xml
+<Import Project="..\build-targets\UpdateAssemblyVersionTimestamp.targets" />
+```
+
+**Disable via MSBuild property:**
+```bash
+msbuild MyPlugin.csproj /p:UpdateAssemblyVersion=false
+```
+
+**Build output (example):**
+```
+[UpdateAssemblyVersionTimestamp] AssemblyInfo.cs: 4.1.0.1 → 4.1.0.231374025  (UTC 2026-05-01 20:33:45)
+```
+
+**Why this matters for external plugin developers:**
+External consumers who build cadwiki-based plugins can drop this target into
+their project and never worry about version collisions or manually bumping
+revision numbers. Every build is guaranteed a unique, ascending version — which
+is critical for NuGet package versioning, AutoCAD plugin reload detection, and
+assembly binding correctness.
+
+See `cadwiki-nuget/build-targets/README.md` for full documentation, compatibility
+matrix, and configuration options.
+
+---
+
 ## What Was Implemented
 
 ### Phase 1 — Core Engine
@@ -137,7 +182,14 @@ Run `nuget restore cadwiki-nuget.sln` (or right-click Solution → Restore NuGet
 
 ## Files Changed / Added
 
-### New files
+### New files (Phase 0 — build-targets)
+```
+build-targets/
+  UpdateAssemblyVersionTimestamp.targets   ← drop-in MSBuild target for auto-versioning
+  README.md                                ← usage docs, compatibility matrix, examples
+```
+
+### New files (Phases 1–2)
 ```
 cadwiki.PluginReloadService/
   cadwiki.PluginReloadService.csproj

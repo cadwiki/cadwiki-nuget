@@ -1,0 +1,275 @@
+<!--
+  UpdateAssemblyVersionTimestamp.targets
+  ======================================
+  Drop-in MSBuild target that rewrites the 4th segment (revision) of
+  AssemblyVersion in AssemblyInfo.cs before every build using the same
+  compact-timestamp encoding as cadwiki.PluginReloadService:
+
+      Revision = (DaysSinceEpoch(UTC 2020-01-01) × 100_000) + SecondsInDay(UTC)
+
+  This guarantees every build produces a strictly-increasing version number —
+  deterministically, with no randomness.  Same UTC second → same revision.
+
+  USAGE (add one line to your .csproj):
+  ──────────────────────────────────────
+    <Import Project="..\build-targets\UpdateAssemblyVersionTimestamp.targets" />
+
+  OVERRIDE (disable without editing the file):
+  ─────────────────────────────────────────────
+    msbuild MyPlugin.csproj /p:UpdateAssemblyVersion=false
+
+  REQUIREMENTS:
+  ─────────────
+  • MSBuild 14+ / Visual Studio 2015+ (uses $(MSBuildRuntimeType) for .NET SDK
+    detection; falls back gracefully for legacy .csproj).
+  • No external tools or NuGet packages needed.
+  • .NET Framework 4.x or .NET SDK projects both supported.
+
+  HOW IT WORKS:
+  ─────────────
+  1. Locate AssemblyInfo.cs (default: Properties\AssemblyInfo.cs, configurable
+     via $(AssemblyInfoFile)).
+  2. Read the file and find the AssemblyVersion line with a regex.
+  3. Extract major.minor.patch; keep them untouched.
+  4. Compute new revision:
+       days  = floor((UtcNow - 2020-01-01) / 1 day)
+       secs  = HH*3600 + MM*60 + SS  (UTC)
+       rev   = days * 100_000 + secs
+  5. Write the updated file back in-place.
+  6. Log the old → new version transition.
+
+  ENCODING DETAILS:
+  ─────────────────
+  • Epoch: 2020-01-01 00:00:00 UTC
+  • Max revision before overflow (Int32.MaxValue ≈ 2.1 × 10⁹):
+       days  ≤ 21474  (≈ 58.8 years → overflows ~year 2079)
+       secs  ≤ 86399  (always < 100_000, so no cross-day collision)
+  • Strictly monotonic: a later UTC second always produces a larger integer.
+  • Timezone-invariant: always computed in UTC.
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+         ToolsVersion="4.0">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       User-overridable properties
+       ═══════════════════════════════════════════════════════════════ -->
+
+  <PropertyGroup>
+    <!--
+      Set to false to skip the target entirely.
+        msbuild MyPlugin.csproj /p:UpdateAssemblyVersion=false
+    -->
+    <UpdateAssemblyVersion Condition="'$(UpdateAssemblyVersion)' == ''">true</UpdateAssemblyVersion>
+
+    <!--
+      Path to AssemblyInfo.cs, relative to the .csproj directory.
+      Override if your project uses a non-standard location.
+        <UpdateAssemblyVersionInfoFile>MyDir\MyAssemblyInfo.cs</UpdateAssemblyVersionInfoFile>
+    -->
+    <UpdateAssemblyVersionInfoFile Condition="'$(UpdateAssemblyVersionInfoFile)' == ''">Properties\AssemblyInfo.cs</UpdateAssemblyVersionInfoFile>
+
+    <!--
+      Verbose: set to true to emit the full before/after content of the
+      version line (useful for debugging CI pipelines).
+    -->
+    <UpdateAssemblyVersionVerbose Condition="'$(UpdateAssemblyVersionVerbose)' == ''">false</UpdateAssemblyVersionVerbose>
+  </PropertyGroup>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       Target: UpdateAssemblyVersionTimestamp
+       Runs before Build so the updated AssemblyInfo is compiled in.
+       ═══════════════════════════════════════════════════════════════ -->
+
+  <Target Name="UpdateAssemblyVersionTimestamp"
+          BeforeTargets="BeforeBuild;CoreCompile"
+          Condition="'$(UpdateAssemblyVersion)' == 'true'">
+
+    <!-- ── Resolve full path to AssemblyInfo.cs ── -->
+    <PropertyGroup>
+      <_AssemblyInfoFullPath>$(MSBuildProjectDirectory)\$(UpdateAssemblyVersionInfoFile)</_AssemblyInfoFullPath>
+    </PropertyGroup>
+
+    <!-- ── Bail out gracefully if the file does not exist ── -->
+    <Warning Condition="!Exists('$(_AssemblyInfoFullPath)')"
+             Text="[UpdateAssemblyVersionTimestamp] AssemblyInfo.cs not found at '$(_AssemblyInfoFullPath)'. Skipping version update. Set $(UpdateAssemblyVersionInfoFile) to the correct path." />
+
+    <!-- ── All real work lives in the inline C# task below ── -->
+    <UpdateAssemblyVersionTask
+        Condition="Exists('$(_AssemblyInfoFullPath)')"
+        AssemblyInfoPath="$(_AssemblyInfoFullPath)"
+        Verbose="$(UpdateAssemblyVersionVerbose)" />
+
+  </Target>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       Inline C# task — zero external dependencies
+       Requires MSBuild with the CodeTaskFactory (VS 2013+).
+       ═══════════════════════════════════════════════════════════════ -->
+
+  <!--
+    We pick the correct TaskFactory depending on whether we are running
+    inside the .NET SDK (RoslynCodeTaskFactory) or classic MSBuild
+    (CodeTaskFactory).  The factory names are identical in their API for
+    our purposes; only the xmlns path differs.
+  -->
+
+  <!-- Classic MSBuild / .NET Framework projects -->
+  <UsingTask TaskName="UpdateAssemblyVersionTask"
+             TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll"
+             Condition="'$(MSBuildRuntimeType)' != 'Core'">
+    <ParameterGroup>
+      <AssemblyInfoPath ParameterType="System.String" Required="true" />
+      <Verbose         ParameterType="System.Boolean" Required="false" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+// ── Read file ──────────────────────────────────────────────────────────────
+string content = File.ReadAllText(AssemblyInfoPath);
+
+// ── Find existing AssemblyVersion ─────────────────────────────────────────
+// Matches:  [assembly: AssemblyVersion("1.2.3.4")]
+// Group 1 = "1.2.3.4"  (the full version string)
+// Group 2 = "1.2.3"    (major.minor.patch)
+// Group 3 = "4"        (old revision — we'll replace this)
+var pattern = new Regex(
+    @"\[assembly\s*:\s*AssemblyVersion\s*\(\s*""(\d+\.\d+\.\d+)\.(\d+)""\s*\)\s*\]",
+    RegexOptions.Compiled);
+
+var match = pattern.Match(content);
+if (!match.Success)
+{
+    Log.LogWarning("[UpdateAssemblyVersionTimestamp] Could not find AssemblyVersion attribute in '{0}'. Skipping.", AssemblyInfoPath);
+    return true;
+}
+
+string majorMinorPatch = match.Groups[1].Value;   // e.g. "4.1.0"
+string oldRevision     = match.Groups[2].Value;   // e.g. "1"
+string oldVersion      = match.Groups[1].Value + "." + oldRevision;
+
+// ── Compute new revision (UTC, epoch 2020-01-01) ───────────────────────────
+// Revision = (DaysSinceEpoch × 100_000) + SecondsInDay
+// Matches the encoding in AssemblyVersionRewriter.cs / PluginReloadService.
+DateTime epoch   = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+DateTime utcNow  = DateTime.UtcNow;
+int daysSince    = (int)(utcNow.Date - epoch.Date).TotalDays;
+int secsInDay    = utcNow.Hour * 3600 + utcNow.Minute * 60 + utcNow.Second;
+int newRevision  = daysSince * 100_000 + secsInDay;
+string newVersion = majorMinorPatch + "." + newRevision.ToString();
+
+// ── Replace in file content ────────────────────────────────────────────────
+string oldLine = match.Value;                                            // full attribute line
+string newLine = oldLine.Replace(
+    "\"" + oldVersion + "\"",
+    "\"" + newVersion + "\"");
+string newContent = content.Replace(oldLine, newLine);
+
+// ── Write back only if changed ─────────────────────────────────────────────
+if (newContent != content)
+{
+    File.WriteAllText(AssemblyInfoPath, newContent);
+    Log.LogMessage(MessageImportance.High,
+        "[UpdateAssemblyVersionTimestamp] {0}: {1} → {2}  (UTC {3:yyyy-MM-dd HH:mm:ss})",
+        System.IO.Path.GetFileName(AssemblyInfoPath),
+        oldVersion, newVersion, utcNow);
+    if (Verbose)
+    {
+        Log.LogMessage(MessageImportance.Normal,
+            "[UpdateAssemblyVersionTimestamp]   days_since_epoch={0}  secs_in_day={1}  revision={2}",
+            daysSince, secsInDay, newRevision);
+    }
+}
+else
+{
+    Log.LogMessage(MessageImportance.Normal,
+        "[UpdateAssemblyVersionTimestamp] Version already up-to-date: {0}", oldVersion);
+}
+
+return true;
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <!-- .NET SDK / MSBuild on .NET Core (dotnet build) -->
+  <UsingTask TaskName="UpdateAssemblyVersionTask"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll"
+             Condition="'$(MSBuildRuntimeType)' == 'Core'">
+    <ParameterGroup>
+      <AssemblyInfoPath ParameterType="System.String" Required="true" />
+      <Verbose         ParameterType="System.Boolean" Required="false" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+// ── Read file ──────────────────────────────────────────────────────────────
+string content = File.ReadAllText(AssemblyInfoPath);
+
+// ── Find existing AssemblyVersion ─────────────────────────────────────────
+var pattern = new Regex(
+    @"\[assembly\s*:\s*AssemblyVersion\s*\(\s*""(\d+\.\d+\.\d+)\.(\d+)""\s*\)\s*\]",
+    RegexOptions.Compiled);
+
+var match = pattern.Match(content);
+if (!match.Success)
+{
+    Log.LogWarning("[UpdateAssemblyVersionTimestamp] Could not find AssemblyVersion attribute in '{0}'. Skipping.", AssemblyInfoPath);
+    return true;
+}
+
+string majorMinorPatch = match.Groups[1].Value;
+string oldRevision     = match.Groups[2].Value;
+string oldVersion      = match.Groups[1].Value + "." + oldRevision;
+
+// ── Compute new revision (UTC, epoch 2020-01-01) ───────────────────────────
+DateTime epoch   = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+DateTime utcNow  = DateTime.UtcNow;
+int daysSince    = (int)(utcNow.Date - epoch.Date).TotalDays;
+int secsInDay    = utcNow.Hour * 3600 + utcNow.Minute * 60 + utcNow.Second;
+int newRevision  = daysSince * 100_000 + secsInDay;
+string newVersion = majorMinorPatch + "." + newRevision.ToString();
+
+// ── Replace in file content ────────────────────────────────────────────────
+string oldLine = match.Value;
+string newLine = oldLine.Replace(
+    "\"" + oldVersion + "\"",
+    "\"" + newVersion + "\"");
+string newContent = content.Replace(oldLine, newLine);
+
+// ── Write back only if changed ─────────────────────────────────────────────
+if (newContent != content)
+{
+    File.WriteAllText(AssemblyInfoPath, newContent);
+    Log.LogMessage(MessageImportance.High,
+        "[UpdateAssemblyVersionTimestamp] {0}: {1} → {2}  (UTC {3:yyyy-MM-dd HH:mm:ss})",
+        System.IO.Path.GetFileName(AssemblyInfoPath),
+        oldVersion, newVersion, utcNow);
+    if (Verbose)
+    {
+        Log.LogMessage(MessageImportance.Normal,
+            "[UpdateAssemblyVersionTimestamp]   days_since_epoch={0}  secs_in_day={1}  revision={2}",
+            daysSince, secsInDay, newRevision);
+    }
+}
+else
+{
+    Log.LogMessage(MessageImportance.Normal,
+        "[UpdateAssemblyVersionTimestamp] Version already up-to-date: {0}", oldVersion);
+}
+
+return true;
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+</Project>
