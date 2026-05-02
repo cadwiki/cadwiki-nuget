@@ -10,6 +10,27 @@ Tools for increasing productivity during Autodesk addin developement.
 
 ![NotFound](./cadwiki-nuget/icons/500x500-cadwiki-v1.png)  
 
+## Deterministic Build Versioning (drop-in MSBuild target)
+
+`cadwiki-nuget/build-targets/UpdateAssemblyVersionTimestamp.targets` — a single-file,
+zero-dependency MSBuild target that auto-stamps every build with a strictly-increasing
+revision number:
+
+```
+AssemblyVersion revision = (DaysSinceEpoch(UTC 2020-01-01) × 100_000) + SecondsOfDay(UTC)
+```
+
+**One import line in any `.csproj`:**
+```xml
+<Import Project="..\build-targets\UpdateAssemblyVersionTimestamp.targets" />
+```
+
+Every build gets a unique, monotonically-increasing version. No external tools, no
+NuGet packages, no manual bumping. See [`build-targets/README.md`](cadwiki-nuget/build-targets/README.md)
+for full docs.
+
+---
+
 ## Solution overview
 This solution splits the logic into 12 projects that each handle a single responsiblity:  
 
