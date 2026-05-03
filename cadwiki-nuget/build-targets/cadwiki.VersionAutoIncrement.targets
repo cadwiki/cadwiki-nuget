@@ -1,0 +1,263 @@
+<!--
+  cadwiki.VersionAutoIncrement.targets
+  ====================================
+  Reusable MSBuild target that auto-increments AssemblyVersion in one or more
+  AssemblyInfo.cs files before each build.  Supports pluggable versioning
+  strategies via a single property.
+
+  This is the shrink-wrapped extraction of the inline versioning logic that
+  was originally embedded in buildThisFirst.csproj (~150 lines → 1 import).
+
+  QUICK START (add to your .csproj):
+  ───────────────────────────────────
+    <Import Project="..\build-targets\cadwiki.VersionAutoIncrement.targets" />
+
+  That's it — defaults to AutoIncrement strategy with $(BuildRoot)\**\AssemblyInfo.cs.
+
+  STRATEGIES:
+  ───────────
+    AutoIncrement  — major.minor.MMdd.N  (N resets to 1 each day, increments per build)
+    HardCoded      — explicit major.minor.build.revision (set via properties)
+    DateBased      — major.minor.yyyyMMdd.HHmm (full date-time stamp, no prior-build dependency)
+
+  REQUIREMENTS:
+  ─────────────
+    • MSBuild.Extension.Pack NuGet package (provides the AssemblyInfo task)
+    • For AutoIncrement strategy: a previously-built assembly at $(TargetPath)
+      (first build must use HardCoded or build once normally first)
+
+  CONFIGURATION PROPERTIES (all optional — sensible defaults provided):
+  ─────────────────────────────────────────────────────────────────────
+    Property                          Default                         Description
+    ────────────────────────────────  ──────────────────────────────  ─────────────────────────────────────────────
+    VersionStrategy                   AutoIncrement                   AutoIncrement | HardCoded | DateBased
+    VersionMajor                      (read from assembly)            Major version number
+    VersionMinor                      (read from assembly)            Minor version number
+    VersionBuild                      (computed per strategy)         Build number
+    VersionRevision                   (computed per strategy)         Revision number
+    VersionExtensionPackDll           (auto-resolved from packages)   Path to MSBuild.ExtensionPack.dll
+    VersionAssemblyInfoGlob           $(BuildRoot)\**\AssemblyInfo.cs Glob pattern for AssemblyInfo.cs discovery
+    VersionAutoIncrementEnabled       true                            Master on/off switch
+    VersionVerbose                    false                           Extra logging for debugging
+
+  ASSEMBLYINFO FILE SELECTION:
+  ────────────────────────────
+    Option A — Glob (default):
+      <VersionAssemblyInfoGlob>$(BuildRoot)\**\AssemblyInfo.cs</VersionAssemblyInfoGlob>
+
+    Option B — Explicit list (define VersionAssemblyInfoFiles item group BEFORE importing):
+      <ItemGroup>
+        <VersionAssemblyInfoFiles Include="..\ProjectA\Properties\AssemblyInfo.cs" />
+        <VersionAssemblyInfoFiles Include="..\ProjectB\Properties\AssemblyInfo.cs" />
+      </ItemGroup>
+
+    Option C — Both (glob + extras):
+      <VersionAssemblyInfoGlob>$(BuildRoot)\cadwiki.*\**\AssemblyInfo.cs</VersionAssemblyInfoGlob>
+      <ItemGroup>
+        <VersionAssemblyInfoFiles Include="..\SomeOtherProject\Properties\AssemblyInfo.cs" />
+      </ItemGroup>
+
+  ADDING A NEW STRATEGY:
+  ──────────────────────
+    1. Add a new <PropertyGroup Condition="'$(VersionStrategy)' == 'YourStrategy'"> block
+    2. Set: _VersionMajor, _VersionMinor, _VersionBuildNumber, _VersionRevision,
+            _VersionBuildNumberType, _VersionBuildNumberFormat,
+            _VersionRevisionType, _VersionRevisionFormat
+    3. The AssemblyInfo task call at the bottom is generic and will use whatever
+       you set.  See MSBuild.Extension.Pack docs for all supported Type/Format combos.
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+         ToolsVersion="4.0">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       1. USER-CONFIGURABLE PROPERTIES (set these BEFORE importing this file)
+       ═══════════════════════════════════════════════════════════════════════ -->
+
+  <PropertyGroup>
+    <!-- Master switch: set to false to disable entirely -->
+    <VersionAutoIncrementEnabled Condition="'$(VersionAutoIncrementEnabled)' == ''">true</VersionAutoIncrementEnabled>
+
+    <!-- Versioning strategy: AutoIncrement | HardCoded | DateBased -->
+    <VersionStrategy Condition="'$(VersionStrategy)' == ''">AutoIncrement</VersionStrategy>
+
+    <!-- Verbose logging -->
+    <VersionVerbose Condition="'$(VersionVerbose)' == ''">false</VersionVerbose>
+
+    <!-- BuildRoot: directory containing build.root sentinel file -->
+    <BuildRoot Condition="'$(BuildRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.root))</BuildRoot>
+
+    <!-- Path to MSBuild.Extension.Pack dll (auto-detect from packages folder) -->
+    <VersionExtensionPackDll Condition="'$(VersionExtensionPackDll)' == ''">$(BuildRoot)\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll</VersionExtensionPackDll>
+    <!-- Fallback to global NuGet folder if local packages don't have it -->
+    <VersionExtensionPackDll Condition="'$(VersionExtensionPackDll)' != '' And !Exists('$(VersionExtensionPackDll)')">$(USERPROFILE)\.nuget\packages\msbuild.extension.pack\1.9.1\tools\net40\MSBuild.ExtensionPack.dll</VersionExtensionPackDll>
+
+    <!-- Default glob for AssemblyInfo.cs discovery -->
+    <VersionAssemblyInfoGlob Condition="'$(VersionAssemblyInfoGlob)' == ''">$(BuildRoot)\**\AssemblyInfo.cs</VersionAssemblyInfoGlob>
+
+    <!-- ── HardCoded strategy defaults (override as needed) ── -->
+    <VersionMajor Condition="'$(VersionMajor)' == ''"></VersionMajor>
+    <VersionMinor Condition="'$(VersionMinor)' == ''"></VersionMinor>
+    <VersionBuild Condition="'$(VersionBuild)' == ''"></VersionBuild>
+    <VersionRevision Condition="'$(VersionRevision)' == ''"></VersionRevision>
+  </PropertyGroup>
+
+  <!-- Register the Extension Pack AssemblyInfo task -->
+  <UsingTask Condition="Exists('$(VersionExtensionPackDll)')"
+             AssemblyFile="$(VersionExtensionPackDll)"
+             TaskName="AssemblyInfo" />
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       2. THE TARGET
+       ═══════════════════════════════════════════════════════════════════════ -->
+
+  <Target Name="cadwiki_VersionAutoIncrement"
+          BeforeTargets="Build"
+          Condition="'$(VersionAutoIncrementEnabled)' == 'true'">
+
+    <!-- ── Validate Extension Pack exists ── -->
+    <Error Condition="!Exists('$(VersionExtensionPackDll)')"
+           Text="[cadwiki.VersionAutoIncrement] FATAL: MSBuild.Extension.Pack DLL not found.%0A%0ASearched locations:%0A  1. Local:  $(BuildRoot)\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll%0A  2. Global: $(USERPROFILE)\.nuget\packages\msbuild.extension.pack\1.9.1\tools\net40\MSBuild.ExtensionPack.dll%0A%0ATo fix:%0A  • Install via NuGet: 'Install-Package MSBuild.Extension.Pack'%0A  • Or find the DLL manually: search for 'MSBuild.ExtensionPack.dll' in %USERPROFILE%\.nuget\packages%0A  • Or set custom path: add to your .csproj before importing:%0A    &lt;PropertyGroup&gt;%0A      &lt;VersionExtensionPackDll&gt;C:\path\to\MSBuild.ExtensionPack.dll&lt;/VersionExtensionPackDll&gt;%0A    &lt;/PropertyGroup&gt;" />
+
+    <Exec Command="echo [cadwiki.VersionAutoIncrement] Strategy=$(VersionStrategy) Project=$(MSBuildProjectName)" />
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         STRATEGY: AutoIncrement
+         Format: major.minor.MMdd.N  (N = daily build counter, resets each day)
+         Reads current version from the previously-built assembly.
+         ════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Read current assembly version (AutoIncrement needs a prior build) -->
+    <GetAssemblyIdentity Condition="'$(VersionStrategy)' == 'AutoIncrement'"
+                         AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="_VersionCurrentAssembly" />
+    </GetAssemblyIdentity>
+
+    <!-- Parse version components with regex -->
+    <PropertyGroup Condition="'$(VersionStrategy)' == 'AutoIncrement'">
+      <_VersionPattern>(\d+)(.)(\d+)(.)(\d+)(.)(\d+)</_VersionPattern>
+      <_VersionInput>%(_VersionCurrentAssembly.Version)</_VersionInput>
+
+      <_PrevMajor>$([System.Text.RegularExpressions.Regex]::Match($(_VersionInput), $(_VersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</_PrevMajor>
+      <_PrevMinor>$([System.Text.RegularExpressions.Regex]::Match($(_VersionInput), $(_VersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[3].Value)</_PrevMinor>
+      <_PrevBuildStr>$([System.Text.RegularExpressions.Regex]::Match($(_VersionInput), $(_VersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[5].Value)</_PrevBuildStr>
+      <_PrevBuildInt>$([System.Int32]::Parse($(_PrevBuildStr)))</_PrevBuildInt>
+      <_PrevRevStr>$([System.Text.RegularExpressions.Regex]::Match($(_VersionInput), $(_VersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[7].Value)</_PrevRevStr>
+      <_PrevRevInt>$([System.Int32]::Parse($(_PrevRevStr)))</_PrevRevInt>
+
+      <!-- Increment revision -->
+      <_NewRevision>$([MSBuild]::Add($(_PrevRevInt), 1))</_NewRevision>
+
+      <!-- Current date as MMdd integer for build number -->
+      <_CurrentDateStr>$([System.DateTime]::Now.ToString(MMdd))</_CurrentDateStr>
+      <_CurrentDateInt>$([System.Int32]::Parse($(_CurrentDateStr)))</_CurrentDateInt>
+    </PropertyGroup>
+
+    <!-- If date changed (new day), reset revision to 1 -->
+    <PropertyGroup Condition="'$(VersionStrategy)' == 'AutoIncrement' And '$(_CurrentDateInt)' != '$(_PrevBuildInt)'">
+      <_NewRevision>1</_NewRevision>
+    </PropertyGroup>
+
+    <!-- Set final version properties for AutoIncrement -->
+    <PropertyGroup Condition="'$(VersionStrategy)' == 'AutoIncrement'">
+      <_VersionMajor>$(_PrevMajor)</_VersionMajor>
+      <_VersionMinor>$(_PrevMinor)</_VersionMinor>
+      <_VersionBuildNumber></_VersionBuildNumber>
+      <_VersionRevision>$(_NewRevision)</_VersionRevision>
+      <_VersionBuildNumberType>DateString</_VersionBuildNumberType>
+      <_VersionBuildNumberFormat>MMdd</_VersionBuildNumberFormat>
+      <_VersionRevisionType></_VersionRevisionType>
+      <_VersionRevisionFormat></_VersionRevisionFormat>
+    </PropertyGroup>
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         STRATEGY: HardCoded
+         Format: major.minor.build.revision (all explicitly set)
+         ════════════════════════════════════════════════════════════════════ -->
+
+    <PropertyGroup Condition="'$(VersionStrategy)' == 'HardCoded'">
+      <_VersionMajor>$(VersionMajor)</_VersionMajor>
+      <_VersionMinor>$(VersionMinor)</_VersionMinor>
+      <_VersionBuildNumber>$(VersionBuild)</_VersionBuildNumber>
+      <_VersionRevision>$(VersionRevision)</_VersionRevision>
+      <_VersionBuildNumberType></_VersionBuildNumberType>
+      <_VersionBuildNumberFormat></_VersionBuildNumberFormat>
+      <_VersionRevisionType></_VersionRevisionType>
+      <_VersionRevisionFormat></_VersionRevisionFormat>
+    </PropertyGroup>
+
+    <!-- Validate HardCoded properties are set -->
+    <Error Condition="'$(VersionStrategy)' == 'HardCoded' And ('$(VersionMajor)' == '' Or '$(VersionMinor)' == '' Or '$(VersionBuild)' == '' Or '$(VersionRevision)' == '')"
+           Text="[cadwiki.VersionAutoIncrement] HardCoded strategy requires VersionMajor, VersionMinor, VersionBuild, and VersionRevision properties." />
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         STRATEGY: DateBased
+         Format: major.minor.yyyyMMdd.HHmm
+         No prior build needed — purely clock-driven.
+         ════════════════════════════════════════════════════════════════════ -->
+
+    <PropertyGroup Condition="'$(VersionStrategy)' == 'DateBased'">
+      <!-- Use provided major/minor or default to 1.0 -->
+      <_VersionMajor Condition="'$(VersionMajor)' != ''">$(VersionMajor)</_VersionMajor>
+      <_VersionMajor Condition="'$(VersionMajor)' == ''">1</_VersionMajor>
+      <_VersionMinor Condition="'$(VersionMinor)' != ''">$(VersionMinor)</_VersionMinor>
+      <_VersionMinor Condition="'$(VersionMinor)' == ''">0</_VersionMinor>
+      <_VersionBuildNumber></_VersionBuildNumber>
+      <_VersionRevision></_VersionRevision>
+      <_VersionBuildNumberType>DateString</_VersionBuildNumberType>
+      <_VersionBuildNumberFormat>MMdd</_VersionBuildNumberFormat>
+      <_VersionRevisionType>DateString</_VersionRevisionType>
+      <_VersionRevisionFormat>HHmm</_VersionRevisionFormat>
+    </PropertyGroup>
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         ASSEMBLYINFO FILE COLLECTION
+         Combines glob pattern results with any explicit VersionAssemblyInfoFiles
+         items the user defined before importing this file.
+         ════════════════════════════════════════════════════════════════════ -->
+
+    <ItemGroup>
+      <!-- Add files from the glob pattern -->
+      <VersionAssemblyInfoFiles Include="$(VersionAssemblyInfoGlob)"
+                                Condition="'$(VersionAssemblyInfoGlob)' != ''" />
+    </ItemGroup>
+
+    <!-- ════════════════════════════════════════════════════════════════════
+         EXECUTE: Write version to all discovered AssemblyInfo.cs files
+         ════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Update AssemblyVersion -->
+    <AssemblyInfo AssemblyInfoFiles="@(VersionAssemblyInfoFiles)"
+                  AssemblyMajorVersion="$(_VersionMajor)"
+                  AssemblyMinorVersion="$(_VersionMinor)"
+                  AssemblyBuildNumberType="$(_VersionBuildNumberType)"
+                  AssemblyBuildNumberFormat="$(_VersionBuildNumberFormat)"
+                  AssemblyBuildNumber="$(_VersionBuildNumber)"
+                  AssemblyRevision="$(_VersionRevision)"
+                  AssemblyRevisionType="$(_VersionRevisionType)"
+                  AssemblyRevisionFormat="$(_VersionRevisionFormat)" />
+
+    <!-- Update AssemblyFileVersion (mirrors AssemblyVersion) -->
+    <AssemblyInfo AssemblyInfoFiles="@(VersionAssemblyInfoFiles)"
+                  AssemblyFileMajorVersion="$(_VersionMajor)"
+                  AssemblyFileMinorVersion="$(_VersionMinor)"
+                  AssemblyFileBuildNumberType="$(_VersionBuildNumberType)"
+                  AssemblyFileBuildNumberFormat="$(_VersionBuildNumberFormat)"
+                  AssemblyBuildNumber="$(_VersionBuildNumber)"
+                  AssemblyFileRevision="$(_VersionRevision)"
+                  AssemblyRevisionType="$(_VersionRevisionType)"
+                  AssemblyRevisionFormat="$(_VersionRevisionFormat)" />
+
+    <!-- ── Diagnostic output ── -->
+    <Exec Command="echo [cadwiki.VersionAutoIncrement] Version: v$(_VersionMajor).$(_VersionMinor).$(_VersionBuildNumber).$(_VersionRevision)  Strategy=$(VersionStrategy)  BuildNumberType=$(_VersionBuildNumberType)  BuildNumberFormat=$(_VersionBuildNumberFormat)  RevisionType=$(_VersionRevisionType)  RevisionFormat=$(_VersionRevisionFormat)" />
+    <Exec Condition="'$(VersionVerbose)' == 'true'"
+          Command="echo [cadwiki.VersionAutoIncrement] Configuration=$(Configuration) Platform=$(Platform)" />
+
+    <!-- Verbose: list all files that were updated -->
+    <Message Condition="'$(VersionVerbose)' == 'true'"
+             Text="[cadwiki.VersionAutoIncrement] Updated files:%0a@(VersionAssemblyInfoFiles, '%0a')"
+             Importance="high" />
+
+  </Target>
+
+</Project>

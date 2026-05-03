@@ -1,21 +1,17 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CadDevToolsDriver
 {
-
-    public partial class MainWindow : Window
+    public class Launcher
     {
-        public MainWindow()
+        public static cadwiki.CadDevTools.MainWindow.Dependencies GetDependencies()
         {
-            // This call is required by the designer.
-            this.InitializeComponent();
-            this.Hide();
             string exePath = Assembly.GetExecutingAssembly().Location;
             string exeDir = System.IO.Path.GetDirectoryName(exePath);
             string tempDir = System.IO.Path.GetTempPath() + "cadwiki.TestPlugin";
@@ -29,15 +25,18 @@ namespace CadDevToolsDriver
             string wildCardFileName2 = "*" + "cadwiki.AC.dll";
             string testPluginDll2 = cadwiki.NetUtils.Paths.GetNewestDllInAnySubfolderOfSolutionDirectory(tempDir, wildCardFileName2);
 
+            string testPluginDll3 = cadwiki.NetUtils.Paths.GetNewestDllInAnySubfolderOfSolutionDirectory(exeDir, wildCardFileName);
+            string testPluginDll4 = cadwiki.NetUtils.Paths.GetNewestDllInAnySubfolderOfSolutionDirectory(exeDir, wildCardFileName2);
+
             var dependencies = new cadwiki.CadDevTools.MainWindow.Dependencies();
-            dependencies.AutoCADExePath = @"C:\Program Files\Autodesk\AutoCAD 2024\acad.exe";
+            dependencies.AutoCADExePath = @"C:\Program Files\Autodesk\AutoCAD 2025\acad.exe";
             dependencies.AutoCADStartupSwitches = "/p VANILLA";
             dependencies.DllFilePathsToNetloadCommaDelimited = testPluginDll + "," + testPluginDll2;
-            dependencies.CustomDirectoryToSearchForDllsToLoadFrom = tempDir;
-            dependencies.DllWildCardSearchPattern = wildCardFileName;
+            //dependencies.DllFilePathsToNetloadCommaDelimited += "," + testPluginDll3 + "," + testPluginDll4;
 
-            Window Window = new cadwiki.CadDevTools.MainWindow(dependencies);
-            Window.Show();
+            dependencies.CustomDirectoryToSearchForDllsToLoadFrom = exeDir;
+            dependencies.DllWildCardSearchPattern = wildCardFileName;
+            return dependencies;
         }
 
         private static void DeleteFoldersOlderThanOneDay(List<string> cadApps)

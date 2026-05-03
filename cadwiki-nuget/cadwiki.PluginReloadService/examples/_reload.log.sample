@@ -1,0 +1,51 @@
+=== cadwiki.PluginReloadService log started at 2023-10-15 14:22:30 ===
+=== Verbose mode: False ===
+
+─────────────────────────────────────────────────────────────────
+[14:22:30.012] [INFO ] [PluginReloadPipeline] Pipeline STARTED — plugin: MyPlugin
+[14:22:30.013] [INFO ] [PluginReloadPipeline] Source dir: C:\repos\MyPlugin\bin\Debug\
+[14:22:30.013] [INFO ] [PluginReloadPipeline] Main DLL:   MyPlugin.dll
+[14:22:30.015] [INFO ] [DllFilterSpec] Loaded from JSON: C:\repos\MyPlugin\bin\Debug\cadwiki-reload.json, mode=whitelist (3 pattern(s))
+[14:22:30.015] [INFO ] [PluginReloadPipeline] Filter spec: whitelist (3 pattern(s))
+─────────────────────────────────────────────────────────────────
+[14:22:30.016] [INFO ] [StagingCopier] StagePlugin STARTED — plugin: MyPlugin
+[14:22:30.016] [INFO ] [StagingCopier] Source dir: C:\repos\MyPlugin\bin\Debug\
+[14:22:30.016] [INFO ] [StagingCopier] Filter mode: whitelist (3 pattern(s))
+[14:22:30.016] [INFO ] [StagingCopier] Include patterns: MyPlugin.dll, MyPlugin.Core.dll, MyPlugin.Utilities.dll
+[14:22:30.017] [INFO ] [StagingCopier] Staging folder: C:\Users\Alex\AppData\Local\Temp\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3
+[14:22:30.018] [INFO ] [StagingCopier] Source scan: 7 DLL(s), 5 PDB(s), 1 other file(s)
+[14:22:30.042] [INFO ] [AssemblyVersionRewriter] MyPlugin.dll → REWRITTEN (1.0.0.0 → 1.0.0.231371580, display: 1.0.0.2023_10_15_14_22_30)
+[14:22:30.042] [INFO ] [AssemblyVersionRewriter] Written to: C:\Users\Alex\AppData\Local\Temp\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3\MyPlugin.dll
+[14:22:30.043] [INFO ] [StagingCopier] MyPlugin.dll → REWRITTEN (1.0.0.0 → 1.0.0.231371580) main plugin DLL — always rewritten (safety net)
+[14:22:30.071] [INFO ] [AssemblyVersionRewriter] MyPlugin.Core.dll → REWRITTEN (1.0.0.0 → 1.0.0.231371580, display: 1.0.0.2023_10_15_14_22_30)
+[14:22:30.071] [INFO ] [AssemblyVersionRewriter] Written to: C:\Users\Alex\AppData\Local\Temp\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3\MyPlugin.Core.dll
+[14:22:30.072] [INFO ] [StagingCopier] MyPlugin.Core.dll → REWRITTEN (1.0.0.0 → 1.0.0.231371580) matched include pattern: MyPlugin.Core.dll
+[14:22:30.093] [INFO ] [AssemblyVersionRewriter] MyPlugin.Utilities.dll → REWRITTEN (1.0.0.0 → 1.0.0.231371580, display: 1.0.0.2023_10_15_14_22_30)
+[14:22:30.093] [INFO ] [AssemblyVersionRewriter] Written to: C:\Users\Alex\AppData\Local\Temp\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3\MyPlugin.Utilities.dll
+[14:22:30.094] [INFO ] [StagingCopier] MyPlugin.Utilities.dll → REWRITTEN (1.0.0.0 → 1.0.0.231371580) matched include pattern: MyPlugin.Utilities.dll
+[14:22:30.095] [INFO ] [StagingCopier] Newtonsoft.Json.dll → COPIED  (not in whitelist — copied as-is)
+[14:22:30.095] [INFO ] [StagingCopier] log4net.dll → COPIED  (not in whitelist — copied as-is)
+[14:22:30.096] [INFO ] [StagingCopier] System.Memory.dll → COPIED  (not in whitelist — copied as-is)
+[14:22:30.096] [INFO ] [StagingCopier] AcMgd.dll → COPIED  (AutoCAD SDK DLL — never rewritten (hard blacklist))
+[14:22:30.097] [INFO ] [StagingCopier] Staging complete: 7 DLL(s), 3 rewritten, 1 other file(s)
+[14:22:30.098] [INFO ] [StagingCopier] Manifest: C:\Users\Alex\AppData\Local\Temp\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3\_manifest.json
+[14:22:30.099] [INFO ] [StagingCopier] Cleanup: deleted 1 old staging folder(s)
+─────────────────────────────────────────────────────────────────
+[14:22:30.099] [INFO ] [PluginReloadPipeline] Staging result: 7 DLL(s), 3 rewritten, folder: C:\Users\Alex\AppData\Local\Temp\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3
+─────────────────────────────────────────────────────────────────
+[14:22:30.100] [INFO ] [ReloadOrchestrator] TriggerReload STARTED
+[14:22:30.100] [INFO ] [ReloadOrchestrator]   Staged folder : C:\Users\Alex\AppData\Local\Temp\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3
+[14:22:30.100] [INFO ] [ReloadOrchestrator]   Main DLL      : MyPlugin.dll
+[14:22:30.100] [INFO ] [ReloadOrchestrator]   DLL count     : 7
+[14:22:30.100] [INFO ] [ReloadOrchestrator]   Rewritten     : 3
+[14:22:30.145] [INFO ] [ReloadOrchestrator] ReloadFromStagedFolder completed successfully.
+─────────────────────────────────────────────────────────────────
+[14:22:30.146] [INFO ] [PluginReloadPipeline] Reload triggered successfully.
+─────────────────────────────────────────────────────────────────
+[14:22:30.146] SUMMARY
+  Plugin     : MyPlugin
+  Elapsed    : 134ms
+  DLLs total : 7
+  Rewritten  : 3
+  Staged at  : C:\Users\Alex\AppData\Local\Temp\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3
+─────────────────────────────────────────────────────────────────
