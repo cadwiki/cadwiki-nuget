@@ -21,7 +21,7 @@
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   </PropertyGroup>
-  <Target Name="CopyAcRemoveCmdGroup" AfterTargets="Build">
+  <Target Name="CopyAcRemoveCmdGroup" AfterTargets="Build" Condition="'$(OS)' == 'Windows_NT'">
     <Exec Command="echo The build root is: $(BuildRoot)" />
     <Exec Command="echo AcRemoveCmdGroup.dll location is: $(BuildRoot)\cadwiki.AcRemoveCmdGroup\x64\$(Configuration)\cadwiki.AcRemoveCmdGroup.dll" />
     <Exec Command="xcopy /S /Q /Y /F $(BuildRoot)\x64\$(Configuration)\cadwiki.AcRemoveCmdGroup.dll $(TargetDir)\" />
@@ -104,7 +104,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cadwiki.AcRemoveCmdGroup\cadwiki.AcRemoveCmdGroup.vcxproj" />
+    <ProjectReference Condition="'$(OS)' == 'Windows_NT'" Include="..\cadwiki.AcRemoveCmdGroup\cadwiki.AcRemoveCmdGroup.vcxproj" />
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj" />
     <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.csproj" />
     <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.csproj" />
