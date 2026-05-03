@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<TargetFramework>net8.0-windows8.0</TargetFramework>
+	<TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>

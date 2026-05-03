@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using cadwiki.NUnitTestRunner.Results;
 using PdfSharp.Drawing;
+using PdfSharp.Fonts;
 using PdfSharp.Pdf;
 
 namespace cadwiki.NUnitTestRunner.Creators
@@ -12,18 +14,81 @@ namespace cadwiki.NUnitTestRunner.Creators
         public string PdfFilePath;
         public PdfDocument PdfDoc;
 
-        private static XFont _bigFont = new XFont("Arial", 20d, XFontStyle.Regular);
-        public int bigFontLineSpacing = (int)Math.Round(_bigFont.Height / 2.0d);
-        public XFont smallFont = new XFont("Arial", 8d, XFontStyle.Regular);
+        private static XFont _bigFont;
+        public int bigFontLineSpacing;
+        public XFont smallFont;
         public int smallFontLineSpacing;
         private static int _rightEdgeMargin = 20;
 
+        public class WindowsFontResolver : IFontResolver
+        {
+            private static readonly string FontsDir =
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Fonts");
+
+            public byte[] GetFont(string faceName)
+            {
+                string fullPath = Path.Combine(FontsDir, faceName);
+
+                if (!File.Exists(fullPath))
+                    throw new FileNotFoundException($"Font not found: {fullPath}");
+
+                return File.ReadAllBytes(fullPath);
+            }
+
+            public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
+            {
+                string fontFile = ResolveFontFile(familyName, isBold, isItalic);
+                return new FontResolverInfo(fontFile);
+            }
+
+            private static string ResolveFontFile(string familyName, bool isBold, bool isItalic)
+            {
+                // Normalize
+                familyName = familyName?.ToLowerInvariant() ?? "arial";
+
+                // Basic mapping (expand as needed)
+                if (familyName.Contains("arial"))
+                {
+                    if (isBold && isItalic) return "arialbi.ttf";
+                    if (isBold) return "arialbd.ttf";
+                    if (isItalic) return "ariali.ttf";
+                    return "arial.ttf";
+                }
+
+                if (familyName.Contains("times"))
+                {
+                    if (isBold && isItalic) return "timesbi.ttf";
+                    if (isBold) return "timesbd.ttf";
+                    if (isItalic) return "timesi.ttf";
+                    return "times.ttf";
+                }
+
+                if (familyName.Contains("courier"))
+                {
+                    if (isBold && isItalic) return "courbi.ttf";
+                    if (isBold) return "courbd.ttf";
+                    if (isItalic) return "couri.ttf";
+                    return "cour.ttf";
+                }
+
+                // fallback → Arial
+                if (isBold && isItalic) return "arialbi.ttf";
+                if (isBold) return "arialbd.ttf";
+                if (isItalic) return "ariali.ttf";
+                return "arial.ttf";
+            }
+        }
+
         public PdfCreator(string filePath)
         {
-            smallFontLineSpacing = smallFont.Height / 2;
             PdfFilePath = filePath;
             // Create a PdfDocument object
             PdfDoc = new PdfDocument();
+            GlobalFontSettings.FontResolver = new WindowsFontResolver();
+            smallFont = new XFont("Arial", 8d, XFontStyleEx.Regular);
+            _bigFont = new XFont("Arial", 20d, XFontStyleEx.Regular);
+            bigFontLineSpacing = (int)Math.Round(_bigFont.Height / 2.0d);
+            smallFontLineSpacing = smallFont.Height / 2;
         }
 
         public void Save()

@@ -10,7 +10,7 @@ using System;
 
 namespace cadwiki.WpfLibrary.Controls
 {
-    public class ShiftSelectableDataGrid : DataGrid
+    public class ShiftSelectableDataGrid : DataGrid // TODO DataGrid is no longer supported. Use DataGridView instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
     {
         private int _lastSelectedIndex = -1;
 
@@ -20,7 +20,8 @@ namespace cadwiki.WpfLibrary.Controls
             SelectionUnit = DataGridSelectionUnit.FullRow;
             // Subscribe to column header click event
             //this.AddHandler(DataGridColumnHeader.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnColumnHeaderClick_ToggleSelectedCheckBoxes), true);
-            this.AddHandler(DataGridCell.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnCheckBoxRowClick_ToggleSelectedCheckBoxes), true);
+            // TODO DataGrid is no longer supported. Use DataGridView instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+                                    this.AddHandler(DataGridCell.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnCheckBoxRowClick_ToggleSelectedCheckBoxes), true);
         }
 
         private void OnCheckBoxRowClick_ToggleSelectedCheckBoxes(object sender, MouseButtonEventArgs e)

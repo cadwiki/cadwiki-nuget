@@ -177,13 +177,12 @@ namespace UnitTests.PluginReloadService
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException))]
         public void Rewrite_MissingSource_ThrowsFileNotFoundException()
         {
-            AssemblyVersionRewriter.Rewrite(
+            Assert.Throws<FileNotFoundException>(() => AssemblyVersionRewriter.Rewrite(
                 @"C:\does_not_exist.dll",
                 @"C:\Temp\out.dll",
-                DateTime.Now);
+                DateTime.Now));
         }
     }
 
@@ -675,11 +674,12 @@ namespace UnitTests.PluginReloadService
         }
 
         [TestMethod]
-        [ExpectedException(typeof(DirectoryNotFoundException))]
         public void StagePlugin_MissingSourceDir_Throws()
         {
             var copier = new StagingCopier("MyPlugin", @"C:\nonexistent_plugin_dir_" + Guid.NewGuid());
-            copier.StagePlugin(DateTime.Now);
+
+            Assert.Throws<DirectoryNotFoundException>(
+                () => copier.StagePlugin(DateTime.Now));
         }
     }
 

@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
 
 namespace cadwiki.DllReloader.PluginReloadService
 {
@@ -276,45 +276,35 @@ namespace cadwiki.DllReloader.PluginReloadService
             {
                 string json = File.ReadAllText(jsonPath);
 
-                var serializer = new JavaScriptSerializer();
-                var root = serializer.Deserialize<Dictionary<string, object>>(json);
+                var root = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
 
                 var spec = new DllFilterSpec { MainDllName = mainDllName };
 
-                if (root != null && root.TryGetValue("dllFilter", out var filterObj))
+                if (root != null && root.TryGetValue("dllFilter", out var filterElem) && filterElem.ValueKind == JsonValueKind.Object)
                 {
-                    var filter = filterObj as Dictionary<string, object>;
-                    if (filter != null)
+                    var filter = filterElem;
+
+                    if (filter.TryGetProperty("include", out var incElem) && incElem.ValueKind == JsonValueKind.Array)
                     {
-                        if (filter.TryGetValue("include", out var incObj))
-                        {
-                            var incList = incObj as object[];
-                            if (incList != null)
-                            {
-                                spec.IncludePatterns = incList
-                                    .Select(o => o?.ToString())
-                                    .Where(s => !string.IsNullOrWhiteSpace(s))
-                                    .ToList();
-                            }
-                        }
+                        spec.IncludePatterns = incElem
+                            .EnumerateArray()
+                            .Select(e => e.GetString())
+                            .Where(s => !string.IsNullOrWhiteSpace(s))
+                            .ToList();
+                    }
 
-                        if (filter.TryGetValue("exclude", out var excObj))
-                        {
-                            var excList = excObj as object[];
-                            if (excList != null)
-                            {
-                                spec.ExcludePatterns = excList
-                                    .Select(o => o?.ToString())
-                                    .Where(s => !string.IsNullOrWhiteSpace(s))
-                                    .ToList();
-                            }
-                        }
+                    if (filter.TryGetProperty("exclude", out var excElem) && excElem.ValueKind == JsonValueKind.Array)
+                    {
+                        spec.ExcludePatterns = excElem
+                            .EnumerateArray()
+                            .Select(e => e.GetString())
+                            .Where(s => !string.IsNullOrWhiteSpace(s))
+                            .ToList();
+                    }
 
-                        if (filter.TryGetValue("verbose", out var verbObj))
-                        {
-                            if (verbObj is bool b)
-                                spec.VerboseLogging = b;
-                        }
+                    if (filter.TryGetProperty("verbose", out var verbElem) && verbElem.ValueKind == JsonValueKind.True || verbElem.ValueKind == JsonValueKind.False)
+                    {
+                        spec.VerboseLogging = verbElem.GetBoolean();
                     }
                 }
 
