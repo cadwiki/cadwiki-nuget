@@ -89,6 +89,8 @@
 
     <!-- Path to MSBuild.Extension.Pack dll (auto-detect from packages folder) -->
     <VersionExtensionPackDll Condition="'$(VersionExtensionPackDll)' == ''">$(BuildRoot)\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll</VersionExtensionPackDll>
+    <!-- Fallback to global NuGet folder if local packages don't have it -->
+    <VersionExtensionPackDll Condition="'$(VersionExtensionPackDll)' != '' And !Exists('$(VersionExtensionPackDll)')">$(USERPROFILE)\.nuget\packages\msbuild.extension.pack\1.9.1\tools\net40\MSBuild.ExtensionPack.dll</VersionExtensionPackDll>
 
     <!-- Default glob for AssemblyInfo.cs discovery -->
     <VersionAssemblyInfoGlob Condition="'$(VersionAssemblyInfoGlob)' == ''">$(BuildRoot)\**\AssemblyInfo.cs</VersionAssemblyInfoGlob>
