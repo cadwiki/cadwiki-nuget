@@ -1,5 +1,24 @@
 <Project>
   <PropertyGroup>
     <NoWarn>168,1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,162,649,1717,219,67,414,4244,414,MSB3270,3270</NoWarn>
+    <!-- Required when restoring/building net8.0-windows projects on non-Windows (macOS/Linux) -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         Central Versioning Schema — single source of truth for all projects.
+         Update these four properties for a new release; all AssemblyInfo.cs
+         files and SDK-style projects inherit from here.
+         ═══════════════════════════════════════════════════════════════════ -->
+    <CadwikiVersionMajor>25</CadwikiVersionMajor>
+    <CadwikiVersionMinor>0</CadwikiVersionMinor>
+    <CadwikiVersionBuild>0</CadwikiVersionBuild>
+    <CadwikiVersionRevision>2</CadwikiVersionRevision>
+    <CadwikiVersion>$(CadwikiVersionMajor).$(CadwikiVersionMinor).$(CadwikiVersionBuild).$(CadwikiVersionRevision)</CadwikiVersion>
+
+    <!-- Feed the SDK-style Version / AssemblyVersion / FileVersion properties -->
+    <Version>$(CadwikiVersion)</Version>
+    <AssemblyVersion>$(CadwikiVersion)</AssemblyVersion>
+    <FileVersion>$(CadwikiVersion)</FileVersion>
+    <InformationalVersion>$(CadwikiVersion)</InformationalVersion>
   </PropertyGroup>
 </Project>
