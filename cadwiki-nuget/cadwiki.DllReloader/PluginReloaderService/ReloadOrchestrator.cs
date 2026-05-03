@@ -3,7 +3,7 @@ using System.IO;
 using Autodesk.AutoCAD.ApplicationServices;
 using cadwiki.DllReloader.AutoCAD;
 
-namespace cadwiki.PluginReloadService
+namespace cadwiki.DllReloader.PluginReloadService
 {
     /// <summary>
     /// Bridges the staging pipeline to the existing

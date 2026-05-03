@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace cadwiki.PluginReloadService
+namespace cadwiki.DllReloader.PluginReloadService
 {
     /// <summary>
     /// JSON manifest written to <c>_manifest.json</c> in each staging folder.

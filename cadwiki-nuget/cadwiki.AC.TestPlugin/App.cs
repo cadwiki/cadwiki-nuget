@@ -76,7 +76,7 @@ namespace cadwiki.AC.TestPlugin
                         var fileNameNoExt = System.IO.Path.GetFileNameWithoutExtension(userInputDllPath);
                         var fileName = System.IO.Path.GetFileName(userInputDllPath);
                         var dirName = System.IO.Path.GetDirectoryName(userInputDllPath);
-                        var pipeline = new cadwiki.PluginReloadService.PluginReloadPipeline(
+                        var pipeline = new cadwiki.DllReloader.PluginReloadService.PluginReloadPipeline(
                             pluginName: fileNameNoExt,
                             sourceBuildDir: dirName,
                             mainDllName: fileName,

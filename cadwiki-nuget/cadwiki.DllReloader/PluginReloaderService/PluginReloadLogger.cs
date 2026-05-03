@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace cadwiki.PluginReloadService
+namespace cadwiki.DllReloader.PluginReloadService
 {
     /// <summary>
     /// Structured diagnostic logger for the Plugin Reload Service.
@@ -46,7 +46,7 @@ namespace cadwiki.PluginReloadService
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
-                WriteRaw($"=== cadwiki.PluginReloadService log started at {DateTime.Now:yyyy-MM-dd HH:mm:ss} ===");
+                WriteRaw($"=== cadwiki.DllReloader.PluginReloadService log started at {DateTime.Now:yyyy-MM-dd HH:mm:ss} ===");
                 WriteRaw($"=== Verbose mode: {verbose} ===");
                 WriteRaw(string.Empty);
             }

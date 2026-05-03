@@ -115,7 +115,7 @@ namespace cadwiki.DllReloader.AutoCAD
 
         /// <summary>
         /// Thin wrapper that delegates to the existing <see cref="ReloadAll"/> pipeline
-        /// using a pre-staged folder produced by <c>cadwiki.PluginReloadService.StagingCopier</c>.
+        /// using a pre-staged folder produced by <c>cadwiki.DllReloader.PluginReloadService.StagingCopier</c>.
         ///
         /// <para>
         ///   Unlike <see cref="ReloadDll"/>, this method does <em>not</em> require a
@@ -129,7 +129,7 @@ namespace cadwiki.DllReloader.AutoCAD
         ///     <item>Version-rewritten copies of the managed plugin DLLs.</item>
         ///     <item>Verbatim copies of all other DLLs and supporting files.</item>
         ///   </list>
-        ///   These are produced by <c>cadwiki.PluginReloadService.StagingCopier.StagePlugin()</c>.
+        ///   These are produced by <c>cadwiki.DllReloader.PluginReloadService.StagingCopier.StagePlugin()</c>.
         /// </para>
         /// </summary>
         /// <param name="doc">

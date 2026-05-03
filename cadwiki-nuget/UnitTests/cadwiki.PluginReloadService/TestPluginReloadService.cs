@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using cadwiki.PluginReloadService;
+using cadwiki.DllReloader.PluginReloadService;
 
 namespace UnitTests.PluginReloadService
 {
