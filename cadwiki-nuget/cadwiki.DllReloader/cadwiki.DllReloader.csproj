@@ -104,6 +104,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cadwiki.AcRemoveCmdGroup\cadwiki.AcRemoveCmdGroup.vcxproj" />
     <ProjectReference Include="..\cadwiki.NetUtils\cadwiki.NetUtils.csproj" />
     <ProjectReference Include="..\cadwiki.NUnitTestRunner\cadwiki.NUnitTestRunner.csproj" />
     <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.csproj" />
