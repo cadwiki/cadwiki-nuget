@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -16,7 +16,7 @@
        
        Strategy is selected by build configuration:
          DebugAuto → AutoIncrement (major.minor.MMdd.N, daily reset)
-         DebugHC   → HardCoded     (explicit 4.1.0.1)
+         DebugHC   → HardCoded     (explicit 25.0.0.1)
        
        To change strategy, just switch Configuration or override VersionStrategy.
        See build-targets/cadwiki.VersionAutoIncrement.targets for full docs.
