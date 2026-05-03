@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Mono.Cecil;
 
-namespace cadwiki.PluginReloadService
+namespace cadwiki.DllReloader.PluginReloadService
 {
     /// <summary>
     /// Rewrites the assembly version attributes on a compiled DLL using Mono.Cecil.

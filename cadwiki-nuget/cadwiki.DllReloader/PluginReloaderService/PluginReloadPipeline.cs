@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace cadwiki.PluginReloadService
+namespace cadwiki.DllReloader.PluginReloadService
 {
     /// <summary>
     /// Orchestrates the complete zero-touch hot-reload pipeline for an external

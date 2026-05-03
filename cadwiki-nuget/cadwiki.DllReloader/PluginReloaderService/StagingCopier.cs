@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace cadwiki.PluginReloadService
+namespace cadwiki.DllReloader.PluginReloadService
 {
     /// <summary>
     /// Copies a plugin's build output into a uniquely-named staging folder,

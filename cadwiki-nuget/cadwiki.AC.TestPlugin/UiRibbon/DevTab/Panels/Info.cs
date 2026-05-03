@@ -163,7 +163,7 @@ namespace cadwiki.AC.TestPlugin.UiRibbon.DevTab.Panels
                             var fileNameNoExt = Path.GetFileNameWithoutExtension(userInputDllPath);
                             var fileName = Path.GetFileName(userInputDllPath);
                             var dirName = Path.GetDirectoryName(userInputDllPath);
-                            var pipeline = new cadwiki.PluginReloadService.PluginReloadPipeline(
+                            var pipeline = new cadwiki.DllReloader.PluginReloadService.PluginReloadPipeline(
                                 pluginName: fileNameNoExt,
                                 sourceBuildDir: dirName,
                                 mainDllName: fileName,
