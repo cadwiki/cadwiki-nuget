@@ -47,13 +47,13 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon
     public static class DevRibbon
     {
         /// <summary>The tab title/ID used for the dev ribbon.</summary>
-        public const string TabTitle = "Dev";
+        public const string TabTitle = "cw Dev";
 
         /// <summary>The panel title for the main dev tools panel.</summary>
-        public const string DevToolsPanelTitle = "Dev Tools";
+        public const string DevToolsPanelTitle = "cw Dev Tools";
 
         /// <summary>The panel title for the info panel.</summary>
-        public const string InfoPanelTitle = "Info";
+        public const string InfoPanelTitle = "cw Info";
 
         private static bool _isVisible;
 
