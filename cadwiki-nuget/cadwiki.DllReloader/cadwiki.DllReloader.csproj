@@ -35,50 +35,50 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AcCoreMgd">
-      <HintPath>..\_libs\AutoCAD 2024\AcCoreMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcCoreMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcCui">
-      <HintPath>..\_libs\AutoCAD 2024\AcCui.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcCui.dll</HintPath>
     </Reference>
     <Reference Include="AcDbMgd">
-      <HintPath>..\_libs\AutoCAD 2024\AcDbMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcDbMgd.dll</HintPath>
     </Reference>
     <Reference Include="acdbmgdbrep">
-      <HintPath>..\_libs\AutoCAD 2024\acdbmgdbrep.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\acdbmgdbrep.dll</HintPath>
     </Reference>
     <Reference Include="AcDx">
-      <HintPath>..\_libs\AutoCAD 2024\AcDx.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcDx.dll</HintPath>
     </Reference>
     <Reference Include="AcMgd">
-      <HintPath>..\_libs\AutoCAD 2024\AcMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcMr">
-      <HintPath>..\_libs\AutoCAD 2024\AcMr.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcMr.dll</HintPath>
     </Reference>
     <Reference Include="AcSeamless">
-      <HintPath>..\_libs\AutoCAD 2024\AcSeamless.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcSeamless.dll</HintPath>
     </Reference>
     <Reference Include="AcTcMgd">
-      <HintPath>..\_libs\AutoCAD 2024\AcTcMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcTcMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcWindows">
-      <HintPath>..\_libs\AutoCAD 2024\AcWindows.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AcWindows.dll</HintPath>
     </Reference>
     <Reference Include="AdUIMgd">
-      <HintPath>..\_libs\AutoCAD 2024\AdUIMgd.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AdUIMgd.dll</HintPath>
     </Reference>
     <Reference Include="AdUiPalettes">
-      <HintPath>..\_libs\AutoCAD 2024\AdUiPalettes.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AdUiPalettes.dll</HintPath>
     </Reference>
     <Reference Include="AdWindows">
-      <HintPath>..\_libs\AutoCAD 2024\AdWindows.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\AdWindows.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.AutoCAD.Interop">
-      <HintPath>..\_libs\AutoCAD 2024\Autodesk.AutoCAD.Interop.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\Autodesk.AutoCAD.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Autodesk.AutoCAD.Interop.Common">
-      <HintPath>..\_libs\AutoCAD 2024\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
+      <HintPath>..\_libs\AutoCAD 2025\Autodesk.AutoCAD.Interop.Common.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
