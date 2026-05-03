@@ -216,6 +216,14 @@
       <Project>{9276dc8a-d5c4-0e8e-07f9-77db4de1d971}</Project>
       <Name>cadwiki.NUnitTestRunner</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cadwiki.PluginReloadService\cadwiki.PluginReloadService.csproj">
+      <Project>{b2c3d4e5-f6a7-b8c9-d0e1-f2a3b4c5d6e7}</Project>
+      <Name>cadwiki.PluginReloadService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cadwiki.WpfUi\cadwiki.WpfUi.csproj">
+      <Project>{26419c0a-2788-02fa-0100-b3cf2e8f3158}</Project>
+      <Name>cadwiki.WpfUi</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Extension.Pack">

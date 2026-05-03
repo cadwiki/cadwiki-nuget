@@ -1,0 +1,25 @@
+{
+  "_comment": [
+    "cadwiki-reload.json — place this file in your plugin's build output directory.",
+    "BLACKLIST MODE: ALL DLLs are version-rewritten EXCEPT those matching 'exclude'.",
+    "Use this when you have many plugin DLLs and only want to skip a few third-party ones.",
+    "Note: AutoCAD SDK DLLs are always excluded regardless — no need to list them here."
+  ],
+  "dllFilter": {
+    "exclude": [
+      "Newtonsoft.*.dll",
+      "*Test*.dll",
+      "log4net.dll",
+      "EntityFramework*.dll"
+    ],
+    "verbose": false
+  },
+  "_iniEquivalent": {
+    "_comment": "This JSON config is equivalent to the following INI [DllFilter] section:",
+    "section": "[DllFilter]",
+    "keys": {
+      "Exclude": "Newtonsoft.*.dll;*Test*.dll;log4net.dll;EntityFramework*.dll",
+      "Verbose": "false"
+    }
+  }
+}

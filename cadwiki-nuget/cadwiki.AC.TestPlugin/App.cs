@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using cadwiki.DllReloader.AutoCAD;
+using cadwiki.DllReloader.AutoCAD.UiRibbon;
+using cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons;
 using cadwiki.NetUtils;
 using Microsoft.VisualBasic;
 
@@ -38,7 +40,11 @@ namespace cadwiki.AC.TestPlugin
                 AcadAppDomainDllReloader.Reload(iExtensionAppAssembly);
                 doc.Editor.WriteMessage(Environment.NewLine + "App " + iExtensionAppVersion.ToString() + " initialized...");
                 doc.Editor.WriteMessage(Environment.NewLine);
-
+                DevRibbon.Show(doc, AcadAppDomainDllReloader, Assembly.GetExecutingAssembly(),
+                    pipelineAction: () =>
+                    {
+                        CustomPipeLine(iExtensionAppAssembly);
+                    });
                 if (doc != null)
                 {
                     var reactors = new ReactorsRibbonCreate();
@@ -48,6 +54,63 @@ namespace cadwiki.AC.TestPlugin
             catch (System.Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static void CustomPipeLine(Assembly iExtensionAppAssembly)
+        {
+            var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            doc.Editor.WriteMessage(Environment.NewLine + "CustomPipeLine started..");
+            try
+            {
+                if (doc != null)
+                {
+                    var netReloader = AcadAppDomainDllReloader;
+                    string userInputDllPath = netReloader.UserInputGetDllPath();
+                    if (string.IsNullOrEmpty(userInputDllPath))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        var fileNameNoExt = System.IO.Path.GetFileNameWithoutExtension(userInputDllPath);
+                        var fileName = System.IO.Path.GetFileName(userInputDllPath);
+                        var dirName = System.IO.Path.GetDirectoryName(userInputDllPath);
+                        var pipeline = new cadwiki.PluginReloadService.PluginReloadPipeline(
+                            pluginName: fileNameNoExt,
+                            sourceBuildDir: dirName,
+                            mainDllName: fileName,
+                            reloader: netReloader
+                        );
+
+                        var result = pipeline.Execute(doc);
+
+                        if (!result.IsSuccess)
+                        {
+                            var window = new WpfUi.Templates.WindowAutoCADException(
+                                new System.Exception($"Reload failed: {result.Error?.Message}\nSee log: {result.LogFilePath}"));
+                            window.Show();
+                            return;
+                        }
+                        else if (!result.ReloadTriggered)
+                        {
+                            var window = new WpfUi.Templates.WindowAutoCADException(
+                                new System.Exception($"Staged OK but reload not triggered.\nStaged at: {result.StagingResult?.StagingFolder}"));
+                            window.Show();
+                            return;
+                        }
+                        else
+                        {
+                            doc.Editor.WriteMessage($"\nPlugin reloaded in {result.Elapsed.TotalMilliseconds:0}ms\n");
+                        }
+
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                var window = new WpfUi.Templates.WindowAutoCADException(ex);
+                window.Show();
             }
         }
 

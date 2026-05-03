@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -28,5 +28,5 @@ using System.Runtime.InteropServices;
 //      Minor Version
 //      Build Number
 //      Revision
-[assembly: AssemblyVersion("4.1.0.1")]
-[assembly: AssemblyFileVersion("4.1.0.1")]
+[assembly: AssemblyVersion("25.0.0.1")]
+[assembly: AssemblyFileVersion("25.0.0.1")]

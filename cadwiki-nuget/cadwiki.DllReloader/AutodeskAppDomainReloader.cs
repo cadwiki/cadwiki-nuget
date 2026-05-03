@@ -25,6 +25,7 @@ namespace cadwiki.DllReloader.AutoCAD
         public class Dependencies
         {
             public string IExtensionApplicationClassName = "";
+            public string IExtensionAppDllName = "";
             public Version AppVersion = Version.Parse("1.0.0.0");
             public int ReloadCount = 0;
             public string DllPath = "";
@@ -50,6 +51,7 @@ namespace cadwiki.DllReloader.AutoCAD
 
         private string _sectionSettings = "Settings";
         private string _keyProjectName = "ProjectName";
+        private string _keyDllName = "DllName";
         private string _keyAppVersion = "AppVersion";
         private string _keyReloadCount = "ReloadCount";
         private string _keyDllPath = "DllPath";
@@ -255,10 +257,16 @@ namespace cadwiki.DllReloader.AutoCAD
                 {
                     SetDllPath(assemblyPath);
                     SetOriginalAppDirectory(Path.GetDirectoryName(assemblyPath));
+                    SetIExtAppDllFileName(assemblyPath);
                 }
                 SetTerminated(false);
                 WriteDependecyValuesToIni(DependencyValues);
             }
+        }
+
+        private void SetIExtAppDllFileName(string assemblyPath)
+        {
+            DependencyValues.IExtensionAppDllName = Path.GetFileName(assemblyPath);
         }
 
         public void SetIExtensionApplicationClassNameFromAssembly(Assembly iExtensionAppAssembly)
@@ -280,6 +288,7 @@ namespace cadwiki.DllReloader.AutoCAD
             CreateCadwikiTempFolderIfNotExists();
             var objIniFile = new NetUtils.IniFile(_iniPath);
             objIniFile.WriteString(_sectionSettings, _keyProjectName, dependencyValues.IExtensionApplicationClassName);
+            objIniFile.WriteString(_sectionSettings, _keyDllName, dependencyValues.IExtensionAppDllName);
             objIniFile.WriteString(_sectionSettings, _keyAppVersion, dependencyValues.AppVersion.ToString());
             objIniFile.WriteString(_sectionSettings, _keyReloadCount, dependencyValues.ReloadCount.ToString());
             objIniFile.WriteString(_sectionSettings, _keyDllPath, dependencyValues.DllPath);

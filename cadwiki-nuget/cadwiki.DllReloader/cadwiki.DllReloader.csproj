@@ -147,6 +147,12 @@
     <Compile Include="AutoCAD\PathUtils.cs" />
     <Compile Include="AutoCAD\UiRibbon\Buttons\Creator.cs" />
     <Compile Include="AutoCAD\UiRibbon\Buttons\GenericClickCommandHandler.cs" />
+    <Compile Include="AutoCAD\UiRibbon\DelegateClickCommandHandler.cs" />
+    <Compile Include="AutoCAD\UiRibbon\DevRibbon.cs" />
+    <Compile Include="AutoCAD\UiRibbon\RibbonBuilder.cs" />
+    <Compile Include="AutoCAD\UiRibbon\RibbonButtonDefinition.cs" />
+    <Compile Include="AutoCAD\UiRibbon\RibbonPanelDefinition.cs" />
+    <Compile Include="AutoCAD\UiRibbon\RibbonTabDefinition.cs" />
     <Compile Include="AutoCAD\CommandRemover.cs" />
     <Compile Include="AutodeskAppDomainReloader.cs" />
     <Compile Include="AutoCAD\UiRibbon\Buttons\DllReloadClickCommandHandler.cs" />

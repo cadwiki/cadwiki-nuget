@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows.Controls;
 using Autodesk.AutoCAD.ApplicationServices;
 using Microsoft.VisualBasic;
 
@@ -52,7 +53,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 Log("---------------------------------------------");
                 Log("---------------------------------------------");
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
                 var window = new WpfUi.Templates.WindowAutoCADException(ex);
                 window.Show();
@@ -101,12 +102,139 @@ namespace cadwiki.DllReloader.AutoCAD
                 Log("---------------------------------------------");
                 Log("---------------------------------------------");
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
                 var window = new WpfUi.Templates.WindowAutoCADException(ex);
                 window.Show();
             }
         }
+
+        // -------------------------------------------------------------------------
+        // Phase 2 — staged-folder reload entry point
+        // -------------------------------------------------------------------------
+
+        /// <summary>
+        /// Thin wrapper that delegates to the existing <see cref="ReloadAll"/> pipeline
+        /// using a pre-staged folder produced by <c>cadwiki.PluginReloadService.StagingCopier</c>.
+        ///
+        /// <para>
+        ///   Unlike <see cref="ReloadDll"/>, this method does <em>not</em> require a
+        ///   live <see cref="Assembly"/> reference for the plugin — making it safe for
+        ///   <em>external</em> plugins that were not loaded by the cadwiki assemblies.
+        /// </para>
+        ///
+        /// <para>
+        ///   The staged folder must already contain:
+        ///   <list type="bullet">
+        ///     <item>Version-rewritten copies of the managed plugin DLLs.</item>
+        ///     <item>Verbatim copies of all other DLLs and supporting files.</item>
+        ///   </list>
+        ///   These are produced by <c>cadwiki.PluginReloadService.StagingCopier.StagePlugin()</c>.
+        /// </para>
+        /// </summary>
+        /// <param name="doc">
+        ///   Active AutoCAD document. Used for command removal and editor log.
+        /// </param>
+        /// <param name="stagedFolderPath">
+        ///   Full path to the staging folder.
+        ///   Example: <c>%TEMP%\cadwiki.PluginStaging\MyPlugin\20231015--14_22_30--Build-3\</c>
+        /// </param>
+        /// <param name="mainDllName">
+        ///   Filename of the main plugin DLL inside the staged folder
+        ///   (e.g. <c>MyPlugin.dll</c>).
+        /// </param>
+        public void ReloadFromStagedFolder(Document doc, string stagedFolderPath, string mainDllName)
+        {
+            if (stagedFolderPath is null)
+                throw new ArgumentNullException(nameof(stagedFolderPath));
+            if (mainDllName is null)
+                throw new ArgumentNullException(nameof(mainDllName));
+
+            try
+            {
+                _document = doc;
+                Log("---------------------------------------------");
+                Log("---------------------------------------------");
+                Log($"ReloadFromStagedFolder started.");
+                Log($"Staged folder : {stagedFolderPath}");
+                Log($"Main DLL      : {mainDllName}");
+
+                WriteIniPathToDocEditor();
+
+                // Build the list of DLLs in the staged folder (same shape as
+                // CopyAllDllsToTempFolder output, but already at their final paths).
+                var stagedDlls = new System.Collections.Generic.List<string>();
+                foreach (string dllFilePath in Directory.GetFiles(stagedFolderPath, "*.dll"))
+                    stagedDlls.Add(dllFilePath);
+
+                Log($"Found {stagedDlls.Count} DLL(s) in staged folder.");
+
+                // Ensure IExtensionApplicationClassName is set so ReloadAll can
+                // identify the main plugin assembly.
+                if (string.IsNullOrEmpty(DependencyValues.IExtensionApplicationClassName))
+                {
+                    string mainName = Path.GetFileNameWithoutExtension(mainDllName);
+                    SetIExtensionApplicationClassName(mainName);
+                    Log($"IExtensionApplicationClassName set to: {mainName}");
+                }
+
+                // Determine build number (reuse counter from dependency values)
+                int newCount = DependencyValues.ReloadCount + 1;
+
+                // Store the staged folder as the temp folder so log + ini paths align
+                _tempFolder = stagedFolderPath;
+
+                // Remove commands from the existing version of the plugin before reload
+                TryRemoveAllCommandsExternal(doc, stagedFolderPath, mainDllName);
+
+                // Delegate to the shared ReloadAll pipeline — no code duplication
+                var tuple = ReloadAll(stagedDlls, newCount);
+
+                if (DependencyValues.OriginalAppDirectory is null)
+                    DependencyValues.OriginalAppDirectory = stagedFolderPath;
+
+                Log($"ReloadFromStagedFolder complete. Main assembly: {tuple?.Item2 ?? "(none)"}");
+                Log("---------------------------------------------");
+                Log("---------------------------------------------");
+            }
+            catch (Exception ex)
+            {
+                Log($"ReloadFromStagedFolder exception: {ex.Message}");
+                Log($"StackTrace: {ex.StackTrace}");
+            }
+        }
+
+        /// <summary>
+        /// Attempts to remove commands for an external plugin by scanning the
+        /// current AppDomain for an assembly whose name matches <paramref name="mainDllName"/>.
+        /// Swallows all exceptions — command removal is best-effort.
+        /// </summary>
+        private void TryRemoveAllCommandsExternal(Document doc, string stagedFolderPath, string mainDllName)
+        {
+            try
+            {
+                string assemblyName = Path.GetFileNameWithoutExtension(mainDllName);
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var existing = AcadAssemblyUtils.GetNewestAssembly(assemblies, assemblyName, null);
+                if (existing != null)
+                {
+                    Log($"Removing commands from existing assembly: {existing.FullName}");
+                    TryRemoveAllCommands(doc, existing, stagedFolderPath);
+                }
+                else
+                {
+                    Log($"No existing assembly named '{assemblyName}' found in AppDomain; skipping command removal.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"TryRemoveAllCommandsExternal exception (ignored): {ex.Message}");
+            }
+        }
+
+        // -------------------------------------------------------------------------
+        // End of staged-folder reload — existing methods follow
+        // -------------------------------------------------------------------------
 
         // Called from DllReloadClickCommandHandler
         public void ReloadDll(Document doc, Assembly iExtensionAppAssembly, string dllPath)
@@ -123,7 +251,7 @@ namespace cadwiki.DllReloader.AutoCAD
                     Log("Dll reload started.");
                     WriteIniPathToDocEditor();
                     // Remove all commands from iExtensionAppAssembly
-                    CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath);
+                    TryRemoveAllCommands(doc, iExtensionAppAssembly, dllPath);
                     // RemoveAllCommandsFromAllAssembliesInAppDomain(doc, dllPath)
                     var tuple = ReloadAllDllsFoundInSameFolder(dllPath);
                     var appAssembly = tuple.Item1;
@@ -142,17 +270,24 @@ namespace cadwiki.DllReloader.AutoCAD
                     Log("---------------------------------------------");
                     Log("---------------------------------------------");
                 }
-                catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                catch (Exception ex)
                 {
                     Log("Exception" + ex.Message);
                 }
             }
         }
 
-
-
-
-
+        private void TryRemoveAllCommands(Document doc, Assembly iExtensionAppAssembly, string dllPath)
+        {
+            try
+            {
+                CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(doc, iExtensionAppAssembly, dllPath);
+            }
+            catch (Exception ex)
+            {
+                Log("Exception" + ex.Message);
+            }
+        }
 
         private Tuple<Assembly, string> ReloadAllDllsFoundInSameFolder(string dllPath)
         {
@@ -169,7 +304,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 var tuple = ReloadAll(tempDlls, newCount);
                 return tuple;
             }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            catch (Exception ex)
             {
                 var window = new WpfUi.Templates.WindowAutoCADException(ex);
                 window.Show();
@@ -230,7 +365,7 @@ namespace cadwiki.DllReloader.AutoCAD
                 // Remove any commands that need to be overwritten latter
                 if (newestAssemblyWithNameInAppDomain is not null)
                 {
-                    CommandRemover.RemoveAllCommandsFromiExtensionAppAssembly(_document, newestAssemblyWithNameInAppDomain, DependencyValues.OriginalAppDirectory);
+                    TryRemoveAllCommands(_document, newestAssemblyWithNameInAppDomain, DependencyValues.OriginalAppDirectory);
                 }
 
             }
@@ -307,60 +442,63 @@ namespace cadwiki.DllReloader.AutoCAD
                 {
                     assemblyBytes = File.ReadAllBytes(dllPath);
                 }
-                catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                catch (Exception ex)
                 {
                     Log("Error reading assembly to byte array: " + dllPath);
                     Log("Exception: " + ex.Message);
                 }
                 try
                 {
-                    if (dllPath.Contains(DependencyValues.IExtensionApplicationClassName))
+                    var reloadedAssembly = AppDomain.CurrentDomain.Load(assemblyBytes);
+                    Log("Reloaded dll: " + dllPath);
+
+                    try
                     {
-                        // Update Reloader values
-                        DependencyValues.ReloadCount += 1;
-                        DependencyValues.Terminated = false;
-                        WriteDependecyValuesToIni(DependencyValues);
-                        // Upon loading the assemblyBytes from the IExtensionApplication class, the App.Initialize() method will be called
-                        assemblyWithIExtensionApp = AppDomain.CurrentDomain.Load(assemblyBytes);
-                        Log("Reloaded iExtensionAppAssembly dll: " + dllPath);
-                        SetReloadedValues(assemblyWithIExtensionApp);
-                        WriteDependecyValuesToIni(DependencyValues);
+                        Type[] currentTypes = NetUtils.AssemblyUtils.GetTypesSafely(reloadedAssembly);
+                        // Create reference to the IExtensionApplication object
+                        var currentAppObject = AcadAssemblyUtils.GetAppObjectSafely(currentTypes);
+                        if (currentAppObject != null)
+                        {
+                            assemblyWithIExtensionApp = reloadedAssembly;
+                            // currentAppObject.Initialize()
+                            var match = DoesAssemblyMatchExtensionAppFromDependencyValues(assemblyWithIExtensionApp, dllPath);
+                            if (match)
+                            {
+                                // Update Reloader values
+                                DependencyValues.ReloadCount += 1;
+                                DependencyValues.Terminated = false;
+                                WriteDependecyValuesToIni(DependencyValues);
+                                // Upon loading the assemblyBytes from the IExtensionApplication class, the App.Initialize() method will be called
+                                assemblyWithIExtensionApp = AppDomain.CurrentDomain.Load(assemblyBytes);
+                                Log("Reloaded iExtensionAppAssembly dll matching dependency values from config: " + dllPath);
+                                SetReloadedValues(assemblyWithIExtensionApp);
+                                WriteDependecyValuesToIni(DependencyValues);
+                            }
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        var reloadedAssembly = AppDomain.CurrentDomain.Load(assemblyBytes);
-                        Log("Reloaded dll: " + dllPath);
+                        Log("Error loading assembly: " + dllPath);
+                        Log("Exception: " + ex.Message);
                     }
                 }
-                catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                catch (Exception ex)
                 {
                     Log("Error loading assembly: " + dllPath);
                     Log("Exception: " + ex.Message);
                 }
             }
-            Type[] currentTypes = NetUtils.AssemblyUtils.GetTypesSafely(assemblyWithIExtensionApp);
-            // Create reference to the IExtensionApplication object
-            var currentAppObject = AcadAssemblyUtils.GetAppObjectSafely(currentTypes);
-            // currentAppObject.Initialize()
+
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        private bool DoesAssemblyMatchExtensionAppFromDependencyValues(Assembly assemblyWithIExtensionApp, string dllPath)
+        {
+            var iExtensionAppClassName = assemblyWithIExtensionApp.GetName().Name;
+            var dllName = Path.GetFileName(dllPath);
+            var doesAssemblyContainIExtensionApp = dllName.Contains(DependencyValues.IExtensionAppDllName)
+                && iExtensionAppClassName.Contains(DependencyValues.IExtensionApplicationClassName);
+            return doesAssemblyContainIExtensionApp;
+        }
 
         public new void Log(string message)
         {
@@ -405,7 +543,7 @@ namespace cadwiki.DllReloader.AutoCAD
             }
         }
 
-        public new void LogException(Autodesk.AutoCAD.Runtime.Exception ex)
+        public new void LogException(Exception ex)
         {
             var mode = GetLogMode();
             switch (mode.Equals(LogMode.Off))
@@ -424,7 +562,7 @@ namespace cadwiki.DllReloader.AutoCAD
             }
         }
 
-        private new void LogExceptionToTextFile(Autodesk.AutoCAD.Runtime.Exception ex)
+        private new void LogExceptionToTextFile(Exception ex)
         {
             if (ReloaderLog is null)
             {
@@ -439,7 +577,7 @@ namespace cadwiki.DllReloader.AutoCAD
             }
         }
 
-        private void LogExceptionToEditor(Autodesk.AutoCAD.Runtime.Exception ex)
+        private void LogExceptionToEditor(Exception ex)
         {
             if (_document is null)
             {
