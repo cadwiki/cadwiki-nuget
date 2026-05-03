@@ -18,19 +18,19 @@
         <files include="lib\cadwiki.AcRemoveCmdGroup.dll" buildAction="None" copyToOutput="true" />
     </contentFiles>
     <dependencies>
-        <group targetFramework=".NETFramework4.8">
-			<dependency id="Handlebars.Net" version="2.1.2" />
-			<dependency id="Microsoft.TestApi" version="0.6.0.0"/>
-			<dependency id="Newtonsoft.Json" version="13.0.1"/>
-			<dependency id="NUnit" version="3.13.3"/>
-			<dependency id="PDFsharp" version="1.50.5147"/>
-		</group>
+      <group targetFramework="net8.0">
+        <dependency id="Handlebars.Net" version="2.1.6" />
+        <dependency id="Newtonsoft.Json" version="13.0.4" />
+        <dependency id="NUnit" version="4.6.0" />
+        <dependency id="PDFsharp" version="6.2.4" />
+      </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\*.dll" exclude="**cadwiki.AcRemoveCmdGroup.dll" target="lib\net48"/>
-	<file src="bin\$configuration$\*.pdb" exclude="**cadwiki.AcRemoveCmdGroup.pdb" target="lib\net48"/>
-	<file src="bin\$configuration$\cadwiki.AcRemoveCmdGroup.dll" target="Build"/>
+    <!-- .NET 8 output -->
+    <file src="bin\$configuration$\net8.0-windows\*.dll" target="lib\net8.0" />
+    <file src="bin\$configuration$\net8.0-windows\*.pdb" target="lib\net8.0" />
+	<file src="bin\$configuration$\net8.0-windows\cadwiki.AcRemoveCmdGroup.dll" target="Build"/>
 	<file src="cadwiki.CadDevTools.targets" target="Build"/>
 	<file src="..\icons\500x500-cadwiki-v1.png" target="images\" />
   </files>

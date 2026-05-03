@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFramework>net8.0-windows</TargetFramework>
+    <BuildRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), cadwiki-nuget.sln))</BuildRoot>
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
@@ -21,6 +22,11 @@
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
   </PropertyGroup>
+  <Target Name="CopyAcRemoveCmdGroup" AfterTargets="Build">
+    <Exec Command="echo The build root is: $(BuildRoot)" />
+    <Exec Command="echo AcRemoveCmdGroup.dll location is: $(BuildRoot)\cadwiki.AcRemoveCmdGroup\x64\$(Configuration)\cadwiki.AcRemoveCmdGroup.dll" />
+    <Exec Command="xcopy /S /Q /Y /F $(BuildRoot)\x64\$(Configuration)\cadwiki.AcRemoveCmdGroup.dll $(TargetDir)\" />
+  </Target>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile>bin\Debug\cadwiki.CadDevTools.xml</DocumentationFile>
   </PropertyGroup>
@@ -90,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cadwiki.AC25.Interop\cadwiki.AC25.Interop.csproj" />
+    <ProjectReference Include="..\cadwiki.AcRemoveCmdGroup\cadwiki.AcRemoveCmdGroup.vcxproj" />
     <ProjectReference Include="..\cadwiki.AC\cadwiki.AC.csproj" />
     <ProjectReference Include="..\cadwiki.DllReloader\cadwiki.DllReloader.csproj" />
     <ProjectReference Include="..\cadwiki.FileStore\cadwiki.FileStore.csproj" />
