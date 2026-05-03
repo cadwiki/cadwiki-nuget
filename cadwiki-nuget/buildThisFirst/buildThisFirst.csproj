@@ -2,80 +2,41 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <UsingTask AssemblyFile="..\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll" TaskName="AssemblyInfo" />
   <PropertyGroup>
     <NoWarn>168,1591,42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,162,649,1717,219,67,414,4244,414,MSB3270,3270</NoWarn>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
-    <BuildRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), build.root))</BuildRoot>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-  <Target Name="autoincrementBuildThisFirstAssemblyInfo" BeforeTargets="Build">
-    <Exec Command="echo target for auto incrementing AssemblyInfo.cs files" />
-    <!-- Autoincrement buildThisFirst AssemblyInfo-->
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-      <Output TaskParameter="Assemblies" ItemName="buildThisFirstAssemblyIdentities" />
-    </GetAssemblyIdentity>
-    <Exec Command="echo project buildThisFirst current assembly version is: %(buildThisFirstAssemblyIdentities.Version)" />
-    <!-- Parse ./buildThisFirst/My Project/AssemblyInfo.cs into variables below with regex-->
-    <PropertyGroup>
-      <Pattern>(\d+)(.)(\d+)(.)(\d+)(.)(\d+)</Pattern>
-      <In>%(buildThisFirstAssemblyIdentities.Version)</In>
-      <str_prevMajor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</str_prevMajor>
-      <str_prevMinor>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[3].Value)</str_prevMinor>
-      <str_prevBuildNumber>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[5].Value)</str_prevBuildNumber>
-      <int_prevBuildNumber>$([System.Int32]::Parse($(str_prevBuildNumber)))</int_prevBuildNumber>
-      <str_prevRevNumber>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[7].Value)</str_prevRevNumber>
-      <str_prevRevNumber>$([System.Int32]::Parse($(str_prevRevNumber)))</str_prevRevNumber>
-      <int_newRevNumber>$([MSBuild]::Add($(str_prevRevNumber), 1))</int_newRevNumber>
-      <CurrentDate>$([System.DateTime]::Now.ToString(MMdd))</CurrentDate>
-      <int_CurrentDate>$([System.Int32]::Parse($(CurrentDate)))</int_CurrentDate>
-    </PropertyGroup>
-    <!-- If int_CurrentDate does not match date found in assemblyInfo, this is the first build of the day, reset $int_newRevNumber to 1-->
-    <PropertyGroup Condition="$(int_CurrentDate) != $(int_prevBuildNumber)">
-      <int_newRevNumber>$([System.Int32]::Parse(1))</int_newRevNumber>
-    </PropertyGroup>
-    <ItemGroup>
-      <Reference Include="Microsoft.VisualBasic" />
-      <!-- Include multiple directories for AssemblyInfo.cs -->
-      <AssemblyInfoFiles Include="$(BuildRoot)\**\AssemblyInfo.cs" />
-      <AssemblyInfoFiles Include="$(BuildRoot)\cadwiki.AC\**\AssemblyInfo.cs" />
-      <AssemblyInfoFiles Include="$(BuildRoot)\cadwiki.AC.TestPlugin\**\AssemblyInfo.cs" />
-    </ItemGroup>
-    <!-- select option 1 or 2 for assembly version incrementation and comment out the others  -->
-    <!-- 1.) single digit rev auto inc format from int_newRevNumber created above  -->
-    <!-- format: major.minor.date_string.#  -->
-    <PropertyGroup Condition="'$(Configuration)' == 'DebugAuto'">
-      <AssemblyInfoVersionType>AutoIncrement</AssemblyInfoVersionType>
-      <AssemblyMajorVersion>$(str_prevMajor)</AssemblyMajorVersion>
-      <AssemblyMinorVersion>$(str_prevMinor)</AssemblyMinorVersion>
-      <AssemblyBuildNumberType>DateString</AssemblyBuildNumberType>
-      <AssemblyBuildNumberFormat>MMdd</AssemblyBuildNumberFormat>
-      <AssemblyRevision>$(int_newRevNumber)</AssemblyRevision>
-    </PropertyGroup>
-    <!-- 2.) hard coded version rev and version build -->
-    <!--don't manually change this, use AdminOps to update-->
-    <!--this version number always has to be 4 digits to ensure nuspec target works as expected-->
-    <PropertyGroup Condition="'$(Configuration)' == 'DebugHC'">
-      <AssemblyInfoVersionType>HardCoded</AssemblyInfoVersionType>
-      <AssemblyMajorVersion>4</AssemblyMajorVersion>
-      <AssemblyMinorVersion>1</AssemblyMinorVersion>
-      <AssemblyBuildNumber>0</AssemblyBuildNumber>
-      <!--don't set to 0-->
-      <AssemblyRevision>1</AssemblyRevision>
-    </PropertyGroup>
-    <!-- Execute AssemblyInfo updates based on defined properties -->
-    <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" AssemblyMajorVersion="$(AssemblyMajorVersion)" AssemblyMinorVersion="$(AssemblyMinorVersion)" AssemblyBuildNumberType="$(AssemblyBuildNumberType)" AssemblyBuildNumberFormat="$(AssemblyBuildNumberFormat)" AssemblyRevision="$(AssemblyRevision)" AssemblyBuildNumber="$(AssemblyBuildNumber)" AssemblyRevisionType="$(AssemblyRevisionType)" AssemblyRevisionFormat="$(AssemblyRevisionFormat)" />
-    <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" AssemblyFileMajorVersion="$(AssemblyMajorVersion)" AssemblyFileMinorVersion="$(AssemblyMinorVersion)" AssemblyFileBuildNumberType="$(AssemblyBuildNumberType)" AssemblyFileBuildNumberFormat="$(AssemblyBuildNumberFormat)" AssemblyFileRevision="$(AssemblyRevision)" AssemblyBuildNumber="$(AssemblyBuildNumber)" AssemblyRevisionType="$(AssemblyRevisionType)" AssemblyRevisionFormat="$(AssemblyRevisionFormat)" />
-    <Exec Command="echo target incremented assembly version for all assemblies in solution." />
-    <Exec Command="echo new version: v$(AssemblyMajorVersion).$(AssemblyMinorVersion).$(AssemblyBuildNumber).$(AssemblyRevision)  Debug vars: AssemblyFileBuildNumberType=$(AssemblyBuildNumberType) AssemblyFileBuildNumberFormat=$(AssemblyBuildNumberFormat) AssemblyRevisionType=$(AssemblyRevisionType) AssemblyRevisionFormat=$(AssemblyRevisionFormat)." />
-    <Exec Command="echo $(Configuration)$(Platform)." />
-    <!-- print statement for debugging -->
-    <!--<Message Text="@(AssemblyInfoFiles, '%0a')" Importance="high" />-->
-  </Target>
+  <!-- ═══════════════════════════════════════════════════════════════════
+       Version Auto-Increment (imported from shared .targets file)
+       
+       Strategy is selected by build configuration:
+         DebugAuto → AutoIncrement (major.minor.MMdd.N, daily reset)
+         DebugHC   → HardCoded     (explicit 4.1.0.1)
+       
+       To change strategy, just switch Configuration or override VersionStrategy.
+       See build-targets/cadwiki.VersionAutoIncrement.targets for full docs.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <!-- Map DebugAuto configuration to AutoIncrement strategy -->
+  <PropertyGroup Condition="'$(Configuration)' == 'DebugAuto'">
+    <VersionStrategy>AutoIncrement</VersionStrategy>
+  </PropertyGroup>
+  <!-- Map DebugHC configuration to HardCoded strategy -->
+  <!-- Don't manually change these — use AdminOps to update -->
+  <!-- Version must always be 4 digits to ensure nuspec target works -->
+  <PropertyGroup Condition="'$(Configuration)' == 'DebugHC'">
+    <VersionStrategy>HardCoded</VersionStrategy>
+    <VersionMajor>4</VersionMajor>
+    <VersionMinor>1</VersionMinor>
+    <VersionBuild>0</VersionBuild>
+    <VersionRevision>1</VersionRevision>
+  </PropertyGroup>
+  <!-- Import the shared versioning target -->
+  <Import Project="..\build-targets\cadwiki.VersionAutoIncrement.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
