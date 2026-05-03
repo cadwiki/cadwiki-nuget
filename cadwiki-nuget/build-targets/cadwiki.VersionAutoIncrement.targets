@@ -117,7 +117,7 @@
 
     <!-- ── Validate Extension Pack exists ── -->
     <Error Condition="!Exists('$(VersionExtensionPackDll)')"
-           Text="[cadwiki.VersionAutoIncrement] MSBuild.Extension.Pack not found at '$(VersionExtensionPackDll)'. Install the NuGet package or set $(VersionExtensionPackDll) to the correct path." />
+           Text="[cadwiki.VersionAutoIncrement] FATAL: MSBuild.Extension.Pack DLL not found.%0A%0ASearched locations:%0A  1. Local:  $(BuildRoot)\packages\MSBuild.Extension.Pack.1.9.1\tools\net40\MSBuild.ExtensionPack.dll%0A  2. Global: $(USERPROFILE)\.nuget\packages\msbuild.extension.pack\1.9.1\tools\net40\MSBuild.ExtensionPack.dll%0A%0ATo fix:%0A  • Install via NuGet: 'Install-Package MSBuild.Extension.Pack'%0A  • Or find the DLL manually: search for 'MSBuild.ExtensionPack.dll' in %USERPROFILE%\.nuget\packages%0A  • Or set custom path: add to your .csproj before importing:%0A    &lt;PropertyGroup&gt;%0A      &lt;VersionExtensionPackDll&gt;C:\path\to\MSBuild.ExtensionPack.dll&lt;/VersionExtensionPackDll&gt;%0A    &lt;/PropertyGroup&gt;" />
 
     <Exec Command="echo [cadwiki.VersionAutoIncrement] Strategy=$(VersionStrategy) Project=$(MSBuildProjectName)" />
 
