@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace cadwiki.WpfLibrary.Controls
 {
-    public class BindableMultiSelectDataGrid : DataGrid
+    public class BindableMultiSelectDataGrid : DataGrid // TODO DataGrid is no longer supported. Use DataGridView instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
     {
         public static readonly DependencyProperty SelectedItemsProperty =
             DependencyProperty.Register("SelectedItems", typeof(IList), typeof(BindableMultiSelectDataGrid), new PropertyMetadata(default(IList)));

@@ -127,7 +127,7 @@ namespace cadwiki.AC.TestPlugin.Tests
             inputs.SelectionToBreakWith = selection2;
             inputs.Self = true;
             var newLines = Workflows.BreakSs.BreakSsWithSs(_doc, inputs);
-            Assert.AreEqual(newLines.Count, 4, "Expected 4 new lines, instead was: " + newLines.Count.ToString());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(4, newLines.Count, "Expected 4 new lines, instead was: " + newLines.Count.ToString());
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace cadwiki.AC.TestPlugin.Tests
             
             var nodeGraph = new NodeGraph.NodeGraph(_doc, linePoints, pt1, pt2);
             var lineIds = DrawLines(_doc, linePointTuples, nodeGraph.LayerNameLines);
-            Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(4, nodeGraph.Nodes.Count, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
         public class LinePoints
@@ -192,7 +192,7 @@ namespace cadwiki.AC.TestPlugin.Tests
 
             nodeGraph.AddNeighborsToNodes();
             nodeGraph.LabelNodes();
-            Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(4, nodeGraph.Nodes.Count, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
         [Test]
@@ -222,7 +222,7 @@ namespace cadwiki.AC.TestPlugin.Tests
 
             nodeGraph.AddNeighborsToNodes();
             nodeGraph.LabelNodes();
-            Assert.AreEqual(nodeGraph.Nodes.Count, 4, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(4, nodeGraph.Nodes.Count, "Expected 4 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
 
@@ -309,21 +309,21 @@ namespace cadwiki.AC.TestPlugin.Tests
         public void Add_Neighbors_To_Double_Complex_Node_Graph()
         {
             var nodeGraph = DrawDoubleComplexNodeGraph(_doc, true);
-            Assert.AreEqual(nodeGraph.Nodes.Count, 8, "Expected 8 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(8, nodeGraph.Nodes.Count, "Expected 8 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
         [Test]
         public void Add_Src_And_Dest_To_Double_Complex_Node_Graph()
         {
             var nodeGraph = DrawDoubleComplexNodeGraph(_doc, true, true);
-            Assert.AreEqual(nodeGraph.Nodes.Count, 11, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(11, nodeGraph.Nodes.Count, "Expected 11 nodes on graph, instead was: " + nodeGraph.Nodes.Count.ToString());
         }
 
         [Test]
         public void Add_Bfs_Path_To_Double_Complex_Node_Graph()
         {
             var nodeGraph = DrawDoubleComplexNodeGraph(_doc, true, true, true);
-            Assert.AreEqual(nodeGraph.BFSPath.Count, 5, "Expected 5 nodes on BFS Path, instead was: " + nodeGraph.BFSPath.Count.ToString());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(5, nodeGraph.BFSPath.Count, "Expected 5 nodes on BFS Path, instead was: " + nodeGraph.BFSPath.Count.ToString());
         }
 
         // Test larger graph of nodes

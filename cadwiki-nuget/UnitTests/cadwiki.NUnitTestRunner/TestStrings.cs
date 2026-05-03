@@ -12,7 +12,7 @@ namespace UnitTests
         {
             string expected = "Hello";
             string actual = "Hello";
-            NUnit.Framework.Assert.AreEqual(expected, actual, "Input strings don't match");
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(expected, actual, "Input strings don't match");
         }
 
         [Test]
@@ -20,7 +20,7 @@ namespace UnitTests
         {
             string expected = "Hello";
             string actual = "World";
-            NUnit.Framework.Assert.AreEqual(expected, actual, "Input strings don't match");
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(expected, actual, "Input strings don't match");
         }
 
         [TestCase("Hello", "Hello")]
