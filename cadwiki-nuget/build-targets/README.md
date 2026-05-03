@@ -4,6 +4,105 @@ Reusable MSBuild `.targets` files for cadwiki plugin projects.
 
 ---
 
+## `cadwiki.VersionAutoIncrement.targets`
+
+**Pluggable version auto-increment for AssemblyInfo.cs — replaces the inline versioning logic from buildThisFirst.csproj.**
+
+Supports multiple strategies via a single property.  One import line per project.
+
+### Strategies
+
+| Strategy | Format | Description |
+|---|---|---|
+| `AutoIncrement` | `major.minor.MMdd.N` | N resets to 1 each day, increments per build. Reads prior version from built assembly. |
+| `HardCoded` | `major.minor.build.rev` | All four segments explicitly set via properties. |
+| `DateBased` | `major.minor.MMdd.HHmm` | Full date-time stamp, no prior build needed. |
+
+### Quick start
+
+```xml
+<!-- Minimal: uses AutoIncrement strategy, discovers all AssemblyInfo.cs under BuildRoot -->
+<Import Project="..\build-targets\cadwiki.VersionAutoIncrement.targets" />
+```
+
+### Configuration-driven strategy (how buildThisFirst uses it)
+
+```xml
+<!-- Map build configurations to strategies -->
+<PropertyGroup Condition="'$(Configuration)' == 'DebugAuto'">
+  <VersionStrategy>AutoIncrement</VersionStrategy>
+</PropertyGroup>
+<PropertyGroup Condition="'$(Configuration)' == 'DebugHC'">
+  <VersionStrategy>HardCoded</VersionStrategy>
+  <VersionMajor>4</VersionMajor>
+  <VersionMinor>1</VersionMinor>
+  <VersionBuild>0</VersionBuild>
+  <VersionRevision>1</VersionRevision>
+</PropertyGroup>
+<Import Project="..\build-targets\cadwiki.VersionAutoIncrement.targets" />
+```
+
+### All configuration properties
+
+| Property | Default | Description |
+|---|---|---|
+| `VersionAutoIncrementEnabled` | `true` | Master on/off switch |
+| `VersionStrategy` | `AutoIncrement` | `AutoIncrement` \| `HardCoded` \| `DateBased` |
+| `VersionMajor` | *(from assembly)* | Major version (required for HardCoded) |
+| `VersionMinor` | *(from assembly)* | Minor version (required for HardCoded) |
+| `VersionBuild` | *(computed)* | Build number (required for HardCoded) |
+| `VersionRevision` | *(computed)* | Revision (required for HardCoded) |
+| `VersionExtensionPackDll` | *(auto-detected)* | Path to MSBuild.ExtensionPack.dll |
+| `VersionAssemblyInfoGlob` | `$(BuildRoot)\**\AssemblyInfo.cs` | Glob pattern for file discovery |
+| `VersionVerbose` | `false` | Extra diagnostic logging |
+
+### AssemblyInfo file selection
+
+**Option A — Glob (default):** All `AssemblyInfo.cs` files under `BuildRoot`:
+```xml
+<Import Project="..\build-targets\cadwiki.VersionAutoIncrement.targets" />
+```
+
+**Option B — Custom glob:**
+```xml
+<PropertyGroup>
+  <VersionAssemblyInfoGlob>$(BuildRoot)\cadwiki.*\**\AssemblyInfo.cs</VersionAssemblyInfoGlob>
+</PropertyGroup>
+<Import Project="..\build-targets\cadwiki.VersionAutoIncrement.targets" />
+```
+
+**Option C — Explicit file list:**
+```xml
+<PropertyGroup>
+  <VersionAssemblyInfoGlob></VersionAssemblyInfoGlob><!-- disable glob -->
+</PropertyGroup>
+<ItemGroup>
+  <VersionAssemblyInfoFiles Include="..\ProjectA\Properties\AssemblyInfo.cs" />
+  <VersionAssemblyInfoFiles Include="..\ProjectB\Properties\AssemblyInfo.cs" />
+</ItemGroup>
+<Import Project="..\build-targets\cadwiki.VersionAutoIncrement.targets" />
+```
+
+### Disable from command line
+
+```bash
+msbuild MyProject.csproj /p:VersionAutoIncrementEnabled=false
+```
+
+### Adding a new versioning strategy
+
+1. Open `cadwiki.VersionAutoIncrement.targets`
+2. Add a new `<PropertyGroup Condition="'$(VersionStrategy)' == 'YourStrategy'">` block
+3. Set the internal properties: `_VersionMajor`, `_VersionMinor`, `_VersionBuildNumber`, `_VersionRevision`, plus optional `_VersionBuildNumberType`, `_VersionBuildNumberFormat`, `_VersionRevisionType`, `_VersionRevisionFormat`
+4. The generic AssemblyInfo task calls at the bottom handle the rest
+
+### Requirements
+
+- **MSBuild.Extension.Pack** NuGet package (provides the `AssemblyInfo` task)
+- For `AutoIncrement` strategy: a previously-built assembly at `$(TargetPath)` (bootstrap with `HardCoded` first, or do one normal build)
+
+---
+
 ## `UpdateAssemblyVersionTimestamp.targets`
 
 **Auto-stamps every build with a strictly-increasing, deterministic version number.**
