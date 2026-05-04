@@ -5,6 +5,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using cadwiki.DllReloader.AutoCAD.UiRibbon;
 using cadwiki.NetUtils;
+using Exception = System.Exception;
 
 namespace cadwiki.DllReloader.AutoCAD
 {
@@ -30,12 +31,12 @@ namespace cadwiki.DllReloader.AutoCAD
     ///
     ///       protected override RibbonTabDefinition CreateProductionTab()
     ///       {
-    ///           var panel = new RibbonPanelDefinition("My Tools")
-    ///               .Add(RibbonButtonDefinition.Builder("Do Thing")
+    ///           var panel = new RibbonPanelDefinition("cwPanel")
+    ///               .Add(RibbonButtonDefinition.Builder("cwButton")
     ///                   .Tooltip("Does the thing")
     ///                   .OnClick(() => DoThing())
     ///                   .Build());
-    ///           return new RibbonTabDefinition("My Plugin")
+    ///           return new RibbonTabDefinition("cwTab")
     ///               .Add(panel);
     ///       }
     ///   }
@@ -56,7 +57,7 @@ namespace cadwiki.DllReloader.AutoCAD
     ///       protected override RibbonTabDefinition CreateProductionTab()
     ///       {
     ///           // Tab is installed but won't steal focus from the current tab
-    ///           return new RibbonTabDefinition("My Plugin", isActive: false)
+    ///           return new RibbonTabDefinition("cwTab", isActive: false)
     ///               .Add(myPanel);
     ///       }
     ///
@@ -83,7 +84,7 @@ namespace cadwiki.DllReloader.AutoCAD
         /// The DLL reloader instance. Accessible by subclasses and their
         /// ribbon button handlers.
         /// </summary>
-        public AutoCADAppDomainDllReloader Reloader { get; private set; }
+        public static AutoCADAppDomainDllReloader Reloader { get; private set; } = new AutoCADAppDomainDllReloader();
 
         // ── Overridable configuration ───────────────────────────────────────
 
@@ -131,10 +132,71 @@ namespace cadwiki.DllReloader.AutoCAD
         /// Override to provide a pipeline action for the dev ribbon's Pipeline
         /// button. Return <c>null</c> to omit the Pipeline button.
         /// </summary>
-        /// <param name="executingAssembly">The assembly of the concrete subclass.</param>
-        protected virtual Action CreatePipelineAction(Assembly executingAssembly)
+        /// <param name="iExtensionAppAssembly">The assembly of the concrete subclass.</param>
+        protected virtual Action CreatePipelineAction(Assembly iExtensionAppAssembly)
         {
-            return null;
+            var pipelineAction = () =>
+            {
+                CustomPipeLine(iExtensionAppAssembly);
+            };
+            return pipelineAction;
+        }
+
+        private static void CustomPipeLine(Assembly iExtensionAppAssembly)
+        {
+            var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            doc.Editor.WriteMessage(Environment.NewLine + "CustomPipeLine started..");
+            try
+            {
+                if (doc != null)
+                {
+                    var netReloader = Reloader;
+                    string userInputDllPath = netReloader.UserInputGetDllPath();
+                    if (string.IsNullOrEmpty(userInputDllPath))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        var fileNameNoExt = System.IO.Path.GetFileNameWithoutExtension(userInputDllPath);
+                        var fileName = System.IO.Path.GetFileName(userInputDllPath);
+                        var dirName = System.IO.Path.GetDirectoryName(userInputDllPath);
+                        var pipeline = new cadwiki.DllReloader.PluginReloadService.PluginReloadPipeline(
+                            pluginName: fileNameNoExt,
+                            sourceBuildDir: dirName,
+                            mainDllName: fileName,
+                            reloader: netReloader
+                        );
+
+                        var result = pipeline.Execute(doc);
+
+                        if (!result.IsSuccess)
+                        {
+                            var window = new WpfUi.Templates.WindowAutoCADException(
+                                new System.Exception($"Reload failed: {result.Error?.Message}\nSee log: {result.LogFilePath}"));
+                            window.Show();
+                            return;
+                        }
+                        else if (!result.ReloadTriggered)
+                        {
+                            var window = new WpfUi.Templates.WindowAutoCADException(
+                                new System.Exception($"Staged OK but reload not triggered.\nStaged at: {result.StagingResult?.StagingFolder}"));
+                            window.Show();
+                            return;
+                        }
+                        else
+                        {
+                            doc.Editor.WriteMessage($"\nPlugin reloaded in {result.Elapsed.TotalMilliseconds:0}ms\n");
+                        }
+
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                var window = new WpfUi.Templates.WindowAutoCADException(ex);
+                window.Show();
+            }
         }
 
         /// <summary>
