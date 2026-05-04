@@ -12,7 +12,7 @@
     <CadwikiVersionMajor>25</CadwikiVersionMajor>
     <CadwikiVersionMinor>0</CadwikiVersionMinor>
     <CadwikiVersionBuild>0</CadwikiVersionBuild>
-    <CadwikiVersionRevision>3</CadwikiVersionRevision>
+    <CadwikiVersionRevision>4</CadwikiVersionRevision>
     <CadwikiVersion>$(CadwikiVersionMajor).$(CadwikiVersionMinor).$(CadwikiVersionBuild).$(CadwikiVersionRevision)</CadwikiVersion>
 
     <!-- Feed the SDK-style Version / AssemblyVersion / FileVersion properties -->
