@@ -12,9 +12,10 @@
               All four segments come from the explicit properties below.
 
            2. Auto-increment:    Set CadwikiAutoVersion=true.
-              Build  = yyyyMMdd  (UTC date of the build, e.g. 20260503)
+		      Minor = yyyy  (UTC date of the build, e.g. 2026)
+              Build  = MMdd  (UTC date of the build, e.g. 0503)
               Revision = HHmmss  (UTC time of the build, e.g. 175530)
-              → Version becomes  maj.min.yyyyMMdd.HHmmss
+              → Version becomes  maj.yyyy.MMdd.HHmmss
 
          In both modes, CadwikiVersionMajor and CadwikiVersionMinor are
          always set explicitly. The computed CadwikiVersion feeds into
@@ -30,7 +31,7 @@
     <!-- Set to true on the command line or in CI to enable timestamp-based versioning:
            msbuild /p:CadwikiAutoVersion=true
            dotnet build /p:CadwikiAutoVersion=true                              -->
-    <CadwikiAutoVersion Condition="'$(CadwikiAutoVersion)' == ''">false</CadwikiAutoVersion>
+    <CadwikiAutoVersion Condition="'$(CadwikiAutoVersion)' == ''">true</CadwikiAutoVersion>
 
     <!-- ── Manual version segments (used when CadwikiAutoVersion=false) ── -->
     <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' != 'true'">0</CadwikiVersionBuild>
@@ -38,8 +39,8 @@
 
     <!-- ── Auto-increment segments (used when CadwikiAutoVersion=true) ──
          Computed from the current UTC timestamp at evaluation time.
-         Format: maj.min.yyyyMMdd.HHmmss
-         Example: 25.0.20260503.175530
+         Format: maj.yyyy.MMdd.HHmmss
+         Example: 25.2026.0503.175530
 
          NOTE: These use System.DateTime.UtcNow so the version is
          timezone-independent and always monotonically increasing.
@@ -54,7 +55,8 @@
          For legacy .NET Framework 4.8 projects that need strict 16-bit
          AssemblyVersion compatibility, use CadwikiAutoVersion=false
          (the default) and set segments manually.                        -->
-    <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('yyyyMMdd'))</CadwikiVersionBuild>
+    <CadwikiVersionMinor Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('yyyy'))</CadwikiVersionMinor>
+    <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('MMdd'))</CadwikiVersionBuild>
     <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('HHmmss'))</CadwikiVersionRevision>
 
     <!-- ── Composed version string ── -->
