@@ -263,6 +263,94 @@ This will print:
 
 ---
 
+---
+
+## `cadwiki.DevToolsDriver.targets`
+
+**Post-build launcher for CadDevToolsDriver — test your AutoCAD addin without creating a throwaway project.**
+
+Integrates into any existing `.csproj` with 2–3 lines. After a successful Debug build, the CadDevTools launcher UI opens with your DLL pre-staged, ready to start AutoCAD.
+
+### Quick start
+
+```xml
+<PropertyGroup>
+  <CadDevToolsEnabled>true</CadDevToolsEnabled>
+</PropertyGroup>
+<Import Project="..\build-targets\cadwiki.DevToolsDriver.targets" />
+```
+
+### What it does
+
+1. **Stages** your build output to a temp folder (`%TEMP%\cadwiki.YourProject\...`)
+2. **Launches** CadDevToolsDriver.exe (non-blocking, so your build completes immediately)
+3. The CadDevTools UI picks up the staged DLLs and is ready to launch AutoCAD
+
+### Configuration properties
+
+| Property | Default | Description |
+|---|---|---|
+| `CadDevToolsEnabled` | `false` | Master switch — must be `true` to activate |
+| `CadDevToolsConfiguration` | `Debug` | Only runs when Configuration matches this |
+| `CadDevToolsDriverExe` | *(auto-detected)* | Full path to CadDevToolsDriver.exe |
+| `CadDevToolsAutoCADExe` | `C:\...\AutoCAD 2025\acad.exe` | Path to acad.exe |
+| `CadDevToolsStartupSwitches` | `/p VANILLA` | AutoCAD startup switches |
+| `CadDevToolsDllPatterns` | `$(TargetFileName)` | Semicolon-delimited DLL wildcard patterns |
+| `CadDevToolsTempSubfolder` | `cadwiki.$(MSBuildProjectName)` | Staging subfolder under `%TEMP%` |
+| `CadDevToolsStaleFolderDays` | `1` | Days before stale staging folders are cleaned |
+| `CadDevToolsLogFile` | `$(IntermediateOutputPath)caddevtools.log` | Log file path |
+| `CadDevToolsWaitForExit` | `false` | Block build until launcher closes |
+
+### Examples
+
+**Custom AutoCAD version:**
+```xml
+<PropertyGroup>
+  <CadDevToolsEnabled>true</CadDevToolsEnabled>
+  <CadDevToolsAutoCADExe>C:\Program Files\Autodesk\AutoCAD 2024\acad.exe</CadDevToolsAutoCADExe>
+</PropertyGroup>
+<Import Project="..\build-targets\cadwiki.DevToolsDriver.targets" />
+```
+
+**Multiple DLL patterns:**
+```xml
+<PropertyGroup>
+  <CadDevToolsEnabled>true</CadDevToolsEnabled>
+  <CadDevToolsDllPatterns>*MyPlugin.dll;*MyPlugin.Core.dll</CadDevToolsDllPatterns>
+</PropertyGroup>
+<Import Project="..\build-targets\cadwiki.DevToolsDriver.targets" />
+```
+
+**CLI-only opt-in (no .csproj change needed):**
+```bash
+msbuild MyAddin.csproj /p:CadDevToolsEnabled=true
+```
+
+**Blocking mode with log capture (for CI debugging):**
+```xml
+<PropertyGroup>
+  <CadDevToolsEnabled>true</CadDevToolsEnabled>
+  <CadDevToolsWaitForExit>true</CadDevToolsWaitForExit>
+</PropertyGroup>
+<Import Project="..\build-targets\cadwiki.DevToolsDriver.targets" />
+```
+
+### Requirements
+
+- **CadDevToolsDriver** project must be built first (the targets file auto-detects the exe in the solution)
+- Windows only (AutoCAD is Windows-only)
+- Only runs for the configured build configuration (default: Debug), so Release/CI builds are unaffected
+
+### Disabling
+
+```bash
+msbuild MyAddin.csproj /p:CadDevToolsEnabled=false
+```
+
+Or simply don't set `CadDevToolsEnabled` to `true` — it defaults to `false`.
+
+---
+
 ### Why not use `$(BuildId)` or GitVersion?
 
 Those require external tooling, network access, or git history.

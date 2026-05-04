@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Reflection;
 using Autodesk.Windows;
 
@@ -18,11 +20,25 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon.Buttons
 
             if (bitMap is not null)
             {
-                var image = NetUtils.Bitmaps.CreateBitmapSourceFromBitmap(bitMap);
-                if (image is not null)
+                try
                 {
-                    ribbonButton.Image = image;
-                    ribbonButton.ShowImage = true;
+                    var image = NetUtils.Bitmaps.CreateBitmapSourceFromBitmap(bitMap);
+                    if (image is not null)
+                    {
+                        ribbonButton.Image = image;
+                        ribbonButton.ShowImage = true;
+                    }
+                }
+                catch (Exception ex) when (
+                    ex is TypeInitializationException ||
+                    ex is FileNotFoundException ||
+                    ex is DllNotFoundException ||
+                    ex is TypeLoadException ||
+                    ex is Exception)
+                {
+                    // Icon loading failed — button renders without an icon.
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[Creator] Warning: Icon load failed for button '{name}': {ex.Message}");
                 }
             }
 
