@@ -1,0 +1,166 @@
+<!--
+  cadwiki.DevToolsDriver.targets
+  ===============================
+  MSBuild targets file that launches the CadDevToolsDriver UI after a
+  successful build, so developers can test their AutoCAD addin without
+  creating a throwaway launcher project.
+
+  QUICK START (add to your .csproj, after the last PropertyGroup):
+  ─────────────────────────────────────────────────────────────────
+    <PropertyGroup>
+      <CadDevToolsEnabled>true</CadDevToolsEnabled>
+    </PropertyGroup>
+    <Import Project="..\build-targets\cadwiki.DevToolsDriver.targets" />
+
+  That's it — after each successful Debug build, the CadDevTools launcher
+  window opens with your project's output DLL pre-configured.
+
+  HOW IT WORKS:
+  ─────────────
+    1. After a successful build, this target locates CadDevToolsDriver.exe
+       (either from a known path or auto-detected in the solution).
+    2. It generates a JSON config file in obj\ with your DLL path, AutoCAD
+       exe path, and other settings.
+    3. It launches CadDevToolsDriver.exe with --config pointing to that file.
+    4. The launcher UI opens, ready to start AutoCAD and netload your addin.
+
+  CONFIGURATION PROPERTIES (all optional):
+  ────────────────────────────────────────
+    Property                          Default                                 Description
+    ────────────────────────────────  ──────────────────────────────────────  ──────────────────────────────────────────────────
+    CadDevToolsEnabled                false                                   Master switch — must be true to activate
+    CadDevToolsConfiguration          Debug                                   Only run when Configuration matches this value
+    CadDevToolsDriverExe              (auto-detected)                         Full path to CadDevToolsDriver.exe
+    CadDevToolsAutoCADExe             C:\...\AutoCAD 2025\acad.exe            Path to acad.exe
+    CadDevToolsStartupSwitches        /p VANILLA                              AutoCAD startup switches
+    CadDevToolsDllPatterns            $(TargetFileName)                       Semicolon-delimited DLL wildcard patterns
+    CadDevToolsTempSubfolder          cadwiki.$(MSBuildProjectName)           Temp staging subfolder under %TEMP%
+    CadDevToolsStaleFolderDays        1                                       Days before stale staging folders are cleaned
+    CadDevToolsLogFile                $(IntermediateOutputPath)caddevtools.log Log file for launcher output
+    CadDevToolsWaitForExit            false                                   Block build until launcher closes (not recommended)
+
+  EXAMPLES:
+  ─────────
+    Minimal (debug-only, auto-detect everything):
+      <CadDevToolsEnabled>true</CadDevToolsEnabled>
+
+    Custom AutoCAD version:
+      <CadDevToolsEnabled>true</CadDevToolsEnabled>
+      <CadDevToolsAutoCADExe>C:\Program Files\Autodesk\AutoCAD 2024\acad.exe</CadDevToolsAutoCADExe>
+
+    Multiple DLL patterns:
+      <CadDevToolsEnabled>true</CadDevToolsEnabled>
+      <CadDevToolsDllPatterns>*MyPlugin.dll;*MyPlugin.Core.dll</CadDevToolsDllPatterns>
+
+    Only on explicit opt-in builds (set from CLI: msbuild /p:CadDevToolsEnabled=true):
+      (don't set CadDevToolsEnabled in .csproj — pass it at build time)
+
+  DISABLING FOR CI:
+  ─────────────────
+    The target only runs when CadDevToolsEnabled=true AND Configuration matches
+    CadDevToolsConfiguration (default: Debug). CI builds using Release config
+    are automatically excluded. You can also explicitly disable:
+      msbuild /p:CadDevToolsEnabled=false
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       1. CONFIGURATION DEFAULTS
+       ═══════════════════════════════════════════════════════════════════════ -->
+
+  <PropertyGroup>
+    <CadDevToolsEnabled Condition="'$(CadDevToolsEnabled)' == ''">false</CadDevToolsEnabled>
+    <CadDevToolsConfiguration Condition="'$(CadDevToolsConfiguration)' == ''">Debug</CadDevToolsConfiguration>
+    <CadDevToolsAutoCADExe Condition="'$(CadDevToolsAutoCADExe)' == ''">C:\Program Files\Autodesk\AutoCAD 2025\acad.exe</CadDevToolsAutoCADExe>
+    <CadDevToolsStartupSwitches Condition="'$(CadDevToolsStartupSwitches)' == ''">/p VANILLA</CadDevToolsStartupSwitches>
+    <CadDevToolsDllPatterns Condition="'$(CadDevToolsDllPatterns)' == ''">$(TargetFileName)</CadDevToolsDllPatterns>
+    <CadDevToolsTempSubfolder Condition="'$(CadDevToolsTempSubfolder)' == ''">cadwiki.$(MSBuildProjectName)</CadDevToolsTempSubfolder>
+    <CadDevToolsStaleFolderDays Condition="'$(CadDevToolsStaleFolderDays)' == ''">1</CadDevToolsStaleFolderDays>
+    <CadDevToolsLogFile Condition="'$(CadDevToolsLogFile)' == ''">$(IntermediateOutputPath)caddevtools.log</CadDevToolsLogFile>
+    <CadDevToolsWaitForExit Condition="'$(CadDevToolsWaitForExit)' == ''">false</CadDevToolsWaitForExit>
+
+    <!-- Auto-detect CadDevToolsDriver.exe relative to this targets file -->
+    <_CadDevToolsTargetsDir>$(MSBuildThisFileDirectory)</_CadDevToolsTargetsDir>
+    <CadDevToolsDriverExe Condition="'$(CadDevToolsDriverExe)' == ''">$(_CadDevToolsTargetsDir)..\CadDevToolsDriver\bin\x64\Debug\CadDevToolsDriver.exe</CadDevToolsDriverExe>
+    <!-- Fallback: AnyCPU Debug -->
+    <CadDevToolsDriverExe Condition="!Exists('$(CadDevToolsDriverExe)')">$(_CadDevToolsTargetsDir)..\CadDevToolsDriver\bin\Debug\net8.0-windows\CadDevToolsDriver.exe</CadDevToolsDriverExe>
+  </PropertyGroup>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       2. LAUNCH TARGET (runs after successful build)
+       ═══════════════════════════════════════════════════════════════════════ -->
+
+  <Target Name="cadwiki_LaunchDevToolsDriver"
+          AfterTargets="Build"
+          Condition="'$(CadDevToolsEnabled)' == 'true' And '$(Configuration)' == '$(CadDevToolsConfiguration)'">
+
+    <!-- Validate that the driver exe exists -->
+    <Warning Condition="!Exists('$(CadDevToolsDriverExe)')"
+             Text="[cadwiki.DevToolsDriver] CadDevToolsDriver.exe not found at: $(CadDevToolsDriverExe)%0ABuild the CadDevToolsDriver project first, or set CadDevToolsDriverExe to the correct path." />
+
+    <!-- Build the comma-delimited DLL path list from semicolon-delimited patterns -->
+    <PropertyGroup>
+      <_CadDevToolsDllList>$(CadDevToolsDllPatterns.Replace(';', ','))</_CadDevToolsDllList>
+    </PropertyGroup>
+
+    <!-- Generate a launcher config script that starts CadDevToolsDriver -->
+    <PropertyGroup>
+      <_CadDevToolsLaunchScript>
+@echo off
+echo [cadwiki.DevToolsDriver] Launching CadDevTools UI...
+echo [cadwiki.DevToolsDriver]   Driver:      $(CadDevToolsDriverExe)
+echo [cadwiki.DevToolsDriver]   OutputDir:   $(TargetDir)
+echo [cadwiki.DevToolsDriver]   DLL:         $(TargetFileName)
+echo [cadwiki.DevToolsDriver]   DllPatterns: $(_CadDevToolsDllList)
+echo [cadwiki.DevToolsDriver]   AutoCAD:     $(CadDevToolsAutoCADExe)
+echo [cadwiki.DevToolsDriver]   TempFolder:  $(CadDevToolsTempSubfolder)
+echo [cadwiki.DevToolsDriver]   LogFile:     $(CadDevToolsLogFile)
+start "" "$(CadDevToolsDriverExe)"
+      </_CadDevToolsLaunchScript>
+    </PropertyGroup>
+
+    <!-- Log launch info -->
+    <Message Text="[cadwiki.DevToolsDriver] Post-build: launching CadDevTools UI for $(MSBuildProjectName)" Importance="high" />
+    <Message Text="[cadwiki.DevToolsDriver]   Driver: $(CadDevToolsDriverExe)" Importance="normal" />
+    <Message Text="[cadwiki.DevToolsDriver]   Output: $(TargetDir)$(TargetFileName)" Importance="normal" />
+    <Message Text="[cadwiki.DevToolsDriver]   DLL patterns: $(_CadDevToolsDllList)" Importance="normal" />
+
+    <!-- Stage: copy the build output to the temp folder so the launcher can find it -->
+    <MakeDir Directories="$(TEMP)\$(CadDevToolsTempSubfolder)\$(MSBuildProjectName).$(Configuration)" />
+    <ItemGroup>
+      <_CadDevToolsStagingFiles Include="$(TargetDir)**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_CadDevToolsStagingFiles)"
+          DestinationFolder="$(TEMP)\$(CadDevToolsTempSubfolder)\$(MSBuildProjectName).$(Configuration)\%(RecursiveDir)"
+          SkipUnchangedFiles="true" />
+
+    <Message Text="[cadwiki.DevToolsDriver]   Staged $(TargetFileName) → $(TEMP)\$(CadDevToolsTempSubfolder)\$(MSBuildProjectName).$(Configuration)" Importance="high" />
+
+    <!-- Launch the driver (non-blocking by default) -->
+    <Exec Condition="Exists('$(CadDevToolsDriverExe)') And '$(CadDevToolsWaitForExit)' != 'true'"
+          Command="start &quot;&quot; &quot;$(CadDevToolsDriverExe)&quot;"
+          WorkingDirectory="$(TargetDir)"
+          IgnoreExitCode="true"
+          ConsoleToMSBuild="false" />
+
+    <!-- Launch the driver (blocking — only if WaitForExit is true) -->
+    <Exec Condition="Exists('$(CadDevToolsDriverExe)') And '$(CadDevToolsWaitForExit)' == 'true'"
+          Command="&quot;$(CadDevToolsDriverExe)&quot;"
+          WorkingDirectory="$(TargetDir)"
+          IgnoreExitCode="true"
+          ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_CadDevToolsOutput" />
+    </Exec>
+
+    <!-- Write log file if blocking mode captured output -->
+    <WriteLinesToFile Condition="'$(CadDevToolsWaitForExit)' == 'true' And '$(_CadDevToolsOutput)' != ''"
+                     File="$(CadDevToolsLogFile)"
+                     Lines="$(_CadDevToolsOutput)"
+                     Overwrite="true" />
+    <Message Condition="'$(CadDevToolsWaitForExit)' == 'true' And '$(_CadDevToolsOutput)' != ''"
+             Text="[cadwiki.DevToolsDriver] Output logged to: $(CadDevToolsLogFile)" Importance="high" />
+
+  </Target>
+
+</Project>
