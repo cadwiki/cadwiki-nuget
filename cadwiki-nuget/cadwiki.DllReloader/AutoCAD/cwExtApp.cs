@@ -41,7 +41,7 @@ namespace cadwiki.DllReloader.AutoCAD
     ///   }
     /// </code>
     ///
-    /// <para><b>Advanced example with pipeline:</b></para>
+    /// <para><b>Advanced example with pipeline and inactive tab:</b></para>
     /// <code>
     ///   public class MyApp : cwExtApp
     ///   {
@@ -55,7 +55,17 @@ namespace cadwiki.DllReloader.AutoCAD
     ///
     ///       protected override RibbonTabDefinition CreateProductionTab()
     ///       {
-    ///           return null; // no production tab, dev-only
+    ///           // Tab is installed but won't steal focus from the current tab
+    ///           return new RibbonTabDefinition("My Plugin", isActive: false)
+    ///               .Add(myPanel);
+    ///       }
+    ///
+    ///       protected override IEnumerable&lt;RibbonTabDefinition&gt; CreateAdditionalTabs()
+    ///       {
+    ///           // A background diagnostics tab that doesn't activate on load
+    ///           yield return new RibbonTabDefinition("Diagnostics")
+    ///               .SetActive(false)
+    ///               .Add(diagPanel);
     ///       }
     ///
     ///       protected override void OnInitialized(Document doc, Assembly asm)

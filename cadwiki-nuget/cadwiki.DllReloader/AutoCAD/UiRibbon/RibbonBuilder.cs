@@ -185,12 +185,19 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon
         /// <summary>
         /// Builds and installs a tab definition into the AutoCAD ribbon.
         /// Removes any existing tab with the same ID first (idempotent).
+        ///
+        /// <para>The tab's <see cref="RibbonTabDefinition.IsActive"/> property controls
+        /// whether the tab becomes the selected tab after installation. This defaults
+        /// to <c>true</c> for backward compatibility. To install a background tab:</para>
+        /// <code>
+        ///   var tab = new RibbonTabDefinition("Diagnostics").SetActive(false);
+        ///   RibbonBuilder.InstallTab(doc, tab);
+        /// </code>
         /// </summary>
         /// <param name="doc">Active AutoCAD document (for editor logging).</param>
         /// <param name="tabDef">The tab definition to install.</param>
-        /// <param name="makeActive">Whether to activate the tab after installing.</param>
         /// <returns><c>true</c> if installation succeeded.</returns>
-        public static bool InstallTab(Document doc, RibbonTabDefinition tabDef, bool makeActive = true)
+        public static bool InstallTab(Document doc, RibbonTabDefinition tabDef)
         {
             try
             {
@@ -214,7 +221,7 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon
                 var tab = BuildTab(tabDef);
                 ribbon.Tabs.Add(tab);
 
-                if (makeActive)
+                if (tabDef.IsActive)
                 {
                     tab.IsActive = true;
                 }
