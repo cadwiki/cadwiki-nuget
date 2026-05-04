@@ -398,3 +398,24 @@ FodyWeavers.xsd
 *.sln.iml
 apikeys.txt
 cadwiki-nuget/cadwiki.AC.TestPlugin/netload.scr
+
+# macOS system files
+.DS_Store
+**/.DS_Store
+
+# AutoCAD SDK libraries (regenerated, large, not part of source)
+cadwiki-nuget/_libs/
+
+# Build-generated Properties/ directories (AssemblyInfo, resources)
+**/Properties/
+
+# NuGet v2 packages.config (old .NET Framework style)
+**/packages.config
+
+# Deleted projects (removed in prior commits, prevent re-appearing)
+cadwiki-nuget/cadwiki.AdminOps/
+cadwiki-nuget/cadwiki.AutoCAD2021.Interop.Utilities/
+cadwiki-nuget/cadwiki.AutoCAD2022.Interop.Utilities/
+cadwiki-nuget/cadwiki.AC24.Interop/
+cadwiki-nuget/cadwiki.PluginReloadService/
+cadwiki-nuget/cadwiki.FileStore/Resources/ResourceIcons.resx
