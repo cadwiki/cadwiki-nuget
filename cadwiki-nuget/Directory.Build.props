@@ -31,11 +31,11 @@
     <!-- Set to true on the command line or in CI to enable timestamp-based versioning:
            msbuild /p:CadwikiAutoVersion=true
            dotnet build /p:CadwikiAutoVersion=true                              -->
-    <CadwikiAutoVersion Condition="'$(CadwikiAutoVersion)' == ''">true</CadwikiAutoVersion>
+    <CadwikiAutoVersion Condition="'$(CadwikiAutoVersion)' == ''">false</CadwikiAutoVersion>
 
     <!-- ── Manual version segments (used when CadwikiAutoVersion=false) ── -->
     <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' != 'true'">0</CadwikiVersionBuild>
-    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' != 'true'">4</CadwikiVersionRevision>
+    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' != 'true'">5</CadwikiVersionRevision>
 
     <!-- ── Auto-increment segments (used when CadwikiAutoVersion=true) ──
          Computed from the current UTC timestamp at evaluation time.
