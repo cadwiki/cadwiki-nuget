@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     One-shot script to pack and publish cadwiki NuGet packages.
 
@@ -71,21 +71,21 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-# ─── Helpers ──────────────────────────────────────────────────────────────────
+# --- Helpers ------------------------------------------------------------------
 
-function Write-Step  { param([string]$Msg) Write-Host "`n▶ $Msg" -ForegroundColor Cyan }
-function Write-Ok    { param([string]$Msg) Write-Host "  ✔ $Msg" -ForegroundColor Green }
-function Write-Err   { param([string]$Msg) Write-Host "  ✘ $Msg" -ForegroundColor Red }
-function Write-Info  { param([string]$Msg) Write-Host "  ℹ $Msg" -ForegroundColor Yellow }
+function Write-Step  { param([string]$Msg) Write-Host "`n $Msg" -ForegroundColor Cyan }
+function Write-Ok    { param([string]$Msg) Write-Host "  OK $Msg" -ForegroundColor Green }
+function Write-Err   { param([string]$Msg) Write-Host "  ERR $Msg" -ForegroundColor Red }
+function Write-Info  { param([string]$Msg) Write-Host "  INFO $Msg" -ForegroundColor Yellow }
 
-# ─── Locate repo root (where this script lives) ──────────────────────────────
+# --- Locate repo root (where this script lives) ------------------------------
 
 $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Push-Location $RepoRoot
 
 try {
 
-# ─── 1. Read Directory.Build.props ────────────────────────────────────────────
+# --- 1. Read Directory.Build.props --------------------------------------------
 
 Write-Step "Reading version info from Directory.Build.props"
 
@@ -106,7 +106,7 @@ if ([string]::IsNullOrWhiteSpace($major) -or [string]::IsNullOrWhiteSpace($minor
 
 Write-Ok "Major = $major, Minor = $minor"
 
-# ─── 2. Read hardcoded version for NuGet publish ────────────────────────────
+# --- 2. Read hardcoded version for NuGet publish ----------------------------
 
 Write-Step "Reading hardcoded version for NuGet publish"
 
@@ -126,7 +126,7 @@ if (-not [string]::IsNullOrWhiteSpace($hardcodedBuild) -and -not [string]::IsNul
     exit 1
 }
 
-# ─── 3. Compute version for packing ───────────────────────────────────────────
+# --- 3. Compute version for packing -------------------------------------------
 
 Write-Step "Computing version for packing"
 
@@ -141,7 +141,7 @@ if ($PinnedVersion) {
     Write-Info "Auto-generated version: $version  (UTC: $($utcNow.ToString('u')))"
 }
 
-# ─── 4. Validate API key (unless PackOnly) ───────────────────────────────────
+# --- 4. Validate API key (unless PackOnly) -----------------------------------
 
 if (-not $PackOnly) {
     if ([string]::IsNullOrWhiteSpace($NuGetApiKey)) {
@@ -155,7 +155,7 @@ if (-not $PackOnly) {
     Write-Ok "API key found (length $($NuGetApiKey.Length))"
 }
 
-# ─── 5. Ensure output directory ──────────────────────────────────────────────
+# --- 5. Ensure output directory ----------------------------------------------
 
 $outDir = [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $OutputDirectory))
 if (-not (Test-Path $outDir)) {
@@ -163,7 +163,7 @@ if (-not (Test-Path $outDir)) {
 }
 Write-Info "Output directory: $outDir"
 
-# ─── 6. Verify nuget.exe is available ────────────────────────────────────────
+# --- 6. Verify nuget.exe is available ----------------------------------------
 
 Write-Step "Checking for nuget.exe"
 
@@ -178,7 +178,7 @@ if (-not $nuget) {
 }
 Write-Ok "nuget.exe found: $($nuget.Source)"
 
-# ─── 7. Define packages ──────────────────────────────────────────────────────
+# --- 7. Define packages ------------------------------------------------------
 
 $packages = @(
     @{
@@ -195,7 +195,7 @@ $packages = @(
     }
 )
 
-# ─── 8. Pack ──────────────────────────────────────────────────────────────────
+# --- 8. Pack ------------------------------------------------------------------
 
 Write-Step "Packing NuGet packages (Configuration=$Configuration, PackVersion=$version)"
 
@@ -257,10 +257,10 @@ if ($packFailed) {
 Write-Host ""
 Write-Ok "All $($packedFiles.Count) packages packed successfully."
 
-# ─── 9. Push (with hardcoded version only) ────────────────────────────────────
+# --- 9. Push (with hardcoded version only) ------------------------------------
 
 if ($PackOnly) {
-    Write-Step "PackOnly mode — skipping push"
+    Write-Step "PackOnly mode  skipping push"
     Write-Info "Packages are in: $outDir"
 } else {
     Write-Step "Pushing packages to $Source"
@@ -334,7 +334,7 @@ if ($PackOnly) {
     Write-Ok "All packages pushed to $Source with version $publishVersion"
 }
 
-# ─── 10. Summary ──────────────────────────────────────────────────────────────
+# --- 10. Summary --------------------------------------------------------------
 
 Write-Host ""
 Write-Host ("=" * 60) -ForegroundColor Cyan
@@ -345,13 +345,13 @@ Write-Host "  Publish Version: $publishVersion"
 Write-Host "  Configuration:   $Configuration"
 Write-Host "  Packages:"
 foreach ($f in $packedFiles) {
-    Write-Host "    • $([System.IO.Path]::GetFileName($f))"
+    Write-Host "     $([System.IO.Path]::GetFileName($f))"
 }
 if ($PackOnly) {
     Write-Host "  Status:        PACKED (push skipped)" -ForegroundColor Yellow
     Write-Host "  Output:        $outDir"
 } else {
-    Write-Host "  Status:        PUBLISHED ✔" -ForegroundColor Green
+    Write-Host "  Status:        PUBLISHED OK" -ForegroundColor Green
     Write-Host "  Source:        $Source"
     Write-Host "  Note:          Only version $publishVersion pushed to NuGet (hardcoded in props)" -ForegroundColor Yellow
 }
