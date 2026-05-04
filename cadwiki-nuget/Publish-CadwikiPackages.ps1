@@ -96,31 +96,40 @@ if (-not (Test-Path $propsPath)) {
 }
 
 [xml]$props = Get-Content $propsPath -Raw
-$major = $props.Project.PropertyGroup.CadwikiVersionMajor
-$minor = $props.Project.PropertyGroup.CadwikiVersionMinor
+
+function Get-PropValue {
+    param($nodes)
+
+    foreach ($n in $nodes) {
+        $val = if ($n -is [System.Xml.XmlElement]) { $n.InnerText } else { $n }
+
+        if ($val -and $val -notmatch '^\$\(') {
+            return $val
+        }
+    }
+    return $null
+}
+
+$major = Get-PropValue $props.Project.PropertyGroup.CadwikiVersionMajor
+$minor = Get-PropValue $props.Project.PropertyGroup.CadwikiVersionMinor
 
 if ([string]::IsNullOrWhiteSpace($major) -or [string]::IsNullOrWhiteSpace($minor)) {
     Write-Err "Could not read CadwikiVersionMajor / CadwikiVersionMinor from props file."
     exit 1
 }
 
-Write-Ok "Major = $major, Minor = $minor"
+Write-Ok ("Major = {0}, Minor = {1}" -f $major, $minor)
 
 # --- 2. Read hardcoded version for NuGet publish ----------------------------
 
 Write-Step "Reading hardcoded version for NuGet publish"
 
-$hardcodedBuild    = $props.Project.PropertyGroup.CadwikiVersionBuild | 
-                     Where-Object { $_ -notmatch '^\$\(' } |
-                     Select-Object -First 1
-$hardcodedRevision = $props.Project.PropertyGroup.CadwikiVersionRevision |
-                     Where-Object { $_ -notmatch '^\$\(' } |
-                     Select-Object -First 1
+$hardcodedBuild    = Get-PropValue $props.Project.PropertyGroup.CadwikiVersionBuild
+$hardcodedRevision = Get-PropValue $props.Project.PropertyGroup.CadwikiVersionRevision
 
-# If we found literal (non-computed) values, use those; otherwise default to .0
 if (-not [string]::IsNullOrWhiteSpace($hardcodedBuild) -and -not [string]::IsNullOrWhiteSpace($hardcodedRevision)) {
-    $publishVersion = "$major.$minor.$hardcodedBuild.$hardcodedRevision"
-    Write-Ok "Hardcoded publish version from props: $publishVersion"
+    $publishVersion = "{0}.{1}.{2}.{3}" -f $major, $minor, $hardcodedBuild, $hardcodedRevision
+    Write-Ok ("Hardcoded publish version from props: {0}" -f $publishVersion)
 } else {
     Write-Err "Could not read hardcoded version from props. Ensure CadwikiVersionBuild and CadwikiVersionRevision are set."
     exit 1
