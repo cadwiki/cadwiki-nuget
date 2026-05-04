@@ -6,13 +6,58 @@
 
     <!-- ═══════════════════════════════════════════════════════════════════
          Central Versioning Schema — single source of truth for all projects.
-         Update these four properties for a new release; all AssemblyInfo.cs
-         files and SDK-style projects inherit from here.
+
+         MODES:
+           1. Manual (default):  Set CadwikiAutoVersion=false (or omit).
+              All four segments come from the explicit properties below.
+
+           2. Auto-increment:    Set CadwikiAutoVersion=true.
+              Build  = yyyyMMdd  (UTC date of the build, e.g. 20260503)
+              Revision = HHmmss  (UTC time of the build, e.g. 175530)
+              → Version becomes  maj.min.yyyyMMdd.HHmmss
+
+         In both modes, CadwikiVersionMajor and CadwikiVersionMinor are
+         always set explicitly. The computed CadwikiVersion feeds into
+         Version, AssemblyVersion, FileVersion, and InformationalVersion
+         for all SDK-style projects in this solution.
          ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- ── Release identity (always set manually) ── -->
     <CadwikiVersionMajor>25</CadwikiVersionMajor>
     <CadwikiVersionMinor>0</CadwikiVersionMinor>
-    <CadwikiVersionBuild>0</CadwikiVersionBuild>
-    <CadwikiVersionRevision>4</CadwikiVersionRevision>
+
+    <!-- ── Auto-increment toggle ── -->
+    <!-- Set to true on the command line or in CI to enable timestamp-based versioning:
+           msbuild /p:CadwikiAutoVersion=true
+           dotnet build /p:CadwikiAutoVersion=true                              -->
+    <CadwikiAutoVersion Condition="'$(CadwikiAutoVersion)' == ''">false</CadwikiAutoVersion>
+
+    <!-- ── Manual version segments (used when CadwikiAutoVersion=false) ── -->
+    <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' != 'true'">0</CadwikiVersionBuild>
+    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' != 'true'">4</CadwikiVersionRevision>
+
+    <!-- ── Auto-increment segments (used when CadwikiAutoVersion=true) ──
+         Computed from the current UTC timestamp at evaluation time.
+         Format: maj.min.yyyyMMdd.HHmmss
+         Example: 25.0.20260503.175530
+
+         NOTE: These use System.DateTime.UtcNow so the version is
+         timezone-independent and always monotonically increasing.
+
+         IMPORTANT: yyyyMMdd produces values like 20260503 and HHmmss
+         produces values like 175530. Both exceed the 16-bit (0-65535)
+         limit of .NET Framework's AssemblyVersion segments. This is
+         fine for:
+           - SDK-style projects (.NET 8+) — System.Version uses Int32
+           - NuGet package versions — SemVer strings, no numeric limit
+           - InformationalVersion — free-form string
+         For legacy .NET Framework 4.8 projects that need strict 16-bit
+         AssemblyVersion compatibility, use CadwikiAutoVersion=false
+         (the default) and set segments manually.                        -->
+    <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('yyyyMMdd'))</CadwikiVersionBuild>
+    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('HHmmss'))</CadwikiVersionRevision>
+
+    <!-- ── Composed version string ── -->
     <CadwikiVersion>$(CadwikiVersionMajor).$(CadwikiVersionMinor).$(CadwikiVersionBuild).$(CadwikiVersionRevision)</CadwikiVersion>
 
     <!-- Feed the SDK-style Version / AssemblyVersion / FileVersion properties -->
