@@ -4,13 +4,15 @@ This readme contains all the commands used for creating and pushing nuget packag
 ## Standard workflow for building and testing
 1.) Clean project
 2.) Build on Debug AnyCPU
-3.) Run nuget commands
-nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
-nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
-nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties Configuration=Debug -properties Platform="Any CPU"
- 
-4.) reference local nuget feed for testing
-5.) add any missing Autodesk references as needed
+3.) Generate version string (use timestamp format or pinned version)
+4.) Run nuget pack commands with `-properties version=X.Y.Z`:
+```
+nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties "Configuration=Debug;Platform=Any CPU;version=25.0.20260503.180345"
+nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties "Configuration=Debug;Platform=Any CPU;version=25.0.20260503.180345"
+nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties "Configuration=Debug;Platform=Any CPU;version=25.0.20260503.180345"
+```
+5.) Reference local nuget feed for testing
+6.) Add any missing Autodesk references as needed
 
 ## Local feed clear
 nuget locals all -list
@@ -28,7 +30,46 @@ nuget spec -Force ./bin/Release/x64/cadwiki.NUnitTestRunner.dll
 ```
 
 ## Nuget commands for building the .nupkg locally
-### Create new package using relative .nuspec
+
+### Understanding `$version$` Token Substitution
+
+The `.nuspec` files use `<version>$version$</version>` as a placeholder token. NuGet resolves this at pack time using the `-properties version=X.Y.Z` flag. This approach:
+
+- Keeps the `.nuspec` as a reusable template (no manual edits before packing)
+- Enables CI/CD automation (version comes from build pipeline)
+- Prevents source control drift (version not hardcoded in file)
+
+**Important:** If you forget the `-properties version=...` flag, the pack will fail with "The replacement token 'version' has no value."
+
+### Create new package using relative .nuspec (with timestamp versioning)
+
+The versioning schema uses `maj.min.yyyyMMdd.HHmmss` format. Example: `25.0.20260503.180345`
+
+```bash
+# Release builds with timestamped version
+nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties "Configuration=Release;Platform=Any CPU;version=25.0.20260503.180345"
+nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties "Configuration=Release;Platform=Any CPU;version=25.0.20260503.180345"
+nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties "Configuration=Release;Platform=Any CPU;version=25.0.20260503.180345"
+
+# Debug builds with timestamped version
+nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties "Configuration=Debug;Platform=Any CPU;version=25.0.20260503.180345"
+nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties "Configuration=Debug;Platform=Any CPU;version=25.0.20260503.180345"
+nuget pack ./cadwiki.CadDevTools/cadwiki.CadDevTools.nuspec -properties "Configuration=Debug;Platform=Any CPU;version=25.0.20260503.180345"
+```
+
+### Generate timestamp dynamically (PowerShell)
+```powershell
+$timestamp = Get-Date -Format "yy.0.yyyyMMdd.HHmmss"
+nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties "Configuration=Release;Platform=Any CPU;version=$timestamp"
+```
+
+### Generate timestamp dynamically (Bash)
+```bash
+VERSION=$(date +"%y.0.%Y%m%d.%H%M%S")
+nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties "Configuration=Release;Platform=Any CPU;version=$VERSION"
+```
+
+### Legacy: Create packages using relative .nuspec (old hardcoded version)
 ```
 nuget pack ./cadwiki.NUnitTestRunner/cadwiki.NUnitTestRunner.nuspec -properties Configuration=Release -properties Platform="Any CPU"
 nuget pack ./cadwiki.DllReloader/cadwiki.DllReloader.nuspec -properties Configuration=Release -properties Platform="Any CPU"
@@ -75,9 +116,19 @@ Get-Project -All | Install-Package E:\GitHub\cadwiki\cadwiki-nuget\cadwiki-nuget
 
 
 
-### Push nuget package 
+### Push nuget package
+
+Replace `{version}` with your actual version (e.g., `25.0.20260503.180345`):
+
 ```  
-nuget push ./cadwiki.NUnitTestRunner.25.0.0.4.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.DllReloader.25.0.0.4.nupkg apikey -src https://www.nuget.org/  
-nuget push ./cadwiki.CadDevTools.25.0.0.4.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.NUnitTestRunner.{version}.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.DllReloader.{version}.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.CadDevTools.{version}.nupkg apikey -src https://www.nuget.org/  
+```
+
+Example with actual timestamped version:
+```
+nuget push ./cadwiki.NUnitTestRunner.25.0.20260503.180345.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.DllReloader.25.0.20260503.180345.nupkg apikey -src https://www.nuget.org/  
+nuget push ./cadwiki.CadDevTools.25.0.20260503.180345.nupkg apikey -src https://www.nuget.org/  
 ```

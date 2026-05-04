@@ -2,8 +2,11 @@
 <package >
   <metadata>
     <id>cadwiki.DllReloader</id>
-	<!-- need to update cadwiki.DllReloader.targets file when version changes-->
-    <version>25.0.0.4</version>
+	<!-- Version is inherited from Directory.Build.props via $version$ token.
+	     Pass it when packing: nuget pack ... -properties "version=X.Y.Z"
+	     The .targets file now uses $(MSBuildThisFileDirectory) so it no
+	     longer needs manual version updates.                               -->
+    <version>$version$</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>

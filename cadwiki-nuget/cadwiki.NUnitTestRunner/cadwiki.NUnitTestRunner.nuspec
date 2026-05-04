@@ -2,7 +2,9 @@
 <package >
   <metadata>
     <id>cadwiki.NUnitTestRunner</id>
-    <version>25.0.0.4</version>
+    <!-- Version is inherited from Directory.Build.props via $version$ token.
+	     Pass it when packing: nuget pack ... -properties "version=X.Y.Z"   -->
+    <version>$version$</version>
     <authors>cadwiki</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
