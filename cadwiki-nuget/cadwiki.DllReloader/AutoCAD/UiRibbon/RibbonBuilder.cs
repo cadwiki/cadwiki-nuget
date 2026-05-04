@@ -60,6 +60,8 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon
         /// <summary>
         /// Materializes a <see cref="RibbonButtonDefinition"/> into a live
         /// <see cref="RibbonButton"/>.
+        /// If icon loading fails (e.g. System.Drawing.Common is missing),
+        /// the button is created without an icon and a warning is logged.
         /// </summary>
         public static RibbonButton BuildButton(RibbonButtonDefinition def)
         {
@@ -73,14 +75,30 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon
                 ToolTip = def.TooltipText
             };
 
-            // Icon
+            // Icon — gracefully degrade if System.Drawing.Common or bitmap
+            // conversion fails (missing DLL, corrupt resource, etc.)
             if (def.Icon != null)
             {
-                var image = NetUtils.Bitmaps.CreateBitmapSourceFromBitmap(def.Icon);
-                if (image != null)
+                try
                 {
-                    btn.Image = image;
-                    btn.ShowImage = true;
+                    var image = NetUtils.Bitmaps.CreateBitmapSourceFromBitmap(def.Icon);
+                    if (image != null)
+                    {
+                        btn.Image = image;
+                        btn.ShowImage = true;
+                    }
+                }
+                catch (Exception ex) when (
+                    ex is TypeInitializationException ||
+                    ex is FileNotFoundException ||
+                    ex is DllNotFoundException ||
+                    ex is TypeLoadException ||
+                    ex is Exception)
+                {
+                    // Icon loading failed — button will render without an icon.
+                    // Log to debug output so devs can diagnose without crashing users.
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[RibbonBuilder] Warning: Icon load failed for button '{def.Name}': {ex.Message}");
                 }
             }
 
@@ -106,18 +124,32 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon
         /// Materializes a <see cref="RibbonPanelDefinition"/> into a live
         /// <see cref="RibbonPanel"/>, including all its buttons arranged
         /// vertically in a single column.
+        /// If an individual button fails to build, it is skipped with a warning
+        /// rather than failing the entire panel.
         /// </summary>
         public static RibbonPanel BuildPanel(RibbonPanelDefinition def)
         {
             var source = new RibbonPanelSource { Title = def.Title };
             var row = new RibbonRowPanel { IsTopJustified = true };
 
+            bool addedAny = false;
             for (int i = 0; i < def.Buttons.Count; i++)
             {
-                row.Items.Add(BuildButton(def.Buttons[i]));
-                if (i < def.Buttons.Count - 1)
+                try
                 {
-                    row.Items.Add(new RibbonRowBreak());
+                    var btn = BuildButton(def.Buttons[i]);
+                    if (addedAny)
+                    {
+                        row.Items.Add(new RibbonRowBreak());
+                    }
+                    row.Items.Add(btn);
+                    addedAny = true;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[RibbonBuilder] Warning: Failed to build button '{def.Buttons[i].Name}' " +
+                        $"in panel '{def.Title}': {ex.Message}");
                 }
             }
 
@@ -160,34 +192,46 @@ namespace cadwiki.DllReloader.AutoCAD.UiRibbon
         /// <returns><c>true</c> if installation succeeded.</returns>
         public static bool InstallTab(Document doc, RibbonTabDefinition tabDef, bool makeActive = true)
         {
-            var ribbon = ComponentManager.Ribbon;
-            if (ribbon == null)
+            try
             {
+                var ribbon = ComponentManager.Ribbon;
+                if (ribbon == null)
+                {
+                    doc?.Editor.WriteMessage(
+                        Environment.NewLine + "Ribbon is not available — type RIBBON into the command line.");
+                    return false;
+                }
+
+                // Remove existing tab with same ID (idempotent)
+                var existing = ribbon.FindTab(tabDef.Title);
+                if (existing != null)
+                {
+                    doc?.Editor.WriteMessage(
+                        Environment.NewLine + "Removing existing tab: " + tabDef.Title);
+                    ribbon.Tabs.Remove(existing);
+                }
+
+                var tab = BuildTab(tabDef);
+                ribbon.Tabs.Add(tab);
+
+                if (makeActive)
+                {
+                    tab.IsActive = true;
+                }
+
                 doc?.Editor.WriteMessage(
-                    Environment.NewLine + "Ribbon is not available — type RIBBON into the command line.");
+                    Environment.NewLine + "Installed ribbon tab: " + tabDef.Title);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[RibbonBuilder] Error installing tab '{tabDef?.Title}': {ex.Message}");
+                doc?.Editor.WriteMessage(
+                    Environment.NewLine + "Warning: Failed to install ribbon tab '" +
+                    (tabDef?.Title ?? "?") + "': " + ex.Message);
                 return false;
             }
-
-            // Remove existing tab with same ID (idempotent)
-            var existing = ribbon.FindTab(tabDef.Title);
-            if (existing != null)
-            {
-                doc?.Editor.WriteMessage(
-                    Environment.NewLine + "Removing existing tab: " + tabDef.Title);
-                ribbon.Tabs.Remove(existing);
-            }
-
-            var tab = BuildTab(tabDef);
-            ribbon.Tabs.Add(tab);
-
-            if (makeActive)
-            {
-                tab.IsActive = true;
-            }
-
-            doc?.Editor.WriteMessage(
-                Environment.NewLine + "Installed ribbon tab: " + tabDef.Title);
-            return true;
         }
 
         /// <summary>
