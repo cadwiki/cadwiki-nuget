@@ -35,7 +35,7 @@
 
     <!-- ── Manual version segments (used when CadwikiAutoVersion=false) ── -->
     <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' != 'true'">0</CadwikiVersionBuild>
-    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' != 'true'">6</CadwikiVersionRevision>
+    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' != 'true'">7</CadwikiVersionRevision>
 
     <!-- ── Auto-increment segments (used when CadwikiAutoVersion=true) ──
          Computed from the current UTC timestamp at evaluation time.
