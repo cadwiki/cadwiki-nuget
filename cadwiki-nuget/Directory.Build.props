@@ -39,8 +39,8 @@
 
     <!-- ── Auto-increment segments (used when CadwikiAutoVersion=true) ──
          Computed from the current UTC timestamp at evaluation time.
-         Format: maj.yyyy.MMdd.Hhmm
-         Example: 25.2026.0503.1755
+         Format: maj.yyyy.MMdd.Hhmms
+         Example: 25.2026.0503.17552
 
          NOTE: These use System.DateTime.UtcNow so the version is
          timezone-independent and always monotonically increasing.
@@ -57,7 +57,7 @@
          (the default) and set segments manually.                        -->
     <CadwikiVersionMinor Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('yyyy'))</CadwikiVersionMinor>
     <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('MMdd'))</CadwikiVersionBuild>
-    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('Hhmm'))</CadwikiVersionRevision>
+    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('Hhmms'))</CadwikiVersionRevision>
 
     <!-- ── Composed version string ── -->
     <CadwikiVersion>$(CadwikiVersionMajor).$(CadwikiVersionMinor).$(CadwikiVersionBuild).$(CadwikiVersionRevision)</CadwikiVersion>
