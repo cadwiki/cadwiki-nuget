@@ -295,5 +295,23 @@ namespace cadwiki.CadDevTools
             return cadAppDll;
         }
 
+        private void ButtonFindNewestDllByFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string dllName = Path.GetFileName(this.TextBoxDllPath.Text);
+            string folder = this._dependencies.CustomDirectoryToSearchForDllsToLoadFrom;
+
+            string wildCardFileName = "*" + dllName;
+            var cadApps = Paths.GetAllWildcardFilesInAnySubfolder(folder, wildCardFileName);
+            string cadAppDll = cadApps.FirstOrDefault();
+            if (!File.Exists(cadAppDll))
+            {
+                WpfUi.Utils.SetErrorStatus(this.TextBlockStatus, this.TextBlockMessage, "Dll does not exist: " + cadAppDll);
+            }
+            else
+            {
+                WpfUi.Utils.SetSuccessStatus(this.TextBlockStatus, this.TextBlockMessage, "Selected dll to load: " + cadAppDll);
+                this.TextBoxDllPath.Text = cadAppDll;
+            }
+        }
     }
 }
