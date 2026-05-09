@@ -68,4 +68,22 @@
     <FileVersion>$(CadwikiVersion)</FileVersion>
     <InformationalVersion>$(CadwikiVersion)</InformationalVersion>
   </PropertyGroup>
+  
+  <Target Name="CopyDllsToTemp" AfterTargets="Build">
+
+    <!-- Collect all DLLs from the output directory -->
+    <ItemGroup>
+      <BuiltDlls Include="$(OutputPath)\*.dll" />
+    </ItemGroup>
+
+    <!-- Ensure destination exists -->
+    <MakeDir Directories="C:\.desktop\cwBuild\_v$(CadwikiVersion)" />
+
+    <!-- Copy DLLs -->
+    <Copy
+      SourceFiles="@(BuiltDlls)"
+      DestinationFolder="C:\.desktop\cwBuild\_v$(CadwikiVersion)"
+      SkipUnchangedFiles="true" />
+
+  </Target>
 </Project>
