@@ -28,7 +28,7 @@ namespace cadwiki.AC.TestPlugin
             try
             {
                 var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-                doc.Editor.WriteMessage(Environment.NewLine + "App initialize called...");
+                doc.Editor.WriteMessage(System.Environment.NewLine + "App initialize called...");
                 // This Event Handler allows the IExtensionApplication to Resolve any Assemblies
                 // The AssemblyResolve method finds the correct assembly in the AppDomain when there are multiple assemblies
                 // with the same name and differing version number
@@ -38,18 +38,36 @@ namespace cadwiki.AC.TestPlugin
                 AcadAppDomainDllReloader.SkipCadwikiDlls = false;
                 AcadAppDomainDllReloader.Configure(iExtensionAppAssembly);
                 AcadAppDomainDllReloader.Reload(iExtensionAppAssembly);
-                doc.Editor.WriteMessage(Environment.NewLine + "App " + iExtensionAppVersion.ToString() + " initialized...");
-                doc.Editor.WriteMessage(Environment.NewLine);
+                doc.Editor.WriteMessage(System.Environment.NewLine + "App " + iExtensionAppVersion.ToString() + " initialized...");
+                doc.Editor.WriteMessage(System.Environment.NewLine);
                 DevRibbon.Show(doc, AcadAppDomainDllReloader, Assembly.GetExecutingAssembly(),
                     pipelineAction: () =>
                     {
                         CustomPipeLine(iExtensionAppAssembly);
                     });
+
+                var test1Button = RibbonButtonDefinition.Builder("Button v" + iExtensionAppVersion)
+                    .Text("Test v" + iExtensionAppVersion)
+                    .OnClick(() =>
+                    {
+                        ButtonAction();
+                    })
+                    .Build();
+
+                var testPanel = new RibbonPanelDefinition("Panel v" + iExtensionAppVersion)
+                    .Add(test1Button);
+
+                // ── Tab ─────────────────────────────────────────────────────────
+                RibbonBuilder.InjectPanel("cw Dev", testPanel);
+
                 if (doc != null)
                 {
                     var reactors = new ReactorsRibbonCreate();
                     reactors.AttachQuiescentReactors(doc);
                 }
+
+
+
             }
             catch (System.Exception ex)
             {
@@ -57,10 +75,17 @@ namespace cadwiki.AC.TestPlugin
             }
         }
 
+        private static void ButtonAction()
+        {
+            var doc = global::Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var userInput = Interaction.InputBox("Enter something:", "Test Input", "Default value");
+            doc.Editor.WriteMessage($"\nYou entered: {userInput}");
+        }
+
         private static void CustomPipeLine(Assembly iExtensionAppAssembly)
         {
             var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-            doc.Editor.WriteMessage(Environment.NewLine + "CustomPipeLine started..");
+            doc.Editor.WriteMessage(System.Environment.NewLine + "CustomPipeLine started..");
             try
             {
                 if (doc != null)
@@ -87,14 +112,14 @@ namespace cadwiki.AC.TestPlugin
 
                         if (!result.IsSuccess)
                         {
-                            var window = new WpfUi.Templates.WindowAutoCADException(
+                            var window = new cadwiki.WpfUi.Templates.WindowAutoCADException(
                                 new System.Exception($"Reload failed: {result.Error?.Message}\nSee log: {result.LogFilePath}"));
                             window.Show();
                             return;
                         }
                         else if (!result.ReloadTriggered)
                         {
-                            var window = new WpfUi.Templates.WindowAutoCADException(
+                            var window = new cadwiki.WpfUi.Templates.WindowAutoCADException(
                                 new System.Exception($"Staged OK but reload not triggered.\nStaged at: {result.StagingResult?.StagingFolder}"));
                             window.Show();
                             return;
@@ -109,7 +134,7 @@ namespace cadwiki.AC.TestPlugin
             }
             catch (System.Exception ex)
             {
-                var window = new WpfUi.Templates.WindowAutoCADException(ex);
+                var window = new cadwiki.WpfUi.Templates.WindowAutoCADException(ex);
                 window.Show();
             }
         }
