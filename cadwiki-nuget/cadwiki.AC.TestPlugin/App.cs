@@ -34,7 +34,7 @@ namespace cadwiki.AC.TestPlugin
                 // with the same name and differing version number
                 AppDomain.CurrentDomain.AssemblyResolve += AutodeskAppDomainReloader.AssemblyResolve;
                 var iExtensionAppAssembly = Assembly.GetExecutingAssembly();
-                var iExtensionAppVersion = AssemblyUtils.GetVersion(iExtensionAppAssembly);
+                var iExtensionAppVersion = cadwiki.NetUtils.AssemblyUtils.GetVersion(iExtensionAppAssembly);
                 AcadAppDomainDllReloader.SkipCadwikiDlls = false;
                 AcadAppDomainDllReloader.Configure(iExtensionAppAssembly);
                 AcadAppDomainDllReloader.Reload(iExtensionAppAssembly);
