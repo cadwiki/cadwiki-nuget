@@ -14,8 +14,8 @@
            2. Auto-increment:    Set CadwikiAutoVersion=true.
 		      Minor = yyyy  (UTC date of the build, e.g. 2026)
               Build  = MMdd  (UTC date of the build, e.g. 0503)
-              Revision = HHmmss  (UTC time of the build, e.g. 175530)
-              → Version becomes  maj.yyyy.MMdd.HHmmss
+              Revision = Hhmm  (UTC time of the build, e.g. 1755)
+              → Version becomes  maj.yyyy.MMdd.Hhmm
 
          In both modes, CadwikiVersionMajor and CadwikiVersionMinor are
          always set explicitly. The computed CadwikiVersion feeds into
@@ -39,13 +39,13 @@
 
     <!-- ── Auto-increment segments (used when CadwikiAutoVersion=true) ──
          Computed from the current UTC timestamp at evaluation time.
-         Format: maj.yyyy.MMdd.HHmmss
-         Example: 25.2026.0503.175530
+         Format: maj.yyyy.MMdd.Hhmm
+         Example: 25.2026.0503.1755
 
          NOTE: These use System.DateTime.UtcNow so the version is
          timezone-independent and always monotonically increasing.
 
-         IMPORTANT: yyyyMMdd produces values like 20260503 and HHmmss
+         IMPORTANT: yyyyMMdd produces values like 20260503 and Hhmmss
          produces values like 175530. Both exceed the 16-bit (0-65535)
          limit of .NET Framework's AssemblyVersion segments. This is
          fine for:
@@ -57,7 +57,7 @@
          (the default) and set segments manually.                        -->
     <CadwikiVersionMinor Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('yyyy'))</CadwikiVersionMinor>
     <CadwikiVersionBuild Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('MMdd'))</CadwikiVersionBuild>
-    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('HHmmss'))</CadwikiVersionRevision>
+    <CadwikiVersionRevision Condition="'$(CadwikiAutoVersion)' == 'true'">$([System.DateTime]::UtcNow.ToString('Hhmm'))</CadwikiVersionRevision>
 
     <!-- ── Composed version string ── -->
     <CadwikiVersion>$(CadwikiVersionMajor).$(CadwikiVersionMinor).$(CadwikiVersionBuild).$(CadwikiVersionRevision)</CadwikiVersion>
